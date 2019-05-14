@@ -64,11 +64,12 @@ class PlayerController extends Controller
           'facebookId'=>'required_without:userDeviceId'
         ]);
 
-        if(is_null($request->facebookId) || empty($request->facebookId) ) {
+        if(is_null($request->facebookId) || empty($request->facebookId)) {
 
             if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
 
                 return redirect()->route('api.player_view', $userExist->player->id);
+                // return redirect()->route('api.player_view')->with('userId', $userExist->player->id);
             }
             else{
                 return $this->createPlayerMethod($request);
@@ -80,6 +81,7 @@ class PlayerController extends Controller
             if ($userExist = User::where('facebook_id', $request->facebookId)->first()) {
 
                 return redirect()->route('api.player_view', $userExist->player->id);
+                // return redirect()->route('api.player_view')->with('userId', $userExist->player->id);
             }
 
             else if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
@@ -250,16 +252,34 @@ class PlayerController extends Controller
         }
     }
 
-    public function showPlayerDetails($playerId)
+    public function showPlayerDetails(Request $request, $playerId = null)
     {   
-        $playerToShow = Player::find($playerId);
+        // dd(is_null($request));
+        // dd(session('userId'));
+
+        if ($request->token) {
+            
+            $payload = $this->retrieveToken($request);
+
+            if (is_null($payload)) {
+                return response()->json(['error'=>'Invalid token'], 422);
+            }
+
+            $request = new Request($payload);
+        }
+
+        // $request->validate([
+        //     'userId'=>'required'
+        // ]);
+
+        $playerToShow = Player::find($request->userId ?? $playerId);
 
         if(is_null($playerToShow) || empty($playerToShow)){
 
             return response()->json(['error'=>'Invalid player'], 422);
         }
 
-        $this->consecutiveLoginDays($playerId);
+        $this->consecutiveLoginDays($playerToShow->id);
         
         return new PlayerResource($playerToShow);
     }
