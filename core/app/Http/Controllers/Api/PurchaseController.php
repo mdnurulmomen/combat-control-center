@@ -41,6 +41,11 @@ class PurchaseController extends Controller
     }
     */
 
+    protected $itemId;
+    protected $userId;
+    protected $gatewayName;
+    protected $paymentId;
+
     use RetrieveToken;
 
     public function addPlayerCharacter($characterIndexToAdd, $playerId, $itemToDeduct, $priceToDeduct)
@@ -59,6 +64,8 @@ class PurchaseController extends Controller
             $playerCharacter->character_index = $characterIndexToAdd;
             $playerCharacter->player_id = $playerId;
             $playerCharacter->save();
+
+            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -80,6 +87,8 @@ class PurchaseController extends Controller
             $playerWeapon->weapon_index = $weaponIndexToAdd;
             $playerWeapon->player_id = $playerId;
             $playerWeapon->save();
+
+            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -101,6 +110,8 @@ class PurchaseController extends Controller
             $playerParachute->parachute_index = $parachuteId;
             $playerParachute->player_id = $playerId;
             $playerParachute->save();
+
+            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -123,6 +134,8 @@ class PurchaseController extends Controller
             $playerAnimation->animation_index = $animationIndexToAdd;
             $playerAnimation->player_id = $playerId;
             $playerAnimation->save();
+
+            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -160,6 +173,8 @@ class PurchaseController extends Controller
             else if (Str::is('X*', $boostPackName)) {
                 $playerBoostPack->increment('xp_multiplier', $boostPackToAdd->amount);
             }
+
+            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
 
             return response()->json(['message'=>'success'], 200);
         }
@@ -213,6 +228,8 @@ class PurchaseController extends Controller
                 }
             }
             
+            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
+
             return response()->json(['message'=>'success'], 200);
         }
 
@@ -237,8 +254,13 @@ class PurchaseController extends Controller
         ]);
 
         // Item Details
-        $item = Store::find($request->itemId);
-        $player = Player::find($request->userId);
+        $this->itemId = $request->itemId;
+        $this->userId = $request->userId;
+        $this->gatewayName = $request->gatewayName;
+        $this->paymentId = $request->paymentId ?? 'None';
+
+        $item = Store::find($this->itemId);
+        $player = Player::find($this->userId);
 
         if (!$player || !$item) {
 
@@ -248,24 +270,20 @@ class PurchaseController extends Controller
         $playerStatistics = $player->playerStatistics;
 
         // purchase
-        if (Str::is('*oin*', $request->gatewayName) || Str::is('*em*', $request->gatewayName)) {
+        if (Str::is('*oin*', $this->gatewayName) || Str::is('*em*', $this->gatewayName)) {
 
             // Gems/Coins Cant be Purchased with Coins
-            if(Str::is('*oin*', $request->gatewayName) && $item->offered_price_coins <= $playerStatistics->coins && $item->type != 'Gems Pack' && $item->type != 'Coins Pack'){
-                
-                $this->addPurchaseHistory($request->itemId, $request->userId, $request->gatewayName, $request->paymentId);
+            if(Str::is('*oin*', $this->gatewayName) && $item->offered_price_coins <= $playerStatistics->coins && $item->type != 'Gems Pack' && $item->type != 'Coins Pack'){
 
                 $price = $item->offered_price_coins;
-                return $this->addPurchasedItem($item, $request->userId, 'coins', $price);
+                return $this->addPurchasedItem($item, $this->userId, 'coins', $price);
             }
 
             // Gems Cant be Purchased with Gems
-            else if(Str::is('*em*', $request->gatewayName) && $item->offered_price_gems <= $playerStatistics->gems  && $item->type != 'Gems Pack'){
-                
-                $this->addPurchaseHistory($request->itemId, $request->userId, $request->gatewayName, $request->paymentId);
+            else if(Str::is('*em*', $this->gatewayName) && $item->offered_price_gems <= $playerStatistics->gems  && $item->type != 'Gems Pack'){
 
                 $price = $item->offered_price_gems;
-                return $this->addPurchasedItem($item, $request->userId, 'gems', $price);
+                return $this->addPurchasedItem($item, $this->userId, 'gems', $price);
             }
 
             else{
@@ -276,11 +294,9 @@ class PurchaseController extends Controller
         // For Other Gateways
         else{
 
-            $this->addPurchaseHistory($request->itemId, $request->userId, $request->gatewayName, $request->paymentId);
-
             $price =0;
 
-            return $this->addPurchasedItem($item, $request->userId, 'coins', $price);
+            return $this->addPurchasedItem($item, $this->userId, 'coins', $price);
         }
 
     }
@@ -339,13 +355,16 @@ class PurchaseController extends Controller
             $playerStatistics->decrement($itemToDeduct, $priceToDeduct);
             $playerStatistics->increment('coins', $item->amount ?? 0);
             
+            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
             return response()->json(['message'=>'success'], 200);
             
         }
 
         else if($item->type=='Gems Pack'){
             
-            $playerStatistics->increment('gems', $item->amount ?? 0); 
+            $playerStatistics->increment('gems', $item->amount ?? 0);
+
+            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
             return response()->json(['message'=>'success'], 200);
         }
 

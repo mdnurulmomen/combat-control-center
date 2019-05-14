@@ -11,13 +11,17 @@ use App\Models\GiftTreasure;
 use Illuminate\Http\Request;
 use App\Models\PlayerTreasure;
 use App\Models\PlayerStatistic;
+use App\Http\Traits\RetrieveToken;
 use App\Models\TreasureRedemption;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RequestWithToken;
 use App\Http\Resources\Game\TreasureResource;
 use App\Http\Resources\Player\PlayerTreasureResource;
 
 class TreasureController extends Controller
 {
+    use RetrieveToken;
+
     public function treasureIdentifier()
     {
         $updatedEarn = Earning::orderBy('total_earning', 'DESC')->first();
@@ -54,8 +58,16 @@ class TreasureController extends Controller
         return new PlayerTreasureResource($player);
     }
 
-    public function treasureRedemption(Request $request)
+    public function treasureRedemption(RequestWithToken $postman)
     {
+        $payload = $this->retrieveToken($postman);
+
+        if (is_null($payload)) {
+            return response()->json(['error'=>'Invalid token'], 422);
+        }
+
+        $request = new Request($payload);
+
         $request->validate([
             'serial'=>'required',
             'userId'=>'required',
