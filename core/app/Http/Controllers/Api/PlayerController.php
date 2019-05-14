@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Player;
@@ -20,10 +21,12 @@ use App\Models\PlayerParachute;
 use App\Models\PlayerBoostPack;
 use App\Models\DailyLoginCheck;
 use App\Models\PlayerStatistic;
+use App\Http\Traits\RetrieveToken;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RequestWithToken;
 use App\Http\Resources\Player\PlayerResource;
 use App\Http\Resources\Player\LeaderResource;
 use App\Http\Resources\Player\MyLeaderResource;
@@ -45,8 +48,18 @@ class PlayerController extends Controller
     }
     */
 
-    public function checkPlayerExist(Request $request)
+    use RetrieveToken;
+
+    public function checkPlayerExist(RequestWithToken $postman)
     {
+        $payload = $this->retrieveToken($postman);
+
+        if (is_null($payload)) {
+            return response()->json(['error'=>'Invalid token'], 422);
+        }
+
+        $request = new Request($payload);
+
         $request->validate([
           'facebookId'=>'required_without:userDeviceId'
         ]);
@@ -251,13 +264,29 @@ class PlayerController extends Controller
         return new PlayerResource($playerToShow);
     }
 
-    public function editUserInfo(UserRequest $request)
+    public function editUserInfo(RequestWithToken $postman)
     {
-        $request_1 = $request->only(['username','phone', 'device_info', 'email', 'location', 'facebook_id', 'facebook_name', 'profile_pic', 'login_type', 'connection_type']);
+        $payload = $this->retrieveToken($postman);
+
+        if (is_null($payload)) {
+            return response()->json(['error'=>'Invalid token'], 422);
+        }
+
+        $request = new Request($payload);
+
+        $request->validate([
+            'userId'=>'required'
+        ]);
+
+        $request = $this->sanitize($request);
+
+        $request_1 = $request->only(['username', 'phone', 'device_info', 'email', 'location', 'facebook_id', 'facebook_name', 'profile_pic', 'login_type', 'connection_type', 'country']);
 
         $request_2 = $request->only(['player_batch','selected_parachute', 'selected_character', 'selected_animation', 'selected_weapon']);
 
-        $request_1 = array_filter($request_1);
+        $request_1 = array_filter($request_1, function($value) {
+            return ($value !== null); 
+        });
 
         $request_2 = array_filter($request_2, function($value) {
             return ($value !== null && $value !== false); 
@@ -280,17 +309,63 @@ class PlayerController extends Controller
         return response()->json(['error'=>'Invalid user'], 422);
     }
 
-    public function definePlayerLever($currentXpPoint)
+    public function sanitize(Request $request)
     {
-        $x = 0;
-        $m = 0;
+        if (!empty($request->facebookName)) {
+            $request['username'] = $request->facebookName;
+        }
+        else{
+            $request['username'] = $request->userName;
+        }
+        
+        unset($request['userName']);
 
-        while ($m <= $currentXpPoint) {
-            $x++;
-            $m += $x * ($x + 1) * 25;
+        $request['phone'] = $request->mobileNo;
+        unset($request['mobileNo']);
+
+        $request['email'] = $request->userEmail;
+        unset($request['userEmail']);
+
+        $request['location'] = $request->userLocation;
+        unset($request['userLocation']);
+
+        $request['facebook_id'] = $request->facebookId;
+        unset($request['facebookId']);
+
+        $request['facebook_name'] = $request->facebookName;
+        unset($request['facebookName']);
+
+        $request['profile_pic'] = $request->profilePic;
+        unset($request['profilePic']);
+
+        $request['connection_type'] = $request->connectionType;
+        unset($request['connectionType']);
+
+        if (empty($request->facebook_id)) {
+            $request['device_info'] = $request->userDeviceId;
+            $request['login_type'] = 'false';
+        }
+        else{
+            $request['device_info'] = '';
+            $request['login_type'] = 'true';
         }
 
-        return $x;
+        $request['player_batch'] = $request->playerBatch;
+        unset($request['playerBatch']);
+
+        $request['selected_parachute'] = $request->selectedParachute;
+        unset($request['selectedParachute']);
+
+        $request['selected_character'] = $request->selectedCharacter;
+        unset($request['selectedCharacter']);
+
+        $request['selected_animation'] = $request->selectedAnimation;
+        unset($request['selectedAnimation']);
+
+        $request['selected_weapon'] = $request->selectedWeapon;
+        unset($request['selectedWeapon']);
+
+        return $request;
     }
 
     public function showLeaderboard(Request $request)
@@ -328,8 +403,16 @@ class PlayerController extends Controller
     }
 
 
-    public function updateMultipleAssets(Request $request)
+    public function updateMultipleAssets(RequestWithToken $postman)
     {
+        $payload = $this->retrieveToken($postman);
+
+        if (is_null($payload)) {
+            return response()->json(['error'=>'Invalid token'], 422);
+        }
+
+        $request = new Request($payload);
+
         $request->validate([
             'userId'=>'required'
         ]);

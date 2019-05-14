@@ -70,7 +70,7 @@
                     <table class="table table-hover table-striped table-bordered text-center" cellspacing="0" width="100%">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Item Name</th>
+                                <th>Item Id</th>
                                 <th>Type</th>
                                 <th>Discount</th>
                                 <th>Original Prices</th>
@@ -88,7 +88,7 @@
 
                         @foreach($storeAll as $store)
                             <tr>
-                                <td>{{ $store->name }}</td>
+                                <td>{{ $store->id }}</td>
                                 <td>{{ $store->type }}</td>
                                 <td>{{ $store->discount }}%</td>
                                 <td>

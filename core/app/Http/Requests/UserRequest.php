@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -23,6 +22,7 @@ class UserRequest extends FormRequest
      *
      * @return array
      */
+
     public function rules()
     {
         $this->sanitize();
@@ -53,7 +53,7 @@ class UserRequest extends FormRequest
         unset($this['userLocation']);
 
         $this['facebook_id'] = $this->facebookId;
-        unset($this['facebookID']);
+        unset($this['facebookId']);
 
         $this['facebook_name'] = $this->facebookName;
         unset($this['facebookName']);

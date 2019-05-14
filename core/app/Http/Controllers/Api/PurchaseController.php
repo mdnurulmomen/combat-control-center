@@ -20,7 +20,9 @@ use App\Models\PlayerCharacter;
 use App\Models\PlayerAnimation;
 use App\Models\PlayerParachute;
 use App\Models\BlackListedNumber;
+use App\Http\Traits\RetrieveToken;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RequestWithToken;
 
 class PurchaseController extends Controller
 {
@@ -38,6 +40,8 @@ class PurchaseController extends Controller
         $this->request = new Request($this->request);
     }
     */
+
+    use RetrieveToken;
 
     public function addPlayerCharacter($characterIndexToAdd, $playerId, $itemToDeduct, $priceToDeduct)
     {
@@ -216,8 +220,16 @@ class PurchaseController extends Controller
     }
 
 
-    public function purchaseStoreItem(Request $request)
+    public function purchaseStoreItem(RequestWithToken $postman)
     {
+        $payload = $this->retrieveToken($postman);
+
+        if (is_null($payload)) {
+            return response()->json(['error'=>'Invalid token'], 422);
+        }
+
+        $request = new Request($payload);
+
         $request->validate([
             'userId'=>'required',
             'itemId'=>'required',
@@ -235,20 +247,14 @@ class PurchaseController extends Controller
 
         $playerStatistics = $player->playerStatistics;
 
-        // Purchase History
-        $newPurchase = new Purchase();
-        $newPurchase->item_id = $request->itemId;
-        $newPurchase->buyer_id = $request->userId;
-        $newPurchase->gateway_name = $request->gatewayName;
-        $newPurchase->payment_id = $request->paymentId ?? 'None';
-        $newPurchase->save();
-
         // purchase
         if (Str::is('*oin*', $request->gatewayName) || Str::is('*em*', $request->gatewayName)) {
 
             // Gems/Coins Cant be Purchased with Coins
             if(Str::is('*oin*', $request->gatewayName) && $item->offered_price_coins <= $playerStatistics->coins && $item->type != 'Gems Pack' && $item->type != 'Coins Pack'){
                 
+                $this->addPurchaseHistory($request->itemId, $request->userId, $request->gatewayName, $request->paymentId);
+
                 $price = $item->offered_price_coins;
                 return $this->addPurchasedItem($item, $request->userId, 'coins', $price);
             }
@@ -256,6 +262,8 @@ class PurchaseController extends Controller
             // Gems Cant be Purchased with Gems
             else if(Str::is('*em*', $request->gatewayName) && $item->offered_price_gems <= $playerStatistics->gems  && $item->type != 'Gems Pack'){
                 
+                $this->addPurchaseHistory($request->itemId, $request->userId, $request->gatewayName, $request->paymentId);
+
                 $price = $item->offered_price_gems;
                 return $this->addPurchasedItem($item, $request->userId, 'gems', $price);
             }
@@ -267,17 +275,32 @@ class PurchaseController extends Controller
 
         // For Other Gateways
         else{
+
+            $this->addPurchaseHistory($request->itemId, $request->userId, $request->gatewayName, $request->paymentId);
+
             $price =0;
+
             return $this->addPurchasedItem($item, $request->userId, 'coins', $price);
         }
 
+    }
+
+    public function addPurchaseHistory($itemId, $userId, $gatewayName, $paymentId)
+    {
+        // Purchase History
+        $newPurchase = new Purchase();
+        $newPurchase->item_id = $itemId;
+        $newPurchase->buyer_id = $userId;
+        $newPurchase->gateway_name = $gatewayName;
+        $newPurchase->payment_id = $paymentId ?? 'None';
+        $newPurchase->save();
     }
 
     public function addPurchasedItem(Store $item, $userId, $itemToDeduct, $priceToDeduct)
     {
         $playerStatistics = Player::find($userId)->playerStatistics;
 
-        if($item->type=='character'){
+        if($item->type == 'character'){
 
             $allCharactersName = Character::all()->pluck('name')->toArray();
             $characterIndexToAdd = array_search($item->name, $allCharactersName);   // Returns Array Index Number Or Key

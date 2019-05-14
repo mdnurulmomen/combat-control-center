@@ -27,9 +27,6 @@ use App\Http\Resources\Player\PlayerStatistic as StatisticsResource;
 
 class GameController extends Controller
 {
-    
-    protected $request;
-
     use RetrieveToken;
     use DefinePlayerLevel;
 
@@ -155,7 +152,7 @@ class GameController extends Controller
 				$playerStatistics->decrement('gems', 2); 
 			}
 
-            $matchRate = GameSetting::first()->game_rate;
+            $matchRate = GameSetting::first()->game_rate ?? 0;
             $lastEarning = Earning::orderBy('total_earning', 'DESC')->first();
 
             if (is_null($lastEarning)) {
@@ -191,71 +188,33 @@ class GameController extends Controller
             }
         }
         
-        // return new MatchResource($player);
-
-    /*
-        $returningData = new MatchResource($player);
-        dd($returningData);
-        return $returningData;
-        return ['token' => JWTAuth::fromUser($returningData)];
-    */
+        return new MatchResource($player);
     
-        $returningData = new MatchResource($player);
-        
-        // $payload = JWTFactory::data($customClaims)->make();
-        // $payload = JWTFactory::make($customClaims);
-        // return $token = JWTAuth::encode($payload);
-        // $token = JWTAuth::fromUser($customClaims);
+        // $returningData = new MatchResource($player);
 
-        // $payload = JWTFactory::emptyClaims()->make($returningData);
+        // $payload = JWTFactory::emptyClaims()->data($returningData)->make();
         // return $token = JWTAuth::encode($payload);
 
+        // JWTFactory::emptyClaims();
+        // $token = JWTAuth::customClaims([$returningData])->fromUser($returningData);
+        // $token = JWTAuth::fromUser($returningData, $returningData);
 
-        JWTFactory::emptyClaims();
-        $token = JWTAuth::customClaims([$returningData])->fromUser($returningData);
-
-        return response()->json([
-            'token' => $token
-        ]);
-    
-
-    /*  
-        $user = User::first();
-        $customClaims = ['location' => $user->location];
-        $token = JWTAuth::fromUser($user, $customClaims);
-        JWTAuth::setToken($token);
-        return JWTAuth::getToken();
-    */
-
-
-        
-        $payload = JWTFactory::data($returningData)->make();
-        return $token = JWTAuth::encode($payload);
-
-        /*
-        return $payload = JWTFactory::make($returningData);
-        return $token = JWTAuth::encode($payload);
-
-
-        $payload = JWTFactory::data($returningData)->make();
-        return JWTAuth::encode($payload);
-        */
-
-        
-        // $factory = JWTFactory::emptyClaims()->customClaims($returningData);
-
-        // $payload = $factory->make();
-        // return $token = JWTAuth::encode($payload);
-
-        // return [
-            
-        //     'token'=> JWTAuth::encode($payload),
-        // ];
+        // return response()->json([
+        //     'token' => $token
+        // ]);
     }
 
 
-    public function updateGameOverHistory (Request $request)
+    public function updateGameOverHistory (RequestWithToken $postman)
     {
+        $payload = $this->retrieveToken($postman);
+
+        if (is_null($payload)) {
+            return response()->json(['error'=>'Invalid token'], 422);
+        }
+
+        $request = new Request($payload);
+
         // return encrypt($request->token);
         // return openssl_encrypt($request->payload, 'AES-256-CBC', 'IjtT8uqTWOHQ6xRBfqA2tVEhNgjGzlPy', 0, '0000000000000000');
 
@@ -268,6 +227,7 @@ class GameController extends Controller
         // $decryptedJWTPayload = openssl_decrypt($request->payload, 'AES-256-CBC', 'IjtT8uqTWOHQ6xRBfqA2tVEhNgjGzlPy', 0, '0000000000000000');
 
         $request->validate([
+            'userId'=>'required',
             'matchPlayDuration'=>'required'
         ]);
 
