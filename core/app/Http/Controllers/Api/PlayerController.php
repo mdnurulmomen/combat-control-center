@@ -228,6 +228,7 @@ class PlayerController extends Controller
     
 
     // Creating Players Login Data
+
     public function consecutiveLoginDays($playerId)
     {
         $playerLogin = DailyLoginCheck::where('player_id', $playerId)->first();
@@ -242,23 +243,22 @@ class PlayerController extends Controller
             $previousLoginDate = new Carbon($playerLogin->updated_at);
             $currentDate = Carbon::now();
 
-            $difference = $previousLoginDate->diffInDays($currentDate);
-
-            if($difference>0 && $difference<2){
+            $difference = $previousLoginDate->diff($currentDate)->days;
+            
+            if($difference > 0 && $difference < 2){
                 $playerLogin->increment('consecutive_days');
-            }else{
-               $playerLogin->consecutive_days = 1; 
+            }
+
+            elseif($difference > 1){
+                $playerLogin->update(['consecutive_days' => 1]);
+                $playerLogin->touch();              // To Update updated_at            
             }
             
-            $playerLogin->save();               // To Update updated_at
         }
     }
 
     public function showPlayerDetails(Request $request, $playerId = null)
     {   
-        // dd(is_null($request));
-        // dd(session('userId'));
-
         if ($request->token) {
             
             $payload = $this->retrieveToken($request);
