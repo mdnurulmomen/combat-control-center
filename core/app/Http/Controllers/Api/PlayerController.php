@@ -125,18 +125,18 @@ class PlayerController extends Controller
 
 
         // Creating New Player
-        $newPlayer = Player::firstOrCreate(array('id' => $newUser->id));
-        $newPlayer->selected_parachute = $request->selectedParachute ?? 0;
-        $newPlayer->selected_character = $request->selectedCharacter ?? 0;
-        $newPlayer->selected_animation = $request->selectedAnimation ?? 0;
-        $newPlayer->selected_weapon = $request->selectedWeapon ?? 0;
-        $newPlayer->user_id = $newUser->id;
-        $newPlayer->save();
+        $newPlayer = $newUser->player()->create([
+            'selected_parachute' => $request->selectedParachute ?? 0,
+            'selected_character' => $request->selectedCharacter ?? 0,
+            'selected_animation' => $request->selectedAnimation ?? 0,
+            'selected_weapon' => $request->selectedWeapon ?? 0,
+        ]);
 
 
         // Creating New Players Boost Packs
-        $giftBoostPack = GiftBoostPack::first();            
-        $newPlayerBoostPack = PlayerBoostPack::firstOrCreate([
+        $giftBoostPack = GiftBoostPack::first();
+        
+        $newPlayerBoostPack = $newPlayer->playerBoostPacks()->create([
             'melee_boost' => $giftBoostPack->gift_melee_boost ?? 0,
             'light_boost' => $giftBoostPack->gift_light_boost ?? 0,
             'heavy_boost' => $giftBoostPack->gift_heavy_boost ?? 0,
@@ -145,16 +145,15 @@ class PlayerController extends Controller
             'speed_boost' => $giftBoostPack->gift_speed_boost ?? 0,
             'armor_boost' => $giftBoostPack->gift_armor_boost ?? 0,
             'xp_multiplier' => $giftBoostPack->gift_multiplier_boost ?? 0,
-            'player_id' => $newPlayer->id,
         ]);
           
 
         // Creating New Players Statistics
         $giftPoints = GiftPoint::first();
-        $newPlayerStatistic = PlayerStatistic::firstOrCreate([
+
+        $newPlayerStatistic = $newPlayer->playerStatistics()->create([
             'coins' => $giftPoints->gift_coins ?? 0,
             'gems' => $giftPoints->gift_gems ?? 0,
-            'player_id' => $newPlayer->id
         ]);
 
 
@@ -164,10 +163,11 @@ class PlayerController extends Controller
         if ($giftCharacters->isNotEmpty() && !$giftCharacters->contains('gift_character_index', -1)) {
             
             foreach ($giftCharacters as $giftCharacter) {
-                $newPlayerCharacter = new PlayerCharacter();
-                $newPlayerCharacter->character_index = $giftCharacter->gift_character_index;
-                $newPlayerCharacter->player_id = $newPlayer->id;
-                $newPlayerCharacter->save();
+
+                $newPlayerCharacter = $newPlayer->playerCharacters()->create([
+
+                    'character_index' => $giftCharacter->gift_character_index,
+                ]);
             }
         } 
 
@@ -178,10 +178,11 @@ class PlayerController extends Controller
         if ($giftAnimations->isNotEmpty() && !$giftAnimations->contains('gift_animation_index', -1)) {
 
             foreach ($giftAnimations as $giftAnimation) {
-                $newPlayerAnimation = new PlayerAnimation();
-                $newPlayerAnimation->animation_index = $giftAnimation->gift_animation_index;
-                $newPlayerAnimation->player_id = $newPlayer->id;
-                $newPlayerAnimation->save();
+
+                $newPlayerAnimation = $newPlayer->playerAnimations()->create([
+
+                    'animation_index' => $giftAnimation->gift_animation_index,
+                ]);
             }
         }
 
@@ -192,10 +193,11 @@ class PlayerController extends Controller
         if ($giftParachutes->isNotEmpty() && !$giftParachutes->contains('gift_parachute_index', -1)) { 
 
             foreach ($giftParachutes as $giftParachute) {
-                $newPlayerParachute = new PlayerParachute();
-                $newPlayerParachute->parachute_index = $giftParachute->gift_parachute_index;
-                $newPlayerParachute->player_id = $newPlayer->id;
-                $newPlayerParachute->save();
+
+                $newPlayerParachute = $newPlayer->playerParachutes()->create([
+
+                    'parachute_index' => $giftParachute->gift_parachute_index,
+                ]);
             }
         }
 
@@ -206,19 +208,19 @@ class PlayerController extends Controller
         if ($giftWeapons->isNotEmpty() && !$giftWeapons->contains('gift_weapon_index', -1)) {
 
             foreach ($giftWeapons as $giftWeapon) {
-                $newPlayerWeapon = new PlayerWeapon();
-                $newPlayerWeapon->weapon_index = $giftWeapon->gift_weapon_index;
-                $newPlayerWeapon->player_id = $newPlayer->id;
-                $newPlayerWeapon->save();
+
+                $newPlayerWeapon = $newPlayer->playerWeapons()->create([
+
+                    'weapon_index' => $giftWeapon->gift_weapon_index,
+                ]);
             }
         }
 
-
         // Creating New Players Login History
-        $newLogin = DailyLoginCheck::firstOrCreate(array('player_id' => $newPlayer->id));
-        $newLogin->player_id = $newPlayer->id;
-        $newLogin->consecutive_days = 1;
-        $newLogin->save();
+        $newLogin = $newPlayer->checkLoginDays()->create([
+
+            'consecutive_days' => 1,
+        ]);
 
 
         return new PlayerResource($newPlayer);
