@@ -405,6 +405,7 @@
             <span class="app-menu__label">Treasure Types </span>
             <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
+
           <ul class="treeview-menu">
 
               <li>
@@ -488,6 +489,33 @@
 
           </ul>
         </li>
+
+
+
+        <li class="treeview">
+          
+          <a class="app-menu__item @if(Request::is('admin/reward-types*')) active @endif" href="#" data-toggle="treeview">
+            <i class="app-menu__icon fa fa-list-alt"></i>
+            <span class="app-menu__label">Reward Types </span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
+          </a>
+          
+          <ul class="treeview-menu">
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_reward_types') active @endif" href="{{route('admin.view_enabled_reward_types')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Reward Types Enabled
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_reward_types') active @endif"  href="{{route('admin.view_disabled_reward_types')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Reward Types Disabled
+                </a>
+              </li>
+          </ul>
+
+        </li>
+
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/api*')) active @endif" href="{{ route('admin.view_api') }}">

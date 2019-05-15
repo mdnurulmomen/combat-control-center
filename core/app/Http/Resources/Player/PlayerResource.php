@@ -20,7 +20,7 @@ class PlayerResource extends JsonResource
     {
 
         return [
-            'playerBasicInfo'=>new PlayerUserDetails($this->user),
+            'playerBasicInfo'=> new PlayerUserDetails($this->user),
             
             'playerAdvanceInfo'=>new PlayerSelectionDetails($this),
 
@@ -34,7 +34,7 @@ class PlayerResource extends JsonResource
 
             'messages'=>new MessageCollection($this->allMessages()),
 
-            // 'consequentLoginDays'=>$this->checkLoginDays->consecutive_days
+            'consequentLoginInfo'=>new PlayerDailyLoginResource($this),
         ];
     }
 }
