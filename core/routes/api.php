@@ -8,7 +8,7 @@ Route::middleware(['api', 'cors'])->group(function (){
 
     Route::post('user', 'Api\PlayerController@checkPlayerExist')->name('api.user_create');
 
-    Route::get('player/{playerId}', 'Api\PlayerController@showPlayerDetails')->name('api.player_view');   
+    Route::get('player/{playerId}/view', 'Api\PlayerController@showPlayerDetails')->name('api.player_view'); 
     Route::post('player/view', 'Api\PlayerController@showPlayerDetails')->name('api.player_view_2');
 
     Route::post('player', 'Api\PlayerController@editUserInfo')->name('api.player_update');
