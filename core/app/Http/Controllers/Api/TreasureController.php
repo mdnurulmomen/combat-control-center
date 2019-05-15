@@ -42,8 +42,16 @@ class TreasureController extends Controller
         return ['giftTreasure'=>'false'];
     }
 
-    public function playerTreasureList(Request $request)
+    public function playerTreasureList(RequestWithToken $postman)
     {
+        $payload = $this->retrieveToken($postman);
+
+        if (is_null($payload)) {
+            return response()->json(['error'=>'Invalid token'], 422);
+        }
+
+        $request = new Request($payload);
+        
         $request->validate([
             'userId'=>'required'
         ]);
