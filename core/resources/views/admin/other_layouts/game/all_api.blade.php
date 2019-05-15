@@ -59,10 +59,10 @@
 
                                 <tr class="info">
                                     <th scope="row">3</th>
-                                    <td>player/{playerId}</td>
+                                    <td>player/view</td>
                                     <td>Player Details</td>
-                                    <td>Get</td>
-                                    <td>None</td>
+                                    <td>Post</td>
+                                    <td>userId (Required)</td>
                                 </tr>
 
                                 <tr class="info">

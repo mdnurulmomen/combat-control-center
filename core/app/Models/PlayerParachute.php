@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlayerParachute extends Model
 {
+    protected $guarded = ['id'];
     public $timestamps  = false;
 }
