@@ -11,9 +11,9 @@
                 </div>
 
                 <div class="col-6">
-                    <button type="button" class="btn btn-info float-right mr-3 ml-3" data-toggle="modal" data-target="#addReward">
-                        New Rewards
-                    </button>
+                    <a type="button" class="btn btn-info float-right mr-3 ml-3" href="{{route('admin.view_enabled_login_rewards')}}">
+                        Enabled Rewards
+                    </a>
                 </div>
 
             </div>
@@ -50,17 +50,15 @@
                                 <td>{{ $loginReward->rewardType->reward_type_name }}</td>
                                 <td>{{ $loginReward->amount }}</td>
                                 <td>
-
-                                    <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoRewardType{{$loginReward->id}}" title="Undo">
+                                    <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoDailyReward{{$loginReward->id}}" title="Delete">
                                         <i class="fa fa-fw fa-undo" style="transform: scale(1.5);"></i>
-                                    </button>
-                                        
+                                    </button>      
                                 </td>
                             </tr>
 
                         
                         <!-- Delete Modal -->                       
-                        <div class="modal fade" id="deleteDailyReward{{$loginReward->id}}" role="dialog">
+                        <div class="modal fade" id="undoDailyReward{{$loginReward->id}}" role="dialog">
                             <div class="modal-dialog">
 
                                 <!-- Modal content-->
@@ -69,9 +67,11 @@
                                         <h4 class="modal-title">Confirmation</h4>
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
-                                    <form method="POST" action="{{ route('admin.delete_login_rewards', $loginReward->id) }}">
-                                        @method('DELETE')
+                                    <form method="POST" action="{{ route('admin.restore_login_rewards', $loginReward->id) }}">
+
+                                        @method('PATCH')
                                         @csrf
+
                                         <div class="modal-body">
                                             <p>Are You Sure ??</p>
                                         </div>

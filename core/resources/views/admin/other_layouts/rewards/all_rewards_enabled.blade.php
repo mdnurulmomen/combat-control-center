@@ -10,8 +10,13 @@
                     <h3 class="float-left">Enabled Daily Login Rewards List </h3>
                 </div>
 
+                    
                 <div class="col-6">
-                    <button type="button" class="btn btn-info float-right mr-3 ml-3" data-toggle="modal" data-target="#addReward">
+                    <a type="button" class="btn btn-info float-right ml-1" href="{{route('admin.view_disabled_login_rewards')}}">
+                        Disabled Rewards
+                    </a>
+
+                    <button type="button" class="btn btn-info float-right mr-1" data-toggle="modal" data-target="#addReward">
                         New Rewards
                     </button>
                 </div>
@@ -47,7 +52,7 @@
                             <tr>
                                 <td>{{ $loginReward->id }}</td>
                                 <td>{{ $loginReward->name }}</td>
-                                <td>{{ $loginReward->rewardType->name }}</td>
+                                <td>{{ $loginReward->rewardType->reward_type_name }}</td>
                                 <td>{{ $loginReward->amount }}</td>
                                 <td>
 
@@ -73,7 +78,7 @@
                                         <h4 class="modal-title">Confirmation</h4>
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
-                                    <form method="POST" action="{{ route('admin.delete_reward_type', $loginReward->id) }}">
+                                    <form method="POST" action="{{ route('admin.delete_login_rewards', $loginReward->id) }}">
                                         @method('DELETE')
                                         @csrf
                                         <div class="modal-body">
@@ -103,16 +108,57 @@
 
                                     <div class="modal-body">
                                         
-                                        <form method="post" action= "{{ route('admin.submit_updated_login_rewards', $rewardType->id) }}" enctype="multipart/form-data">
+                                        <form method="post" action= "{{ route('admin.submit_updated_login_rewards', $loginReward->id) }}" enctype="multipart/form-data">
                                             
                                             @csrf
                                             @method('PUT')
 
                                             <div class="form-row">
-                                                <div class="col-md-12 mb-4">
-                                                    <label for="validationServer01">Reward Type Name </label>
+                                                <div class="col-md-6 mb-4">
+                                                    <label for="validationServer01">Reward Type</label>
+
                                                     <div class="input-group">
-                                                        <input step="any" type="text" name="reward_type_name" class="form-control form-control-lg is-invalid"  value="{{ $rewardType->reward_type_name }}" required="true">
+                                                        
+                                                        <select class="form-control form-control-lg is-invalid" name="reward_type" required="true">
+
+                                                            <option disabled="true" selected="true">
+                                                                -- Please Choose Reward Type --
+                                                            </option>
+
+                                                            @foreach(App\Models\RewardType::all() as $rewardType)
+                                                            
+                                                            <option value="{{ $rewardType->id }}" @if($rewardType->id==$loginReward->reward_type_id) selected="true" @endif>
+                                                                {{ $rewardType->reward_type_name }}
+                                                            </option>
+
+                                                            @endforeach
+                                                        
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 mb-4">
+                                                    <label for="validationServer01">Reward Name</label>
+                                                    <div class="input-group">
+                                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-invalid"  value="{{ $loginReward->name }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-4">
+                                                    <label for="validationServer01">Amount</label>
+                                                    
+                                                    <div class="input-group">
+                                                        <input step="1" type="number" name="amount" class="form-control form-control-lg is-invalid"  value="{{ $loginReward->amount }}" required="true">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 mb-4">
+                                                    <label for="validationServer01">Description</label>
+                                                    <div class="input-group">
+                                                        <input step="any" type="text" name="description" class="form-control form-control-lg is-invalid" value="{{ $loginReward->description }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -167,13 +213,30 @@
 
                                     <div class="input-group">
                                         
+                                        <select class="form-control form-control-lg is-invalid" name="reward_type" required="true">
+
+                                            <option disabled="true" selected="true">
+                                                -- Please Choose Reward Type --
+                                            </option>
+
+                                            @foreach(App\Models\RewardType::all() as $rewardType)
+                                            
+                                            <option value="{{ $rewardType->id }}">
+                                                {{ $rewardType->reward_type_name }}
+                                            </option>
+
+                                            @endforeach
+                                            
+                                        
+                                        </select>
+
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServer01">Reward Name</label>
                                     <div class="input-group">
-                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-invalid"  placeholder="Reward Name">
+                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-valid"  placeholder="Reward Name">
                                     </div>
                                 </div>
                             </div>
@@ -183,14 +246,14 @@
                                     <label for="validationServer01">Amount</label>
                                     
                                     <div class="input-group">
-                                        <input step="any" type="text" name="amount" class="form-control form-control-lg is-invalid"  placeholder="Reward Name" required="true">
+                                        <input step="1" type="number" name="amount" class="form-control form-control-lg is-invalid"  placeholder="Reward Name" required="true" min="1">
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServer01">Description</label>
                                     <div class="input-group">
-                                        <input step="any" type="text" name="description" class="form-control form-control-lg is-invalid"  placeholder="Reward Name">
+                                        <input step="any" type="text" name="description" class="form-control form-control-lg is-valid"  placeholder="Reward Description">
                                     </div>
                                 </div>
                             </div>
