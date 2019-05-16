@@ -444,9 +444,11 @@ class PlayerController extends Controller
         $playerStatisticsToUpdate = $playerToUpdate->playerStatistics;
         $playerBoostPacksToUpdate = $playerToUpdate->playerBoostPacks;
 
-        $coins = $request->coinsEarned ?? 0;
-        $gems = $request->gemsEarned ?? 0;
-        $xp_multiplier = $request->xpMultiplierEarned ?? 0;
+        $coins = empty($request->coinsEarned) ? 0 : $request->coinsEarned;
+        $gems = empty($request->gemsEarned) ? 0 : $request->gemsEarned;
+        $xp_multiplier = empty($request->xpMultiplierEarned) ? 0 : $request->xpMultiplierEarned;
+
+        // return $coins.' '.$gems.' '.$xp_multiplier;
 
         $playerStatisticsToUpdate->increment('coins', $coins);
         $playerStatisticsToUpdate->increment('gems', $gems);

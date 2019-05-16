@@ -191,11 +191,23 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
         Route::delete('message/{messageId}', 'Web\MediaController@messageDeleteMethod')->name('admin.delete_message');
 
 
+
+
         Route::get('reward-types/enabled', 'Web\RewardController@showAllEnabledRewardTypes')->name('admin.view_enabled_reward_types');
         Route::get('reward-types/disabled', 'Web\RewardController@showAllDisabledRewardTypes')->name('admin.view_disabled_reward_types');
         Route::post('reward-types', 'Web\RewardController@submitCreateRewardTypeForm')->name('admin.created_reward_type_submit');
         Route::put('reward-types/{rewardTypeId}', 'Web\RewardController@submitRewardTypeEditForm')->name('admin.updated_reward_type_submit');
         Route::delete('reward-types/{rewardTypeId}', 'Web\RewardController@rewardTypeDeleteMethod')->name('admin.delete_reward_type');
         Route::patch('reward-types/{rewardTypeId}', 'Web\RewardController@rewardTypeUndoMethod')->name('admin.undo_reward_type');
+
+
+
+
+        Route::get('daily-login-rewards/enabled', 'Web\RewardController@showAllEnabledDailyLoginRewards')->name('admin.view_enabled_login_rewards');
+        Route::get('daily-login-rewards/disabled', 'Web\RewardController@showAllDisabledDailyLoginRewards')->name('admin.view_disabled_login_rewards');
+        Route::post('daily-login-rewards', 'Web\RewardController@submitDailyLoginRewardCreateForm')->name('admin.submit_created_login_rewards');
+        Route::put('daily-login-rewards/{rewardTypeId}', 'Web\RewardController@submitDailyLoginRewardEditForm')->name('admin.submit_updated_login_rewards');
+        Route::delete('daily-login-rewards/{rewardId}', 'Web\RewardController@deleteDailyLoginReward')->name('admin.delete_login_rewards');
+        Route::patch('daily-login-rewards/{rewardId}', 'Web\RewardController@restoreDailyLoginReward')->name('admin.restore_login_rewards');
     });
 });

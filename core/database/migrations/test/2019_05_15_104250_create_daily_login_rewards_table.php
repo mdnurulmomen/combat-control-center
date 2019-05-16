@@ -21,6 +21,7 @@ class CreateDailyLoginRewardsTable extends Migration
             $table->mediumText('description')->nullable();
             $table->string('reward_type_id');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

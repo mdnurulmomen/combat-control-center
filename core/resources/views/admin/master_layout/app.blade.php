@@ -518,6 +518,31 @@
 
 
         <li class="treeview">
+          
+          <a class="app-menu__item @if(Request::is('admin/daily-login-reward*')) active @endif" href="#" data-toggle="treeview">
+            <i class="app-menu__icon fa fa-list-alt"></i>
+            <span class="app-menu__label">Rewards</span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
+          </a>
+          
+          <ul class="treeview-menu">
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_login_rewards') active @endif" href="{{route('admin.view_enabled_login_rewards')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Rewards Enabled
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_login_rewards') active @endif"  href="{{route('admin.view_disabled_login_rewards')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Rewards Disabled
+                </a>
+              </li>
+          </ul>
+
+        </li>
+
+
+        <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/api*')) active @endif" href="{{ route('admin.view_api') }}">
             <i class="app-menu__icon fa fa-exchange"></i>
             <span class="app-menu__label">API List</span>
