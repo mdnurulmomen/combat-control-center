@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Player;
 
+use App\Models\DailyLoginReward;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PlayerDailyLoginResource extends JsonResource
@@ -20,7 +21,7 @@ class PlayerDailyLoginResource extends JsonResource
 
             'consecutiveLogin'=> $this->checkLoginDays->consecutive_days,
 
-            // 'rewards' => DailyLoginRewardsCollection()
+            'rewards' => new DailyLoginRewardsCollection(DailyLoginReward::orderBy("id", "ASC")->take($this->checkLoginDays->consecutive_days * 7)->get()->slice( ($this->checkLoginDays->consecutive_days - 1) *7 ))              
         ];
     }
 }
