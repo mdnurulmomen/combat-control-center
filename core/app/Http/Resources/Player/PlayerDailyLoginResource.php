@@ -19,9 +19,11 @@ class PlayerDailyLoginResource extends JsonResource
 
         return [
 
-            'consecutiveLogin'=> $this->checkLoginDays->consecutive_days,
+            'consecutiveLogin' => $this->checkLoginDays->consecutive_days,
 
-            'rewards' => new DailyLoginRewardsCollection(DailyLoginReward::orderBy("id", "ASC")->take($this->checkLoginDays->consecutive_days * 7)->get()->slice( ($this->checkLoginDays->consecutive_days - 1) *7 ))              
+            'lastLoginDateAndTime' => $this->checkLoginDays->created_at,
+
+            'rewardList' => DailyLoginRewards::collection(DailyLoginReward::with('rewardType')->orderBy("id", "ASC")->take($this->checkLoginDays->consecutive_days * 7)->get()->slice( ($this->checkLoginDays->consecutive_days - 1) * 7 ))              
         ];
     }
 }

@@ -34,7 +34,7 @@ class PlayerResource extends JsonResource
 
             'messages'=>new MessageCollection($this->allMessages()),
 
-            'consequentLoginInfo'=>new PlayerDailyLoginResource($this),
+            'dailyLoginReward'=>new PlayerDailyLoginResource($this),
         ];
     }
 }

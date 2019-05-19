@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Player;
@@ -220,6 +219,8 @@ class PlayerController extends Controller
         $newLogin = $newPlayer->checkLoginDays()->create([
 
             'consecutive_days' => 1,
+            'created_at' => Carbon::now(), 
+            'updated_at' => Carbon::now()
         ]);
 
 
@@ -235,23 +236,40 @@ class PlayerController extends Controller
 
         if (is_null($playerLogin) || empty($playerLogin)) {
             
-            DailyLoginCheck::create(['player_id' => $playerId, 'consecutive_days' => 1]);
+            DailyLoginCheck::create([
+                'player_id' => $playerId, 
+                'consecutive_days' => 1, 
+                'created_at' => Carbon::now(), 
+                'updated_at' => Carbon::now()
+            ]);
         }
 
         else{
 
-            $previousLoginDate = new Carbon($playerLogin->updated_at);
-            $currentDate = Carbon::now();
+            // $previousLoginDate = new Carbon($playerLogin->updated_at);
+            // $currentDate = Carbon::now();
+            // $difference = $previousLoginDate->diff($currentDate)->days;
 
-            $difference = $previousLoginDate->diff($currentDate)->days;
+            $date = Carbon::parse($playerLogin->updated_at);
+            $now = Carbon::now();
+            $difference = $date->diffInDays($now);
             
-            if($difference > 0 && $difference < 2){
+            if ($difference == 0 ) {
+
+                $playerLogin->update(['created_at' => $playerLogin->updated_at, 'updated_at' => Carbon::now()]);
+            }
+
+            elseif($difference > 0 && $difference < 2){
+                
                 $playerLogin->increment('consecutive_days');
+                $playerLogin->update(['created_at' => $playerLogin->updated_at, 'updated_at' => Carbon::now()]);
             }
 
             elseif($difference > 1){
-                $playerLogin->update(['consecutive_days' => 1]);
-                $playerLogin->touch();              // To Update updated_at            
+                
+                $playerLogin->update(['consecutive_days' => 1, 'created_at' => $playerLogin->updated_at, 'updated_at' => Carbon::now()]);
+                
+                // $playerLogin->touch();              // To Update updated_at            
             }
             
         }
