@@ -392,6 +392,55 @@
         </li>
 
         <li class="treeview">
+          
+          <a class="app-menu__item @if(Request::is('admin/reward-types*')) active @endif" href="#" data-toggle="treeview">
+            <i class="app-menu__icon fa fa-object-group"></i>
+            <span class="app-menu__label">Reward Types </span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
+          </a>
+          
+          <ul class="treeview-menu">
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_reward_types') active @endif" href="{{route('admin.view_enabled_reward_types')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Reward Types Enabled
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_reward_types') active @endif"  href="{{route('admin.view_disabled_reward_types')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Reward Types Disabled
+                </a>
+              </li>
+          </ul>
+
+        </li>
+
+
+        <li class="treeview">
+          
+          <a class="app-menu__item @if(Request::is('admin/daily-login-reward*')) active @endif" href="#" data-toggle="treeview">
+            <i class="app-menu__icon fa fa-trophy"></i>
+            <span class="app-menu__label">Rewards</span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
+          </a>
+          
+          <ul class="treeview-menu">
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_login_rewards') active @endif" href="{{route('admin.view_enabled_login_rewards')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Rewards Enabled
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_login_rewards') active @endif"  href="{{route('admin.view_disabled_login_rewards')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Rewards Disabled
+                </a>
+              </li>
+          </ul>
+
+        </li>
+
+        <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/store*')) active @endif" href="{{ route('admin.create_store') }}">
             <i class="app-menu__icon fa fa-indent"></i>
             <span class="app-menu__label">Store</span>
@@ -431,8 +480,8 @@
             <span class="app-menu__label">Treasure</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-          <ul class="treeview-menu">
 
+          <ul class="treeview-menu">
               <li>
                 <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_treasures') active @endif"  href="{{route('admin.view_enabled_treasures')}}" rel="noopener">
                   <i class="icon fa fa-circle-o"></i> Treasures Enabled
@@ -462,10 +511,10 @@
                   <i class="icon fa fa-circle-o"></i> Treasure Requests
                 </a>
               </li>
-
           </ul>
-
         </li>
+
+
 
         <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/weapon*')) active @endif" href="#" data-toggle="treeview">
@@ -488,57 +537,6 @@
             </li>
 
           </ul>
-        </li>
-
-
-
-        <li class="treeview">
-          
-          <a class="app-menu__item @if(Request::is('admin/reward-types*')) active @endif" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-list-alt"></i>
-            <span class="app-menu__label">Reward Types </span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
-          </a>
-          
-          <ul class="treeview-menu">
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_reward_types') active @endif" href="{{route('admin.view_enabled_reward_types')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Reward Types Enabled
-                </a>
-              </li>
-
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_reward_types') active @endif"  href="{{route('admin.view_disabled_reward_types')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Reward Types Disabled
-                </a>
-              </li>
-          </ul>
-
-        </li>
-
-
-        <li class="treeview">
-          
-          <a class="app-menu__item @if(Request::is('admin/daily-login-reward*')) active @endif" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-list-alt"></i>
-            <span class="app-menu__label">Rewards</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
-          </a>
-          
-          <ul class="treeview-menu">
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_login_rewards') active @endif" href="{{route('admin.view_enabled_login_rewards')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Rewards Enabled
-                </a>
-              </li>
-
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_login_rewards') active @endif"  href="{{route('admin.view_disabled_login_rewards')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Rewards Disabled
-                </a>
-              </li>
-          </ul>
-
         </li>
 
 
