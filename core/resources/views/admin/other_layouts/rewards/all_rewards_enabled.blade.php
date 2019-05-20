@@ -48,9 +48,9 @@
                             </tr>
                         @endif
 
-                        @foreach($allLoginRewards as $loginReward)
+                        @foreach($allLoginRewards as $key => $loginReward)
                             <tr>
-                                <td>{{ $loginReward->id }}</td>
+                                <td>{{ $key+1 }}</td>
                                 <td>{{ $loginReward->name }}</td>
                                 <td>{{ $loginReward->rewardType->reward_type_name }}</td>
                                 <td>{{ $loginReward->amount }}</td>
