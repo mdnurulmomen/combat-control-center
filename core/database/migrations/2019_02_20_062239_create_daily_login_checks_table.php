@@ -18,6 +18,7 @@ class CreateDailyLoginChecksTable extends Migration
 
             $table->bigInteger('player_id');
             $table->bigInteger('consecutive_days')->default(1);
+            $table->integer('reward_status')->default(1);
             
             $table->timestamps();
         });

@@ -8,6 +8,7 @@ use App\Models\Player;
 use App\Models\Leader;
 use App\Models\GiftPoint;
 use App\Models\GiftWeapon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PlayerWeapon;
 use App\Models\GiftCharacter;
@@ -20,6 +21,7 @@ use App\Models\PlayerParachute;
 use App\Models\PlayerBoostPack;
 use App\Models\DailyLoginCheck;
 use App\Models\PlayerStatistic;
+use App\Models\DailyLoginReward;
 use App\Http\Traits\RetrieveToken;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UserRequest;
@@ -238,7 +240,8 @@ class PlayerController extends Controller
             
             DailyLoginCheck::create([
                 'player_id' => $playerId, 
-                'consecutive_days' => 1, 
+                'consecutive_days' => 1,
+                'reward_status' => 1,
                 'created_at' => Carbon::now(), 
                 'updated_at' => Carbon::now()
             ]);
@@ -256,18 +259,32 @@ class PlayerController extends Controller
             
             if ($difference == 0 ) {
 
-                $playerLogin->update(['created_at' => $playerLogin->updated_at, 'updated_at' => Carbon::now()]);
+                $playerLogin->update([
+                    'created_at' => $playerLogin->updated_at, 
+                    'updated_at' => Carbon::now()
+                ]);
             }
 
             elseif($difference > 0 && $difference < 2){
                 
                 $playerLogin->increment('consecutive_days');
-                $playerLogin->update(['created_at' => $playerLogin->updated_at, 'updated_at' => Carbon::now()]);
+
+                $playerLogin->update([
+                    // 'consecutive_days' => 1,             
+                    'reward_status' => 1,
+                    'created_at' => $playerLogin->updated_at, 
+                    'updated_at' => Carbon::now()
+                ]);
             }
 
             elseif($difference > 1){
                 
-                $playerLogin->update(['consecutive_days' => 1, 'created_at' => $playerLogin->updated_at, 'updated_at' => Carbon::now()]);
+                $playerLogin->update([
+                    'consecutive_days' => 1,
+                    'reward_status' => 1,
+                    'created_at' => $playerLogin->updated_at, 
+                    'updated_at' => Carbon::now()
+                ]);
                 
                 // $playerLogin->touch();              // To Update updated_at            
             }
@@ -301,7 +318,62 @@ class PlayerController extends Controller
 
         $this->consecutiveLoginDays($playerToShow->id);
         
+        $this->rewardDailyLoginPrize($playerToShow->checkLoginDays);
+
         return new PlayerResource($playerToShow);
+    }
+
+    public function rewardDailyLoginPrize(DailyLoginCheck $dailyLoginCheck)
+    {
+        if ($dailyLoginCheck->reward_status) {
+            
+            $prizeToReward = DailyLoginReward::with('rewardType')->get()->get($dailyLoginCheck->consecutive_days-1);
+
+            
+            if ($prizeToReward) {
+
+                $playerStatisticToUpdate = Player::find($dailyLoginCheck->player_id)->playerStatistics;
+                
+                $playerBoostPackToUpdate = Player::find($dailyLoginCheck->player_id)->playerBoostPacks; 
+                
+                if (Str::is('*oin', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerStatisticToUpdate->increment('coins', $prizeToReward->amount);
+                    $dailyLoginCheck->update(['reward_status' => 0]);
+                }
+
+                elseif (Str::is('*em', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerStatisticToUpdate->increment('gems', $prizeToReward->amount);
+                    $dailyLoginCheck->update(['reward_status' => 0]);
+                }
+
+                elseif (Str::is('*peed*', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerBoostPackToUpdate->increment('speed_boost', $prizeToReward->amount);
+                    $dailyLoginCheck->update(['reward_status' => 0]);
+                }
+
+                elseif (Str::is('*rmor*', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerBoostPackToUpdate->increment('armor_boost', $prizeToReward->amount);
+                    $dailyLoginCheck->update(['reward_status' => 0]);
+                }
+
+                elseif (Str::is('*mmo*', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerBoostPackToUpdate->increment('ammo_boost', $prizeToReward->amount);
+                    $dailyLoginCheck->update(['reward_status' => 0]);
+                }
+
+                elseif (Str::is('*PBoost', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerBoostPackToUpdate->increment('xp_multiplier', $prizeToReward->amount);
+                    $dailyLoginCheck->update(['reward_status' => 0]);
+                }
+
+            }
+        }
     }
 
     public function editUserInfo(RequestWithToken $postman)

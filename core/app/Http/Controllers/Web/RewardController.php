@@ -11,13 +11,13 @@ class RewardController extends Controller
 {
    	public function showAllEnabledRewardTypes()
     {
-        $rewardTypes = RewardType::paginate(6);
+        $rewardTypes = RewardType::paginate(7);
         return view('admin.other_layouts.rewards.all_reward_types_enabled', compact('rewardTypes'));
     }
 
     public function showAllDisabledRewardTypes()
     {
-        $rewardTypes = RewardType::onlyTrashed()->paginate(6);
+        $rewardTypes = RewardType::onlyTrashed()->paginate(7);
         return view('admin.other_layouts.rewards.all_reward_types_disabled', compact('rewardTypes'));
     }
 
@@ -70,13 +70,13 @@ class RewardController extends Controller
 
     public function showAllEnabledDailyLoginRewards()
     {
-        $allLoginRewards = DailyLoginReward::with('rewardType')->paginate(6);
+        $allLoginRewards = DailyLoginReward::with('rewardType')->paginate(7);
         return view('admin.other_layouts.rewards.all_rewards_enabled', compact('allLoginRewards'));
     }
 
     public function showAllDisabledDailyLoginRewards()
     {
-        $allLoginRewards = DailyLoginReward::onlyTrashed()->paginate(6);
+        $allLoginRewards = DailyLoginReward::onlyTrashed()->paginate(7);
         return view('admin.other_layouts.rewards.all_rewards_disabled', compact('allLoginRewards'));
     }
 
