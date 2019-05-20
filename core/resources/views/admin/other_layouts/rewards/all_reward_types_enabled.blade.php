@@ -43,7 +43,7 @@
 
                         @foreach($rewardTypes as $key => $rewardType)
                             <tr>
-                                <td>{{ $key+1 }}</td>
+                                <td>{{ $rewardType->id }}</td>
                                 <td>{{ $rewardType->reward_type_name }}</td>
                                 <td>
 

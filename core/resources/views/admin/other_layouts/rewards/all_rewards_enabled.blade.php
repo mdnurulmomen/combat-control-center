@@ -50,7 +50,7 @@
 
                         @foreach($allLoginRewards as $key => $loginReward)
                             <tr>
-                                <td>{{ $key+1 }}</td>
+                                <td>{{ $loginReward->id }}</td>
                                 <td>{{ $loginReward->name }}</td>
                                 <td>{{ $loginReward->rewardType->reward_type_name }}</td>
                                 <td>{{ $loginReward->amount }}</td>
