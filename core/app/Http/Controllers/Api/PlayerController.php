@@ -253,10 +253,11 @@ class PlayerController extends Controller
             // $currentDate = Carbon::now();
             // $difference = $previousLoginDate->diff($currentDate)->days;
 
-            $date = Carbon::parse($playerLogin->updated_at);
-            $now = Carbon::now();
+            $date = Carbon::parse($playerLogin->updated_at->format('d-m-Y'));
+            $now = Carbon::now()->format('d-m-Y');
             $difference = $date->diffInDays($now);
             
+            /*
             if ($difference == 0 ) {
 
                 $playerLogin->update([
@@ -264,8 +265,9 @@ class PlayerController extends Controller
                     'updated_at' => Carbon::now()
                 ]);
             }
+            */
 
-            elseif($difference > 0 && $difference < 2){
+            if($difference > 0 && $difference < 2){
                 
                 $playerLogin->increment('consecutive_days');
 
@@ -286,7 +288,7 @@ class PlayerController extends Controller
                     'updated_at' => Carbon::now()
                 ]);
                 
-                // $playerLogin->touch();              // To Update updated_at            
+                // $playerLogin->touch();          // To Update updated_at            
             }
             
         }

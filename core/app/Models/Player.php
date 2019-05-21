@@ -15,7 +15,21 @@ class Player extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function checkLoginDays(){
+    public function dailyLoginReward()
+    {
+        $consecutiveLoginDays = $this->checkLoginDays->consecutive_days;
+        $numberOfWeeks = (int) ($consecutiveLoginDays / 7) ;
+
+        if ($consecutiveLoginDays % 7 == 0 ) 
+            
+            return $numberOfWeeks;
+
+        else 
+            return $numberOfWeeks + 1;
+    }
+
+    public function checkLoginDays()
+    {
         return $this->hasOne('App\Models\DailyLoginCheck');
     }
 
