@@ -26,7 +26,7 @@
                     <div class="form-group form-row mb-4">
 
                         <div class="col-md-12">
-                            <label for="validationServer01">Game Rate (Per Game)</label>
+                            <label for="validationServer01">Game Rate <span class="text-danger">(Gems Per Game)</span></label>
                             <input type="number" name="rate" class="form-control form-control-lg is-valid" value="{{ $settingsGame->game_rate ?? 'No Rate is Defined' }}" step="any" required>
                         </div>
 
