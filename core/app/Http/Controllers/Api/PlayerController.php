@@ -70,9 +70,9 @@ class PlayerController extends Controller
             if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
 
                 return redirect()->route('api.player_view', $userExist->player->id);
-                // return redirect()->route('api.player_view')->with('userId', $userExist->player->id);
             }
             else{
+
                 return $this->createPlayerMethod($request);
             }
         }
@@ -82,7 +82,6 @@ class PlayerController extends Controller
             if ($userExist = User::where('facebook_id', $request->facebookId)->first()) {
 
                 return redirect()->route('api.player_view', $userExist->player->id);
-                // return redirect()->route('api.player_view')->with('userId', $userExist->player->id);
             }
 
             else if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
@@ -192,7 +191,6 @@ class PlayerController extends Controller
         $giftParachutes = GiftParachute::all();
 
         if ($giftParachutes->isNotEmpty() && !$giftParachutes->contains('gift_parachute_index', -1)) { 
-
             foreach ($giftParachutes as $giftParachute) {
 
                 $newPlayerParachute = $newPlayer->playerParachutes()->create([
@@ -217,12 +215,13 @@ class PlayerController extends Controller
             }
         }
 
-        // Creating New Players Login History
+        // Creating New Players Consecutive Daily Login History
         $newLogin = $newPlayer->checkLoginDays()->create([
 
             'consecutive_days' => 1,
-            'created_at' => Carbon::now(), 
-            'updated_at' => Carbon::now()
+            'reward_status' => 1,
+            'created_at' => now(), 
+            'updated_at' => now()
         ]);
 
 
@@ -230,7 +229,7 @@ class PlayerController extends Controller
     }
     
 
-    // Creating Players Login Data
+    // Creating Players Daily Login Data
 
     public function consecutiveLoginDays($playerId)
     {
@@ -242,37 +241,29 @@ class PlayerController extends Controller
                 'player_id' => $playerId, 
                 'consecutive_days' => 1,
                 'reward_status' => 1,
-                'created_at' => Carbon::now(), 
-                'updated_at' => Carbon::now()
+                'created_at' => now(), 
+                'updated_at' => now()
             ]);
         }
 
-        else{
-
-            // $previousLoginDate = new Carbon($playerLogin->updated_at);
-            // $currentDate = Carbon::now();
-            // $difference = $previousLoginDate->diff($currentDate)->days;
+        else {
 
             $date = Carbon::parse($playerLogin->updated_at->format('d-m-Y'));
             $now = Carbon::now()->format('d-m-Y');
             $difference = $date->diffInDays($now);
-            
-            /*
-            if ($difference == 0 ) {
+
+            if($difference == 0){
 
                 $playerLogin->update([
-                    'created_at' => $playerLogin->updated_at, 
-                    'updated_at' => Carbon::now()
+
+                    'created_at' => null
                 ]);
             }
-            */
 
-            if($difference > 0 && $difference < 2){
-                
-                $playerLogin->increment('consecutive_days');
+            elseif($difference > 0 && $difference < 2){
 
                 $playerLogin->update([
-                    // 'consecutive_days' => 1,             
+                    'consecutive_days' => $playerLogin->consecutive_days + 1,             
                     'reward_status' => 1,
                     'created_at' => $playerLogin->updated_at, 
                     'updated_at' => Carbon::now()
@@ -287,8 +278,7 @@ class PlayerController extends Controller
                     'created_at' => $playerLogin->updated_at, 
                     'updated_at' => Carbon::now()
                 ]);
-                
-                // $playerLogin->touch();          // To Update updated_at            
+
             }
             
         }
@@ -405,8 +395,6 @@ class PlayerController extends Controller
         $request_2 = array_filter($request_2, function($value) {
             return ($value !== null && $value !== false); 
         });
-
-        // $userToUpdate = User::find(Auth::guard('api')->user()->id);
 
         $userToUpdate = User::find($request->userId);
 
@@ -539,8 +527,6 @@ class PlayerController extends Controller
         $coins = empty($request->coinsEarned) ? 0 : $request->coinsEarned;
         $gems = empty($request->gemsEarned) ? 0 : $request->gemsEarned;
         $xp_multiplier = empty($request->xpMultiplierEarned) ? 0 : $request->xpMultiplierEarned;
-
-        // return $coins.' '.$gems.' '.$xp_multiplier;
 
         $playerStatisticsToUpdate->increment('coins', $coins);
         $playerStatisticsToUpdate->increment('gems', $gems);
