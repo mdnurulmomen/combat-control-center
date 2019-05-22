@@ -9,8 +9,8 @@ trait RetrieveToken
 {
 	public function retrieveToken($request)
     {
-        // dd(JWTAuth::parseToken()->check());              // Check Token coming with request
-
+        // Check Token coming with request
+        
         if (JWTAuth::parseToken()->check()) {
 
             return JWTAuth::getPayload(JWTAuth::setToken($request->token))->get();
