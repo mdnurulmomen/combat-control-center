@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Player;
 use App\Models\Earning;
 use App\Models\Treasure;
@@ -18,8 +18,8 @@ use App\Models\PlayerStatistic;
 use App\Http\Traits\RetrieveToken;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
-use App\Http\Traits\DefinePlayerLevel;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\DefinePlayerLevel;
 use App\Http\Requests\RequestWithToken;
 use App\Http\Resources\Game\GameResource;
 use App\Http\Resources\Player\MatchResource;
@@ -143,17 +143,18 @@ class GameController extends Controller
 
         if (Str::is('*olo', $request->matchType)) {
 			
+            $matchRate = GameSetting::first()->game_rate ?? 0;
+            $lastEarning = Earning::orderBy('total_earning', 'DESC')->first();       // Last Earning
 			$playerStatistics = $player->playerStatistics;
 			
-			if($playerStatistics->gems < 2) {
+			if($playerStatistics->gems < $matchRate) {
 				return response()->json(['error'=>'Not sufficient gems'], 400);	
 			}
 			else{
-				$playerStatistics->decrement('gems', 2); 
+				$playerStatistics->decrement('gems', $matchRate); 
 			}
 
-            $matchRate = GameSetting::first()->game_rate ?? 0;
-            $lastEarning = Earning::orderBy('total_earning', 'DESC')->first();
+            
 
             if (is_null($lastEarning)) {
                 
@@ -167,11 +168,14 @@ class GameController extends Controller
 
             else {
 
-                $lastEarningDate = new Carbon($lastEarning->created_at);
-                $presentDate = Carbon::now();
+                // $lastEarningDate = new Carbon($lastEarning->created_at);
+                // $presentDate = Carbon::now();
+                // $difference = $lastEarningDate->diff($presentDate)->days;
 
-                $difference = $lastEarningDate->diff($presentDate)->days;
-                
+                $lastEarningDate = Carbon::parse($lastEarning->updated_at->format('d-m-Y'));
+                $presentDate = Carbon::now()->format('d-m-Y');
+                $difference = $lastEarningDate->diffInDays($presentDate);
+
                 if ($difference > 0) {
 
                     $newEarning = new Earning();
