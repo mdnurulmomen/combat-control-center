@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class DailyLoginCheck extends Model
 {
     protected $guarded = ['id'];
-    protected $dates = ['created_at', 'updated_at'];
     public $timestamps = false; 
+    protected $dates = ['created_at', 'updated_at'];			// As Timestamps is false
 }
