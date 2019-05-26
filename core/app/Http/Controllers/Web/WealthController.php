@@ -202,7 +202,6 @@ class WealthController extends Controller
         return redirect()->back()->with('success', 'Gems Pack is Deleted');
     }
 
-
     public function gemPackUndoMethod($gemPackId)
     {    
         $gemPackToUndo = GemPack::withTrashed()->find($gemPackId);

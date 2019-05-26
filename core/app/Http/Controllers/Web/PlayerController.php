@@ -34,6 +34,15 @@ class PlayerController extends Controller
 
         Leader::truncate();
 
+        // create leader board
+        $this->buildLeaderBoard($topLeaders);
+
+        $leaders = Leader::paginate(6);
+        return view('admin.other_layouts.players.view_leaderboard', compact('leaders'));
+    }
+
+    public function buildLeaderBoard($topLeaders)
+    {
         foreach($topLeaders as $leader){
             $newLeader = new Leader();
             $newLeader->username = $leader->player->user->username;
@@ -45,9 +54,6 @@ class PlayerController extends Controller
             $newLeader->player_id = $leader->player_id;
             $newLeader->save();
         }
-
-        $leaders = Leader::paginate(6);
-        return view('admin.other_layouts.players.view_leaderboard', compact('leaders'));
     }
 
     public function showAllPlayers()
@@ -139,7 +145,6 @@ class PlayerController extends Controller
 
         // Creating New Players Gift Characters
         $giftCharacters = GiftCharacter::all();
-
         if ($giftCharacters->isNotEmpty() && !$giftCharacters->contains('gift_character_index', -1)) {
             
             foreach ($giftCharacters as $giftCharacter) {
@@ -153,7 +158,6 @@ class PlayerController extends Controller
 
         // Creating New Players Gift Animations
         $giftAnimations = GiftAnimation::all();
-
         if ($giftAnimations->isNotEmpty() && !$giftAnimations->contains('gift_animation_index', -1)) {
 
             foreach ($giftAnimations as $giftAnimation) {
@@ -167,7 +171,6 @@ class PlayerController extends Controller
 
         // Creating New Players Gift Parachutes
         $giftParachutes = GiftParachute::all();
-
         if ($giftParachutes->isNotEmpty() && !$giftParachutes->contains('gift_parachute_index', -1)) { 
 
             foreach ($giftParachutes as $giftParachute) {
@@ -181,7 +184,6 @@ class PlayerController extends Controller
 
         // Creating New Players Gift Weapons
         $giftWeapons = GiftWeapon::all();
-
         if ($giftWeapons->isNotEmpty() && !$giftWeapons->contains('gift_weapon_index', -1)) {
 
             foreach ($giftWeapons as $giftWeapon) {

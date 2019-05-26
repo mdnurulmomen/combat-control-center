@@ -142,7 +142,16 @@ class TreasureController extends Controller
 
 
         // Updating Gift Treasure Cost and Required Earn
+        $this->updateGiftTreasure($treasureToUpdate);
 
+        // Updating PlayerTreasure who Got the Same Treasure
+        $this->updatePlayerGiftTreasure($treasureToUpdate);
+
+        return redirect()->back()->with('success', 'Treasure has been Updated');
+    }
+
+    public function updateGiftTreasure(Treasure $treasureToUpdate)
+    {
         $giftTreasure = GiftTreasure::firstOrFail();
 
         if ($giftTreasure->treasure_id == $treasureToUpdate->id) {
@@ -151,10 +160,10 @@ class TreasureController extends Controller
             $giftTreasure->required_earn = $giftTreasure->treasure_cost * $giftTreasure->required_percentage / 100;
             $giftTreasure->save();
         }
+    }
 
-
-        // Updating PlayerTreasure who Got the Same Treasure
-
+    public function updatePlayerGiftTreasure(Treasure $treasureToUpdate)
+    {
         $allPlayerTreasures = PlayerTreasure::all();
 
         foreach ($allPlayerTreasures as $playerTreasure) {
@@ -168,8 +177,6 @@ class TreasureController extends Controller
 
             }
         }
-
-        return redirect()->back()->with('success', 'Treasure has been Updated');
     }
 
     public function showAllTreasureGifted(Request $request)
