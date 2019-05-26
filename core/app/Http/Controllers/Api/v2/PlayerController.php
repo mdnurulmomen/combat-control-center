@@ -108,6 +108,39 @@ class PlayerController extends Controller
     public function createPlayerMethod($request)
     {
         // Creating New User
+        $newUser = $this->createUser($request);        
+
+        // Creating New Player
+        $newPlayer = $this->createPlayer($newUser, $request);
+
+        // Creating New Players Boost Packs
+        $this->createPlayerBoostPacks($newPlayer);   
+
+        // Creating New Players Statistics
+        $this->createPlayerStatistics($newPlayer);
+
+        // Creating New Players Gift Characters
+        $this->createPlayerGiftCharacters($newPlayer);
+
+        // Creating New Players Gift Animations
+        $this->createPlayerGiftAnimations($newPlayer);
+
+        // Creating New Players Gift Parachutes
+        $this->createPlayerGiftParachutes($newPlayer);
+
+        // Creating New Players Gift Weapons
+        $this->createPlayerGiftWeapons($newPlayer);
+        
+        // Creating New Players Consecutive Daily Login History
+        $this->createDailyLoginDays($newPlayer);
+
+
+        return new PlayerResource($newPlayer);
+    }
+    
+
+    public function createUser($request)
+    {
         $newUser = new User();
         $newUser->username = $request->facebookName ?? $request->userName;
         $newUser->phone = $request->mobileNo ?? '';
@@ -123,20 +156,24 @@ class PlayerController extends Controller
         empty($request->facebookId) ? $newUser->login_type = 'false' : $newUser->login_type = 'true';
         $newUser->save();
 
+        return $newUser;
+    }
 
-        // Creating New Player
-        $newPlayer = $newUser->player()->create([
+    public function createPlayer(User $newUser, $request)
+    {
+        return $newUser->player()->create([
             'selected_parachute' => $request->selectedParachute ?? 0,
             'selected_character' => $request->selectedCharacter ?? 0,
             'selected_animation' => $request->selectedAnimation ?? 0,
             'selected_weapon' => $request->selectedWeapon ?? 0,
         ]);
+    }
 
-
-        // Creating New Players Boost Packs
+    public function createPlayerBoostPacks(Player $newPlayer)
+    {
         $giftBoostPack = GiftBoostPack::first();
-        
-        $newPlayerBoostPack = $newPlayer->playerBoostPacks()->create([
+
+        $newPlayer->playerBoostPacks()->create([
             'melee_boost' => $giftBoostPack->gift_melee_boost ?? 0,
             'light_boost' => $giftBoostPack->gift_light_boost ?? 0,
             'heavy_boost' => $giftBoostPack->gift_heavy_boost ?? 0,
@@ -146,18 +183,20 @@ class PlayerController extends Controller
             'armor_boost' => $giftBoostPack->gift_armor_boost ?? 0,
             'xp_multiplier' => $giftBoostPack->gift_multiplier_boost ?? 0,
         ]);
-          
+    }
 
-        // Creating New Players Statistics
+    public function createPlayerStatistics(Player $newPlayer)
+    {
         $giftPoints = GiftPoint::first();
 
-        $newPlayerStatistic = $newPlayer->playerStatistics()->create([
+        $newPlayer->playerStatistics()->create([
             'coins' => $giftPoints->gift_coins ?? 0,
             'gems' => $giftPoints->gift_gems ?? 0,
         ]);
+    }
 
-
-        // Creating New Players Gift Characters
+    public function createPlayerGiftCharacters(Player $newPlayer)
+    {
         $giftCharacters = GiftCharacter::all();
 
         if ($giftCharacters->isNotEmpty() && !$giftCharacters->contains('gift_character_index', -1)) {
@@ -169,10 +208,11 @@ class PlayerController extends Controller
                     'character_index' => $giftCharacter->gift_character_index,
                 ]);
             }
-        } 
+        }
+    }
 
-
-        // Creating New Players Gift Animations
+    public function createPlayerGiftAnimations(Player $newPlayer)
+    {
         $giftAnimations = GiftAnimation::all();
 
         if ($giftAnimations->isNotEmpty() && !$giftAnimations->contains('gift_animation_index', -1)) {
@@ -185,23 +225,10 @@ class PlayerController extends Controller
                 ]);
             }
         }
+    }
 
-
-        // Creating New Players Gift Parachutes
-        $giftParachutes = GiftParachute::all();
-
-        if ($giftParachutes->isNotEmpty() && !$giftParachutes->contains('gift_parachute_index', -1)) { 
-            foreach ($giftParachutes as $giftParachute) {
-
-                $newPlayerParachute = $newPlayer->playerParachutes()->create([
-
-                    'parachute_index' => $giftParachute->gift_parachute_index,
-                ]);
-            }
-        }
-
-
-        // Creating New Players Gift Weapons
+    public function createPlayerGiftWeapons(Player $newPlayer)
+    {
         $giftWeapons = GiftWeapon::all();
 
         if ($giftWeapons->isNotEmpty() && !$giftWeapons->contains('gift_weapon_index', -1)) {
@@ -214,36 +241,43 @@ class PlayerController extends Controller
                 ]);
             }
         }
+    }
 
-        // Creating New Players Consecutive Daily Login History
-        $newLogin = $newPlayer->checkLoginDays()->create([
+    public function createPlayerGiftParachutes(Player $newPlayer)
+    {
+        $giftParachutes = GiftParachute::all();
+
+        if ($giftParachutes->isNotEmpty() && !$giftParachutes->contains('gift_parachute_index', -1)) { 
+            foreach ($giftParachutes as $giftParachute) {
+
+                $newPlayerParachute = $newPlayer->playerParachutes()->create([
+
+                    'parachute_index' => $giftParachute->gift_parachute_index,
+                ]);
+            }
+        }
+    }
+
+    public function createDailyLoginDays(Player $newPlayer)
+    {
+        $newPlayer->checkLoginDays()->create([
 
             'consecutive_days' => 1,
             'reward_status' => 1,
             'created_at' => now(), 
             'updated_at' => now()
         ]);
-
-
-        return new PlayerResource($newPlayer);
     }
-    
 
-    // Creating Players Daily Login Data
-
+    // Updating Players Daily Login Data
     public function consecutiveLoginDays($playerId)
     {
         $playerLogin = DailyLoginCheck::where('player_id', $playerId)->first();
 
         if (is_null($playerLogin) || empty($playerLogin)) {
             
-            DailyLoginCheck::create([
-                'player_id' => $playerId, 
-                'consecutive_days' => 1,
-                'reward_status' => 1,
-                'created_at' => now(), 
-                'updated_at' => now()
-            ]);
+            $newPlayer = Player::find($playerId);
+            $this->createDailyLoginDays($newPlayer);
         }
 
         else {
@@ -279,8 +313,7 @@ class PlayerController extends Controller
                     'updated_at' => Carbon::now()
                 ]);
 
-            }
-            
+            }  
         }
     }
 
@@ -485,6 +518,17 @@ class PlayerController extends Controller
 
         Leader::truncate();
 
+        $this->createLeadershipBoard($topLeaders);
+
+        $leaders = Leader::take(20)->get();
+        $myPossition = Player::find($request->userId)->playerLeadershipPosition ?? null;
+
+
+        return ['topLeaders' => LeaderResource::collection($leaders), 'myPossition'=> new MyLeaderResource($myPossition)];
+    }
+
+    public function createLeadershipBoard($topLeaders)
+    {
         foreach($topLeaders as $leader){
             $newLeader = new Leader();
             $newLeader->username = $leader->player->user->username;
@@ -496,14 +540,7 @@ class PlayerController extends Controller
             $newLeader->player_id = $leader->player_id;
             $newLeader->save();
         }
-
-        $leaders = Leader::take(20)->get();
-        $myPossition = Player::find($request->userId)->playerLeadershipPosition;
-
-
-        return ['topLeaders' => LeaderResource::collection($leaders), 'myPossition'=> new MyLeaderResource($myPossition)];
     }
-
 
     public function updateMultipleAssets(RequestWithToken $postman)
     {

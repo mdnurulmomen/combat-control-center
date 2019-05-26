@@ -2,9 +2,8 @@
 
 namespace App\Http\Resources\v1\Player;
 
-use App\Http\Resources\Game\NewsResource;
-use App\Http\Resources\Game\MessageResource;
-use App\Http\Resources\Game\MessageCollection;
+use App\Http\Resources\v1\Game\NewsResource;
+use App\Http\Resources\v1\Game\MessageCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PlayerResource extends JsonResource

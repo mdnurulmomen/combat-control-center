@@ -15,14 +15,14 @@ class MyLeaderResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'position'=>$this->id,
-            'name'=>$this->username,
-            'totalKill'=>$this->total_kill,
-            'treasureWon'=>$this->treasure_won,
-            'level'=>$this->level,
-            'profilePic'=>$this->profile_pic,
-            'facebookId'=>$this->user->facebook_id,
-            'location'=>$this->location
+            'position'=>$this->id ?? 'invalid',
+            'name'=>$this->username ?? 'invalid',
+            'totalKill'=>$this->total_kill ?? 0,
+            'treasureWon'=>$this->treasure_won ?? 0,
+            'level'=>$this->level  ?? 0,
+            'profilePic'=>$this->profile_pic ?? 'invalid',
+            'facebookId'=>$this->user->facebook_id ?? 'invalid',
+            'location'=>$this->location ?? 'invalid'
         ];
     }
 }

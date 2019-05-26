@@ -38,6 +38,7 @@ class GameController extends Controller
 
     public function matchStart(RequestWithToken $postman)
     {
+        // Retreiving parameters from Token
         $payload = $this->retrieveToken($postman);
 
         if (is_null($payload)) {
@@ -57,11 +58,28 @@ class GameController extends Controller
             return response()->json(['error'=>'Invalid player'], 422);
         }
 
+        // If Game is Paid Mode 
+        if (Str::is('*olo', $request->matchType)) {
+            
+            $matchRate = GameSetting::first()->game_rate ?? 0;
+            $lastEarning = Earning::orderBy('total_earning', 'DESC')->first();       // Last Day Earning
+            $playerStatistics = $player->playerStatistics;
+            
+            if($playerStatistics->gems < $matchRate) {
+                return response()->json(['error'=>'Not sufficient gems'], 400); 
+            }
+            else{
+                $playerStatistics->decrement('gems', $matchRate); 
+            }            
+
+            // Add earning for solo mode
+            $this->addEarnings($lastEarning, $matchRate);
+        }
+
         $playerBoostPacks = $player->playerBoostPacks;
         $itemToDecrement = array();
 
         if($request->gameBoostItems->meleeBooster > 102) {
-        // if($request->gameBoostItems['meleeBooster'] > 102) {
 
             if($playerBoostPacks->melee_boost > 0)
                 $itemToDecrement[] = 'melee_boost'; 
@@ -70,7 +88,6 @@ class GameController extends Controller
         } 
             
         if($request->gameBoostItems->lightBooster > 0) {
-        // if($request->gameBoostItems['lightBooster'] > -1) {
 
             if($playerBoostPacks->light_boost > 0)
                 $itemToDecrement[] = 'light_boost';
@@ -79,7 +96,6 @@ class GameController extends Controller
         } 
 
         if($request->gameBoostItems->heavyBooster > 0) {
-        // if($request->gameBoostItems['heavyBooster'] > -1) {
 
             if($playerBoostPacks->heavy_boost > 0)
                 $itemToDecrement[] = 'heavy_boost'; 
@@ -88,7 +104,6 @@ class GameController extends Controller
         }
 
         if($request->gameBoostItems->ammoBoost) {
-        // if($request->gameBoostItems['ammoBoost']) {
 
             if($playerBoostPacks->ammo_boost > 0)
                 $itemToDecrement[] = 'ammo_boost';  
@@ -97,7 +112,6 @@ class GameController extends Controller
         }
 
         if($request->gameBoostItems->speedBoost) {
-        // if($request->gameBoostItems['speedBoost']) {
 
             if($playerBoostPacks->speed_boost > 0)
                 $itemToDecrement[] = 'speed_boost'; 
@@ -106,7 +120,6 @@ class GameController extends Controller
         }
 
         if($request->gameBoostItems->armorBoost) {
-        // if($request->gameBoostItems['armorBoost']) {
 
             if($playerBoostPacks->armor_boost > 0)
                 $itemToDecrement[] = 'armor_boost'; 
@@ -115,7 +128,6 @@ class GameController extends Controller
         }
 
         if($request->gameBoostItems->rangeBoost) {
-        // if($request->gameBoostItems['rangeBoost']) {
 
             if($playerBoostPacks->range_boost > 0)
                 $itemToDecrement[] = 'range_boost'; 
@@ -124,7 +136,6 @@ class GameController extends Controller
         }
 
         if($request->gameBoostItems->xpMultiplier) {
-        // if($request->gameBoostItems['xpMultiplier']) {
 
             if($playerBoostPacks->xp_multiplier < 1)
                 return response()->json(['error'=>'Not sufficient xp booster'], 401);
@@ -139,58 +150,7 @@ class GameController extends Controller
                 $playerBoostPacks->decrement($item, 1); 
             } 
         }
-        
 
-        if (Str::is('*olo', $request->matchType)) {
-			
-            $matchRate = GameSetting::first()->game_rate ?? 0;
-            $lastEarning = Earning::orderBy('total_earning', 'DESC')->first();       // Last Earning
-			$playerStatistics = $player->playerStatistics;
-			
-			if($playerStatistics->gems < $matchRate) {
-				return response()->json(['error'=>'Not sufficient gems'], 400);	
-			}
-			else{
-				$playerStatistics->decrement('gems', $matchRate); 
-			}
-
-            
-
-            if (is_null($lastEarning)) {
-                
-                $newEarning = new Earning();
-                $newEarning->current_earning = 0 + $matchRate ?? 0;
-                $newEarning->total_earning =  0 + $matchRate ?? 0;
-                $newEarning->save(); 
-
-                return new MatchResource($player);         
-            }
-
-            else {
-
-                // $lastEarningDate = new Carbon($lastEarning->created_at);
-                // $presentDate = Carbon::now();
-                // $difference = $lastEarningDate->diff($presentDate)->days;
-
-                $lastEarningDate = Carbon::parse($lastEarning->updated_at->format('d-m-Y'));
-                $presentDate = Carbon::now()->format('d-m-Y');
-                $difference = $lastEarningDate->diffInDays($presentDate);
-
-                if ($difference > 0) {
-
-                    $newEarning = new Earning();
-                    $newEarning->current_earning = $lastEarning->current_earning + $matchRate;
-                    $newEarning->total_earning = $lastEarning->total_earning + $matchRate;
-                    $newEarning->save();           
-                }
-
-                else{
-
-                    $lastEarning->increment('current_earning', $matchRate);
-                    $lastEarning->increment('total_earning', $matchRate);
-                }
-            }
-        }
         
         return new MatchResource($player);
     
@@ -208,9 +168,42 @@ class GameController extends Controller
         // ]);
     }
 
+    // Add earning for solo mode
+    public function addEarnings(Earning $lastEarning, $matchRate)
+    {
+        if (is_null($lastEarning)) {
+            
+            $newEarning = new Earning();
+            $newEarning->current_earning = 0 + $matchRate ?? 0;
+            $newEarning->total_earning =  0 + $matchRate ?? 0;
+            $newEarning->save();   
+        }
+
+        else {
+
+            $lastEarningDate = Carbon::parse($lastEarning->updated_at->format('d-m-Y'));
+            $presentDate = Carbon::now()->format('d-m-Y');
+            $difference = $lastEarningDate->diffInDays($presentDate);
+
+            if ($difference > 0) {
+
+                $newEarning = new Earning();
+                $newEarning->current_earning = $lastEarning->current_earning + $matchRate;
+                $newEarning->total_earning = $lastEarning->total_earning + $matchRate;
+                $newEarning->save();           
+            }
+
+            else{
+
+                $lastEarning->increment('current_earning', $matchRate);
+                $lastEarning->increment('total_earning', $matchRate);
+            }
+        }
+    }
 
     public function updateGameOverHistory (RequestWithToken $postman)
     {
+        // Retreiving parameters from Token
         $payload = $this->retrieveToken($postman);
 
         if (is_null($payload)) {
@@ -250,12 +243,7 @@ class GameController extends Controller
         }
 
         // New Game History
-        $newGameHistory = $playerToUpdate->playerHistories()->create([
-            'game_date' => now(),
-            'battle_mode' => $request->battleMode ?? 'free',
-            'play_duration' => $request->matchPlayDuration,
-            'player_rank' => $request->playerRankInCurrentMatch ?? 0
-        ]);
+        $newGameHistory = $this->createNewGameHistory($playerToUpdate, $request);
 
         $playerStatisticToUpdate->increment('coins', $request->coinsGainInCurrentMatch ?? 0);
 
@@ -270,13 +258,47 @@ class GameController extends Controller
         } 
          
         else{
+
             $playerStatisticToUpdate->increment('xp_point', $request->xpGainInCurrentMatch ?? 0);
         }
 
         $playerStatisticToUpdate->increment('battle_played');
         $newGameHistory->player_rank == 1 ? $playerStatisticToUpdate->increment('battle_wins') : 1;
+        $playerStatisticToUpdate->increment('treasure_collected', $request->totalTreasureCollected ?? 0);
+        $playerStatisticToUpdate->increment('opponent_killed', $request->totalOpponentsKilled ?? 0);
+        $playerStatisticToUpdate->increment('monster_killed', $request->totalMonsterKilled ?? 0);
+        $playerStatisticToUpdate->increment('double_killed', $request->totalDoubleKills ?? 0);
+        $playerStatisticToUpdate->increment('triple_killed', $request->totalTripleKills ?? 0);
+        $playerStatisticToUpdate->increment('items_collected', $request->totalItemsCollectedInField ?? 0);
+        $playerStatisticToUpdate->increment('guns_collected', $request->totalGunsCollectedInField ?? 0);
+        $playerStatisticToUpdate->increment('crates_collected', $request->totalCratesCollected ?? 0);
+        $playerStatisticToUpdate->increment('air_drops', $request->totalAirDropsCollected ?? 0);
+        $playerStatisticToUpdate->player_level = $this->definePlayerLevel($playerStatisticToUpdate->xp_point);
+        $playerStatisticToUpdate->player_id = $request->userId;
+        $playerStatisticToUpdate->save();
 
         // If Treasure is Won
+        $this->addPlayerTreasure($request, $playerStatisticToUpdate);
+
+        return [
+            
+            'statistics'=>new StatisticsResource($playerStatisticToUpdate),
+        ];
+    }
+
+    public function createNewGameHistory(Player $playerToUpdate, Request $request)
+    {
+        return $playerToUpdate->playerHistories()->create([
+            'game_date' => now(),
+            'battle_mode' => $request->battleMode ?? 'free',
+            'play_duration' => $request->matchPlayDuration,
+            'player_rank' => $request->playerRankInCurrentMatch ?? 0
+        ]);
+    }
+
+    // If Player Win Treasure after Game Over
+    public function addPlayerTreasure(Request $request, PlayerStatistic $playerStatisticToUpdate)
+    {
         if ($request->totalTreasureWon > 0) {
 
             $giftTreasure = GiftTreasure::first();
@@ -301,28 +323,6 @@ class GameController extends Controller
             $newPlayerTreasure->save();
 
             $playerStatisticToUpdate->increment('treasure_won', $request->totalTreasureWon);
-        }
-
-
-        $playerStatisticToUpdate->increment('treasure_collected', $request->totalTreasureCollected ?? 0);
-        $playerStatisticToUpdate->increment('opponent_killed', $request->totalOpponentsKilled ?? 0);
-        $playerStatisticToUpdate->increment('monster_killed', $request->totalMonsterKilled ?? 0);
-        $playerStatisticToUpdate->increment('double_killed', $request->totalDoubleKills ?? 0);
-        $playerStatisticToUpdate->increment('triple_killed', $request->totalTripleKills ?? 0);
-        $playerStatisticToUpdate->increment('items_collected', $request->totalItemsCollectedInField ?? 0);
-        $playerStatisticToUpdate->increment('guns_collected', $request->totalGunsCollectedInField ?? 0);
-        $playerStatisticToUpdate->increment('crates_collected', $request->totalCratesCollected ?? 0);
-        $playerStatisticToUpdate->increment('air_drops', $request->totalAirDropsCollected ?? 0);
-        $playerStatisticToUpdate->player_level = $this->definePlayerLevel($playerStatisticToUpdate->xp_point);
-        $playerStatisticToUpdate->player_id = $request->userId;
-        $playerStatisticToUpdate->save();
-
-        
-        return [
-            
-            'statistics'=>new StatisticsResource($playerStatisticToUpdate),
-        ];
-
-        // return response()->json(['message'=>'success'], 200);
+        }  
     }
 }

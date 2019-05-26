@@ -125,28 +125,31 @@ class TreasureController extends Controller
             $playerTreasureExist->status = $status;
             $playerTreasureExist->save();
 
-
             // Creating Redeem History
-            $newTreasureRedemption = new TreasureRedemption();
-            $newTreasureRedemption->player_id = $request->userId;
-            $newTreasureRedemption->treasure_id = $request->treasureId;
-            $newTreasureRedemption->exchanging_type = $request->exchangingType;
-            $newTreasureRedemption->player_phone = $request->playerPhone;
-            $newTreasureRedemption->agent_phone = $request->agentPhone;
-
-            if (Str::is('*alk*', $request->exchangingType)) {
-                $newTreasureRedemption->status = 0;
-            }else{
-                $newTreasureRedemption->status = -1;
-            }
-
-            $newTreasureRedemption->equivalent_price = $treasureDetails->equivalent_price;
-            $newTreasureRedemption->save();
-        
-            // Supposed to Send SMS to both Customer & Agent
+            $this->createTreasureRedemptionHistory($request, $treasureDetails);
+            
             return response()->json(['message'=>'success'], 200); 
         }
 
         return response()->json(['error'=>'Treasure does not belong'], 422);
+    }
+
+    public function createTreasureRedemptionHistory(Request $request, Treasure $treasureDetails)
+    {
+        $newTreasureRedemption = new TreasureRedemption();
+        $newTreasureRedemption->player_id = $request->userId;
+        $newTreasureRedemption->treasure_id = $request->treasureId;
+        $newTreasureRedemption->exchanging_type = $request->exchangingType;
+        $newTreasureRedemption->player_phone = $request->playerPhone;
+        $newTreasureRedemption->agent_phone = $request->agentPhone;
+
+        if (Str::is('*alk*', $request->exchangingType)) {
+            $newTreasureRedemption->status = 0;
+        }else{
+            $newTreasureRedemption->status = -1;
+        }
+
+        $newTreasureRedemption->equivalent_price = $treasureDetails->equivalent_price;
+        $newTreasureRedemption->save(); 
     }
 }

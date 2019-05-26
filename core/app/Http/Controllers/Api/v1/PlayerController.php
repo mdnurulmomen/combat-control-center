@@ -205,7 +205,6 @@ class PlayerController extends Controller
         $newLogin->consecutive_days = 1;
         $newLogin->save();
 
-
         return new PlayerResource($newPlayer);
     }
     
@@ -263,8 +262,6 @@ class PlayerController extends Controller
             return ($value !== null && $value !== false); 
         });
 
-        // $userToUpdate = User::find(Auth::guard('api')->user()->id);
-
         $userToUpdate = User::find($request->userId);
 
         if(!is_null($userToUpdate)){
@@ -321,7 +318,7 @@ class PlayerController extends Controller
         }
 
         $leaders = Leader::take(20)->get();
-        $myPossition = Player::find($request->userId)->playerLeadershipPosition;
+        $myPossition = Player::find($request->userId)->playerLeadershipPosition ?? null;
 
 
         return ['topLeaders' => LeaderResource::collection($leaders), 'myPossition'=> new MyLeaderResource($myPossition)];
