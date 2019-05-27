@@ -9,8 +9,10 @@
                 <hr class="mb-4">
 
                 <form method="post" action = "{{ route('admin.settings_game_submit') }}">
+                    
                     @csrf
                     @Method('put')
+
                     <div class="form-group form-row mb-4">
                         <div class="col-md-6">
                             <label for="validationServer01">Game Version (minimum)</label>
@@ -32,12 +34,31 @@
 
 
                     {{--
-
                         <div class="col-md-6 mb-4">
                             <label for="validationServer02">Game Color</label>
                             <input type="text" name="color" value="{{ $color }}" class="form-control form-control-lg is-valid" onkeyup="backgroundColor()">
                         </div>
                             --}}
+                            
+                    </div>
+
+                    <div class="form-group form-row mb-4">
+
+                        <div class="col-md-4">
+                            <label for="validationServer01">Game Maintainance Mode </label>
+
+                            <input type="checkbox" name="maintainance_mode"  id="maintainance_mode" @if($settingsGame->maintainance_mode==1) checked @endif data-toggle="toggle" data-on="Maintainance On" data-off="Maintainance Off" data-onstyle="danger" data-offstyle="success" data-size="large">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="validationServer01"> Maintainance Start Time </label>
+                            <input type="datetime-local" name="maintainance_start_time" value="{{ optional($settingsGame->maintainance_start_time)->format('Y-m-d\TH:i') }}" class="form-control form-control-lg is-valid maintainance_date">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="validationServer01"> Maintainance End Time </label>
+                            <input type="datetime-local" name="maintainance_end_time" value="{{ optional($settingsGame->maintainance_end_time)->format('Y-m-d\TH:i') }}" class="form-control form-control-lg is-valid maintainance_date">  
+                        </div>
                             
                     </div>
                    
@@ -53,12 +74,29 @@
         </div>
     </div>
 
-    <script>
-        /*
-        function backgroundColor () {
-            var inputSelected = document.getElementsByName("color")[0];
-            inputSelected.style.backgroundColor = document.getElementsByName("color")[0].value;
-        }
-        */
-    </script>
 @stop
+    
+
+@push('scripts')
+
+    <script>
+
+        $(function() {
+            $('#maintainance_mode').change(function() {
+                $(this).prop("checked") == true ? enable_date() : disable_date(); 
+                // alert($(this).val());
+            })
+        });
+
+        function enable_date() {
+            $("input.maintainance_date").prop('disabled', false);
+        };
+
+        function disable_date() {
+            $("input.maintainance_date").prop('disabled', true);
+            $("input.maintainance_date").val("0000-00-00T00:00");
+        };
+
+    </script>
+
+@endpush

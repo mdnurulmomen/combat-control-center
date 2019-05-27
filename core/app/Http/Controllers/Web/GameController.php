@@ -18,6 +18,8 @@ class GameController extends Controller
 
     public function submitGameSettingsForm(Request $request)
     {
+        // return $request->maintainance_start_time;
+
         $request->validate([
             'game_version_required'=>'required',
             'rate'=>'required',
@@ -28,7 +30,11 @@ class GameController extends Controller
         $settingsGame->game_version_required = $request->game_version_required;
         $settingsGame->game_version_optional = $request->game_version_optional;
         $settingsGame->game_rate = $request->rate;
-
+        
+        $request->maintainance_mode == 'on' ? $settingsGame->maintainance_mode = 1 : $settingsGame->maintainance_mode = 0;
+        $settingsGame->maintainance_start_time = $request->maintainance_start_time;
+        $settingsGame->maintainance_end_time = $request->maintainance_end_time;
+        
         $settingsGame->save();
 
         return redirect()->back()->with('success', 'Settings are Updated');

@@ -551,74 +551,66 @@
     </aside>
     
     <main class="app-content">  
+        
+      <!-- Modal -->
+      <div class="modal fade" id="modalTreasureGifted" role="dialog">
+          <div class="modal-dialog">
 
-      
+              <!-- Modal content-->
+              <div class="modal-content">
 
+                  <div class="modal-header">
+                      <h4 class="modal-title">Please Set Your Requirements </h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
 
-              <!-- Modal -->
-              
-              <div class="modal fade" id="modalTreasureGifted" role="dialog">
-                  <div class="modal-dialog">
+                  <form method="POST" action="{{route('admin.view_treasure_gifted')}}">
 
-                      <!-- Modal content-->
-                      <div class="modal-content">
+                      @csrf
+                      @method('POST')
+                      
+                      <div class="modal-body">
 
-                          <div class="modal-header">
-                              <h4 class="modal-title">Please Set Your Requirements </h4>
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <div class="form-row">
+                          
+
+                          <div class="col-md-6 mb-4">
+                            <label for="validationServer01">Select Treasure</label>
+
+                            <select class="form-control form-control-lg is-invalid" name="treasure_id" required="true">
+                              
+                              <option selected="true" disabled="true">
+                                  -- please select an option --
+                              </option>
+
+                              @foreach(App\Models\Treasure::all() as $treasure)
+                                <option selected="true" value="{{$treasure->id}}">
+                                    {{$treasure->name}}
+                                </option> 
+                              @endforeach
+
+                            </select>
                           </div>
 
-                          <form method="POST" action="{{route('admin.view_treasure_gifted')}}">
+                          <div class="col-md-6 mb-4">
+                            <label for="validationServer01">Choose Date</label>
+                            <input type="date" name="date" class="form-control form-control-lg is-invalid" required="true">
+                          </div>
 
-                              @csrf
-                              @method('POST')
-                              
-                              <div class="modal-body">
-
-                                <div class="form-row">
-                                  
-
-                                  <div class="col-md-6 mb-4">
-                                    <label for="validationServer01">Select Treasure</label>
-
-                                    <select class="form-control form-control-lg is-invalid" name="treasure_id" required="true">
-                                      
-                                      <option selected="true" disabled="true">
-                                          -- please select an option --
-                                      </option>
-
-                                      @foreach(App\Models\Treasure::all() as $treasure)
-                                        <option selected="true" value="{{$treasure->id}}">
-                                            {{$treasure->name}}
-                                        </option> 
-                                      @endforeach
-
-                                    </select>
-                                  </div>
-
-                                  <div class="col-md-6 mb-4">
-                                    <label for="validationServer01">Choose Date</label>
-                                    <input type="date" name="date" class="form-control form-control-lg is-invalid" required="true">
-                                  </div>
-
-                                </div>
-
-                              </div>
-                              
-                              <div class="modal-footer">
-                                  <button type="submit" class="btn btn-success">Show</button>
-                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                              </div>
-                          </form>
+                        </div>
 
                       </div>
+                      
+                      <div class="modal-footer">
+                          <button type="submit" class="btn btn-success">Show</button>
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                      </div>
+                  </form>
 
-                  </div>
               </div>
 
-
-
-            
+          </div>
+      </div>
 
       @yield('contents')
       
@@ -646,6 +638,7 @@
         });
     </script>
 
+    @stack('scripts')
     
   </body>
 </html>
