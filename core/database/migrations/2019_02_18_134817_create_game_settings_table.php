@@ -19,6 +19,10 @@ class CreateGameSettingsTable extends Migration
             $table->float('game_rate', 8, 2)->nullable()->default(2);
             $table->float('game_version_required', 8, 2);
             $table->float('game_version_optional', 8, 2);
+
+            $table->integer('maintainance_mode')->default(0);
+            $table->timestamp('maintainance_start_time')->nullable();
+            $table->timestamp('maintainance_end_time')->nullable();
             
             $table->timestamps();
         });

@@ -76,7 +76,7 @@ class TreasureController extends Controller
 
     public function showEnabledTreasures()
     {
-        $treasures = Treasure::paginate(6);
+        $treasures = Treasure::with('treasureType')->paginate(6);
         return view('admin.other_layouts.treasures.all_treasures_enabled', compact('treasures'));
     }
 
@@ -189,6 +189,7 @@ class TreasureController extends Controller
 
         $allGiftedTreasures = PlayerTreasure::where('treasure_id', $request->treasure_id)
                                                     ->whereDate('created_at', $request->date)
+                                                    ->with('player', 'treasure')
                                                     ->paginate(8);
 
 
@@ -197,7 +198,7 @@ class TreasureController extends Controller
 
     public function showAllTreasureRedeemed()
     {
-        $allRedeemedTreasures = TreasureRedemption::paginate(8);
+        $allRedeemedTreasures = TreasureRedemption::where('status', -1)->with('player', 'treasure')->paginate(8);
         return view('admin.other_layouts.treasures.all_redeemed_treasure', compact('allRedeemedTreasures'));
     }
 
@@ -219,7 +220,7 @@ class TreasureController extends Controller
 
     public function showTreasureRequested()
     {
-        $allRequestedTreasures = TreasureRedemption::where('status', 0)->orderBy('created_at', 'desc')->paginate(8);
+        $allRequestedTreasures = TreasureRedemption::where('status', 0)->with('player', 'treasure')->latest()->paginate(8);
         return view('admin.other_layouts.treasures.all_treasure_requested', compact('allRequestedTreasures'));
     }
 
@@ -246,6 +247,6 @@ class TreasureController extends Controller
                             ->update(['status' => -1]);
         }
         
-        return redirect()->back()->with('success', 'Treasure Request are Updated');
+        return redirect()->back()->with('success', 'Treasure Requests are Updated');
     }
 }

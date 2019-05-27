@@ -15,7 +15,7 @@ class StoreController extends Controller
     public function showStoreMethod()
     {
         $this->createStoreMethod();
-        $storeAll = Store::paginate(8);
+        $storeAll = Store::with('bundleComponents')->paginate(8);
         
         return view('admin.other_layouts.store.view_store')->with('storeAll', $storeAll);
     }

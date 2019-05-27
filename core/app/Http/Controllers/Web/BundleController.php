@@ -14,13 +14,13 @@ class BundleController extends Controller
 
     public function showEnabledBundlePacks()
     {
-        $bundlePacks = BundlePack::paginate(6);
+        $bundlePacks = BundlePack::with('bundleComponents')->paginate(6);
         return view('admin.other_layouts.bundle_packs.all_bundle_packs_enabled', compact('bundlePacks'));
     }
 
     public function showDisabledBundlePacks()
     {
-        $bundlePacks = BundlePack::onlyTrashed()->paginate(6);
+        $bundlePacks = BundlePack::onlyTrashed()->with('bundleComponents')->paginate(6);
         return view('admin.other_layouts.bundle_packs.all_bundle_packs_disabled', compact('bundlePacks'));
     }
 
@@ -74,13 +74,13 @@ class BundleController extends Controller
 
     public function showBundlePackEditForm(Request$request, $bundlePackId)
     {
-        $bundlePackToUpdate = BundlePack::findOrFail($bundlePackId);
+        $bundlePackToUpdate = BundlePack::with('bundleComponents')->findOrFail($bundlePackId);
         return view('admin.other_layouts.bundle_packs.edit_bundle_pack', compact('bundlePackToUpdate'));
     }
 
     public function submitEditedBundlePack(Request $request, $bundlePackId)
     {
-        $bundlePackToUpdate = BundlePack::findOrFail($bundlePackId);
+        $bundlePackToUpdate = BundlePack::with('bundleComponents')->findOrFail($bundlePackId);
 
         $request->validate([
             'name'=>'required|unique:bundle_packs,name,'.$bundlePackToUpdate->id,
@@ -111,7 +111,7 @@ class BundleController extends Controller
         $bundlePackToUpdate->save();
 
         // Clearing Previous Components
-        $bundlePackToUpdate->bundleComponents()->delete();
+        $bundlePackToUpdate->bundleComponents()->forceDelete();
 
         for($i=0; $i < count($request->elements); $i++){
 
@@ -131,7 +131,7 @@ class BundleController extends Controller
 
     public function bundlePackDeleteMethod($bundlePackId)
     {
-        $bundlePackToDelete = BundlePack::findOrFail($bundlePackId);
+        $bundlePackToDelete = BundlePack::with('bundleComponents')->findOrFail($bundlePackId);
         $bundlePackToDelete->bundleComponents()->delete();
         $bundlePackToDelete->delete();
 
@@ -142,7 +142,7 @@ class BundleController extends Controller
 
     public function bundlePackUndoMethod($bundlePackId)
     {    
-        $bundlePackToUndo = BundlePack::withTrashed()->find($bundlePackId);
+        $bundlePackToUndo = BundlePack::withTrashed()->with('bundleComponents')->find($bundlePackId);
         $bundlePackToUndo->bundleComponents()->restore();
         $bundlePackToUndo->restore();
 

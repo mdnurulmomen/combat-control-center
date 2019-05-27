@@ -76,7 +76,7 @@ class RewardController extends Controller
 
     public function showAllDisabledDailyLoginRewards()
     {
-        $allLoginRewards = DailyLoginReward::onlyTrashed()->paginate(7);
+        $allLoginRewards = DailyLoginReward::onlyTrashed()->with('rewardType')->paginate(7);
         return view('admin.other_layouts.rewards.all_rewards_disabled', compact('allLoginRewards'));
     }
 

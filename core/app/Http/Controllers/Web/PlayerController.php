@@ -26,7 +26,7 @@ class PlayerController extends Controller
 {
     public function showLeaderboard()
     {
-        $topLeaders = PlayerStatistic::orderBy(DB::raw("`opponent_killed` + `monster_killed` + `double_killed` + `triple_killed`"), 'DESC')->get();
+        $topLeaders = PlayerStatistic::with('player')->orderBy(DB::raw("`opponent_killed` + `monster_killed` + `double_killed` + `triple_killed`"), 'DESC')->get();
    
         if ($topLeaders->isEmpty()) {
             return redirect()->back()->withErrors('No Player Found');
@@ -37,7 +37,7 @@ class PlayerController extends Controller
         // create leader board
         $this->buildLeaderBoard($topLeaders);
 
-        $leaders = Leader::paginate(6);
+        $leaders = Leader::with('user')->paginate(6);
         return view('admin.other_layouts.players.view_leaderboard', compact('leaders'));
     }
 
@@ -58,7 +58,7 @@ class PlayerController extends Controller
 
     public function showAllPlayers()
     {
-        $users = User::where('type', 'player')->paginate(6);
+        $users = User::where('type', 'player')->with('player')->paginate(6);
         return view('admin.other_layouts.players.all_players', compact('users'));
     }
 
@@ -207,13 +207,13 @@ class PlayerController extends Controller
 
     public function showAllBots()
     {
-        $bots = User::where('type', 'bot')->paginate(6);
+        $bots = User::where('type', 'bot')->with('player')->paginate(6);
         return view('admin.other_layouts.players.all_bots', compact('bots'));
     }
 
     public function showBotEditForm(Request$request, $botId)
     {
-        $botToUpdate = User::findOrFail($botId);
+        $botToUpdate = User::with('player')->findOrFail($botId);
         return view('admin.other_layouts.players.edit_bot', compact('botToUpdate'));
     }
 

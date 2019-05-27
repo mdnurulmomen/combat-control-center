@@ -283,7 +283,7 @@ class PlayerController extends Controller
         else {
 
             $date = Carbon::parse($playerLogin->updated_at->format('d-m-Y'));
-            $now = Carbon::now()->format('d-m-Y');
+            $now = now()->format('d-m-Y');
             $difference = $date->diffInDays($now);
 
             if($difference == 0){
@@ -300,7 +300,7 @@ class PlayerController extends Controller
                     'consecutive_days' => $playerLogin->consecutive_days + 1,             
                     'reward_status' => 1,
                     'created_at' => $playerLogin->updated_at, 
-                    'updated_at' => Carbon::now()
+                    'updated_at' => now()
                 ]);
             }
 
@@ -310,7 +310,7 @@ class PlayerController extends Controller
                     'consecutive_days' => 1,
                     'reward_status' => 1,
                     'created_at' => $playerLogin->updated_at, 
-                    'updated_at' => Carbon::now()
+                    'updated_at' => now()
                 ]);
 
             }  
