@@ -211,121 +211,123 @@
         </div>
 
       </div>
-
-
-      <!-- Page specific javascripts-->
-      <script type="text/javascript" src="{{ asset('assets/admin/js/plugins/chart.js') }}"></script> 
-      <script type="text/javascript">
-
-        @php
-
-          $lastYearName = App\Models\Purchase::orderBy('id', 'DESC')->first()->created_at->year;
-
-        @endphp
-
-        var data = {
-
-          labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-
-          datasets: [
-            /*
-            // For Megabyte Purchase
-            {
-              label: "My First dataset",
-              fillColor: "rgba(220,220,220,0.2)",
-              strokeColor: "rgba(220,220,220,1)",
-              pointColor: "rgba(220,220,220,1)",
-              pointStrokeColor: "#fff",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(220,220,220,1)",
-              data: [65, 59, 80, 81, 56]
-            },
-            */
-
-            {
-              label: "My Second dataset",
-              fillColor: "rgba(151,187,205,0.2)",
-              strokeColor: "rgba(151,187,205,1)",
-              pointColor: "rgba(151,187,205,1)",
-              pointStrokeColor: "#fff",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(151,187,205,1)",
-              data: 
-              [
-
-              @for($i=1; $i<13; $i++)
-
-                {{
-                  DB::table('purchases')->whereYear('created_at', $lastYearName)->whereMonth('created_at', $i)->count()
-                }},
-
-              @endfor
-
-              ]
-            }
-
-          ]
-        };
-
-        var pdata = [
-          {
-            "value": 300,
-            "color": "{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
-            "highlight": "#5AD3D1",
-            "label": "Complete"
-          },
-
-          {
-            "value": 200,
-            "color": "{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
-            "highlight": "#5AD3D1",
-            "label": "Complete"
-          },
-
-          {
-            "value": 50,
-            "color":"{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
-            "highlight": "#FF5A5E",
-            "label": "In-Progress"
-          }
-        ];
-
-        var ctxl = $("#lineChartDemo").get(0).getContext("2d");
-        var lineChart = new Chart(ctxl).Line(data);
-
-        var ctxp = $("#pieChartDemo").get(0).getContext("2d");
-        var pieChart = new Chart(ctxp).Pie(pdata);
-
-    </script>
-
-    <script type="text/javascript">
-      
-      $(document).ready(function() {
-
-        var counters = $(".count");
-        var countersQuantity = counters.length;
-        var counter = [];
-
-        for (i = 0; i < countersQuantity; i++) {
-          counter[i] = parseInt(counters[i].innerHTML);
-        }
-
-        var count = function(start, value, id) {
-          var localStart = start;
-          setInterval(function() {
-            if (localStart < value) {
-              localStart++;
-              counters[id].innerHTML = localStart;
-            }
-          }, 0);
-        }
-
-        for (j = 0; j < countersQuantity; j++) {
-          count(0, counter[j], j);
-        }
-
-      });
-
-    </script>
     
 @stop
+
+@push('scripts')
+    <!-- Page specific javascripts-->
+    <script type="text/javascript" src="{{ asset('assets/admin/js/plugins/chart.js') }}"></script> 
+    <script type="text/javascript">
+
+      @php
+
+        $lastYearName = optional(optional(App\Models\Purchase::orderBy('id', 'DESC')->first())->created_at)->year;
+
+      @endphp
+
+      var data = {
+
+        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+
+        datasets: [
+          /*
+          // For Megabyte Purchase
+          {
+            label: "My First dataset",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [65, 59, 80, 81, 56]
+          },
+          */
+
+          {
+            label: "My Second dataset",
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            data: 
+            [
+
+            @for($i=1; $i<13; $i++)
+
+              {{
+                DB::table('purchases')->whereYear('created_at', $lastYearName)->whereMonth('created_at', $i)->count()
+              }},
+
+            @endfor
+
+            ]
+          }
+
+        ]
+      };
+
+      var pdata = [
+        {
+          "value": 300,
+          "color": "{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
+          "highlight": "#5AD3D1",
+          "label": "Complete"
+        },
+
+        {
+          "value": 200,
+          "color": "{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
+          "highlight": "#5AD3D1",
+          "label": "Complete"
+        },
+
+        {
+          "value": 50,
+          "color":"{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
+          "highlight": "#FF5A5E",
+          "label": "In-Progress"
+        }
+      ];
+
+      var ctxl = $("#lineChartDemo").get(0).getContext("2d");
+      var lineChart = new Chart(ctxl).Line(data);
+
+      var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+      var pieChart = new Chart(ctxp).Pie(pdata);
+
+  </script>
+
+  <script type="text/javascript">
+    
+    $(document).ready(function() {
+
+      var counters = $(".count");
+      var countersQuantity = counters.length;
+      var counter = [];
+
+      for (i = 0; i < countersQuantity; i++) {
+        counter[i] = parseInt(counters[i].innerHTML);
+      }
+
+      var count = function(start, value, id) {
+        var localStart = start;
+        setInterval(function() {
+          if (localStart < value) {
+            localStart++;
+            counters[id].innerHTML = localStart;
+          }
+        }, 0);
+      }
+
+      for (j = 0; j < countersQuantity; j++) {
+        count(0, counter[j], j);
+      }
+
+    });
+
+  </script>
+
+@endpush

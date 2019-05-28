@@ -1,4 +1,13 @@
 @extends('admin.master_layout.app')
+
+@push('extraStyleLink')
+
+    {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/bootstrap-datetimepicker.min.css') }}"> --}}    
+
+@endpush
+
 @section('contents')
     <div class="content p-4">
         
@@ -47,17 +56,31 @@
                         <div class="col-md-4">
                             <label for="validationServer01">Game Maintainance Mode </label>
 
-                            <input type="checkbox" name="maintainance_mode"  id="maintainance_mode" @if($settingsGame->maintainance_mode==1) checked @endif data-toggle="toggle" data-on="Maintainance On" data-off="Maintainance Off" data-onstyle="danger" data-offstyle="success" data-size="large">
+                            <input type="checkbox" name="maintainance_mode"  id="maintainance_mode" @if($settingsGame->maintainance_mode) checked @endif data-toggle="toggle" data-on="Maintainance On" data-off="Maintainance Off" data-onstyle="danger" data-offstyle="success" data-size="large">
                         </div>
 
                         <div class="col-md-4">
                             <label for="validationServer01"> Maintainance Start Time </label>
-                            <input type="datetime-local" name="maintainance_start_time" value="{{ optional($settingsGame->maintainance_start_time)->format('Y-m-d\TH:i') }}" class="form-control form-control-lg is-valid maintainance_date">
+
+                            <div class='input-group date' id='datetimepicker1' data-target-input='nearest'>
+                                <input type='text' name="maintainance_start_time" class="form-control form-control-lg is-valid maintainance_date datetimepicker-input" @if($settingsGame->maintainance_mode) value="{{ optional($settingsGame->maintainance_start_time)->format('m-d-Y H:i:s') }}" @else disabled="true" @endif data-target="#datetimepicker1"/>
+                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="col-md-4">
                             <label for="validationServer01"> Maintainance End Time </label>
-                            <input type="datetime-local" name="maintainance_end_time" value="{{ optional($settingsGame->maintainance_end_time)->format('Y-m-d\TH:i') }}" class="form-control form-control-lg is-valid maintainance_date">  
+
+                            <div class='input-group date' id='datetimepicker2' data-target-input='nearest'>
+                                <input type='text' name="maintainance_end_time" class="form-control form-control-lg is-valid maintainance_date datetimepicker-input" @if($settingsGame->maintainance_mode) value="{{ optional($settingsGame->maintainance_end_time)->format('m-d-Y H:i:s') }}" @else disabled="true" @endif data-target="#datetimepicker2"/>
+                                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+
                         </div>
                             
                     </div>
@@ -79,12 +102,29 @@
 
 @push('scripts')
 
+    <script src="{{ asset('assets/admin/js/moment.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/admin/js/bootstrap.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/admin/js/bootstrap-datetimepicker.js') }}"></script> --}} 
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+
+        $(function () {
+            $('#datetimepicker2').datetimepicker();
+        });
+
+    </script>
+
     <script>
 
         $(function() {
             $('#maintainance_mode').change(function() {
                 $(this).prop("checked") == true ? enable_date() : disable_date(); 
-                // alert($(this).val());
             })
         });
 
@@ -94,7 +134,7 @@
 
         function disable_date() {
             $("input.maintainance_date").prop('disabled', true);
-            $("input.maintainance_date").val("0000-00-00T00:00");
+            $('input.maintainance_date').val("").datepicker("update");
         };
 
     </script>

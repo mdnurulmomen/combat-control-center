@@ -18,20 +18,23 @@
 
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/main.css') }}">
+
     <!-- Font-icon css-->
     <link rel="stylesheet" href="{{ asset('assets/admin/css/font-awesome.min.css') }}">
+
     {{-- <link rel="stylesheet" href="{{ asset('css/font-awesome-all.min.css') }}"> --}}
+    
     <link rel="stylesheet" href="{{ asset('assets/admin/css/toastr.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap-toggle.min.css') }}">
 
-    <script src="{{ asset('assets/admin/js/jquery-3.2.1.min.js') }}"></script>
+    @stack('extraStyleLink')
 
     <style type="text/css">
-      
+
       @section('stylebar')
       @show
-          
+
     </style>
 
   </head>
@@ -615,8 +618,9 @@
       @yield('contents')
       
     </main>
+
     <!-- Essential javascripts for application to work-->
-    
+    <script src="{{ asset('assets/admin/js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/popper.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/main.js') }}"></script>

@@ -20,7 +20,7 @@ class CreateGameSettingsTable extends Migration
             $table->float('game_version_required', 8, 2);
             $table->float('game_version_optional', 8, 2);
 
-            $table->integer('maintainance_mode')->default(0);
+            $table->boolean('maintainance_mode')->default(false);
             $table->timestamp('maintainance_start_time')->nullable();
             $table->timestamp('maintainance_end_time')->nullable();
             
