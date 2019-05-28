@@ -95,7 +95,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient light booster'], 401);
         } 
 
-        if($request->gameBoostItems->heavyBooster > 0) {
+        if($request->gameBoostItems->heavyBooster > 106) {
 
             if($playerBoostPacks->heavy_boost > 0)
                 $itemToDecrement[] = 'heavy_boost'; 
