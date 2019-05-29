@@ -65,7 +65,7 @@ class PurchaseController extends Controller
             $playerCharacter->player_id = $playerId;
             $playerCharacter->save();
 
-            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
+            $this->addPurchaseHistory();
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -88,7 +88,7 @@ class PurchaseController extends Controller
             $playerWeapon->player_id = $playerId;
             $playerWeapon->save();
 
-            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
+            $this->addPurchaseHistory();
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -111,7 +111,7 @@ class PurchaseController extends Controller
             $playerParachute->player_id = $playerId;
             $playerParachute->save();
 
-            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
+            $this->addPurchaseHistory();
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -135,7 +135,7 @@ class PurchaseController extends Controller
             $playerAnimation->player_id = $playerId;
             $playerAnimation->save();
 
-            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
+            $this->addPurchaseHistory();
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -174,7 +174,7 @@ class PurchaseController extends Controller
                 $playerBoostPack->increment('xp_multiplier', $boostPackToAdd->amount);
             }
 
-            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
+            $this->addPurchaseHistory();
 
             return response()->json(['message'=>'success'], 200);
         }
@@ -227,8 +227,8 @@ class PurchaseController extends Controller
                     $playerBoostPacks->increment('xp_multiplier', $component->amount ?? 0);
                 }
             }
-            
-            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
+
+            $this->addPurchaseHistory();
 
             return response()->json(['message'=>'success'], 200);
         }
@@ -301,14 +301,14 @@ class PurchaseController extends Controller
 
     }
 
-    public function addPurchaseHistory($itemId, $userId, $gatewayName, $paymentId)
+    public function addPurchaseHistory()
     {
         // Purchase History
         $newPurchase = new Purchase();
-        $newPurchase->item_id = $itemId;
-        $newPurchase->buyer_id = $userId;
-        $newPurchase->gateway_name = $gatewayName;
-        $newPurchase->payment_id = $paymentId ?? 'None';
+        $newPurchase->item_id = $this->itemId;
+        $newPurchase->buyer_id = $this->userId;
+        $newPurchase->gateway_name = $this->gatewayName;
+        $newPurchase->payment_id = $this->paymentId ?? 'None';
         $newPurchase->save();
     }
 
@@ -355,7 +355,7 @@ class PurchaseController extends Controller
             $playerStatistics->decrement($itemToDeduct, $priceToDeduct);
             $playerStatistics->increment('coins', $item->amount ?? 0);
             
-            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
+            $this->addPurchaseHistory();
             return response()->json(['message'=>'success'], 200);
             
         }
@@ -364,7 +364,7 @@ class PurchaseController extends Controller
             
             $playerStatistics->increment('gems', $item->amount ?? 0);
 
-            $this->addPurchaseHistory($this->itemId, $this->userId, $this->gatewayName, $this->paymentId);
+            $this->addPurchaseHistory();
             return response()->json(['message'=>'success'], 200);
         }
 
