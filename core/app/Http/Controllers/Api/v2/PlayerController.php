@@ -282,7 +282,7 @@ class PlayerController extends Controller
 
         else {
 
-            $date = Carbon::parse($playerLogin->updated_at->format('d-m-Y'));
+            $date = Carbon::parse(optional($playerLogin->updated_at)->format('d-m-Y') ?? "01-01-2019");
             $now = now()->format('d-m-Y');
             $difference = $date->diffInDays($now);
 
@@ -317,6 +317,7 @@ class PlayerController extends Controller
         }
     }
 
+    // For View Player API
     public function showPlayerDetails(Request $request, $playerId = null)
     {   
         if ($request->token) {
@@ -330,9 +331,6 @@ class PlayerController extends Controller
             $request = new Request($payload);
         }
 
-        // $request->validate([
-        //     'userId'=>'required'
-        // ]);
 
         $playerToShow = Player::find($request->userId ?? $playerId);
 
@@ -364,39 +362,34 @@ class PlayerController extends Controller
                 if (Str::is('*oin', $prizeToReward->rewardType->reward_type_name)) {
                     
                     $playerStatisticToUpdate->increment('coins', $prizeToReward->amount);
-                    $dailyLoginCheck->update(['reward_status' => 0]);
                 }
 
                 elseif (Str::is('*em', $prizeToReward->rewardType->reward_type_name)) {
                     
                     $playerStatisticToUpdate->increment('gems', $prizeToReward->amount);
-                    $dailyLoginCheck->update(['reward_status' => 0]);
                 }
 
                 elseif (Str::is('*peed*', $prizeToReward->rewardType->reward_type_name)) {
                     
                     $playerBoostPackToUpdate->increment('speed_boost', $prizeToReward->amount);
-                    $dailyLoginCheck->update(['reward_status' => 0]);
                 }
 
                 elseif (Str::is('*rmor*', $prizeToReward->rewardType->reward_type_name)) {
                     
                     $playerBoostPackToUpdate->increment('armor_boost', $prizeToReward->amount);
-                    $dailyLoginCheck->update(['reward_status' => 0]);
                 }
 
                 elseif (Str::is('*mmo*', $prizeToReward->rewardType->reward_type_name)) {
                     
                     $playerBoostPackToUpdate->increment('ammo_boost', $prizeToReward->amount);
-                    $dailyLoginCheck->update(['reward_status' => 0]);
                 }
 
                 elseif (Str::is('*PBoost', $prizeToReward->rewardType->reward_type_name)) {
                     
                     $playerBoostPackToUpdate->increment('xp_multiplier', $prizeToReward->amount);
-                    $dailyLoginCheck->update(['reward_status' => 0]);
                 }
 
+                $dailyLoginCheck->update(['reward_status' => 0]);
             }
         }
     }
@@ -421,10 +414,12 @@ class PlayerController extends Controller
 
         $request_2 = $request->only(['player_batch','selected_parachute', 'selected_character', 'selected_animation', 'selected_weapon']);
 
+        // Filtering null values to prevent null updation
         $request_1 = array_filter($request_1, function($value) {
             return ($value !== null); 
         });
 
+        // Filtering null values to prevent null updation
         $request_2 = array_filter($request_2, function($value) {
             return ($value !== null && $value !== false); 
         });
@@ -516,13 +511,14 @@ class PlayerController extends Controller
             return response()->json(['message'=>'No player found'], 422);
         }
 
+        // Deleting all data from leader board
         Leader::truncate();
 
+        // Creating leader board for current data
         $this->createLeadershipBoard($topLeaders);
 
         $leaders = Leader::take(20)->get();
         $myPossition = Player::find($request->userId)->playerLeadershipPosition ?? null;
-
 
         return ['topLeaders' => LeaderResource::collection($leaders), 'myPossition'=> new MyLeaderResource($myPossition)];
     }
