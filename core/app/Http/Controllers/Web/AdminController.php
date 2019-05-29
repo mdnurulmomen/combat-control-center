@@ -25,7 +25,7 @@ use App\Models\TreasureRedemption;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Facades\Image as ImageIntervention;
+
 
 
 class AdminController extends Controller
@@ -92,12 +92,7 @@ class AdminController extends Controller
         $profile->email = $request->email;
         $profile->phone = $request->phone;
 
-        if($request->has('picture')){
-            $originImageFile = $request->file('picture');
-            $imageObject = ImageIntervention::make($originImageFile);
-            $imageObject->resize(200, 200)->save('assets/admin/images/profile/'.$originImageFile->hashname());
-            $profile->picture = $originImageFile->hashname();
-        }
+        $profile->profile_picture = $request->file('picture');
 
         $profile->address = $request->address;
         $profile->city = $request->city;
@@ -149,13 +144,7 @@ class AdminController extends Controller
 
         $settingsAdminPanel = AdminPanelSetting::firstOrFail();
 
-        if($request->has('favicon')){
-            $originImageFile = $request->file('favicon');
-            $imageObject = ImageIntervention::make($originImageFile)->encode('png');
-            $imageObject->resize(16, 16)->save('assets/admin/images/settings/favicon.png');
-
-            $settingsAdminPanel->favicon = "favicon.png";
-        }
+        $settingsAdminPanel->favicon_image = $request->file('favicon');
 
         $settingsAdminPanel->save();
 
@@ -179,12 +168,7 @@ class AdminController extends Controller
         $profile->email = $request->email;
         $profile->phone = $request->phone;
 
-        if($request->has('picture')){
-            $originImageFile = $request->file('picture');
-            $imageObject = ImageIntervention::make($originImageFile)->encode('jpg');
-            $imageObject->resize(200, 200)->save('assets/moderator/images/profile/'.$originImageFile->hashname());
-            $profile->picture = $originImageFile->hashname();
-        }
+        $profile->profile_picture = $request->file('picture');
 
         $profile->address = $request->address;
         $profile->city = $request->city;
@@ -224,12 +208,7 @@ class AdminController extends Controller
         $moderatorToUpdate->email = $request->email;
         $moderatorToUpdate->phone = $request->phone;
 
-        if($request->has('picture')){
-            $originImageFile = $request->file('picture');
-            $imageObject = ImageIntervention::make($originImageFile)->encode('jpg');
-            $imageObject->resize(200, 200)->save('assets/moderator/images/profile/'.$originImageFile->hashname());
-            $moderatorToUpdate->picture = $originImageFile->hashname();
-        }
+        $moderatorToUpdate->profile_picture = $request->file('picture');
 
         $moderatorToUpdate->address = $request->address;
         $moderatorToUpdate->city = $request->city;
