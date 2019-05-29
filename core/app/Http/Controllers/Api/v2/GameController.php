@@ -76,6 +76,66 @@ class GameController extends Controller
             $this->addEarnings($lastEarning, $matchRate);
         }
 
+        // Reducing all selections for match start
+        $matchStartSelections = $this->matchStartSelections($player, $request);
+
+        if ($matchStartSelections) {
+            
+            return $matchStartSelections;
+        }
+        
+        return new MatchResource($player);
+    
+        // $returningData = new MatchResource($player);
+
+        // $payload = JWTFactory::emptyClaims()->data($returningData)->make();
+        // return $token = JWTAuth::encode($payload);
+
+        // JWTFactory::emptyClaims();
+        // $token = JWTAuth::customClaims([$returningData])->fromUser($returningData);
+        // $token = JWTAuth::fromUser($returningData, $returningData);
+
+        // return response()->json([
+        //     'token' => $token
+        // ]);
+    }
+
+    // Add earning for solo mode
+    public function addEarnings(Earning $lastEarning, $matchRate)
+    {
+        if (is_null($lastEarning)) {
+            
+            $newEarning = new Earning();
+            $newEarning->current_earning = 0 + $matchRate ?? 0;
+            $newEarning->total_earning =  0 + $matchRate ?? 0;
+            $newEarning->save();   
+        }
+
+        else {
+
+            $lastEarningDate = Carbon::parse($lastEarning->updated_at->format('d-m-Y'));
+            $presentDate = Carbon::now()->format('d-m-Y');
+            $difference = $lastEarningDate->diffInDays($presentDate);
+
+            if ($difference > 0) {
+
+                $newEarning = new Earning();
+                $newEarning->current_earning = $lastEarning->current_earning + $matchRate;
+                $newEarning->total_earning = $lastEarning->total_earning + $matchRate;
+                $newEarning->save();           
+            }
+
+            else{
+
+                $lastEarning->increment('current_earning', $matchRate);
+                $lastEarning->increment('total_earning', $matchRate);
+            }
+        }
+    }
+
+    // Reducing selections when starting a match 
+    public function matchStartSelections(Player $player, Request $request)
+    {
         $playerBoostPacks = $player->playerBoostPacks;
         $itemToDecrement = array();
 
@@ -149,55 +209,6 @@ class GameController extends Controller
 
                 $playerBoostPacks->decrement($item, 1); 
             } 
-        }
-
-        
-        return new MatchResource($player);
-    
-        // $returningData = new MatchResource($player);
-
-        // $payload = JWTFactory::emptyClaims()->data($returningData)->make();
-        // return $token = JWTAuth::encode($payload);
-
-        // JWTFactory::emptyClaims();
-        // $token = JWTAuth::customClaims([$returningData])->fromUser($returningData);
-        // $token = JWTAuth::fromUser($returningData, $returningData);
-
-        // return response()->json([
-        //     'token' => $token
-        // ]);
-    }
-
-    // Add earning for solo mode
-    public function addEarnings(Earning $lastEarning, $matchRate)
-    {
-        if (is_null($lastEarning)) {
-            
-            $newEarning = new Earning();
-            $newEarning->current_earning = 0 + $matchRate ?? 0;
-            $newEarning->total_earning =  0 + $matchRate ?? 0;
-            $newEarning->save();   
-        }
-
-        else {
-
-            $lastEarningDate = Carbon::parse($lastEarning->updated_at->format('d-m-Y'));
-            $presentDate = Carbon::now()->format('d-m-Y');
-            $difference = $lastEarningDate->diffInDays($presentDate);
-
-            if ($difference > 0) {
-
-                $newEarning = new Earning();
-                $newEarning->current_earning = $lastEarning->current_earning + $matchRate;
-                $newEarning->total_earning = $lastEarning->total_earning + $matchRate;
-                $newEarning->save();           
-            }
-
-            else{
-
-                $lastEarning->increment('current_earning', $matchRate);
-                $lastEarning->increment('total_earning', $matchRate);
-            }
         }
     }
 
