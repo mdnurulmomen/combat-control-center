@@ -176,7 +176,7 @@ class AdminController extends Controller
 
         $profile->save();
 
-        return redirect()->back()->with('success', 'New Moderatory is Created');
+        return redirect()->back()->with('success', 'New Moderator is Created');
     }
 
     public function showAllModerators()
