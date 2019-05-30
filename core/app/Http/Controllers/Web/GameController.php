@@ -28,8 +28,7 @@ class GameController extends Controller
         $settingsGame->game_version_required = $request->game_version_required;
         $settingsGame->game_version_optional = $request->game_version_optional;
         $settingsGame->game_rate = $request->rate;
-        
-        $request->maintainance_mode == 'on' ? $settingsGame->maintainance_mode = true : $settingsGame->maintainance_mode = false;
+        $settingsGame->maintainance_mode = $request->maintainance_mode;
         $settingsGame->maintainance_start_time = $request->maintainance_start_time;
         $settingsGame->maintainance_end_time = $request->maintainance_end_time;
         
@@ -50,9 +49,9 @@ class GameController extends Controller
 
         $settingsUser = UserSetting::firstOrFail();
 
-        $request->user_registration == 'on' ? $settingsUser->user_registration = 1 : $settingsUser->user_registration = 0;
-        $request->email_verification == 'on' ? $settingsUser->email_verification = 1 : $settingsUser->email_verification = 0;
-        $request->sms_verification == 'on' ? $settingsUser->sms_verification = 1 : $settingsUser->sms_verification = 0;
+        $settingsUser->user_registration = $request->user_registration;
+        $settingsUser->email_verification = $request->email_verification;
+        $settingsUser->sms_verification = $request->sms_verification;
 
         $settingsUser->save();
 
