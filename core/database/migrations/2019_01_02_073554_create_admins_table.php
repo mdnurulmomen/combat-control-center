@@ -19,6 +19,7 @@ class CreateAdminsTable extends Migration
             $table->string('lastname')->nullable()->default('Name');
             $table->string('username')->default('admin');
             $table->string('password');
+            $table->boolean('is_verified')->default(false);
             $table->rememberToken();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();

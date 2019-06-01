@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use DB;
+use Mail;
 use App\Models\User;
 use App\Models\News;
 use App\Models\Admin;
@@ -19,13 +20,14 @@ use App\Models\Moderator;
 use App\Models\BoostPack;
 use App\Models\Parachute;
 use App\Models\BundlePack;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\EmailLoginToken;
 use App\Models\AdminPanelSetting;
 use App\Models\TreasureRedemption;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
 
 
 class AdminController extends Controller
@@ -43,17 +45,63 @@ class AdminController extends Controller
         ]);
 
         if(Auth::guard('admin')->attempt(['username'=>$request->username, 'password'=>$request->password])){
-            return redirect()->route('admin.home')->with('success', 'Welcome to Dashboard');
+
+            return $this->emailLoginToken(Auth::guard('admin')->user()->id);
+            // return redirect()->route('admin.home')->with('success', 'Welcome to Dashboard');
         }
+
         return redirect()->back()->withErrors('Wrong Username or Password');
+    }
+
+    public function emailLoginToken($id)
+    {
+        $admin = Admin::find($id);
+        $adminToken = $admin->token;
+
+        if ($adminToken)
+            $admin->token()->update([
+                'token'=>Str::random(6)
+            ]);
+
+        else
+            $admin->token()->create([
+                'token'=>Str::random(6)
+            ]);
+
+        Mail::to($admin->email ?? 'none@email.com')->send(new EmailLoginToken(Admin::find($id)));
+        return redirect()->route('admin.otp');
+    }
+
+    public function submitOTPCode(Request $request)
+    {
+        $request->validate([
+            'id'=>'required',
+            'secret_code'=>'required'
+        ]);
+
+        $adminUser = Admin::find($request->id);
+        $adminToken = $adminUser->token->token;
+
+        if ($adminToken === $request->secret_code) {
+            
+            $adminUser->update(['is_verified'=>1]);
+            $adminUser->token()->delete();
+            $status = "Welcome to Dashboard";
+            return redirect()->route('admin.home')->with('success', $status);
+        }
+        
+
+        return redirect()->back()->withErrors('Incorrect Code');
+    }
+
+    public function showOTP()
+    {
+        $admin = Admin::find(Auth::guard('admin')->user()->id);
+        return view('admin.other_layouts.email.lockscreen', compact('admin'));
     }
 
     public function homeMethod()
     {
-        $totalEarned = Earning::orderBy('total_earning', 'DESC')->first()->total_earning;
-        $totalPlayers = User::where('type', 'player')->count();
-        $totalBots = User::where('type', 'bot')->count();
-
         $allNews = News::all();
         $weapons = Weapon::all();
         $gemPacks = GemPack::all();
@@ -64,6 +112,10 @@ class AdminController extends Controller
         $animations = Animation::all();
         $parachutes = Parachute::all();
         $bundlePacks = BundlePack::all();
+
+        $totalBots = User::where('type', 'bot')->count();
+        $totalPlayers = User::where('type', 'player')->count();
+        $totalEarned = Earning::orderBy('total_earning', 'DESC')->first()->total_earning;
 
         $allRequestedTreasures = TreasureRedemption::where('status', 0)->orderBy('created_at', 'desc')->paginate(8);
 
@@ -128,6 +180,10 @@ class AdminController extends Controller
 
     public function logout()
     {
+        
+        $adminUser = Auth::guard('admin')->user();  
+        $adminUser->update(['is_verified'=>0]);
+            
         Auth::guard('admin')->logout();
         return redirect()->route('admin.login');
     }

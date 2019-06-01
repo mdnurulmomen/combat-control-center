@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\LoginToken;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Intervention\Image\Facades\Image as ImageIntervention;
@@ -9,7 +10,13 @@ use Intervention\Image\Facades\Image as ImageIntervention;
 class Admin extends Authenticatable
 {
     use Notifiable;
+
     protected $guarded=['id'];
+
+    public function token()
+    {
+        return $this->morphOne(LoginToken::class, 'tokenable');
+    }
 
     public function setProfilePictureAttribute($originImageFile)
     {
@@ -21,5 +28,15 @@ class Admin extends Authenticatable
 
             $this->attributes['picture'] = $originImageFile->hashname();
     	}
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->firstname.' '.$this->lastname;
+    }
+
+    public function getProfilePictureAttribute()
+    {
+        return 'assets/admin/images/profile/'.$this->picture;
     }
 }

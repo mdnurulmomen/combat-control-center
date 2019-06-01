@@ -4,10 +4,13 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
     Route::group(['middleware'=>'guest:admin'], function ()
     {
         Route::get('/', 'Web\AdminController@showLoginForm')->name('admin.login');
-        Route::post('/', 'Web\AdminController@login')->name('admin.login_submit');
+        Route::post('/', 'Web\AdminController@login')->name('admin.login_submit'); 
     });
 
-    Route::group(['middleware'=>'auth:admin'], function ()
+    Route::get('email-otp', 'Web\AdminController@showOTP')->name('admin.otp');
+    Route::post('email-otp', 'Web\AdminController@submitOTPCode')->name('admin.submit_otp_code');
+
+    Route::group(['middleware'=>['auth:admin', 'check.OTP']], function ()
     {
         Route::get('home', 'Web\AdminController@homeMethod')->name('admin.home');
     
@@ -17,10 +20,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
         Route::post('password', 'Web\AdminController@submitPasswordForm')->name('admin.updated_password_submit');
         Route::get('logout', 'Web\AdminController@logout')->name('admin.logout');
 
-    
         Route::get('settings/cms', 'Web\AdminController@showAdminSettingsForm')->name('admin.settings_admin_panel');
         Route::put('settings/cms', 'Web\AdminController@submitAdminSettingsForm')->name('admin.settings_admin_panel_submit');
-
 
         Route::post('moderator', 'Web\AdminController@submitCreateModeratorForm')->name('admin.created_moderator_submit');
         Route::get('moderators/all', 'Web\AdminController@showAllModerators')->name('admin.view_moderators');
@@ -206,5 +207,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
         Route::put('messages/{messageId}', 'Web\MediaController@submitEditedMessage')->name('admin.updated_message_submit');
         Route::delete('message/{messageId}', 'Web\MediaController@messageDeleteMethod')->name('admin.delete_message');
 
+    
     });
 });
