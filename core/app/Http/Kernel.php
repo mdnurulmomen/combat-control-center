@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'cors' => \App\Http\Middleware\customCors::class,
         'check.OTP'=>\App\Http\Middleware\OTPChecker::class,
+        'verified.OTP'=>\App\Http\Middleware\OTPVerified::class,
     ];
 
     /**

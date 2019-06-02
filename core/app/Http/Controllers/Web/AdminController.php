@@ -58,10 +58,16 @@ class AdminController extends Controller
         $admin = Admin::find($id);
         $adminToken = $admin->token;
 
-        if ($adminToken)
+        $admin->update([
+            'is_verified'=> 0
+        ]);
+
+        if ($adminToken){
+            
             $admin->token()->update([
                 'token'=>Str::random(6)
             ]);
+        }
 
         else
             $admin->token()->create([
@@ -71,6 +77,25 @@ class AdminController extends Controller
         Mail::to($admin->email ?? 'none@email.com')->send(new EmailLoginToken(Admin::find($id)));
         return redirect()->route('admin.otp');
     }
+
+
+    /*public function generateNewToken($admin)
+    {
+        $admin = Admin::find($id);
+        $adminToken = $admin->token;
+
+        if ($adminToken){
+            
+            $admin->token()->update([
+                'token'=>Str::random(6)
+            ]);
+        }
+
+        else
+            $admin->token()->create([
+                'token'=>Str::random(6)
+            ]);
+    }*/
 
     public function submitOTPCode(Request $request)
     {

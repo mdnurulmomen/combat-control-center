@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/main.css') }}">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/font-awesome.min.css') }}">
-    <title>Lockscreen - Vali Admin</title>
+    <title>OTP - Treasure Wars</title>
   </head>
   <body>
     <section class="material-half-bg">
@@ -16,25 +16,13 @@
     </section>
     <section class="lockscreen-content">
       <div class="lock-box"><img class="rounded-circle user-image" src="{{ asset($admin->profile_picture) }}">
-        
-          @if (session('errors'))
-            @foreach ($errors->all() as $error)
-              
-              <p class="text-center text-danger m-0"><b> {{ $error }} </b></p>
-              
-            @endforeach
 
-          @else
-
-          <p class="text-center text-muted m-0">
-            Hello {{ $admin->full_name }},
-          </p>
-          <p class="text-center text-muted">
-            an email has been sent with secret code. Please, check your email.
-          </p>
-
-          @endif
-
+        <p class="text-center text-muted m-0">
+          Hello {{ $admin->full_name }},
+        </p>
+        <p class="text-center text-muted">
+          an email has been sent with secret code. Please, check your email.
+        </p>
 
         <p class="text-center text-muted"></p>
         <form class="unlock-form" action="{{ route('admin.submit_otp_code') }}" method="POST">
@@ -46,8 +34,17 @@
             <input class="form-control" type="number" name="id" value="{{$admin->id}}" placeholder="Code" autofocus required="true">
           </div>
 
-          <div class="form-group">
-            <label class="control-label">Secret Code</label>
+          <div class="form-group form-row">
+            <label class="control-label col-8">Secret Code</label>
+                  
+            <label class="control-label col-4 text-right">
+              @if (session('errors'))
+                @foreach ($errors->all() as $error)
+                  <p class="text-center text-danger m-0"><b> {{ $error }} </b></p>
+                @endforeach
+              @endif
+            </label>
+
             <input class="form-control" type="text" name="secret_code" placeholder="Code" autofocus required="true">
           </div>
 
