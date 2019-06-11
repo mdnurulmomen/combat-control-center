@@ -16,11 +16,20 @@ class OTPVerified
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::guard('admin')->user()->is_verified) {
+        if (Auth::guard('admin')->check()) {
+    
+            if (optional(Auth::guard('admin')->user())->is_verified) {
+    
+                return redirect()->route('admin.home');
+                
+            }
             
-            return redirect()->route('admin.home');
+            return $next($request);
         }
 
-        return $next($request);
+        else{
+            return redirect()->route('admin.login');
+        }
+
     }
 }

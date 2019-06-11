@@ -7,7 +7,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
         Route::post('/', 'Web\AdminController@login')->name('admin.login_submit'); 
     });
 
-    Route::group(['middleware'=>'verified.OTP'], function ()
+    Route::group(['middleware'=>['verified.OTP']], function ()
     {
         Route::get('email-otp', 'Web\AdminController@showOTP')->name('admin.otp');
         Route::post('email-otp', 'Web\AdminController@submitOTPCode')->name('admin.submit_otp_code');

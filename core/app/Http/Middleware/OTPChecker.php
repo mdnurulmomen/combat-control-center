@@ -16,7 +16,7 @@ class OTPChecker
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::guard('admin')->user()->is_verified) {
+        if (optional(Auth::guard('admin')->user())->is_verified) {
             
             return $next($request);
         }
