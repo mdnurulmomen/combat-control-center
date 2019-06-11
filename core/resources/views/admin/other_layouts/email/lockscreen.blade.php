@@ -20,11 +20,21 @@
         <p class="text-center text-muted m-0">
           Hello {{ $admin->full_name }},
         </p>
-        <p class="text-center text-muted">
-          an email has been sent with secret code. Please, check your email.
-        </p>
+          
+        @if(session()->has('codeWarning'))
+          <p class="text-center text-danger">    
+              {{ session('codeWarning') ?? null}} 
+          </p>
 
-        <p class="text-center text-muted"></p>
+        @else
+          <p class="text-center text-muted">
+            an email has been sent with secret code. Please, check your email.
+          </p>
+
+        @endif
+
+        
+
         <form class="unlock-form" action="{{ route('admin.submit_otp_code') }}" method="POST">
           
           @csrf
@@ -52,8 +62,12 @@
             <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-unlock fa-lg"></i>Verify</button>
           </div>
 
-        </form>
-        <p class="text-center"><a href="page-login.html">Not Found Code ? Click Here.</a></p>
+        </form>    
+
+        <p class="text-center">
+            <a href="{{route('admin.generate_new_otp_code', $admin->id)}}">Not Found Code ? Click Here.</a>
+        </p>
+            
       </div>
     </section>
     <!-- Essential javascripts for application to work-->

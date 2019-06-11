@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use DB;
 use Mail;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\News;
 use App\Models\Admin;
@@ -47,6 +48,7 @@ class AdminController extends Controller
         if(Auth::guard('admin')->attempt(['username'=>$request->username, 'password'=>$request->password])){
 
             return $this->emailLoginToken(Auth::guard('admin')->user()->id);
+
             // return redirect()->route('admin.home')->with('success', 'Welcome to Dashboard');
         }
 
@@ -79,23 +81,23 @@ class AdminController extends Controller
     }
 
 
-    /*public function generateNewToken($admin)
+    public function generateNewOTPToken($adminId)
     {
-        $admin = Admin::find($id);
+        $admin = Admin::find($adminId);
         $adminToken = $admin->token;
 
-        if ($adminToken){
+        $start = Carbon::parse($adminToken->updated_at);
+        $end = now();
+        $minuteDifferences = $end->diffInMinutes($start);
+
+        if ($minuteDifferences >= 2) {
             
-            $admin->token()->update([
-                'token'=>Str::random(6)
-            ]);
+            return $this->emailLoginToken($adminId);
         }
 
         else
-            $admin->token()->create([
-                'token'=>Str::random(6)
-            ]);
-    }*/
+            return redirect()->route('admin.otp')->with('codeWarning', 'Mail is already sent. Please Wait, It may take a few minutes');
+    }
 
     public function submitOTPCode(Request $request)
     {

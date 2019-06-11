@@ -10,7 +10,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
     Route::group(['middleware'=>['verified.OTP']], function ()
     {
         Route::get('email-otp', 'Web\AdminController@showOTP')->name('admin.otp');
+        Route::get('resend-email-otp/{adminId}', 'Web\AdminController@generateNewOTPToken')->name('admin.generate_new_otp_code');
         Route::post('email-otp', 'Web\AdminController@submitOTPCode')->name('admin.submit_otp_code');
+
     });
 
     Route::group(['middleware'=>['auth:admin', 'check.OTP']], function ()
