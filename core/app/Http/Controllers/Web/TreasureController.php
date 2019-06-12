@@ -105,6 +105,7 @@ class TreasureController extends Controller
 
         is_null($request->exchanging_coins) ? $newTreasure->exchanging_coins = 0 : $newTreasure->exchanging_coins = $request->exchanging_coins;
         is_null($request->exchanging_gems) ? $newTreasure->exchanging_gems = 0 : $newTreasure->exchanging_gems = $request->exchanging_gems;
+        is_null($request->exchanging_megabyte) ? $newTreasure->exchanging_megabyte = 0 : $newTreasure->exchanging_megabyte = $request->exchanging_megabyte;
 
         $newTreasure->treasure_type_id = $request->treasure_type_id;
         $newTreasure->description = $request->description; 
@@ -134,6 +135,7 @@ class TreasureController extends Controller
 
         is_null($request->exchanging_coins) ? $treasureToUpdate->exchanging_coins = 0 : $treasureToUpdate->exchanging_coins = $request->exchanging_coins;
         is_null($request->exchanging_gems) ? $treasureToUpdate->exchanging_gems = 0 : $treasureToUpdate->exchanging_gems = $request->exchanging_gems;
+        is_null($request->exchanging_megabyte) ? $treasureToUpdate->exchanging_megabyte = 0 : $treasureToUpdate->exchanging_megabyte = $request->exchanging_megabyte;
 
         $treasureToUpdate->treasure_type_id = $request->treasure_type_id;
         $treasureToUpdate->description = $request->description; 

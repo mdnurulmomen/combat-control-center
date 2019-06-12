@@ -147,7 +147,7 @@
                                             </div>
 
                                             <div class="form-row">
-                                                <div class="col-md-4 mb-4">
+                                                <div class="col-md-3 mb-4">
                                                     <label for="validationServer01">Approximate Cost</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -157,7 +157,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4 mb-4">
+                                                <div class="col-md-3 mb-4">
                                                     <label for="validationServerUsername">Exchanging Coins</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -167,13 +167,23 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4 mb-4">
+                                                <div class="col-md-3 mb-4">
                                                     <label for="validationServerUsername">Exchanging Gems</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">@ gems</span>
                                                         </div>
-                                                        <input type="number" name="exchanging_gems" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_gems }}"  aria-describedby="inputGroupPrepend3" step="any">
+                                                        <input type="number" name="exchanging_gems" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_gems }}"  aria-describedby="inputGroupPrepend3" min="1">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3 mb-4">
+                                                    <label for="validationServerUsername">Exchanging MB</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">@ megabyte</span>
+                                                        </div>
+                                                        <input type="number" name="exchanging_megabyte" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_megabyte }}"  aria-describedby="inputGroupPrepend3" step=".5">
                                                     </div>
                                                 </div>
                                             </div>
@@ -283,32 +293,42 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="col-md-4 mb-4">
+                                <div class="col-md-3 mb-4">
                                     <label for="validationServer01">Approximate Cost</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">@ taka</span>
                                         </div>
-                                        <input type="number" name="equivalent_price" class="form-control form-control-lg is-invalid"  placeholder="Equivalent Cost" required="true">
+                                        <input type="number" name="equivalent_price" class="form-control form-control-lg is-invalid"  placeholder="Taka" required="true">
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 mb-4">
+                                <div class="col-md-3 mb-4">
                                     <label for="validationServerUsername">Exchanging Coins</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">@ coins</span>
                                         </div>
-                                        <input type="number" name="exchanging_coins" class="form-control form-control-lg is-valid" placeholder="Exchanging Coins"aria-describedby="inputGroupPrepend3" min="1">
+                                        <input type="number" name="exchanging_coins" class="form-control form-control-lg is-valid" placeholder="Coins"aria-describedby="inputGroupPrepend3" min="1">
                                     </div>
                                 </div>
-                                <div class="col-md-4 mb-4">
+                                <div class="col-md-3 mb-4">
                                     <label for="validationServerUsername">Exchanging Gems</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">@ gems</span>
                                         </div>
-                                        <input type="number" name="exchanging_gems" class="form-control form-control-lg is-valid" placeholder="Exchanging Gems" aria-describedby="inputGroupPrepend3" min="1">
+                                        <input type="number" name="exchanging_gems" class="form-control form-control-lg is-valid" placeholder="Gems" aria-describedby="inputGroupPrepend3" min="1">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 mb-4">
+                                    <label for="validationServerUsername">Exchanging MB</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">@ megabyte</span>
+                                        </div>
+                                        <input type="number" name="exchanging_megabyte" class="form-control form-control-lg is-valid" placeholder="MB"  aria-describedby="inputGroupPrepend3" step=".5">
                                     </div>
                                 </div>
                             </div>

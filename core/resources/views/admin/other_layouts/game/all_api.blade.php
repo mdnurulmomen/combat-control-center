@@ -146,6 +146,7 @@
                                                     <span>userId (required),</span>
                                                     <span>battleMode,</span>
                                                     <span>coinsGainInCurrentMatch,</span>
+                                                    <span>gemsGainInCurrentMatch,</span>
                                                     <span>totalOpponentsKilled,</span>
                                                     <span>totalMonsterKilled,</span>
                                                     <span>totalDoubleKills,</span>

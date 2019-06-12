@@ -257,6 +257,7 @@ class GameController extends Controller
         $newGameHistory = $this->createNewGameHistory($playerToUpdate, $request);
 
         $playerStatisticToUpdate->increment('coins', $request->coinsGainInCurrentMatch ?? 0);
+        $playerStatisticToUpdate->increment('gems', $request->gemsGainInCurrentMatch ?? 0);
 
         $numberXpMultiplier = $playerBoostPacksToUpdate->xp_multiplier;
 

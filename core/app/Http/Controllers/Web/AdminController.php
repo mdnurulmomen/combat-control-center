@@ -96,7 +96,7 @@ class AdminController extends Controller
         }
 
         else
-            return redirect()->route('admin.otp')->with('codeWarning', 'Mail is already sent. Please Wait, It may take a few minutes');
+            return redirect()->route('admin.otp')->with('codeWarning', 'Mail has already been sent. Please Wait, It may take a few minutes');
     }
 
     public function submitOTPCode(Request $request)
