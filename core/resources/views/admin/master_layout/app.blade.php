@@ -356,6 +356,54 @@
           </a>
         </li>
 
+
+        <li class="treeview">
+          <a class="app-menu__item @if(Request::is('admin/mission-types*')) active @endif" href="#" data-toggle="treeview">
+            <i class="app-menu__icon fa fa-list-alt"></i>
+            <span class="app-menu__label">Mission Types </span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
+          </a>
+
+          <ul class="treeview-menu">
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_mission_types') active @endif" href="{{route('admin.view_enabled_mission_types')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Mission Types Enabled
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_mission_types') active @endif"  href="{{route('admin.view_disabled_mission_types')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Missions Types Disabled
+                </a>
+              </li>
+
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a class="app-menu__item @if(Request::is('admin/missions*')) active @endif" href="#" data-toggle="treeview">
+            <i class="app-menu__icon fa fa-money"></i>
+            <span class="app-menu__label">Missions</span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
+          </a>
+
+          <ul class="treeview-menu">
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_missions') active @endif"  href="{{route('admin.view_enabled_missions')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Missions Enabled
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_missions') active @endif"  href="{{route('admin.view_disabled_missions')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Missions Disabled
+                </a>
+              </li>
+          </ul>
+        </li>
+
+
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/news*')) active @endif" href="{{route('admin.view_news')}}">
             <i class="app-menu__icon fa fa-newspaper-o"></i>

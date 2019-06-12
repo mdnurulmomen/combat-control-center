@@ -12,7 +12,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
         Route::get('email-otp', 'Web\AdminController@showOTP')->name('admin.otp');
         Route::get('resend-email-otp/{adminId}', 'Web\AdminController@generateNewOTPToken')->name('admin.generate_new_otp_code');
         Route::post('email-otp', 'Web\AdminController@submitOTPCode')->name('admin.submit_otp_code');
-
     });
 
     Route::group(['middleware'=>['auth:admin', 'check.OTP']], function ()
@@ -212,6 +211,21 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
         Route::put('messages/{messageId}', 'Web\MediaController@submitEditedMessage')->name('admin.updated_message_submit');
         Route::delete('message/{messageId}', 'Web\MediaController@messageDeleteMethod')->name('admin.delete_message');
 
-    
+        
+        Route::get('mission-types/enabled', 'Web\MissionController@showAllEnabledMissionTypes')->name('admin.view_enabled_mission_types');
+        Route::get('mission-types/disabled', 'Web\MissionController@showAllDisabledMissionTypes')->name('admin.view_disabled_mission_types');
+        Route::post('mission-types', 'Web\MissionController@submitCreateMissionTypeForm')->name('admin.created_mission_type_submit');
+        Route::put('mission-types/{missionTypeId}', 'Web\MissionController@submitMissionTypeEditForm')->name('admin.updated_mission_type_submit');
+        Route::delete('mission-types/{missionTypeId}', 'Web\MissionController@missionTypeDeleteMethod')->name('admin.delete_mission_type');
+        Route::patch('mission-types/{missionTypeId}', 'Web\MissionController@missionTypeUndoMethod')->name('admin.undo_mission_type');
+
+
+        Route::get('missions/enabled', 'Web\MissionController@showEnabledMissions')->name('admin.view_enabled_missions');
+        Route::get('missions/disabled', 'Web\MissionController@showDisabledMissions')->name('admin.view_disabled_missions');
+        Route::post('missions', 'Web\MissionController@submitCreateMissionForm')->name('admin.created_mission_submit');
+        Route::put('missions/{missionId}', 'Web\MissionController@submitMissionEditForm')->name('admin.updated_mission_submit');
+        Route::delete('missions/{missionId}', 'Web\MissionController@missionDeleteMethod')->name('admin.delete_mission');
+        Route::patch('missions/{missionId}', 'Web\MissionController@missionUndoMethod')->name('admin.undo_mission');
+
     });
 });
