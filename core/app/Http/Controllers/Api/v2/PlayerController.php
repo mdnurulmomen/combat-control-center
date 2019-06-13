@@ -62,42 +62,67 @@ class PlayerController extends Controller
         $request = new Request($payload);
 
         $request->validate([
-          'facebookId'=>'required_without:userDeviceId'
+
+          'mobileNo'=>'required_without:userDeviceId',
+          
         ]);
 
-        if(is_null($request->facebookId) || empty($request->facebookId)) {
-
-            if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
+        if (is_null($request->mobileNo) || empty($request->mobileNo)) {
+            
+            if ($userExist = User::takenDeviceId($request->userDeviceId)->first()) {
 
                 return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
-            else{
+
+            else {
 
                 return $this->createPlayerMethod($request);
             }
         }
 
-        else{
+        else {
 
-            if ($userExist = User::where('facebook_id', $request->facebookId)->first()) {
+            // For Users who are Identified by phone
+            if ($userExist = User::takenMobileNo($request->mobileNo)->first()) {
 
                 return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
 
-            else if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
+            // For Guest User who are Identified by userDeviceId
+            elseif ($userExist = User::takenDeviceId($request->userDeviceId)->first()) {
 
-                // Merging with Guest Account
-                $userExist->username = $request->facebookName;
+                // Updating Guest User
                 $userExist->device_info = '';
-                $userExist->email = $request->userEmail;
-                $userExist->facebook_id = $request->facebookId;
-                $userExist->facebook_name = $request->facebookName;
+                $userExist->phone = $request->mobileNo;
                 $userExist->login_type = 'true';
 
+                if ($request->facebookName || $request->gmailName) {
+                    
+                    $userExist->username = $request->facebookName ?? $request->gmailName;
+                }
+
+                $request->has('userEmail') ? $userExist->email = $request->userEmail : 0;
+                $request->has('facebookId') ? $userExist->facebook_id = $request->facebookId : 0;
+                $request->has('facebookName') ? $userExist->facebook_name = $request->facebookName : 0;
+                $request->has('gmailId') ? $userExist->gmail_id = $request->gmailId : 0;
+                $request->has('gmailName') ? $userExist->gmail_name = $request->gmailName : 0;
                 $userExist->save();
 
                 return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
+
+            // For Old User who were Identified by facebookId
+            elseif ($userExist = User::takenFacebookId($request->facebookId)->first()) {
+                
+                // Updating Guest User with NEW data
+                $userExist->phone = $request->mobileNo;
+
+                $request->has('userEmail') ? $userExist->email = $request->userEmail : 0;
+                $request->has('facebookName') ? $userExist->facebook_name = $request->facebookName : 0;
+                $userExist->save();
+
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
+            } 
 
             else{
                 return $this->createPlayerMethod($request);
@@ -142,18 +167,28 @@ class PlayerController extends Controller
     public function createUser($request)
     {
         $newUser = new User();
-        $newUser->username = $request->facebookName ?? $request->userName;
-        $newUser->phone = $request->mobileNo ?? '';
-        $newUser->email = $request->userEmail ?? '';
+        $newUser->phone = $request->mobileNo;
+        $newUser->email = $request->userEmail;
         $newUser->location = $request->userLocation ?? 'Dhaka';
-        $newUser->facebook_id = $request->facebookId ?? '';
-        $newUser->facebook_name = $request->facebookName ?? '';
-        $newUser->profile_pic = $request->profilePic ?? '';
+        $newUser->facebook_id = $request->facebookId;
+        $newUser->facebook_name = $request->facebookName;
+        $newUser->gmail_id = $request->gmailId ;
+        $newUser->gmail_name = $request->gmailName ;
+        $newUser->profile_pic = $request->profilePic ;
         $newUser->country = $request->country ?? 'Bangladesh';
         $newUser->connection_type = $request->connectionType;
         $newUser->type = strtolower('player');
-        empty($request->facebookId) ? $newUser->device_info = $request->userDeviceId : $newUser->device_info = '';
-        empty($request->facebookId) ? $newUser->login_type = 'false' : $newUser->login_type = 'true';
+
+        if ($request->mobileNo) {
+            $newUser->username = $request->facebookName ?? $request->gmailName ?? $request->userName;
+            $newUser->device_info = null;
+            $newUser->login_type = 'true';
+        }else{
+            $newUser->username = $request->userName ?? 'No Name';
+            $newUser->device_info = $request->userDeviceId;
+            $newUser->login_type = 'false' ;
+        }
+        
         $newUser->save();
 
         return $newUser;

@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('location')->nullable()->default('Dhaka');
             $table->string('facebook_id')->nullable();
             $table->string('facebook_name')->nullable();
+            $table->string('gmail_id')->nullable();
+            $table->string('gmail_name')->nullable();
             $table->string('profile_pic')->nullable();
             $table->string('login_type')->nullable()->default('false');
             $table->string('country')->nullable()->default('Bangladesh');
