@@ -30,9 +30,13 @@ class TreasureController extends Controller
             
             $treasureDetails = Treasure::find($giftTreasure->treasure_id);
 
-            $updatedEarn->decrement('current_earning', $required_earn ?? 0);
+            if ($treasureDetails) {
 
-            return ['giftTreasure'=>'true', 'treasureDetails'=>new TreasureResource($treasureDetails)];
+                $updatedEarn->decrement('current_earning', $required_earn ?? 0);
+                return ['giftTreasure'=>'true', 'treasureDetails'=>new TreasureResource($treasureDetails)];
+            }
+
+            return ['giftTreasure'=>'false'];
         }
 
         return ['giftTreasure'=>'false'];
