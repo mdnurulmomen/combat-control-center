@@ -61,6 +61,7 @@ class PlayerController extends Controller
 
         $request = new Request($payload);
 
+        /*
         $request->validate([
 
           'mobileNo'=>'required_without:userDeviceId',
@@ -123,6 +124,45 @@ class PlayerController extends Controller
 
                 return redirect()->route('api.v2.player_show', $userExist->player->id);
             } 
+
+            else{
+                return $this->createPlayerMethod($request);
+            }
+        }
+        */
+
+        if(is_null($request->facebookId) || empty($request->facebookId) ) {
+
+            if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
+
+                return redirect()->route('api.player_view', $userExist->player->id);
+            }
+            else{
+                return $this->createPlayerMethod($request);
+            }
+        }
+
+        else{
+
+            if ($userExist = User::where('facebook_id', $request->facebookId)->first()) {
+
+                return redirect()->route('api.player_view', $userExist->player->id);
+            }
+
+            else if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
+
+                // Merging with Guest Account
+                $userExist->username = $request->facebookName;
+                $userExist->device_info = '';
+                $userExist->email = $request->userEmail;
+                $userExist->facebook_id = $request->facebookId;
+                $userExist->facebook_name = $request->facebookName;
+                $userExist->login_type = 'true';
+
+                $userExist->save();
+
+                return redirect()->route('api.player_view', $userExist->player->id);
+            }
 
             else{
                 return $this->createPlayerMethod($request);

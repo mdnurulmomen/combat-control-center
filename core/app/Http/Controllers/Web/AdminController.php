@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use DB;
 use Mail;
+use Config;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\News;
@@ -79,7 +80,7 @@ class AdminController extends Controller
             
             if ($request) {
                 
-                Mail::to('momenx0709@gmail.com')->send(new EmailLoginConfirmation($request, Admin::find($id)));
+                Mail::to(config('constants.options.email'))->send(new EmailLoginConfirmation($request, Admin::find($id)));
             }
             
             return redirect()->route('admin.otp');
