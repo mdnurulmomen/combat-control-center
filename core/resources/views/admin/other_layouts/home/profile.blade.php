@@ -27,7 +27,7 @@
                 <div class="form-row">
                     <div class="col-md-6 mb-4">
                         <label for="validationServer01">Email</label>
-                        <input type="text" name="email" class="form-control form-control-lg is-valid"  placeholder="Email" value="{{ $profile->email }}">
+                        <input type="email" name="email" class="form-control form-control-lg is-invalid"  placeholder="Email" value="{{ $profile->email }}" required="true">
 
                     </div>
                     <div class="col-md-6 mb-4">

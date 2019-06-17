@@ -24,7 +24,7 @@
                 <div class="form-row">
                     <div class="col-md-6 mb-6">
                         <label for="validationServer01">Email</label>
-                        <input type="text" name="email" class="form-control is-valid"  placeholder="Email" value="{{ $email }}">
+                        <input type="email" name="email" class="form-control is-valid"  placeholder="Email" value="{{ $email }}">
 
                     </div>
                     <div class="col-md-6 mb-6">

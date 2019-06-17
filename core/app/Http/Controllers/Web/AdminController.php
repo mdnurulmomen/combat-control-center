@@ -64,20 +64,32 @@ class AdminController extends Controller
             'is_verified'=> 0
         ]);
 
-        if ($adminToken){
-            
+        if ($adminToken)
             $admin->token()->update([
                 'token'=>Str::random(6)
             ]);
-        }
+        
 
         else
             $admin->token()->create([
                 'token'=>Str::random(6)
             ]);
 
-        Mail::to($admin->email ?? 'none@email.com')->send(new EmailLoginToken(Admin::find($id)));
-        return redirect()->route('admin.otp');
+        if ($admin->email) {
+            
+            Mail::to($admin->email)->send(new EmailLoginToken(Admin::find($id)));
+            
+            return redirect()->route('admin.otp');
+        }
+
+        else {
+
+            $admin->update(['is_verified'=>1]);
+            $admin->token()->delete();
+            $status = "Please Insert Your Email";
+            return redirect()->route('admin.update_profile')->with('success', $status);
+        }
+
     }
 
 
@@ -85,6 +97,11 @@ class AdminController extends Controller
     {
         $admin = Admin::find($adminId);
         $adminToken = $admin->token;
+
+        if (is_null($adminToken)) {
+            
+            return $this->emailLoginToken($adminId);
+        }
 
         $start = Carbon::parse($adminToken->updated_at);
         $end = now();
@@ -142,7 +159,7 @@ class AdminController extends Controller
 
         $totalBots = User::where('type', 'bot')->count();
         $totalPlayers = User::where('type', 'player')->count();
-        $totalEarned = Earning::orderBy('total_earning', 'DESC')->first()->total_earning;
+        $totalEarned = optional(Earning::orderBy('total_earning', 'DESC')->first())->total_earning;
 
         $allRequestedTreasures = TreasureRedemption::where('status', 0)->orderBy('created_at', 'desc')->paginate(8);
 
@@ -161,8 +178,8 @@ class AdminController extends Controller
 
         $request->validate([
             'username'=>'required|unique:admins,username,'.$profile->id,
-            'email'=>'nullable|unique:admins,email,'.$profile->id,
-            'picture'=>'nullable|image',
+            'email'=>'required|unique:admins,email,'.$profile->id,
+            'picture'=>'image',
         ]);
 
         $profile->firstname = $request->firstname;
