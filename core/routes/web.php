@@ -228,4 +228,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
         Route::patch('missions/{missionId}', 'Web\MissionController@missionUndoMethod')->name('admin.undo_mission');
 
     });
+
+    Route::get('update', 'Web\AdminController@showUpdateForm')->name('admin.update_quit');
+    Route::post('update', 'Web\AdminController@submitUpdateForm')->name('admin.updated_quit_submit');
 });

