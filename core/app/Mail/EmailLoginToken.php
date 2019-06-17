@@ -30,6 +30,6 @@ class EmailLoginToken extends Mailable
      */
     public function build()
     {
-        return $this->view('admin.other_layouts.email.login_token')->with('user', $this->user);
+        return $this->from('example@example.com')->subject('Login Token')->view('admin.other_layouts.email.login_token')->with('user', $this->user);
     }
 }

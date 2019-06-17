@@ -15,7 +15,11 @@
       <div class="cover"></div>
     </section>
     <section class="lockscreen-content">
-      <div class="lock-box"><img class="rounded-circle user-image" src="{{ asset($admin->profile_picture) }}">
+      <div class="lock-box">
+        
+        <p> 
+          <img class="rounded-circle user-image" src="{{ asset($admin->profile_picture) }}">
+        </p>
 
         <p class="text-center text-muted m-0">
           Hello {{ $admin->full_name }},

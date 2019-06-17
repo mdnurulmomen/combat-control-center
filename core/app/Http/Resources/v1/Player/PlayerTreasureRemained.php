@@ -23,6 +23,7 @@ class PlayerTreasureRemained extends JsonResource
             'amount'=>$this->treasure->amount,
             'exchangingCoins'=>$this->treasure->exchanging_coins,
             'exchangingGems'=>$this->treasure->exchanging_gems,
+            'exchangingMB'=>$this->treasure->exchanging_megabyte,
             'collectingTime'=>$this->open_time,
             'collectingPoint'=>$this->collecting_point,
             'closingTime'=>$this->close_time,
