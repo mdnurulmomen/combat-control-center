@@ -135,7 +135,7 @@ class PlayerController extends Controller
 
             if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
 
-                return redirect()->route('api.player_view', $userExist->player->id);
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
             else{
                 return $this->createPlayerMethod($request);
@@ -146,7 +146,7 @@ class PlayerController extends Controller
 
             if ($userExist = User::where('facebook_id', $request->facebookId)->first()) {
 
-                return redirect()->route('api.player_view', $userExist->player->id);
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
 
             else if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
@@ -161,7 +161,7 @@ class PlayerController extends Controller
 
                 $userExist->save();
 
-                return redirect()->route('api.player_view', $userExist->player->id);
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
 
             else{
@@ -206,6 +206,7 @@ class PlayerController extends Controller
 
     public function createUser($request)
     {
+        /*
         $newUser = new User();
         $newUser->phone = $request->mobileNo;
         $newUser->email = $request->userEmail;
@@ -229,6 +230,23 @@ class PlayerController extends Controller
             $newUser->login_type = 'false' ;
         }
         
+        $newUser->save();
+        */
+
+        // Creating New User
+        $newUser = new User();
+        $newUser->username = $request->facebookName ?? $request->userName;
+        $newUser->phone = $request->mobileNo ?? '';
+        $newUser->email = $request->userEmail ?? '';
+        $newUser->location = $request->userLocation ?? 'Dhaka';
+        $newUser->facebook_id = $request->facebookId ?? '';
+        $newUser->facebook_name = $request->facebookName ?? '';
+        $newUser->profile_pic = $request->profilePic ?? '';
+        $newUser->country = $request->country ?? 'Bangladesh';
+        $newUser->connection_type = $request->connectionType;
+        $newUser->type = strtolower('player');
+        empty($request->facebookId) ? $newUser->device_info = $request->userDeviceId : $newUser->device_info = '';
+        empty($request->facebookId) ? $newUser->login_type = 'false' : $newUser->login_type = 'true';
         $newUser->save();
 
         return $newUser;
