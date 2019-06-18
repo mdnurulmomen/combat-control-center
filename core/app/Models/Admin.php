@@ -37,6 +37,9 @@ class Admin extends Authenticatable
 
     public function getProfilePictureAttribute()
     {
-        return 'assets/admin/images/profile/'.$this->picture;
+        if ($this->picture) {
+
+            return 'assets/admin/images/profile/'.$this->picture;
+        }
     }
 }

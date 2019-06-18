@@ -12,13 +12,21 @@
   </head>
   <body>
     <section class="material-half-bg">
-      <div class="cover"></div>
+      <div class="cover">
+        <div class="float-right">
+          {{-- <a href="{{route('admin.logout')}}"  class="text-white m-3">Logout</a> --}}
+        </div>
+      </div>
     </section>
     <section class="lockscreen-content">
       <div class="lock-box">
         
-        <p> 
-          <img class="rounded-circle user-image" src="{{ asset($admin->profile_picture) }}">
+        <p class="text-center">
+          @if($admin->profile_picture)
+            <img class="rounded-circle user-image" src="{{ asset($admin->profile_picture) }}">
+          @else
+            <i class="fa fa-user fa-3x" aria-hidden="true"></i>
+          @endif
         </p>
 
         <p class="text-center text-muted m-0">
@@ -36,8 +44,6 @@
           </p>
 
         @endif
-
-        
 
         <form class="unlock-form" action="{{ route('admin.submit_otp_code') }}" method="POST">
           
@@ -69,7 +75,13 @@
         </form>    
 
         <p class="text-center">
-            <a href="{{route('admin.generate_new_otp_code', $admin->id)}}">Not Found Code ? Click Here.</a>
+            <a href="{{route('admin.generate_new_otp_code', $admin->id)}}">
+              Not Found Code ? Click Here.
+            </a>
+        </p>
+
+        <p class="text-center m-0">
+            <a href="{{route('admin.logout')}}" class="mt-3">Logout</a>
         </p>
             
       </div>
