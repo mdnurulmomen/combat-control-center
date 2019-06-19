@@ -24,6 +24,10 @@ Route::middleware(['api', 'cors'])->group(function (){
         Route::post('treasure', 'Api\v1\TreasureController@playerTreasureList')->name('api.v1.player_treasure_list');
         Route::post('treasure/redemption', 'Api\v1\TreasureController@treasureRedemption')->name('api.v1.treasure_redemption');
 
+
+        Route::post('subscription', 'Api\v1\SubscriptionController@showPlayerSubscriptionDetails')->name('api.v1.subscription_detail_show');
+        Route::post('subscription/add', 'Api\v1\SubscriptionController@addPlayerSubscriptionPackage')->name('api.v1.player_subscription_add');
+
     });
 
 
@@ -45,6 +49,9 @@ Route::middleware(['api', 'cors'])->group(function (){
         Route::get('treasure', 'Api\v2\TreasureController@treasureIdentifier')->name('api.v2.treasure_identifier');
         Route::post('treasure', 'Api\v2\TreasureController@playerTreasureList')->name('api.v2.player_treasure_list');
         Route::post('treasure/redemption', 'Api\v2\TreasureController@treasureRedemption')->name('api.v2.treasure_redemption');
+
+        Route::post('subscription', 'Api\v2\SubscriptionController@showPlayerSubscriptionDetails')->name('api.v2.subscription_detail_show');
+        Route::post('subscription/add', 'Api\v2\SubscriptionController@addPlayerSubscriptionPackage')->name('api.v2.player_subscription_add');
 
     });
 
