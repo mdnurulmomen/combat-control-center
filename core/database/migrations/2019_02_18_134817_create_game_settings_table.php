@@ -16,9 +16,9 @@ class CreateGameSettingsTable extends Migration
         Schema::create('game_settings', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->float('game_rate', 8, 2)->nullable()->default(2);
-            $table->float('game_version_required', 8, 2);
-            $table->float('game_version_optional', 8, 2);
+            $table->mediumInteger('game_rate')->nullable()->default(2);
+            $table->double('game_version_required', 8, 4);
+            $table->double('game_version_optional', 8, 4);
 
             $table->boolean('maintainance_mode')->default(false);
             $table->timestamp('maintainance_start_time')->nullable();
