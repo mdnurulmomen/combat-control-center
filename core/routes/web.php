@@ -29,8 +29,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::get('password', 'Web\AdminController@showPasswordForm')->name('admin.update_password');
             Route::post('password', 'Web\AdminController@submitPasswordForm')->name('admin.updated_password_submit');
 
+
             Route::get('settings/cms', 'Web\AdminController@showAdminSettingsForm')->name('admin.settings_admin_panel');
             Route::put('settings/cms', 'Web\AdminController@submitAdminSettingsForm')->name('admin.settings_admin_panel_submit');
+
 
             Route::post('moderator', 'Web\AdminController@submitCreateModeratorForm')->name('admin.created_moderator_submit');
             Route::get('moderators/all', 'Web\AdminController@showAllModerators')->name('admin.view_moderators');
@@ -45,6 +47,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::get('game/settings', 'Web\GameController@showGameSettingsForm')->name('admin.settings_game');
             Route::put('game/settings', 'Web\GameController@submitGameSettingsForm')->name('admin.settings_game_submit');
 
+
             Route::get('rules/settings', 'Web\GameController@showRulesSettingsForm')->name('admin.settings_rules');
             Route::put('rules/settings', 'Web\GameController@submitRulesSettingsForm')->name('admin.settings_rules_submit');
 
@@ -56,20 +59,26 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::get('gift-animations', 'Web\GiftController@showGiftAnimations')->name('admin.settings_gift_animations');
             Route::put('gift-animations', 'Web\GiftController@submitGiftAnimations')->name('admin.settings_gift_animations_submit');
 
+
             Route::get('gift-boostpacks', 'Web\GiftController@showGiftBoostPacks')->name('admin.settings_gift_boost_packs');
             Route::put('gift-boostpacks', 'Web\GiftController@submitGiftBoostPacks')->name('admin.settings_gift_boost_packs_submit');
+
 
             Route::get('gift-characters', 'Web\GiftController@showGiftCharacters')->name('admin.setting_gift_characters');
             Route::put('gift-characters', 'Web\GiftController@submitGiftCharacters')->name('admin.setting_gift_characters_submit');
 
+
             Route::get('gift-parachutes', 'Web\GiftController@showGiftParachutes')->name('admin.setting_gift_parachutes');
             Route::put('gift-parachutes', 'Web\GiftController@submitGiftParachutes')->name('admin.setting_gift_parachutes_submit');
+
 
             Route::get('gift-weapons', 'Web\GiftController@showGiftWeapons')->name('admin.setting_gift_weapons');
             Route::put('gift-weapons', 'Web\GiftController@submitGiftWeapons')->name('admin.setting_gift_weapons_submit'); 
 
+
             Route::get('gift-points', 'Web\GiftController@showGiftPoints')->name('admin.setting_gift_points');
             Route::put('gift-points', 'Web\GiftController@submitGiftPoints')->name('admin.setting_gift_points_submit');        
+
 
             Route::get('players/all', 'Web\PlayerController@showAllPlayers')->name('admin.view_players');
             Route::get('player/{playerId}', 'Web\PlayerController@showPlayerEditForm')->name('admin.update_player');
@@ -231,6 +240,14 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::put('missions/{missionId}', 'Web\MissionController@submitMissionEditForm')->name('admin.updated_mission_submit');
             Route::delete('missions/{missionId}', 'Web\MissionController@missionDeleteMethod')->name('admin.delete_mission');
             Route::patch('missions/{missionId}', 'Web\MissionController@missionUndoMethod')->name('admin.undo_mission');
+
+
+            Route::get('subscription-packages/enabled', 'Web\SubscriptionController@showEnabledSubscriptionPackages')->name('admin.view_enabled_subscription_packages');
+            Route::get('subscription-packages/disabled', 'Web\SubscriptionController@showDisabledSubscriptionPackages')->name('admin.view_disabled_subscription_packages');
+            Route::post('subscription-package', 'Web\SubscriptionController@submitCreatedSubscriptionPackageForm')->name('admin.created_subscription_package_submit');
+            Route::put('subscription-package/{subscriptionPackageId}', 'Web\SubscriptionController@submitSubscriptionPackageEditForm')->name('admin.updated_subscription_package_submit');
+            Route::delete('subscription-package/{subscriptionPackageId}', 'Web\SubscriptionController@subscriptionPackageDeleteMethod')->name('admin.delete_subscription_package');
+            Route::patch('subscription-package/{subscriptionPackageId}', 'Web\SubscriptionController@subscriptionPackageUndoMethod')->name('admin.undo_subscription_package');
         });
 
     });

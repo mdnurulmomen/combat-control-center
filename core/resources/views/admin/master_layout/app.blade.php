@@ -524,6 +524,27 @@
 
         </li>
 
+        <li class="treeview">
+          <a class="app-menu__item @if(Request::is('admin/subscription*')) active @endif" href="#" data-toggle="treeview">
+            <i class="app-menu__icon fa fa-money"></i>
+            <span class="app-menu__label">Subscriptions</span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
+          </a>
+
+          <ul class="treeview-menu">
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_subscription_packages') active @endif"  href="{{route('admin.view_enabled_subscription_packages')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Subscriptions Enabled
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_subscription_packages') active @endif"  href="{{route('admin.view_disabled_subscription_packages')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Subscriptions Disabled
+                </a>
+              </li>
+          </ul>
+        </li>
 
         <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/treasures*')) active @endif" href="#" data-toggle="treeview">
