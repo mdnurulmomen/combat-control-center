@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use Illuminate\Http\Request;
+use App\Models\PlayerSubscription;
 use App\Models\SubscriptionPackage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\Player\PlayerSubscriptionResource;
@@ -30,7 +31,10 @@ class SubscriptionController extends Controller
     	}
 
 
-    	return ['message'=>'Not Subscribed', 'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)];
+    	return ['message'=>'0', 
+                'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription ?? new PlayerSubscription()), 
+                'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
+            ];
 
     }
 
@@ -48,7 +52,7 @@ class SubscriptionController extends Controller
         if ($checkSubscription) {
 
             return [
-                'message'=>'Already Subscribed',
+                'message'=>'2',                             // 2 for already Subscribed
                 'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription), 
                 'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
             ];
@@ -62,7 +66,7 @@ class SubscriptionController extends Controller
         ]);
 
         return [
-            'message'=>'success',
+            'message'=>'1',                             // 1 for success
             'playerSubscriptionDetails'=> new PlayerSubscriptionResource($newSubscribedPlayer), 
             'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
         ];

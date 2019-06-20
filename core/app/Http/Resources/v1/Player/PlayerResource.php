@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\v1\Player;
 
+use App\Models\PlayerSubscription;
 use App\Http\Resources\v1\Game\NewsResource;
 use App\Http\Resources\v1\Game\MessageCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -29,7 +30,7 @@ class PlayerResource extends JsonResource
             
             'totalBoostItems'=>new PlayerBoostDetails($this),
 
-            'playerSubscriptionDetails' => $this->subscriptionPackage()->where('player_id', $this->id)->where('status', 1)->count() > 0 ? new PlayerSubscriptionResource($this->subscriptionPackage()->where('player_id', $this->id)->where('status', 1)->first()) : 'NA', 
+            'playerSubscriptionDetails' => new PlayerSubscriptionResource($this->subscriptionPackage()->where('player_id', $this->id)->where('status', 1)->first() ?? new PlayerSubscription() ),
 
             'newsFeeds'=>NewsResource::collection($this->allNews()),
 

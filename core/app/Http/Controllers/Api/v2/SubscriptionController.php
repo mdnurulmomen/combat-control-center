@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v2;
 
 use Illuminate\Http\Request;
 use App\Http\Traits\RetrieveToken;
+use App\Models\PlayerSubscription;
 use App\Models\SubscriptionPackage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RequestWithToken;
@@ -42,7 +43,10 @@ class SubscriptionController extends Controller
     	}
 
 
-    	return ['message'=>'Not Subscribed', 'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)];
+    	return ['message'=>'0', 
+            'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription ?? new PlayerSubscription()), 
+            'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
+        ];
 
     }
 
@@ -68,7 +72,7 @@ class SubscriptionController extends Controller
         if ($checkSubscription) {
 
             return [
-                'message'=>'Already Subscribed',
+                'message'=>'2',                             // 2 for already Subscribed
                 'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription), 
                 'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
             ];
@@ -82,7 +86,7 @@ class SubscriptionController extends Controller
         ]);
 
         return [
-            'message'=>'success',
+            'message'=>'1',                             // 1 for success
             'playerSubscriptionDetails'=> new PlayerSubscriptionResource($newSubscribedPlayer), 
             'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
         ];
