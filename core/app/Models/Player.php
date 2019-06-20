@@ -38,6 +38,11 @@ class Player extends Model
         return $this->hasMany('App\Models\PlayerSubscription', 'player_id', 'id');
     }
 
+    public function scopeSubscribed($query)
+    {
+        return $this->subscriptionPackage->where('player_id', $this->id)->where('status', 1);
+    }
+
     public function playerBoostPacks()
     {
         return $this->hasOne('App\Models\PlayerBoostPack');

@@ -60,20 +60,28 @@ class GameController extends Controller
 
         // If Game is Paid Mode 
         if (Str::is('*olo', $request->matchType)) {
-            
-            $matchRate = GameSetting::first()->game_rate ?? 0;
-            $lastEarning = Earning::orderBy('total_earning', 'DESC')->first();       // Last Day Earning
-            $playerStatistics = $player->playerStatistics;
-            
-            if($playerStatistics->gems < $matchRate) {
-                return response()->json(['error'=>'Not sufficient gems'], 400); 
-            }
-            else{
-                $playerStatistics->decrement('gems', $matchRate); 
-            }            
+                
+            //  if player is subscribed    
+            if ($player->subscribed()->count()) {
+                
+                // dont charge for match
+                
+            }else{
 
-            // Add earning for solo mode
-            $this->addEarnings($lastEarning, $matchRate);
+                $playerStatistics = $player->playerStatistics;
+                $matchRate = GameSetting::first()->game_rate ?? 0;
+                $lastEarning = Earning::orderBy('total_earning', 'DESC')->first();       // Last Day Earning
+                
+                if($playerStatistics->gems < $matchRate) {
+                    return response()->json(['error'=>'Not sufficient gems'], 400); 
+                }
+                else{
+                    $playerStatistics->decrement('gems', $matchRate); 
+                }            
+
+                // Add earning for solo mode
+                $this->addEarnings($lastEarning, $matchRate);
+            }
         }
 
         // Reducing all selections for match start
