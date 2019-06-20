@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use Carbon\Carbon;
+use App\Models\Player;
+use App\Models\Earning;
 use Illuminate\Http\Request;
 use App\Models\PlayerSubscription;
 use App\Models\SubscriptionPackage;
@@ -56,7 +59,26 @@ class SubscriptionController extends Controller
                 'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription), 
                 'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
             ];
+        }    
+        
+        // Add earning for solo mode
+        $this->addEarnings($subscriptionPackage->price_gem); 
+        
+        // create new subscribed player
+        return $this->createSubscribedPlayer($request, $subscriptionPackage);
+    }
+
+    public function createSubscribedPlayer(Request $request, SubscriptionPackage $subscriptionPackage)
+    {
+        $player = Player::find($request->userId);
+        $playerStatistics = $player->playerStatistics;
+        
+        if($playerStatistics->gems < $subscriptionPackage->price_gem) {
+            return response()->json(['error'=>'Not sufficient gems'], 400); 
         }
+        else{
+            $playerStatistics->decrement('gems', $subscriptionPackage->price_gem); 
+        }            
 
         $newSubscribedPlayer = $subscriptionPackage->playerSubscription()->create([
             'start_time' => now(),
@@ -66,9 +88,45 @@ class SubscriptionController extends Controller
         ]);
 
         return [
-            'message'=>'1',                             // 1 for success
+            'message'=>'1',                             // 1 for success create
             'playerSubscriptionDetails'=> new PlayerSubscriptionResource($newSubscribedPlayer), 
             'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
         ];
+    }
+
+    // Add earning for solo mode
+    public function addEarnings($packagePrice)
+    {
+        // Last Day Earning
+        $lastEarning = Earning::orderBy('total_earning', 'DESC')->first();   
+
+        if (is_null($lastEarning)) {
+            
+            $newEarning = new Earning();
+            $newEarning->current_earning = 0 + $packagePrice ?? 0;
+            $newEarning->total_earning =  0 + $packagePrice ?? 0;
+            $newEarning->save();   
+        }
+
+        else {
+
+            $lastEarningDate = Carbon::parse($lastEarning->updated_at->format('d-m-Y'));
+            $presentDate = Carbon::now()->format('d-m-Y');
+            $difference = $lastEarningDate->diffInDays($presentDate);
+
+            if ($difference > 0) {
+
+                $newEarning = new Earning();
+                $newEarning->current_earning = $lastEarning->current_earning + $packagePrice;
+                $newEarning->total_earning = $lastEarning->total_earning + $packagePrice;
+                $newEarning->save();           
+            }
+
+            else{
+
+                $lastEarning->increment('current_earning', $packagePrice);
+                $lastEarning->increment('total_earning', $packagePrice);
+            }
+        }
     }
 }
