@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SubscriptionPackage extends Model
 {
-   	protected $dates = [
-        'start_time', 'end_time'
-    ];
-
    	use SoftDeletes;
    	
    	public function subscriptionPackageType()

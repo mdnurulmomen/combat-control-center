@@ -14,13 +14,12 @@ class PlayerSubscriptionResource extends JsonResource
      */
     public function toArray($request)
     {
-        // return parent::toArray($request);
         return [
 
-            'serial'=>$this->id,
-            'startTime'=>$this->start_time,
-            'endTime'=>$this->end_time,
-            'status'=>$this->status,
+            // 'serial'=>$this->id,
+            'startTime'=>$this->start_time->format('Y-m-d H:i:s'),
+            'endTime'=>$this->end_time->format('Y-m-d H:i:s'),
+            // 'status'=>$this->status,
 
         ];
     }

@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlayerSubscription extends Model
 {
-    // public $timestamps = false;
+    protected $dates = [
+        'start_time', 'end_time'
+    ];
+
     protected $guarded = ['id'];
+
+    // protected $dateFormat = 'Y-m-d H:i:s';
+    // public $timestamps = false;
 }
