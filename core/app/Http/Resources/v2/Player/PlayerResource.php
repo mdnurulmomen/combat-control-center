@@ -29,6 +29,8 @@ class PlayerResource extends JsonResource
             
             'totalBoostItems'=>new PlayerBoostDetails($this),
 
+            'playerSubscriptionDetails' => $this->subscriptionPackage()->where('player_id', $this->id)->where('status', 1)->count() > 0 ? new PlayerSubscriptionResource($this->subscriptionPackage()->where('player_id', $this->id)->where('status', 1)->first()) : 'NA', 
+
             'newsFeeds'=>NewsResource::collection($this->allNews()),
 
             'messages'=>new MessageCollection($this->allMessages()),

@@ -33,6 +33,11 @@ class Player extends Model
         return $this->hasOne('App\Models\DailyLoginCheck');
     }
 
+    public function subscriptionPackage()
+    {
+        return $this->hasMany('App\Models\PlayerSubscription', 'player_id', 'id');
+    }
+
     public function playerBoostPacks()
     {
         return $this->hasOne('App\Models\PlayerBoostPack');
