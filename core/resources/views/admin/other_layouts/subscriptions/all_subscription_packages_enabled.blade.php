@@ -30,6 +30,7 @@
                                 <th>Package Serial</th>
                                 <th>Name</th>
                                 <th>Type</th>
+                                <th>Cost(gems)</th>
                                 <th class="actions">Actions</th>
                             </tr>
                         </thead>
@@ -47,6 +48,7 @@
                                 <td>{{ $package->id }}</td>
                                 <td>{{ $package->name ?? 'No Name' }}</td>
                                 <td>{{ $package->subscriptionPackageType->name }}</td>
+                                <td>{{ $package->price_gem ?? 0 }}</td>
                                 <td>
 
                                     <button class="btn btn-outline-success"  data-toggle="modal" data-target="#editModal{{$package->id}}">
@@ -132,17 +134,24 @@
                                             </div>
                                             
                                             <div class="form-row">
-                                                <div class="col-md-12 mb-4 offered_time @if($package->offered_time==0)  d-none @endif">
+                                                <div class="col-md-6 mb-4 offered_time @if($package->offered_time==0)  d-none @endif">
                                                     <label for="validationServer01">Offered Hour </label>
                                                     <div class="input-group">
                                                         <input step="1" type="number" name="offered_time" class="form-control form-control-lg is-valid"  value="{{ $package->offered_time ?? 0 }}" min="0">
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-12 mb-4 offered_game @if($package->offered_game==0)  d-none @endif">
+                                                <div class="col-md-6 mb-4 offered_game @if($package->offered_game==0)  d-none @endif">
                                                     <label for="validationServer01">Offered Game </label>
                                                     <div class="input-group">
                                                         <input step="1" type="number" name="offered_game" class="form-control form-control-lg is-valid"  value="{{ $package->offered_game ?? 0 }}" min="0">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 mb-4">
+                                                    <label for="validationServer01">Price (gems) </label>
+                                                    <div class="input-group">
+                                                        <input step="1" type="number" name="price_gem" class="form-control form-control-lg is-invalid" value="{{ $package->price_gem ?? 0 }}" min="0">
                                                     </div>
                                                 </div>
                                             </div>
@@ -212,19 +221,26 @@
                             </div>
                             
                             <div class="form-row">
-                                <div class="col-md-12 mb-4 offered_time">
+                                <div class="col-md-6 mb-4 offered_time">
                                     <label for="validationServer01">Offered Hour </label>
                                     <div class="input-group">
                                         <input step="1" type="number" name="offered_time" class="form-control form-control-lg is-valid" placeholder="Free Hours" min="0">
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 mb-4 d-none offered_game">
+                                <div class="col-md-6 mb-4 d-none offered_game">
                                     <label for="validationServer01">Offered Game </label>
                                     <div class="input-group">
                                         <input step="1" type="number" name="offered_game" class="form-control form-control-lg is-valid"  placeholder="Free Match" min="0">
                                     </div>
                                 </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label for="validationServer01">Price (gems)</label>
+                                    <div class="input-group">
+                                        <input step="1" type="number" name="price_gem" class="form-control form-control-lg is-invalid"  placeholder="Equivalent Gem Price" min="0">
+                                    </div>
+                                </div>                                
                             </div>
 
                             <br>
@@ -255,20 +271,18 @@
                 // alert( str );
 
                 if (str.includes("Hour")) {
-                    
-                    // alert('Hour');
 
+                    // alert('Hour');
                     $(".offered_game").hide();
                     $(".offered_time").show();
-                    $(".offered_time").removeClass('col-md-6 d-none').addClass('col-md-12');
+                    $(".offered_time").removeClass('d-none');
                 }
                 else{
                     
-                    // alert('Match');
-                    
+                    // alert('Game');
                     $(".offered_time").hide();
                     $(".offered_game").show();
-                    $(".offered_game").removeClass('col-md-6 d-none').addClass('col-md-12');
+                    $(".offered_game").removeClass('d-none');
                 }
               
             });

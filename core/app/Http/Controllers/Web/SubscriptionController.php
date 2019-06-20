@@ -24,6 +24,7 @@ class SubscriptionController extends Controller
     {
         $request->validate([
             'subcription_package_type_id'=>'required',
+            'price_gem'=>'required',
             'offered_time'=>'required_without:offered_game'
         ]);
 
@@ -31,6 +32,7 @@ class SubscriptionController extends Controller
 
         $newSubscriptionPackage->name = ucfirst($request->name) ?? 'No Name';
         $newSubscriptionPackage->subcription_package_type_id = $request->subcription_package_type_id;
+        $newSubscriptionPackage->price_gem = $request->price_gem;
 
         if ($request->subcription_package_type_id == 1)                         // if package type is hour 
             $newSubscriptionPackage->offered_time = $request->offered_time;
@@ -47,6 +49,7 @@ class SubscriptionController extends Controller
     {
         $request->validate([
             'subcription_package_type_id'=>'required',
+            'price_gem'=>'required',
             'offered_time'=>'required_without:offered_game'
         ]);
 
@@ -54,6 +57,7 @@ class SubscriptionController extends Controller
 
         $subscriptionPackageToUpdate->name = ucfirst($request->name) ?? 'No Name';
         $subscriptionPackageToUpdate->subcription_package_type_id = $request->subcription_package_type_id;
+        $subscriptionPackageToUpdate->price_gem = $request->price_gem;
 
         if ($request->subcription_package_type_id == 1) {                       // if package type is hour 
 

@@ -18,6 +18,7 @@ class CreateSubscriptionPackagesTable extends Migration
 
             $table->string('name')->nullable()->default('Name');
             $table->integer('subcription_package_type_id');
+            $table->integer('price_gem')->default(0);
             $table->integer('offered_time')->nullable()->default(0);
             $table->integer('offered_game')->nullable()->default(0);
             $table->softDeletes();

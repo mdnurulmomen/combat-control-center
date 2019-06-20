@@ -24,6 +24,7 @@
                                 <th>Package Serial</th>
                                 <th>Name</th>
                                 <th>Type</th>
+                                <th>Cost(gems)</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -41,6 +42,7 @@
                                 <td>{{ $package->id }}</td>
                                 <td>{{ $package->name }}</td>
                                 <td>{{ $package->subscriptionPackageType->name }}</td>
+                                <td>{{ $package->price_gem ?? 0 }}</td>
                                 <td>
 
                                     <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoModal{{$package->id}}" title="Undo">
