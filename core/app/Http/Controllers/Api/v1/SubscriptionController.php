@@ -35,9 +35,9 @@ class SubscriptionController extends Controller
 
 
     	return ['message'=>'0', 
-                'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription ?? new PlayerSubscription()), 
-                'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
-            ];
+            'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription ?? new PlayerSubscription()), 
+            'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
+        ];
 
     }
 
@@ -81,8 +81,8 @@ class SubscriptionController extends Controller
         }            
 
         $newSubscribedPlayer = $subscriptionPackage->playerSubscription()->create([
-            'start_time' => now(),
-            'end_time' => now()->addHours($subscriptionPackage->offered_time),
+            'start_time' => now()->format('Y-m-d'),
+            'end_time' => now()->addHours($subscriptionPackage->offered_time)->format('Y-m-d'),
             'status' => 1,
             'player_id' => $request->userId
         ]);
