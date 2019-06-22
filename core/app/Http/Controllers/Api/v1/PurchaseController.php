@@ -219,7 +219,7 @@ class PurchaseController extends Controller
     public function purchaseStoreItem(Request $request)
     {
         $request->validate([
-            'userId'=>'required',
+            'userId'=>'required|exists:players,id',
             'itemId'=>'required',
             'gatewayName'=>'required'
         ]);

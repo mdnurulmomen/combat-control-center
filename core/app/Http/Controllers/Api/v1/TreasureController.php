@@ -45,7 +45,7 @@ class TreasureController extends Controller
     public function playerTreasureList(Request $request)
     {
         $request->validate([
-            'userId'=>'required'
+            'userId'=>'required|exists:players,id'
         ]);
 
         $player = Player::find($request->userId);

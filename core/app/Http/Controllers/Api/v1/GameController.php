@@ -37,7 +37,7 @@ class GameController extends Controller
     public function matchStart(Request $request)
     {
         $request->validate([
-            'userId'=>'required'
+            'userId'=>'required|exists:players,id'
         ]);
 
         $player = Player::find($request->userId);
@@ -199,7 +199,7 @@ class GameController extends Controller
     public function updateGameOverHistory (Request $request)
     {
         $request->validate([
-            'userId'=>'required',
+            'userId'=>'required|exists:players,id',
             'matchPlayDuration'=>'required'
         ]);
 
@@ -207,10 +207,10 @@ class GameController extends Controller
         $playerToUpdate = Player::find($request->userId);
 
         // Player Statistics
-        $playerStatisticToUpdate = PlayerStatistic::where('player_id', $request->userId)->first();
+        $playerStatisticToUpdate = $playerToUpdate->playerStatistics;
         
         // Player BoostPacks
-        $playerBoostPacksToUpdate = PlayerBoostPack::where('player_id', $request->userId)->first();
+        $playerBoostPacksToUpdate = $playerToUpdate->playerBoostPacks;
         
         if (is_null($playerToUpdate) || is_null($playerStatisticToUpdate) || is_null($playerBoostPacksToUpdate)) {
             
@@ -282,21 +282,25 @@ class GameController extends Controller
 
             // Create Player new Treasure
 
-            $newPlayerTreasure = new PlayerTreasure();
+            if ($treasureDetails && $giftTreasure) {
+                
+                $newPlayerTreasure = new PlayerTreasure();
 
-            $newPlayerTreasure->redeem_code = Str::random(8);
+                $newPlayerTreasure->redeem_code = Str::random(8);
 
-            $treasureDetails->collecting_point == -1 ? $newPlayerTreasure->collecting_point = 'nearest point' : $newPlayerTreasure->collecting_point = $treasureDetails->collecting_point;
+                $treasureDetails->collecting_point == -1 ? $newPlayerTreasure->collecting_point = 'nearest point' : $newPlayerTreasure->collecting_point = $treasureDetails->collecting_point;
 
-            $newPlayerTreasure->open_time = now();
+                $newPlayerTreasure->open_time = now();
 
-            $treasureDetails->durability == -1 ? $newPlayerTreasure->close_time = 'undefined' : $newPlayerTreasure->close_time = now()->addDay($treasureDetails->durability) ;
-            
-            $newPlayerTreasure->status = 1;
-            $newPlayerTreasure->treasure_id = $giftTreasure->treasure_id;
-            $newPlayerTreasure->player_id = $request->userId;
+                $treasureDetails->durability == -1 ? $newPlayerTreasure->close_time = 'undefined' : $newPlayerTreasure->close_time = now()->addDay($treasureDetails->durability) ;
+                
+                $newPlayerTreasure->status = 1;
+                $newPlayerTreasure->treasure_id = $giftTreasure->treasure_id;
+                $newPlayerTreasure->player_id = $request->userId;
 
-            $newPlayerTreasure->save();
+                $newPlayerTreasure->save();
+            }
+
 
             $playerStatisticToUpdate->increment('treasure_won', $request->totalTreasureWon);
         }  

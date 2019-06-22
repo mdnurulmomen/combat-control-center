@@ -293,7 +293,7 @@ class PlayerController extends Controller
     public function showLeaderboard(Request $request)
     {
         $request->validate([
-          'userId'=>'required'
+          'userId'=>'required|exists:players,id'
         ]);
 
 
@@ -328,7 +328,7 @@ class PlayerController extends Controller
     public function updateMultipleAssets(Request $request)
     {
         $request->validate([
-            'userId'=>'required'
+            'userId'=>'required|exists:players,id'
         ]);
 
         $playerToUpdate = Player::find($request->userId);

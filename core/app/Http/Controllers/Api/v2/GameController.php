@@ -48,15 +48,15 @@ class GameController extends Controller
         $request = new Request($payload);
 
         $request->validate([
-            'userId'=>'required'
+            'userId'=>'required|exists:players,id'
         ]);
 
         $player = Player::find($request->userId);
 
-        if (is_null($player)) {
+        /*if (is_null($player)) {
 
             return response()->json(['error'=>'Invalid player'], 422);
-        }
+        }*/
 
         // If Game is Paid Mode 
         if (Str::is('*olo', $request->matchType)) {
@@ -243,7 +243,7 @@ class GameController extends Controller
         // $decryptedJWTPayload = openssl_decrypt($request->payload, 'AES-256-CBC', 'IjtT8uqTWOHQ6xRBfqA2tVEhNgjGzlPy', 0, '0000000000000000');
 
         $request->validate([
-            'userId'=>'required',
+            'userId'=>'required|exists:players,id',
             'matchPlayDuration'=>'required'
         ]);
 
@@ -251,10 +251,10 @@ class GameController extends Controller
         $playerToUpdate = Player::find($request->userId);
 
         // Player Statistics
-        $playerStatisticToUpdate = PlayerStatistic::where('player_id', $request->userId)->first();
+        $playerStatisticToUpdate = $playerToUpdate->playerStatistics;
         
         // Player BoostPacks
-        $playerBoostPacksToUpdate = PlayerBoostPack::where('player_id', $request->userId)->first();
+        $playerBoostPacksToUpdate = $playerToUpdate->playerBoostPacks;
         
         if (is_null($playerToUpdate) || is_null($playerStatisticToUpdate) || is_null($playerBoostPacksToUpdate)) {
             

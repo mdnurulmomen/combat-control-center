@@ -131,6 +131,12 @@ class PlayerController extends Controller
         }
         */
 
+        $request->validate([
+
+          'facebookId'=>'required_without:userDeviceId',
+          
+        ]);
+
         if(is_null($request->facebookId) || empty($request->facebookId) ) {
 
             if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
@@ -498,7 +504,7 @@ class PlayerController extends Controller
         $request = new Request($payload);
 
         $request->validate([
-            'userId'=>'required'
+            'userId'=>'required|exists:users,id'
         ]);
 
         $request = $this->sanitize($request);
@@ -594,7 +600,7 @@ class PlayerController extends Controller
     public function showLeaderboard(Request $request)
     {
         $request->validate([
-          'userId'=>'required'
+          'userId'=>'required|exists:players,id'
         ]);
 
 
@@ -642,7 +648,7 @@ class PlayerController extends Controller
         $request = new Request($payload);
 
         $request->validate([
-            'userId'=>'required'
+            'userId'=>'required|exists:players,id'
         ]);
 
         $playerToUpdate = Player::find($request->userId);
