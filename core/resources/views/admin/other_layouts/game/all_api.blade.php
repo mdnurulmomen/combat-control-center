@@ -1,4 +1,4 @@
-]
+
 @extends('admin.master_layout.app')
 @section('contents')
 
@@ -253,6 +253,28 @@
                                                 </td>
                                             </tr>
 
+                                            <tr class="info">
+                                                <th scope="row">16</th>
+                                                <td>subscription</td>
+                                                <td>Check Player Subscription</td>
+                                                <td>Post</td>
+                                                <td>
+                                                    <span>userId (required),</span>
+                                                    <span>subscriptionPackageId (required),</span>
+                                                </td>
+                                            </tr>
+
+                                            <tr class="info">
+                                                <th scope="row">17</th>
+                                                <td>subscription/add</td>
+                                                <td>Create Subscribed Player</td>
+                                                <td>Post</td>
+                                                <td>
+                                                    <span>userId (required),</span>
+                                                    <span>subscriptionPackageId (required),</span>
+                                                </td>
+                                            </tr>
+
                                         </tbody>
                                     </table>
 
@@ -486,6 +508,28 @@
                                                     <span>playerPhone,</span>
                                                     <span>agentPhone,</span>
                                                     <span>exchangingType (coins,gems,MB,TalkTime,talkTime,talktime)</span>
+                                                </td>
+                                            </tr>
+
+                                            <tr class="info">
+                                                <th scope="row">16</th>
+                                                <td>subscription</td>
+                                                <td>Check Player Subscription</td>
+                                                <td>Post</td>
+                                                <td>
+                                                    <span>userId (required),</span>
+                                                    <span>subscriptionPackageId (required),</span>
+                                                </td>
+                                            </tr>
+
+                                            <tr class="info">
+                                                <th scope="row">17</th>
+                                                <td>subscription/add</td>
+                                                <td>Create Subscribed Player</td>
+                                                <td>Post</td>
+                                                <td>
+                                                    <span>userId (required),</span>
+                                                    <span>subscriptionPackageId (required),</span>
                                                 </td>
                                             </tr>
 
