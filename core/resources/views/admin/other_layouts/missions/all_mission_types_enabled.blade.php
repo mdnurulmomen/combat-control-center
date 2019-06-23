@@ -11,11 +11,14 @@
                 </div>
 
                 <div class="col-6">
-                    <button type="button" class="btn btn-info float-right mr-3 ml-3" data-toggle="modal" data-target="#addMissionType">
+                    <a  href="{{route('admin.view_disabled_mission_types')}}"  class="btn btn-outline-danger float-right" type="button">
+                        Disabled Types
+                    </a>
+
+                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addMissionType">
                         New Mission Type
                     </button>
                 </div>
-
             </div>
 
             <hr>

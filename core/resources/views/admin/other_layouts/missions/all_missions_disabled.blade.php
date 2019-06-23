@@ -10,6 +10,11 @@
                     <h3 class="float-left">Disabled Missions List </h3>
                 </div>
 
+                <div class="col-6">
+                    <a  href="{{route('admin.view_enabled_missions')}}"  class="btn btn-outline-success float-right" type="button">
+                        Enabled Missions
+                    </a>
+                </div>
             </div>
 
             <hr>

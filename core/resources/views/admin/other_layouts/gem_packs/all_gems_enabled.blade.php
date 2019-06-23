@@ -9,8 +9,11 @@
                         <h3 class="float-left">Enabled Gems Packs List </h3>
                     </div>
 
-                    <div class="col-6">    
-                        <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#addModal">
+                    <div class="col-6">
+                        <a href="{{route('admin.view_disabled_gem_packs')}}" class="btn btn-outline-danger float-right" type="button">
+                            Disabled Packs
+                        </a>    
+                        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
                             New Gems Pack
                         </button>
                     </div>

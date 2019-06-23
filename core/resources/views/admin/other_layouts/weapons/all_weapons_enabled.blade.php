@@ -11,7 +11,10 @@
                     </div>
 
                     <div class="col-6">
-                        <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#addModal">
+                        <a  href="{{route('admin.view_disabled_weapons')}}"  class="btn btn-outline-danger float-right" type="button">
+                            Disabled Weapons
+                        </a>
+                        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
                             New Weapon
                         </button>
                     </div>

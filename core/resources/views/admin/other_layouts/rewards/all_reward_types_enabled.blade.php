@@ -11,7 +11,11 @@
                 </div>
 
                 <div class="col-6">
-                    <button type="button" class="btn btn-info float-right mr-3 ml-3" data-toggle="modal" data-target="#addRewardType">
+                    <a  href="{{route('admin.view_disabled_reward_types')}}"  class="btn btn-outline-danger float-right" type="button">
+                        Disabled List
+                    </a>
+
+                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addRewardType">
                         New Reward Type
                     </button>
                 </div>

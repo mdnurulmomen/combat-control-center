@@ -11,7 +11,7 @@
                     </div>
 
                     <div class="col-6">
-                        <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#addModal" title="Add">
+                        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal" title="Add">
                             Create Message
                         </button>
                     </div>

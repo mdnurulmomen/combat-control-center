@@ -10,8 +10,12 @@
                     </div>
 
                     <div class="col-6">
-                        <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#addModal">
-                            New Animation
+                        <a  href="{{route('admin.view_disabled_animations')}}"  class="btn btn-outline-danger float-right" type="button">
+                            Disabled Animations
+                        </a>
+
+                        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
+                            Create New Animation
                         </button>
                     </div>
                 </div>

@@ -11,6 +11,10 @@
                 </div>
 
                 <div class="col-6">
+                    <a  href="{{route('admin.view_disabled_subscription_packages')}}"  class="btn btn-outline-danger float-right" type="button">
+                        Disabled Packages
+                    </a>
+
                     <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
                         New Package
                     </button>

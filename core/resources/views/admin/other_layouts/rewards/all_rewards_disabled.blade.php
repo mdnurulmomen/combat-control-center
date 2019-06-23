@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="col-6">
-                    <a type="button" class="btn btn-info float-right mr-3 ml-3" href="{{route('admin.view_enabled_login_rewards')}}">
+                    <a  href="{{route('admin.view_enabled_login_rewards')}}"  class="btn btn-outline-success float-right" type="button">
                         Enabled Rewards
                     </a>
                 </div>

@@ -2,7 +2,7 @@
 @extends('admin.master_layout.app')
 @section('contents')
 
-      <div class="row mb-4 text-center">
+      {{-- <div class="row mb-4 text-center">
 
         <div class="col-sm-4">
           <div class="card bg-success text-white h-100">
@@ -32,7 +32,7 @@
         </div>
 
 
-      </div>
+      </div> --}}
 
       <div class="row">
         

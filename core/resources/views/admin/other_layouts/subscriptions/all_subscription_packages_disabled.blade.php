@@ -9,7 +9,11 @@
                 <div class="col-6">
                     <h3 class="float-left">Disabled Subscription Packages List </h3>
                 </div>
-
+                <div class="col-6">
+                    <a  href="{{route('admin.view_enabled_subscription_packages')}}"  class="btn btn-outline-success float-right" type="button">
+                        Enabled Packages
+                    </a>
+                </div>
             </div>
 
             <hr>

@@ -9,7 +9,11 @@
                     <div class="col-6">
                         <h3 class="float-left">Disabled Weapons List </h3>
                     </div>
-
+                    <div class="col-6">
+                        <a  href="{{route('admin.view_enabled_weapons')}}"  class="btn btn-outline-danger float-right" type="button">
+                            Enabled Weapons
+                        </a>
+                    </div>
                 </div>
                     
                 <hr>

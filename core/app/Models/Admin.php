@@ -22,7 +22,6 @@ class Admin extends Authenticatable
     {
     	if ($originImageFile) {
     		
-    		// $originImageFile = $request->file('picture');
             $imageObject = ImageIntervention::make($originImageFile);
             $imageObject->resize(200, 200)->save('assets/admin/images/profile/'.$originImageFile->hashname());
 

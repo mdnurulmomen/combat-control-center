@@ -9,6 +9,11 @@
                         <h3 class="float-left">Disabled Animations List </h3>
                     </div>
 
+                    <div class="col-6">
+                        <a  href="{{route('admin.view_enabled_animations')}}"  class="btn btn-outline-success float-right" type="button">
+                            Enabled Animations
+                        </a>
+                    </div>
                 </div>
 
                 <hr>

@@ -37,7 +37,7 @@ class PlayerController extends Controller
         // create leader board
         $this->buildLeaderBoard($topLeaders);
 
-        $leaders = Leader::with('user')->paginate(6);
+        $leaders = Leader::with('user')->paginate(50);
         return view('admin.other_layouts.players.view_leaderboard', compact('leaders'));
     }
 

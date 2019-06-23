@@ -9,7 +9,11 @@
                 <div class="col-6">
                     <h3 class="float-left"> Disabled Daily Login Reward Types List </h3>
                 </div>
-
+                <div class="col-6">
+                    <a  href="{{route('admin.view_enabled_reward_types')}}"  class="btn btn-outline-success float-right" type="button">
+                        Enabled Types
+                    </a>
+                </div>
             </div>
 
             <hr>

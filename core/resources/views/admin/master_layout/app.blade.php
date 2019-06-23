@@ -42,11 +42,15 @@
 
   <body class="app sidebar-mini rtl">
     <!-- Navbar-->
-    <header class="app-header"><a class="app-header__logo" href="{{route('admin.home')}}">TreasureHunt</a>
+    <header class="app-header"><a class="app-header__logo" href="{{route('admin.home')}}"><i class="fa fa-home" aria-hidden="true"></i></a>
       <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       <!-- Navbar Right Menu-->
       <ul class="app-nav">
         
+        <li class="app-search">
+          <input class="app-search__input text-center" type="search" value="৳ {{ App\Models\Earning::latest()->first()->total_earning }}" placeholder="Search" readonly="true">
+        </li>
+
         <!-- User Menu-->
         <li class="dropdown">
           <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">
@@ -104,7 +108,6 @@
                 <i class="icon fa fa-circle-o"></i> Rules Settings
               </a>
             </li>
-
 
             <li>
               <a class="treeview-item @if(Route::currentRouteName()=='admin.settings_game') active @endif" href="{{route('admin.settings_game')}}">
@@ -187,12 +190,12 @@
           </a>
         </li>
 
-        <li class="treeview">
+        {{-- <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/bot*')) active @endif" href="{{route('admin.view_bots')}}">
             <i class="app-menu__icon fa fa-android"></i>
             <span class="app-menu__label">Bot</span>
           </a>
-        </li>
+        </li> --}}
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/image*')) active @endif" href="{{route('admin.view_images')}}">
@@ -209,145 +212,46 @@
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/animation*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/animation*')) active @endif" href="{{route('admin.view_enabled_animations')}}">
             <i class="app-menu__icon fa fa-circle-o-notch"></i>
             <span class="app-menu__label">Animations</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-          <ul class="treeview-menu">
-            
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_animations') active @endif" href="{{route('admin.view_enabled_animations')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Animations Enabled
-              </a>
-            </li>
-
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_animations') active @endif"  href="{{route('admin.view_disabled_animations')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Animations Disabled
-              </a>
-            </li>
-
-          </ul>
         </li>
 
-
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/boost-pack*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/boost-pack*')) active @endif" href="{{route('admin.view_enabled_boost_packs')}}">
             <i class="app-menu__icon fa fa-rocket"></i>
             <span class="app-menu__label">Boost Packs</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-          <ul class="treeview-menu">
-            
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_boost_packs') active @endif"  href="{{route('admin.view_enabled_boost_packs')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Boost Packs Enabled
-              </a>
-            </li>
-
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_boost_packs') active @endif"  href="{{route('admin.view_disabled_boost_packs')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Boost Packs Disabled
-              </a>
-            </li>
-
-          </ul>
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/bundle-pack*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/bundle-pack*')) active @endif" href="{{route('admin.view_enabled_bundle_packs')}}">
             <i class="app-menu__icon fa fa-gear"></i>
             <span class="app-menu__label">Bundle Packs</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-          <ul class="treeview-menu">
-            
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_bundle_packs') active @endif"  href="{{route('admin.view_enabled_bundle_packs')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Bundle Packs Enabled
-              </a>
-            </li>
-
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_bundle_packs') active @endif"  href="{{route('admin.view_disabled_bundle_packs')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Bundle Packs Disabled
-              </a>
-            </li>
-
-          </ul>
         </li>
 
-
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/character*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/character*')) active @endif"  href="{{route('admin.view_enabled_characters')}}">
             <i class="app-menu__icon fa fa-child"></i>
             <span class="app-menu__label">Characters</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-          <ul class="treeview-menu">
-            
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_characters') active @endif"  href="{{route('admin.view_enabled_characters')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Characters Enabled
-              </a>
-            </li>
-
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_characters') active @endif"  href="{{route('admin.view_disabled_characters')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Characters Disabled
-              </a>
-            </li>
-
-          </ul>
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/coin-packs*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/coin-packs*')) active @endif" href="{{route('admin.view_enabled_coin_packs')}}">
             <i class="app-menu__icon fa fa-circle"></i>
             <span class="app-menu__label">Coin Packs</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-          <ul class="treeview-menu">
-            
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_coin_packs') active @endif" href="{{route('admin.view_enabled_coin_packs')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Coin Packs Enabled
-              </a>
-            </li>
-
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_coin_packs') active @endif"  href="{{route('admin.view_disabled_coin_packs')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Coin Packs Disabled
-              </a>
-            </li>
-
-          </ul>
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/gem-packs*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/gem-packs*')) active @endif" href="{{route('admin.view_enabled_gem_packs')}}">
             <i class="app-menu__icon fa fa-diamond"></i>
             <span class="app-menu__label">Gem Packs</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-          <ul class="treeview-menu">
-            
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_gem_packs') active @endif" href="{{route('admin.view_enabled_gem_packs')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Gem Packs Enabled
-              </a>
-            </li>
-
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_gem_packs') active @endif"  href="{{route('admin.view_disabled_gem_packs')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Gem Packs Disabled
-              </a>
-            </li>
-
-          </ul>
         </li>
-
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/message*')) active @endif" href="{{route('admin.view_messages')}}">
@@ -356,51 +260,18 @@
           </a>
         </li>
 
-
         <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/mission-types*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/mission-types*')) active @endif" href="{{route('admin.view_enabled_mission_types')}}">
             <i class="app-menu__icon fa fa-list-alt"></i>
-            <span class="app-menu__label">Mission Types </span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
+            <span class="app-menu__label">Mission Types</span>
           </a>
-
-          <ul class="treeview-menu">
-
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_mission_types') active @endif" href="{{route('admin.view_enabled_mission_types')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Mission Types Enabled
-                </a>
-              </li>
-
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_mission_types') active @endif"  href="{{route('admin.view_disabled_mission_types')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Missions Types Disabled
-                </a>
-              </li>
-
-          </ul>
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/missions*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/missions*')) active @endif"  href="{{route('admin.view_enabled_missions')}}">
             <i class="app-menu__icon fa fa-money"></i>
             <span class="app-menu__label">Missions</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-
-          <ul class="treeview-menu">
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_missions') active @endif"  href="{{route('admin.view_enabled_missions')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Missions Enabled
-                </a>
-              </li>
-
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_missions') active @endif"  href="{{route('admin.view_disabled_missions')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Missions Disabled
-                </a>
-              </li>
-          </ul>
         </li>
 
 
@@ -411,28 +282,11 @@
           </a>
         </li>
 
-
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/parachute*')) active @endif" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-th-large"></i>
+          <a class="app-menu__item  @if(Request::is('admin/parachute*')) active @endif" href="{{route('admin.view_enabled_parachutes')}}">
+            <i class="app-menu__icon fa fa-money"></i>
             <span class="app-menu__label">Parachutes</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-          <ul class="treeview-menu">
-            
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_parachutes') active @endif"  href="{{route('admin.view_enabled_parachutes')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Parachutes Enabled
-              </a>
-            </li>
-
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_parachutes') active @endif"  href="{{route('admin.view_disabled_parachutes')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Parachutes Disabled
-              </a>
-            </li>
-
-          </ul>
         </li>
 
         <li class="treeview">
@@ -443,52 +297,18 @@
         </li>
 
         <li class="treeview">
-          
-          <a class="app-menu__item @if(Request::is('admin/reward-types*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/reward-types*')) active @endif" href="{{route('admin.view_enabled_reward_types')}}">
             <i class="app-menu__icon fa fa-object-group"></i>
-            <span class="app-menu__label">Reward Types </span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
+            <span class="app-menu__label">Reward Types</span>
           </a>
-          
-          <ul class="treeview-menu">
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_reward_types') active @endif" href="{{route('admin.view_enabled_reward_types')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Reward Types Enabled
-                </a>
-              </li>
-
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_reward_types') active @endif"  href="{{route('admin.view_disabled_reward_types')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Reward Types Disabled
-                </a>
-              </li>
-          </ul>
-
         </li>
 
 
         <li class="treeview">
-          
-          <a class="app-menu__item @if(Request::is('admin/daily-login-reward*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item @if(Request::is('admin/daily-login-reward*')) active @endif" href="{{route('admin.view_enabled_login_rewards')}}">
             <i class="app-menu__icon fa fa-trophy"></i>
             <span class="app-menu__label">Rewards</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-          
-          <ul class="treeview-menu">
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_login_rewards') active @endif" href="{{route('admin.view_enabled_login_rewards')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Rewards Enabled
-                </a>
-              </li>
-
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_login_rewards') active @endif"  href="{{route('admin.view_disabled_login_rewards')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Rewards Disabled
-                </a>
-              </li>
-          </ul>
-
         </li>
 
         <li class="treeview">
@@ -498,52 +318,18 @@
           </a>
         </li>
 
-
         <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/treasure-types*')) active @endif" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-list-alt"></i>
-            <span class="app-menu__label">Treasure Types </span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
+          <a class="app-menu__item @if(Request::is('admin/treasure-types*')) active @endif" href="{{route('admin.view_enabled_treasure_types')}}">
+            <i class="app-menu__icon fa fa-trophy"></i>
+            <span class="app-menu__label">Treasure Types</span>
           </a>
-
-          <ul class="treeview-menu">
-
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_treasure_types') active @endif" href="{{route('admin.view_enabled_treasure_types')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Treasure Types Enabled
-                </a>
-              </li>
-
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_treasure_types') active @endif"  href="{{route('admin.view_disabled_treasure_types')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Treasures Types Disabled
-                </a>
-              </li>
-
-          </ul>
-
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/subscription*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item @if(Request::is('admin/subscription*')) active @endif" href="{{route('admin.view_enabled_subscription_packages')}}">
             <i class="app-menu__icon fa fa-money"></i>
             <span class="app-menu__label">Subscriptions</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-
-          <ul class="treeview-menu">
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_subscription_packages') active @endif"  href="{{route('admin.view_enabled_subscription_packages')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Subscriptions Enabled
-                </a>
-              </li>
-
-              <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_subscription_packages') active @endif"  href="{{route('admin.view_disabled_subscription_packages')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Subscriptions Disabled
-                </a>
-              </li>
-          </ul>
         </li>
 
         <li class="treeview">
@@ -586,31 +372,12 @@
           </ul>
         </li>
 
-
-
         <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/weapon*')) active @endif" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-cogs"></i>
+          <a class="app-menu__item @if(Request::is('admin/weapon*')) active @endif"  href="{{route('admin.view_enabled_weapons')}}">
+            <i class="app-menu__icon fa fa-money"></i>
             <span class="app-menu__label">Weapons</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
-          <ul class="treeview-menu">
-            
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_weapons') active @endif"  href="{{route('admin.view_enabled_weapons')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Weapons Enabled
-              </a>
-            </li>
-
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_weapons') active @endif"  href="{{route('admin.view_disabled_weapons')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Weapons Disabled
-              </a>
-            </li>
-
-          </ul>
         </li>
-
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/api*')) active @endif" href="{{ route('admin.view_api') }}">

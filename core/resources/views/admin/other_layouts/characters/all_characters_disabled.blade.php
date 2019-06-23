@@ -9,6 +9,11 @@
                     <div class="col-6">
                         <h3 class="float-left"> Disabled Characters List </h3>
                     </div>
+                    <div class="col-6">
+                        <a  href="{{route('admin.view_enabled_characters')}}"  class="btn btn-outline-success float-right" type="button">
+                            Enabled Characters
+                        </a>
+                    </div>
                 </div>
 
                 <hr>

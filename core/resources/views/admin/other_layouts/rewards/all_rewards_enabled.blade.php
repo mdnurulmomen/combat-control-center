@@ -12,11 +12,11 @@
 
                     
                 <div class="col-6">
-                    <a type="button" class="btn btn-info float-right ml-1" href="{{route('admin.view_disabled_login_rewards')}}">
+                    <a  href="{{route('admin.view_disabled_login_rewards')}}"  class="btn btn-outline-danger float-right" type="button">
                         Disabled Rewards
                     </a>
 
-                    <button type="button" class="btn btn-info float-right mr-1" data-toggle="modal" data-target="#addReward">
+                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addReward">
                         New Rewards
                     </button>
                 </div>
