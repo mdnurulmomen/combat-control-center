@@ -161,13 +161,13 @@ class AdminController extends Controller
         $parachutes = Parachute::all();
         $bundlePacks = BundlePack::all();
 
-        $totalBots = User::where('type', 'bot')->count();
-        $totalPlayers = User::where('type', 'player')->count();
-        $totalEarned = optional(Earning::orderBy('total_earning', 'DESC')->first())->total_earning;
+        // $totalBots = User::where('type', 'bot')->count();
+        // $totalPlayers = User::where('type', 'player')->count();
+        // $totalEarned = optional(Earning::orderBy('total_earning', 'DESC')->first())->total_earning;
 
         $allRequestedTreasures = TreasureRedemption::where('status', 0)->orderBy('created_at', 'desc')->paginate(8);
 
-        return view('admin.other_layouts.home.home', compact('totalEarned', 'totalPlayers', 'totalBots', 'characters', 'weapons', 'treasures', 'animations', 'parachutes', 'coinPacks', 'gemPacks', 'bundlePacks', 'allNews', 'allMessages', 'allRequestedTreasures'));
+        return view('admin.other_layouts.home.home', compact('characters', 'weapons', 'treasures', 'animations', 'parachutes', 'coinPacks', 'gemPacks', 'bundlePacks', 'allNews', 'allMessages', 'allRequestedTreasures'));
     }
 
     public function showProfileForm()
