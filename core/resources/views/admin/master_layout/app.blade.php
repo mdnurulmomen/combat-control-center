@@ -319,16 +319,16 @@
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/treasure-types*')) active @endif" href="{{route('admin.view_enabled_treasure_types')}}">
-            <i class="app-menu__icon fa fa-trophy"></i>
-            <span class="app-menu__label">Treasure Types</span>
+          <a class="app-menu__item @if(Request::is('admin/subscription*')) active @endif" href="{{route('admin.view_enabled_subscription_packages')}}">
+            <i class="app-menu__icon fa fa-money"></i>
+            <span class="app-menu__label">Subscriptions</span>
           </a>
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/subscription*')) active @endif" href="{{route('admin.view_enabled_subscription_packages')}}">
-            <i class="app-menu__icon fa fa-money"></i>
-            <span class="app-menu__label">Subscriptions</span>
+          <a class="app-menu__item @if(Request::is('admin/treasure-types*')) active @endif" href="{{route('admin.view_enabled_treasure_types')}}">
+            <i class="app-menu__icon fa fa-trophy"></i>
+            <span class="app-menu__label">Treasure Types</span>
           </a>
         </li>
 
