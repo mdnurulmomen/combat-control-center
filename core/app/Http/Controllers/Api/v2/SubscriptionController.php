@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api\v2;
 
+use Carbon\Carbon;
+use App\Models\Player;
+use App\Models\Earning;
 use Illuminate\Http\Request;
 use App\Http\Traits\RetrieveToken;
 use App\Models\PlayerSubscription;
@@ -25,72 +28,29 @@ class SubscriptionController extends Controller
 
         $request = new Request($payload);
 
-    	$request->validate([
-    		'userId'=>'required|exists:players,id',
-    		'subscriptionPackageId'=>'required|exists:subscription_packages,id',
-    	]);
-
-    	$subscriptionPackage = SubscriptionPackage::find($request->subscriptionPackageId);
-
-    	$checkSubscription = $subscriptionPackage->playerSubscription()->where('player_id', $request->userId)->where('status', 1)->first();
-
-    	if ($checkSubscription) {
-
-			return [
-                'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription), 
-				'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
-            ];
-    	}
-
-
-    	return ['message'=>'0', 
-            'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription ?? new PlayerSubscription()), 
-            'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
-        ];
-
-    }
-
-    /*public function addPlayerSubscriptionPackage(RequestWithToken $postman)
-    {
-        $payload = $this->retrieveToken($postman);
-
-        if (is_null($payload)) {
-            return response()->json(['error'=>'Invalid token'], 422);
-        }
-
-        $request = new Request($payload);
-
         $request->validate([
             'userId'=>'required|exists:players,id',
-            'subscriptionPackageId'=>'required|exists:subscription_packages,id'
         ]);
 
-        $subscriptionPackage = SubscriptionPackage::find($request->subscriptionPackageId);
-
-        $checkSubscription = $subscriptionPackage->playerSubscription()->where('player_id', $request->userId)->where('status', 1)->first();
+        $player = Player::find($request->userId);
+        $checkSubscription = $player->subscribed()->first();
 
         if ($checkSubscription) {
 
+            $subscriptionPackage = SubscriptionPackage::find($checkSubscription->subscription_package_id);
+            
             return [
-                'message'=>'2',                             // 2 for already Subscribed
                 'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription), 
                 'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
             ];
         }
 
-        $newSubscribedPlayer = $subscriptionPackage->playerSubscription()->create([
-            'start_time' => now(),
-            'end_time' => now()->addHours($subscriptionPackage->offered_time),
-            'status' => 1,
-            'player_id' => $request->userId
-        ]);
-
         return [
-            'message'=>'1',                             // 1 for success
-            'playerSubscriptionDetails'=> new PlayerSubscriptionResource($newSubscribedPlayer), 
-            'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
+            'playerSubscriptionDetails'=> new PlayerSubscriptionResource(new PlayerSubscription()), 
+            'subscriptionPackageDetails'=> new SubscriptionPackageResource(SubscriptionPackage::first())
         ];
-    }*/
+
+    }
 
     public function addPlayerSubscriptionPackage(RequestWithToken $postman)
     {
@@ -120,9 +80,6 @@ class SubscriptionController extends Controller
             ];
         }    
         
-        // Add earning for solo mode
-        $this->addEarnings($subscriptionPackage->price_gem); 
-        
         // create new subscribed player
         return $this->createSubscribedPlayer($request, $subscriptionPackage);
     }
@@ -136,7 +93,10 @@ class SubscriptionController extends Controller
             return response()->json(['error'=>'Not sufficient gems'], 400); 
         }
         else{
-            $playerStatistics->decrement('gems', $subscriptionPackage->price_gem); 
+            $playerStatistics->decrement('gems', $subscriptionPackage->price_gem);
+
+            // Add earning for solo mode
+            $this->addEarnings($subscriptionPackage->price_gem); 
         }            
 
         $newSubscribedPlayer = $subscriptionPackage->playerSubscription()->create([

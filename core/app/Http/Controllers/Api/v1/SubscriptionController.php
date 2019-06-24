@@ -18,27 +18,25 @@ class SubscriptionController extends Controller
     {
     	$request->validate([
     		'userId'=>'required|exists:players,id',
-    		'subscriptionPackageId'=>'required|exists:subscription_packages,id',
     	]);
 
-    	$subscriptionPackage = SubscriptionPackage::find($request->subscriptionPackageId);
-
-    	$checkSubscription = $subscriptionPackage->playerSubscription()->where('player_id', $request->userId)->where('status', 1)->first();
+        $player = Player::find($request->userId);
+        $checkSubscription = $player->subscribed()->first();
 
     	if ($checkSubscription) {
 
-			return [
+            $subscriptionPackage = SubscriptionPackage::find($checkSubscription->subscription_package_id);
+			
+            return [
                 'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription), 
 				'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
             ];
     	}
 
-
-    	return ['message'=>'0', 
-            'playerSubscriptionDetails'=> new PlayerSubscriptionResource($checkSubscription ?? new PlayerSubscription()), 
-            'subscriptionPackageDetails'=> new SubscriptionPackageResource($subscriptionPackage)
+    	return [
+            'playerSubscriptionDetails'=> new PlayerSubscriptionResource(new PlayerSubscription()), 
+            'subscriptionPackageDetails'=> new SubscriptionPackageResource(SubscriptionPackage::first())
         ];
-
     }
 
     public function addPlayerSubscriptionPackage(Request $request)
@@ -61,9 +59,6 @@ class SubscriptionController extends Controller
             ];
         }    
         
-        // Add earning for solo mode
-        $this->addEarnings($subscriptionPackage->price_gem); 
-        
         // create new subscribed player
         return $this->createSubscribedPlayer($request, $subscriptionPackage);
     }
@@ -77,7 +72,11 @@ class SubscriptionController extends Controller
             return response()->json(['error'=>'Not sufficient gems'], 400); 
         }
         else{
+            
             $playerStatistics->decrement('gems', $subscriptionPackage->price_gem); 
+
+            // Add earning for solo mode
+            $this->addEarnings($subscriptionPackage->price_gem); 
         }            
 
         $newSubscribedPlayer = $subscriptionPackage->playerSubscription()->create([

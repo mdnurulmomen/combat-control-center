@@ -260,7 +260,6 @@
                                                 <td>Post</td>
                                                 <td>
                                                     <span>userId (required),</span>
-                                                    <span>subscriptionPackageId (required),</span>
                                                 </td>
                                             </tr>
 
@@ -518,7 +517,6 @@
                                                 <td>Post</td>
                                                 <td>
                                                     <span>userId (required),</span>
-                                                    <span>subscriptionPackageId (required),</span>
                                                 </td>
                                             </tr>
 
