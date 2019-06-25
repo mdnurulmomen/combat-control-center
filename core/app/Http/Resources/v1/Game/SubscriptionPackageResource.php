@@ -16,6 +16,7 @@ class SubscriptionPackageResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
+            'id'=>$this->id,
             'name'=>$this->name,
             'type'=>$this->subscriptionPackageType->name,
             'time'=>$this->offered_time.' Hours'
