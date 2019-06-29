@@ -12,10 +12,43 @@ class AnimationController extends Controller
 {
     use UpdateStore;
 
-    public function showEnabledanimations()
+    public function showEnabledanimations(Request $request)
     {
+        if ($request->ajax()) {
+          
+            return datatables()->of(Animation::query())
+                    ->setRowClass(function ($animation){
+                        return $animation->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+                    ->setRowId(function($animation){
+                        return $animation->id;
+                    })
+                    ->setRowAttr(['align'=>'left'])
+                    ->addColumn('action', function($animation){
+
+                        $button  =  "<i class='fa fa-fw fa-eye' style='transform: scale(1.5);'  title='View'></i>";
+
+                        $button .= "&nbsp; &nbsp;";
+
+                        $button  .=  "<i class='fa fa-fw fa-edit text-info' style='transform: scale(1.5);' data-toggle='modal' data-target='#editModal".$animation->id."' title='Edit'></i>";
+
+                        $button .= "&nbsp; &nbsp;";
+
+                        $button .= "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5); padding: 2px;' data-toggle='modal' data-target='#deleteModal".$animation->id."' title='Delete'></i>";
+
+                        return $button;
+
+                    })
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.animations.all_animations_enabled');
+
+    /*
         $animations = Animation::paginate(6);
         return view('admin.other_layouts.animations.all_animations_enabled', compact('animations'));
+    */
+
     }
 
     public function showDisabledanimations()

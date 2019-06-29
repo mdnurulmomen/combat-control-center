@@ -28,6 +28,8 @@
 
     <link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap-toggle.min.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('assets/admin/dataTable/jquery.dataTables.min.css') }}">
+
     @stack('extraStyleLink')
 
     <style type="text/css">
@@ -463,6 +465,11 @@
     <script src="{{ asset('assets/admin/js/toastr.min.js') }}"></script>
 
     <script src="{{ asset('assets/admin/js/bootstrap-toggle.min.js') }}"></script>
+
+    <script src="{{ asset('assets/admin/dataTable/jquery.dataTables.min.js') }}"></script>
+
+    <script src="{{ asset('assets/admin/dataTable/dataTables.bootstrap.min.js') }}"></script>
+
 
     <script>
         $(document).ready(function() {

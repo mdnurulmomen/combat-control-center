@@ -73,33 +73,6 @@
                                   <td>{{ $requestedTreasure->equivalent_price ?? '0 tk' }}</td>
 
                                   <td>
-                                  
-                                  {{-- 
-                                    <select class="custom-select requestedTreasure">
-                                        <option value="{{ $requestedTreasure->player_phone}}">Selected</option>
-                                        <option value="" selected="true">Not Selected</option>
-                                    </select>
-
-                                    <div class="custom-control custom-checkbox requestedTreasure">
-                                      <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                    </div>
-                                          --}}
-                                     
-                                    {{-- 
-                                      <div class="toggle-flip">
-                                        <label>
-                                          <input type="checkbox"><span class="flip-indecator" data-toggle-on="Marked" data-toggle-off="Off"></span>
-                                        </label>
-                                      </div> 
-                                          --}}
-
-                                    {{-- 
-                                      <div class="toggle lg">
-                                        <label>
-                                          <input type="checkbox"><span class="button-indecator"></span>
-                                        </label>
-                                      </div> 
-                                            --}}
 
                                       <input type="checkbox" class="requestedTreasure" id="{{$requestedTreasure->id}}" data-playerPhone="{{$requestedTreasure->player_phone}}" data-rechargeAmount="{{$requestedTreasure->equivalent_price}}" data-toggle="toggle" data-on="Marked" data-off="Not Marked" data-onstyle="success" data-offstyle="danger" data-style="ios">
 
@@ -169,6 +142,10 @@
 
     </div>
 
+@stop
+
+@push('scripts')
+    
     <script type="text/javascript">
 
       /*$( "select.requestedTreasure" ).change(function() {
@@ -236,4 +213,5 @@
       });
 
     </script>
-@stop
+
+@endpush
