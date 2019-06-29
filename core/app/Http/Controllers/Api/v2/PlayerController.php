@@ -34,21 +34,6 @@ use App\Http\Resources\v2\Player\MyLeaderResource;
 
 class PlayerController extends Controller
 {
-    /*
-    protected $request;
-
-    public function __construct(Request $postman)
-    {
-        $postman->validate([
-            'payload'=>'required'
-        ]);    
-
-        $decryptedJWTPayload = openssl_decrypt($postman->payload, 'AES-256-CBC', env('CUSTOM_ENCRYPTION_KEY'), 0, env('CUSTOM_IV_KEY'));
-        $this->request = JWTAuth::getPayload(JWTAuth::setToken($decryptedJWTPayload))->get();
-        $this->request = new Request($this->request);
-    }
-    */
-
     use RetrieveToken;
 
     public function checkPlayerExist(RequestWithToken $postman)
@@ -61,7 +46,7 @@ class PlayerController extends Controller
 
         $request = new Request($payload);
 
-        /*
+        
         $request->validate([
 
           'mobileNo'=>'required_without:userDeviceId',
@@ -97,10 +82,7 @@ class PlayerController extends Controller
                 $userExist->phone = $request->mobileNo;
                 $userExist->login_type = 'true';
 
-                if ($request->facebookName || $request->gmailName) {
-                    
-                    $userExist->username = $request->facebookName ?? $request->gmailName;
-                }
+                $userExist->username = $request->facebookName ?? $request->gmailName ?? $request->userName;
 
                 $request->has('userEmail') ? $userExist->email = $request->userEmail : 0;
                 $request->has('facebookId') ? $userExist->facebook_id = $request->facebookId : 0;
@@ -129,8 +111,9 @@ class PlayerController extends Controller
                 return $this->createPlayerMethod($request);
             }
         }
-        */
+        
 
+        /*
         $request->validate([
 
           'facebookId'=>'required_without:userDeviceId',
@@ -174,6 +157,7 @@ class PlayerController extends Controller
                 return $this->createPlayerMethod($request);
             }
         }
+        */
     }
 
     public function createPlayerMethod($request)
@@ -212,7 +196,6 @@ class PlayerController extends Controller
 
     public function createUser($request)
     {
-        /*
         $newUser = new User();
         $newUser->phone = $request->mobileNo;
         $newUser->email = $request->userEmail;
@@ -237,8 +220,9 @@ class PlayerController extends Controller
         }
         
         $newUser->save();
-        */
+        
 
+        /*
         // Creating New User
         $newUser = new User();
         $newUser->username = $request->facebookName ?? $request->userName;
@@ -254,6 +238,7 @@ class PlayerController extends Controller
         empty($request->facebookId) ? $newUser->device_info = $request->userDeviceId : $newUser->device_info = '';
         empty($request->facebookId) ? $newUser->login_type = 'false' : $newUser->login_type = 'true';
         $newUser->save();
+        */
 
         return $newUser;
     }
