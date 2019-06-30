@@ -21,14 +21,12 @@
 
     <!-- Font-icon css-->
     <link rel="stylesheet" href="{{ asset('assets/admin/css/font-awesome.min.css') }}">
-
-    {{-- <link rel="stylesheet" href="{{ asset('css/font-awesome-all.min.css') }}"> --}}
     
     <link rel="stylesheet" href="{{ asset('assets/admin/css/toastr.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap-toggle.min.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('assets/admin/dataTable/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/datatable/jquery.dataTables.min.css') }}">
 
     @stack('extraStyleLink')
 
@@ -466,9 +464,9 @@
 
     <script src="{{ asset('assets/admin/js/bootstrap-toggle.min.js') }}"></script>
 
-    <script src="{{ asset('assets/admin/dataTable/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/datatable/jquery.dataTables.min.js') }}"></script>
 
-    <script src="{{ asset('assets/admin/dataTable/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/datatable/dataTables.bootstrap.min.js') }}"></script>
 
 
     <script>

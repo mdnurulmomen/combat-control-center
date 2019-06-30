@@ -3,18 +3,50 @@
 namespace App\Http\Controllers\Web;
 
 use App\Models\BoostPack;
-use App\Http\Traits\UpdateStore;
 use Illuminate\Http\Request;
+use App\Http\Traits\UpdateStore;
 use App\Http\Controllers\Controller;
 
 class BoostController extends Controller
 {
     use UpdateStore;
 
-    public function showEnabledBoostPacks()
+    public function showEnabledBoostPacks(Request $request)
     {
+        if ($request->ajax()) {
+            
+            return  datatables()->of(BoostPack::query())
+                    ->setRowId(function ($boostPack) {
+                        return $boostPack->id;
+                    })
+                    ->setRowClass(function ($boostPack) {
+                        return $boostPack->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+                    ->setRowAttr([
+                        'text-align' => 'left',
+                    ])
+                    ->addColumn('action', function($boostPack) {
+                        
+                        $button = "<i class = 'fa fa-fw fa-eye' style='transform: scale(1.5);' title='View'></i>";
+                        $button .= "&nbsp; &nbsp;";
+
+                        $button .= "<i class = 'fa fa-fw fa-edit text-info' style='transform: scale(1.5);' title='Edit'></i>";
+                        $button .= "&nbsp; &nbsp;";
+
+                        $button .= "<i class = 'fa fa-fw fa-trash text-danger' style='transform: scale(1.5);' title='Delete'></i>";
+
+                        return $button;
+                    })
+                    ->make(true);
+        }
+
+
+        return view('admin.other_layouts.boost_packs.all_boost_packs_enabled');       
+
+        /*
         $boostPacks = BoostPack::paginate(6);
         return view('admin.other_layouts.boost_packs.all_boost_packs_enabled', compact('boostPacks'));
+        */
     }
 
     public function showDisabledBoostPacks()

@@ -71,6 +71,7 @@ class PlayerController extends Controller
             // For Users who are Identified by phone
             if ($userExist = User::takenMobileNo($request->mobileNo)->first()) {
 
+                $userExist->update(['device_info' => null]);
                 return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
 
@@ -214,7 +215,7 @@ class PlayerController extends Controller
             $newUser->device_info = null;
             $newUser->login_type = 'true';
         }else{
-            $newUser->username = $request->userName ?? 'No Name';
+            $newUser->username = $request->userName;
             $newUser->device_info = $request->userDeviceId;
             $newUser->login_type = 'false' ;
         }

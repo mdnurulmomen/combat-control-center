@@ -95,8 +95,8 @@ class PlayerController extends Controller
         // Creating New User
         $newUser = new User();
         $newUser->username = $request->facebookName ?? $request->userName;
-        $newUser->phone = $request->mobileNo ?? '';
-        $newUser->email = $request->userEmail ?? '';
+        $newUser->phone = $request->mobileNo;
+        $newUser->email = $request->userEmail;
         $newUser->location = $request->userLocation ?? 'Dhaka';
         $newUser->facebook_id = $request->facebookId ?? '';
         $newUser->facebook_name = $request->facebookName ?? '';

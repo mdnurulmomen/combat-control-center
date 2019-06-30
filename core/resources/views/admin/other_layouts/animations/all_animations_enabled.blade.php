@@ -440,8 +440,6 @@
                     var clickedRow = $(this).closest("tr");
                     var clickedRowId = clickedRow.attr('id');
                     var expectedObject = json.data.find( x => x.id === clickedRowId );
-                    
-                    // console.log(expectedObject);
 
                     $( "#viewModal p:eq(0)" ).html( expectedObject.name );
                     $( "#viewModal p:eq(1)" ).html( expectedObject.description );
