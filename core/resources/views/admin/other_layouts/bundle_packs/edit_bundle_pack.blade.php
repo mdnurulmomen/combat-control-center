@@ -154,7 +154,10 @@
         </div>
     </div>
 
+@stop
     
+@push('scripts')
+
     <script>  
 
         $("#addButton").click(function(){
@@ -198,4 +201,5 @@
             $(".newAdded:last").remove();
         });       
     </script>
-@stop
+
+@endpush

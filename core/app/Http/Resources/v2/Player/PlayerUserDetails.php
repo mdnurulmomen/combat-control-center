@@ -22,7 +22,8 @@ class PlayerUserDetails extends JsonResource
             'userLocation'=>$this->location,
             'profilePic'=>$this->profile_pic,
             'loginType'=>$this->login_type,
-            'facebookId'=>$this->facebook_id
+            'facebookId'=>$this->facebook_id,
+            'gmailId'=>$this->gmail_id
         ];
     }
 }

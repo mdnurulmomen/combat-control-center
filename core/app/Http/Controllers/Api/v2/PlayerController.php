@@ -71,7 +71,14 @@ class PlayerController extends Controller
             // For Users who are Identified by phone
             if ($userExist = User::takenMobileNo($request->mobileNo)->first()) {
 
-                $userExist->update(['device_info' => null]);
+                // for old user who had device id and mobile no.
+                /*
+                $userExist->device_info = '';
+                $request->has('profilePic') ? $userExist->profile_pic = $request->profilePic : 0 ;
+                $request->has('userEmail') ? $userExist->email = $request->userEmail : 0 ;
+                $userExist->save();
+                */
+
                 return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
 
@@ -83,7 +90,14 @@ class PlayerController extends Controller
                 $userExist->phone = $request->mobileNo;
                 $userExist->login_type = 'true';
 
-                $userExist->username = $request->facebookName ?? $request->gmailName ?? $request->userName;
+                if ($request->facebookName || $request->gmailName) {
+                    
+                    $userExist->username = $request->facebookName ?? $request->gmailName;
+                }
+                else{
+
+                    $userExist->username = $request->userName;
+                }
 
                 $request->has('userEmail') ? $userExist->email = $request->userEmail : 0;
                 $request->has('facebookId') ? $userExist->facebook_id = $request->facebookId : 0;
@@ -199,20 +213,20 @@ class PlayerController extends Controller
     {
         $newUser = new User();
         $newUser->phone = $request->mobileNo;
-        $newUser->email = $request->userEmail;
+        $newUser->email = $request->userEmail ?? '';
         $newUser->location = $request->userLocation ?? 'Dhaka';
-        $newUser->facebook_id = $request->facebookId;
-        $newUser->facebook_name = $request->facebookName;
-        $newUser->gmail_id = $request->gmailId ;
-        $newUser->gmail_name = $request->gmailName ;
-        $newUser->profile_pic = $request->profilePic ;
+        $newUser->facebook_id = $request->facebookId ?? '';
+        $newUser->facebook_name = $request->facebookName ?? '';
+        $newUser->gmail_id = $request->gmailId ?? '';
+        $newUser->gmail_name = $request->gmailName ?? '';
+        $newUser->profile_pic = $request->profilePic ?? '';
         $newUser->country = $request->country ?? 'Bangladesh';
         $newUser->connection_type = $request->connectionType;
         $newUser->type = strtolower('player');
 
         if ($request->mobileNo) {
-            $newUser->username = $request->facebookName ?? $request->gmailName ?? $request->userName;
-            $newUser->device_info = null;
+            $newUser->username = $request->facebookName ?? $request->gmailName ;
+            $newUser->device_info = '';
             $newUser->login_type = 'true';
         }else{
             $newUser->username = $request->userName;
@@ -495,7 +509,7 @@ class PlayerController extends Controller
 
         $request = $this->sanitize($request);
 
-        $request_1 = $request->only(['username', 'phone', 'device_info', 'email', 'location', 'facebook_id', 'facebook_name', 'profile_pic', 'login_type', 'connection_type', 'country']);
+        $request_1 = $request->only(['username', 'email', 'location', 'profile_pic', 'connection_type', 'country']);
 
         $request_2 = $request->only(['player_batch','selected_parachute', 'selected_character', 'selected_animation', 'selected_weapon']);
 
@@ -535,9 +549,6 @@ class PlayerController extends Controller
         
         unset($request['userName']);
 
-        $request['phone'] = $request->mobileNo;
-        unset($request['mobileNo']);
-
         $request['email'] = $request->userEmail;
         unset($request['userEmail']);
 
@@ -556,6 +567,7 @@ class PlayerController extends Controller
         $request['connection_type'] = $request->connectionType;
         unset($request['connectionType']);
 
+        /*
         if (empty($request->facebook_id)) {
             $request['device_info'] = $request->userDeviceId;
             $request['login_type'] = 'false';
@@ -564,6 +576,7 @@ class PlayerController extends Controller
             $request['device_info'] = '';
             $request['login_type'] = 'true';
         }
+        */
 
         $request['player_batch'] = $request->playerBatch;
         unset($request['playerBatch']);

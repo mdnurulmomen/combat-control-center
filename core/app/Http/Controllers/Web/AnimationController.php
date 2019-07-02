@@ -23,16 +23,16 @@ class AnimationController extends Controller
                     ->setRowId(function($animation){
                         return $animation->id;
                     })
-                    ->setRowAttr(['align'=>'left'])
+                    ->setRowAttr(['align'=>'center'])
                     ->addColumn('action', function($animation){
 
                         $button  =  "<i class='fa fa-fw fa-eye' style='transform: scale(1.5);'  title='View'></i>";
 
-                        $button .= "&nbsp; &nbsp;";
+                        $button .= "&nbsp; &nbsp; &nbsp;";
 
                         $button  .=  "<i class='fa fa-fw fa-edit text-info' style='transform: scale(1.5);' data-toggle='modal' data-target='#editModal".$animation->id."' title='Edit'></i>";
 
-                        $button .= "&nbsp; &nbsp;";
+                        $button .= "&nbsp; &nbsp; &nbsp;";
 
                         $button .= "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5); padding: 2px;' data-toggle='modal' data-target='#deleteModal".$animation->id."' title='Delete'></i>";
 

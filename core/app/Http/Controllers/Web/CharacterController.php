@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use DataTables;
 use App\Models\Character;
 use App\Http\Traits\UpdateStore;
 use Illuminate\Http\Request;
@@ -11,10 +12,49 @@ class CharacterController extends Controller
 {
     use UpdateStore;
 
-    public function showEnabledCharacters()
+    public function showEnabledCharacters(Request $request)
     {
+        if($request->ajax()){
+
+            return DataTables::of(Character::query())
+
+                    ->addColumn('action', function(){
+
+                        $button = "<i class='fa fa-fw fa-eye' style='transform: scale(1.5);' title='View'></i>";
+
+                        $button .= "&nbsp;&nbsp;&nbsp;";
+
+                        $button .=  "<i class='fa fa-fw fa-edit' style='transform: scale(1.5);' title='Edit'></i>";
+
+                        $button .= "&nbsp;&nbsp;&nbsp;";
+
+                        $button .= "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5);' title='Delete'></i>";
+
+                        return $button;
+
+                    })
+
+                    ->setRowId(function (Character $character) {
+                        return $character->id;
+                    })
+
+                    ->setRowClass(function (Character $character) {
+                        return $character->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+
+                    ->setRowAttr([
+                        'align' => 'center',
+                    ])
+                    
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.characters.all_characters_enabled');
+
+        /*
         $characters = Character::paginate(6);
         return view('admin.other_layouts.characters.all_characters_enabled', compact('characters'));
+        */
     }
 
     public function showDisabledCharacters()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use DataTables;
 use App\Models\BundlePack;
 use App\Models\BundleComponent;
 use App\Http\Traits\UpdateStore;
@@ -12,10 +13,53 @@ class BundleController extends Controller
 {
     use UpdateStore;
 
-    public function showEnabledBundlePacks()
+    public function showEnabledBundlePacks(Request $request)
     {
+        if($request->ajax()){
+
+            $model = BundlePack::with('bundleComponents');
+
+            return  DataTables::eloquent($model)
+
+                    ->addColumn('action', function(BundlePack $bundlePack){
+
+                        $button = "<i class='fa fa-fw fa-eye' style='transform: scale(1.5);' title='View'></i>";
+
+                        $button .= "&nbsp;&nbsp;&nbsp;";
+
+                        $button .=   "<a href = ".route('admin.update_bundle_pack', $bundlePack->id)." title='Edit'>
+                                        <i class='fa fa-fw fa-edit' style='transform: scale(1.5);'></i>
+                                    </a>";
+
+                        $button .= "&nbsp;&nbsp;&nbsp;";
+
+                        $button .= "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5);' title='Delete'></i>";
+
+                        return $button;
+                                    
+                    })
+
+                    ->setRowAttr([
+                        'align' => 'center',
+                    ])
+                    
+                    ->setRowId(function (BundlePack $bundlePack) {
+                        return $bundlePack->id;
+                    })
+
+                    ->setRowClass(function (BundlePack $bundlePack) {
+                        return $bundlePack->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.bundle_packs.all_bundle_packs_enabled');
+        
+        /*
         $bundlePacks = BundlePack::with('bundleComponents')->paginate(6);
         return view('admin.other_layouts.bundle_packs.all_bundle_packs_enabled', compact('bundlePacks'));
+        */
     }
 
     public function showDisabledBundlePacks()

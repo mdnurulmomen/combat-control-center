@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use DataTables;
 use App\Models\User;
 use App\Models\Player;
 use App\Models\Leader;
@@ -56,10 +57,51 @@ class PlayerController extends Controller
         }
     }
 
-    public function showAllPlayers()
+    public function showAllPlayers(Request $request)
     {
+        if($request->ajax()){
+
+            $model = Player::with('user');
+
+            return DataTables::eloquent($model)
+
+                    ->addColumn('action', function(){
+
+                        /*
+                        $button = "<i class='fa fa-fw fa-eye' style='transform: scale(1.5);' title='View'></i>";
+
+                        $button .= "&nbsp;&nbsp;&nbsp;";
+                        */
+
+
+                        $button = "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5);' title='Delete'></i>";
+
+                        return $button;
+
+                    })
+
+                    ->setRowId(function (Player $player) {
+                        return $player->id;
+                    })
+
+                    ->setRowClass(function (Player $player) {
+                        return $player->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+
+                    ->setRowAttr([
+                        'align' => 'center',
+                    ])
+                    
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.players.all_players');
+
+
+        /*
         $users = User::where('type', 'player')->with('player')->paginate(6);
         return view('admin.other_layouts.players.all_players', compact('users'));
+        */
     }
 
     public function deletePlayerMethod($playerId)
