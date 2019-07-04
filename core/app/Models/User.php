@@ -22,22 +22,24 @@ class User extends Authenticatable
 
     public function scopeTakenFacebookId($query, $facebookId)
     {	
-		return $query->whereNotNull('facebook_id')->where('facebook_id', $facebookId);	
+		return $query->whereNotNull('facebook_id')->where('facebook_id', '!=', '')->where('facebook_id', $facebookId);	
     }
 
-    /*public function scopeTakenGmailId($query, $gmailId)
+    /*
+    public function scopeTakenGmailId($query, $gmailId)
     {
     	return $query->where('gmail_id', $gmailId);
-    }*/
+    }
+    */
 
     public function scopeTakenMobileNo($query, $mobileNo)
     {		
-    	return $query->whereNotNull('phone')->where('phone', $mobileNo);
+    	return $query->whereNotNull('phone')->where('phone', '!=', '')->where('phone', $mobileNo);
     }
 
 	public function scopeTakenDeviceId($query, $deviceId)
     {	
-    	return $query->whereNotNull('device_info')->where('device_info', $deviceId);	
+    	return $query->whereNotNull('device_info')->where('device_info', '!=', '')->where('device_info', $deviceId);	
     }
 
 }

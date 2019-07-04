@@ -1,5 +1,15 @@
 
 @extends('admin.master_layout.app')
+
+@push('extraStyleLink')
+    <style type="text/css">
+        .fa.fa-eye:hover, .fa.fa-edit:hover, .fa.fa-trash:hover{
+            border-radius: 10%;
+            background:#b4b4b4;
+        }
+    </style>
+@endpush
+
 @section('contents')
     <div class="card mb-4">
         <div class="card-body">
@@ -65,6 +75,9 @@
 
 @push('scripts')
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
+    <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
+
     <script>
         
         $( document ).ready(function() {
@@ -74,18 +87,36 @@
             $('#playerTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.view_players') }}',
+                select: true,
+                ajax: {
+                    url : "{{ route('admin.view_players') }}",
+                },
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'user.username', name: 'user.username' },
                     { data: 'player_batch', name: 'player_batch' },
                     { data: 'action', name: 'action', orderable : false }
                 ],
-                drawCallback:function(){
-                    var api = this.api();
-                    var json = api.ajax.json();
-                    globalVariable = json.data;
-                    console.log(json.data);
+
+                createdRow: function( row, data, dataIndex ) {
+                    
+                    var searching = $("input[type='search']").val();
+                    
+                    if (!searching) {
+
+                        $(row).hide();
+                        
+                        // console.log(data.created_at);
+
+                        var rowDate = new Date(data.created_at).toDateString();
+                        var today = new Date().toDateString();
+
+                        if(today === rowDate){
+                            
+                            $(row).show();
+                        }
+
+                    }
                 }
             });
 
@@ -132,7 +163,6 @@
 
 
                 $(".fa-trash").click(function() {
-                    // alert('delete');
 
                     var clickedRow = $(this).closest("tr");
                     var clickedRowId = clickedRow.attr('id');

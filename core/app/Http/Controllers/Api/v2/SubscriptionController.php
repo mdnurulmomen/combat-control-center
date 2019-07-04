@@ -129,7 +129,7 @@ class SubscriptionController extends Controller
 
         else {
 
-            $lastEarningDate = Carbon::parse($lastEarning->updated_at->format('d-m-Y'));
+            $lastEarningDate = Carbon::parse(optional($lastEarning->updated_at)->format('d-m-Y') ?? '01-01-2000');
             $presentDate = Carbon::now()->format('d-m-Y');
             $difference = $lastEarningDate->diffInDays($presentDate);
 

@@ -71,8 +71,8 @@ class PlayerController extends Controller
             // For Users who are Identified by phone
             if ($userExist = User::takenMobileNo($request->mobileNo)->first()) {
 
-                // for old user who had device id and mobile no.
                 /*
+                // for old user who had device id and mobile no.
                 $userExist->device_info = '';
                 $request->has('profilePic') ? $userExist->profile_pic = $request->profilePic : 0 ;
                 $request->has('userEmail') ? $userExist->email = $request->userEmail : 0 ;
@@ -111,7 +111,7 @@ class PlayerController extends Controller
 
             // For Old User who were Identified by facebookId
             elseif ($userExist = User::takenFacebookId($request->facebookId)->first()) {
-                
+
                 // Updating Guest User with NEW data
                 $userExist->phone = $request->mobileNo;
 
@@ -225,7 +225,15 @@ class PlayerController extends Controller
         $newUser->type = strtolower('player');
 
         if ($request->mobileNo) {
-            $newUser->username = $request->facebookName ?? $request->gmailName ;
+            
+            if ($request->facebookName || $request->gmailName) {
+                
+                $newUser->username = $request->facebookName ?? $request->gmailName ;
+            }
+            else{
+                $newUser->username = $request->userName;
+            }
+
             $newUser->device_info = '';
             $newUser->login_type = 'true';
         }else{

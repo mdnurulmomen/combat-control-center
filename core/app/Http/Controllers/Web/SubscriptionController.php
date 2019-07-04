@@ -2,16 +2,59 @@
 
 namespace App\Http\Controllers\Web;
 
+use DataTables;
 use Illuminate\Http\Request;
 use App\Models\SubscriptionPackage;
 use App\Http\Controllers\Controller;
 
 class SubscriptionController extends Controller
 {
-   	public function showEnabledSubscriptionPackages()
+   	public function showEnabledSubscriptionPackages(Request $request)
     {
+        if($request->ajax()){
+
+            $model = SubscriptionPackage::with('subscriptionPackageType');
+
+            return  DataTables::eloquent($model)
+
+                    ->addColumn('action', function(SubscriptionPackage $subscriptionPack){
+
+                        $button = "<i class='fa fa-fw fa-eye' style='transform: scale(1.5);' title='View'></i>";
+
+                        $button .= "&nbsp;&nbsp;&nbsp;";
+
+                        $button .=   "<i class='fa fa-fw fa-edit' style='transform: scale(1.5);' title='Edit'></i>";
+
+                        $button .= "&nbsp;&nbsp;&nbsp;";
+
+                        $button .= "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5);' title='Delete'></i>";
+
+                        return $button;
+                                    
+                    })
+
+                    ->setRowAttr([
+                        'align' => 'center',
+                    ])
+                    
+                    ->setRowId(function (SubscriptionPackage $subscriptionPack) {
+                        return $subscriptionPack->id;
+                    })
+
+                    ->setRowClass(function (SubscriptionPackage $subscriptionPack) {
+                        return $subscriptionPack->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.subscriptions.all_subscription_packages_enabled');
+        
+
+        /*
         $subscriptionPackages = SubscriptionPackage::with('subscriptionPackageType')->paginate(6);
         return view('admin.other_layouts.subscriptions.all_subscription_packages_enabled', compact('subscriptionPackages'));
+        */
     }
 
     public function showDisabledSubscriptionPackages()

@@ -1,5 +1,15 @@
 
 @extends('admin.master_layout.app')
+
+@push('extraStyleLink')
+    <style type="text/css">
+        .fa.fa-eye:hover, .fa.fa-edit:hover, .fa.fa-trash:hover{
+            border-radius: 10%;
+            background:#b4b4b4;
+        }
+    </style>
+@endpush
+
 @section('contents')
 
     <div class="card mb-4">

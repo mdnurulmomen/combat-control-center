@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use DataTables;
 use App\Models\Store;
 use App\Models\Purchase;
 use App\Http\Traits\UpdateStore;
@@ -21,9 +22,34 @@ class StoreController extends Controller
     }
 
 
-    public function viewAllPurchases()
+    public function viewAllPurchases(Request $request)
     {
-      $allPurchases = Purchase::paginate(10);
-      return view('admin.other_layouts.store.view_purchases', compact('allPurchases'));
+      if ($request->ajax()) {
+
+            $model = Purchase::query();
+
+            return  DataTables::eloquent($model)
+
+                    ->setRowId(function (Purchase $purchase) {
+                        return $purchase->id;
+                    })
+
+                    ->setRowClass(function (Purchase $purchase) {
+                        return $purchase->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+
+                    ->setRowAttr([
+                        'align' => 'center',
+                    ])
+                    
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.store.view_purchases');
+
+        /*
+        $allPurchases = Purchase::paginate(10);
+        return view('admin.other_layouts.store.view_purchases', compact('allPurchases'));
+        */
     }
 }

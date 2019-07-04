@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Web;
 
+use Log;
 use DataTables;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Player;
 use App\Models\Leader;
@@ -25,7 +27,7 @@ use App\Http\Controllers\Controller;
 
 class PlayerController extends Controller
 {
-    public function showLeaderboard()
+    public function showLeaderboard(Request $request)
     {
         $topLeaders = PlayerStatistic::with('player')->orderBy(DB::raw("`opponent_killed` + `monster_killed` + `double_killed` + `triple_killed`"), 'DESC')->get();
    
@@ -38,8 +40,33 @@ class PlayerController extends Controller
         // create leader board
         $this->buildLeaderBoard($topLeaders);
 
-        $leaders = Leader::with('user')->paginate(50);
-        return view('admin.other_layouts.players.view_leaderboard', compact('leaders'));
+        if ($request->ajax()) {
+            
+            $model = Leader::query();
+
+            return  DataTables::eloquent($model)
+
+                    ->setRowId(function (Leader $leader) {
+                        return $leader->id;
+                    })
+
+                    ->setRowClass(function (Leader $leader) {
+                        return $leader->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+
+                    ->setRowAttr([
+                        'align' => 'center',
+                    ])
+                    
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.players.view_leaderboard');
+
+        /*
+            $leaders = Leader::with('user')->paginate(50);
+            return view('admin.other_layouts.players.view_leaderboard', compact('leaders'));
+        */
     }
 
     public function buildLeaderBoard($topLeaders)
@@ -59,20 +86,21 @@ class PlayerController extends Controller
 
     public function showAllPlayers(Request $request)
     {
+        // return Player::whereDate('updated_at', Carbon::today())->with('user')->get();
+        
         if($request->ajax()){
 
             $model = Player::with('user');
 
-            return DataTables::eloquent($model)
+            return  DataTables::eloquent($model)
 
                     ->addColumn('action', function(){
 
-                        /*
+                    /*
                         $button = "<i class='fa fa-fw fa-eye' style='transform: scale(1.5);' title='View'></i>";
 
                         $button .= "&nbsp;&nbsp;&nbsp;";
-                        */
-
+                    */
 
                         $button = "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5);' title='Delete'></i>";
 
@@ -109,15 +137,17 @@ class PlayerController extends Controller
         $playerToDelete = Player::find($playerId);
 
         $playerToDelete->playerHistories()->delete();
-        $playerToDelete->playerStatistics->delete();
+        $playerToDelete->playerStatistics()->delete();
         $playerToDelete->playerTreasures()->delete();
         $playerToDelete->playerCharacters()->delete();
         $playerToDelete->playerAnimations()->delete();
         $playerToDelete->playerParachutes()->delete();
         $playerToDelete->playerWeapons()->delete();
-        $playerToDelete->playerBoostPacks->delete();
-        $playerToDelete->checkLoginDays->delete();
-        $playerToDelete->user->delete();
+        // $playerToDelete->playerAchievements()->delete();
+        $playerToDelete->playerBoostPacks()->delete();
+        $playerToDelete->checkLoginDays()->delete();
+        $playerToDelete->subscriptionPackage()->delete();
+        $playerToDelete->user()->delete();
         
         $playerToDelete->delete();
 
