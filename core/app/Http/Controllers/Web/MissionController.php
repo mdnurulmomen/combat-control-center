@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use DataTables;
 use App\Models\Mission;
 use App\Models\MissionType;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class MissionController extends Controller
    	public function showAllEnabledMissionTypes()
     {
         $missionTypes = MissionType::paginate(6);
-        return view('admin.other_layouts.missions.all_mission_types_enabled', compact('missionTypes'));
+        return view('admin.other_layouts.missions.all_mission_types_enabled', compact('missionTypes'));   
     }
 
     public function showAllDisabledMissionTypes()
@@ -67,10 +68,45 @@ class MissionController extends Controller
         return redirect()->back()->with('success', 'Mission Type is Restored'); 
     }
 
-    public function showEnabledMissions()
+    public function showEnabledMissions(Request $request)
     {
+        if ($request->ajax()) {
+            
+            $modal = Mission::with('missionType')->select('missions.*');
+
+            return  DataTables::eloquent($modal)
+                    
+                    ->addColumn('action', function(){
+                        $button = "<i class='fa fa-fw fa-edit tooltip-test' style='transform: scale(1.5);' title='View'></i>";
+
+                        $button .="&nbsp;&nbsp;&nbsp;";
+
+                        $button .= "<i class='fa fa-fw fa-trash tooltip-test' style='transform: scale(1.5);' title='Delete'></i>";
+
+                        return $button;
+                    })
+
+                    ->setRowId(function (Mission $mission) {
+                        return $mission->id;
+                    })
+
+                    ->setRowClass(function (Mission $mission) {
+                        return $mission->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+
+                    ->setRowAttr([
+                        'align' => 'center',
+                    ])
+
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.missions.all_missions_enabled');
+
+        /*
         $missions = Mission::with('missionType')->paginate(6);
         return view('admin.other_layouts.missions.all_missions_enabled', compact('missions'));
+        */
     }
 
     public function showDisabledMissions()

@@ -217,9 +217,11 @@
                                             <select class="form-control form-control-lg is-invalid" name="subcription_package_type_id" required="true">
                                                 
                                                 @foreach(App\Models\SubscriptionPackageType::all() as $packageType)
-                                                <option value="{{ $packageType->id }}"  selected="true">
-                                                    {{ $packageType->name }}
-                                                </option>
+
+                                                    <option value="{{ $packageType->id }}">
+                                                        {{ $packageType->name }}
+                                                    </option>
+                                                
                                                 @endforeach
 
                                             </select>
@@ -349,7 +351,7 @@
 
                     globalVariable = jsonData.data;
 
-                    console.log(globalVariable);
+                    // console.log(globalVariable);
                 }
             });
 
@@ -378,41 +380,17 @@
 
                     var home = "{{ URL::to('/') }}";
 
-                    $("#editModal form").attr("action", home + '/admin/boost-packs/' +  expectedObject.id );
+                    $("#editModal form").attr("action", home + '/admin/subscription-package/' +  expectedObject.id );
+
+                    $('#editModal select[name="subcription_package_type_id"]').val( expectedObject.subcription_package_type_id );
 
                     $( "#editModal input[name*='name']" ).val( expectedObject.name );
-                    $( "#editModal input[name*='amount']" ).val( expectedObject.amount );
-                    $( "#editModal input[name*='description']" ).val( expectedObject.description );
-                    $( "#editModal input[name*='price_taka']" ).val( expectedObject.price_taka );
-                    $( "#editModal input[name*='price_gems']" ).val( expectedObject.price_gems );
-                    $( "#editModal input[name*='price_coins']" ).val( expectedObject.price_coins );
+                    $( "#editModal input[name*='offered_time']" ).val( expectedObject.offered_time );
+                    $( "#editModal input[name*='offered_game']" ).val( expectedObject.offered_game );
 
-                    $( "#editModal input[name='discount']" ).val( Math.max(expectedObject.discount_taka, expectedObject.discount_gems, expectedObject.discount_coins) );
-
-
-                    if (expectedObject.discount_taka) {
-                        
-                        $("#editModal input[name='discount_type[]']:eq(0)").prop('checked', true);
-                    }
-                    else{
-                        $("#editModal input[name='discount_type[]']:eq(0)").prop("checked", false);
-                    }
-
-                    if (expectedObject.discount_gems) {
-
-                        $("#editModal input[name='discount_type[]']:eq(1)").prop('checked', true);
-                    }
-                    else{
-                        $("#editModal input[name='discount_type[]']:eq(1)").prop("checked", false);
-                    }
-
-                    if (expectedObject.discount_coins) {
-
-                        $("#editModal input:checkbox[name='discount_type[]']:eq(2)").prop('checked', true);
-                    }
-                    else{
-                        $("#editModal input:checkbox[name='discount_type[]']:eq(2)").prop("checked", false);
-                    }
+                    
+                    $( "#editModal input[name*='price_gem']" ).val( expectedObject.price_gem );
+                    
 
                     $('#editModal').modal('toggle');
                 });

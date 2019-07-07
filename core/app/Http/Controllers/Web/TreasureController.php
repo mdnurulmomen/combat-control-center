@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use DB;
+use DataTables;
 use Carbon\Carbon;
 use App\Models\Treasure;
 use Illuminate\Http\Request;
@@ -198,10 +199,39 @@ class TreasureController extends Controller
         return view('admin.other_layouts.treasures.all_gifted_treasure', compact('allGiftedTreasures'));
     }
 
-    public function showAllTreasureRedeemed()
+    public function showAllTreasureRedeemed(Request $request)
     {
+        if ($request->ajax()) {
+            
+            $modal = TreasureRedemption::where('status', -1)->with(['player.user', 'treasure'])->select('treasure_redemptions.*');
+
+            return  DataTables::eloquent($modal)
+                    
+                    ->addColumn('action', function(){
+                        return "<i class='fa fa-eye fa-2x tooltip-test' title='View'></i>";
+                    })
+
+                    ->setRowId(function (TreasureRedemption $redemption) {
+                        return $redemption->id;
+                    })
+
+                    ->setRowClass(function (TreasureRedemption $redemption) {
+                        return $redemption->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+
+                    ->setRowAttr([
+                        'align' => 'center',
+                    ])
+
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.treasures.all_redeemed_treasure');
+
+        /*
         $allRedeemedTreasures = TreasureRedemption::where('status', -1)->with('player', 'treasure')->paginate(8);
         return view('admin.other_layouts.treasures.all_redeemed_treasure', compact('allRedeemedTreasures'));
+        */
     }
 
     public function treasureDeleteMethod($treasureId)
@@ -220,10 +250,50 @@ class TreasureController extends Controller
         return redirect()->back()->with('success', 'Treasure is Restored');
     }
 
-    public function showTreasureRequested()
+    public function showTreasureRequested(Request $request)
     {
+        if ($request->ajax()) {
+            
+            $modal = TreasureRedemption::where('status', 0)->with(['player.user', 'treasure'])->select('treasure_redemptions.*');
+
+            return  DataTables::eloquent($modal)
+                    
+                    ->addColumn('selection', function(TreasureRedemption $requested){
+
+                        return "<input type='checkbox' class='requestedTreasure' id='$requested->id' data-playerPhone='$requested->player_phone' data-rechargeAmount='$requested->equivalent_price' data-toggle='toggle' data-on='Marked' data-off='Not Marked' data-onstyle='success' data-offstyle='outline-danger' data-style='ios' data-size='sm'>";
+                    })
+
+                    ->rawColumns(['selection', 'checkbox'])
+
+                    ->setRowData([
+                        'send' => function() {
+                            return "<button type='button' class='btn btn-info float-right' data-toggle='modal' data-target='#confirmRequestedNumbers'>
+                                    Send
+                                  </button>";
+                        }
+                    ])
+
+                    ->setRowId(function (TreasureRedemption $redemption) {
+                        return $redemption->id;
+                    })
+
+                    ->setRowClass(function (TreasureRedemption $redemption) {
+                        return $redemption->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+
+                    ->setRowAttr([
+                        'align' => 'center',
+                    ])
+
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.treasures.all_treasure_requested');
+
+        /*
         $allRequestedTreasures = TreasureRedemption::where('status', 0)->with('player', 'treasure')->latest()->paginate(8);
         return view('admin.other_layouts.treasures.all_treasure_requested', compact('allRequestedTreasures'));
+        */
     }
 
     public function confirmTreasureRequested(Request $request)

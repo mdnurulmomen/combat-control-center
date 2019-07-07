@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-12 table-responsive">
 
-                    <table class="table table-hover table-striped table-bordered text-center" cellspacing="0" width="100%">
+                    <table class="table table-hover table-striped table-bordered text-center" cellspacing="0" width="100%" id="treaserRequestsTable">
 
                       <thead class="thead-dark">
                           <tr>
@@ -56,47 +56,8 @@
                           </tr>
                       </thead>
                       
-                      <tbody>
-
-                          @if($allRequestedTreasures->isEmpty())
-                              <tr class="danger">
-                                  <td class="text-danger" colspan='5'>No Data Found</td>
-                              </tr>
-                          @endif
-                          
-                          @foreach($allRequestedTreasures as $requestedTreasure)
-                              
-                              <tr>
-                                  <td>{{ $requestedTreasure->player->user->username ?? 'No Name'}}</td>
-                                  <td>{{ $requestedTreasure->treasure->name }}</td>
-                                  <td>{{ $requestedTreasure->player_phone ?? 'NA'}}</td>
-                                  <td>{{ $requestedTreasure->equivalent_price ?? '0 tk' }}</td>
-
-                                  <td>
-
-                                      <input type="checkbox" class="requestedTreasure" id="{{$requestedTreasure->id}}" data-playerPhone="{{$requestedTreasure->player_phone}}" data-rechargeAmount="{{$requestedTreasure->equivalent_price}}" data-toggle="toggle" data-on="Marked" data-off="Not Marked" data-onstyle="success" data-offstyle="danger" data-style="ios">
-
-                                  </td>
-                              </tr>
-
-                          @endforeach
-
-                          <tr>
-                              <td colspan="5">
-                                  <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#confirmRequestedNumbers">
-                                    Send
-                                  </button>
-                              </td>
-                          </tr>
-
-                      </tbody>
-                      
+                  
                     </table>
-
-
-                  <div class="float-right">
-                      {{ $allRequestedTreasures->onEachSide(5)->links() }}
-                  </div>
 
                 </div>
             </div>
@@ -148,69 +109,73 @@
     
     <script type="text/javascript">
 
-      /*$( "select.requestedTreasure" ).change(function() {
+      $(function() {
 
-        var array = [];
-
-        $( "select.requestedTreasure option:selected" ).each(function() {
-          
-          array.push($( this ).val());
-
+        $('#treaserRequestsTable').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ route('admin.show_treasure_requested') }}",
+          columns: [
+              { data: 'player.user.username', name: 'player.user.username' },
+              { data: 'treasure.name', name: 'treasure.name' },
+              { data: 'player_phone', name: 'player_phone' },
+              { data: 'equivalent_price', name: 'equivalent_price' },
+              { data: 'selection', name: 'selection', orderable : false, searchable : false }
+          ]
         });
 
-        alert(array);
+        $('#treaserRequestsTable').on( 'draw.dt', function () {
 
-      });*/
+          $('#treaserRequestsTable .requestedTreasure').bootstrapToggle({
+            size: 'small'
+          });
+              
+          $('#treaserRequestsTable  > tbody:last-child').append(
+            "<tr><td colspan='5'>"+
+              "<button type='button' class='btn btn-info float-right' data-toggle='modal' data-target='#confirmRequestedNumbers'>Send</button>"+
+            "</td></tr>");
 
 
-      $( ":checkbox.requestedTreasure" ).change( function(){
+          $( ":checkbox.requestedTreasure" ).change( function(){
 
-        /*if ($(this.checked)) {
+            $('#bodyForm').empty();
 
-          // alert($(this).serialize());
-        }*/
+            $("input[type=checkbox].requestedTreasure:checked").each(
 
-        $('#bodyForm').empty();
+              function(){
 
-        $("input[type=checkbox].requestedTreasure:checked").each(
+                var id = $(this).attr('id');
+                var playerPhone = $(this).attr('data-playerPhone');
+                var rechargeAmount = $(this).attr('data-rechargeAmount');
 
-          function(){
+                var html =  "<div class='form-row'>"+
 
-            var id = $(this).attr('id');
-            var playerPhone = $(this).attr('data-playerPhone');
-            var rechargeAmount = $(this).attr('data-rechargeAmount');
-            
-            // console.log(rechargeAmount);
-            // array.push($( this ).val());
+                                "<input type='hidden' name= 'id[]' value="+id+">"
+                                +
+                                "<div class='col-md-6 mb-4'>"+
+                                    "<label for='validationServerUsername'>Number</label>"+
+                                    "<div class='input-group'>"+
+                                        "<input type='text' name='player_phone[]' value="+playerPhone+" class='form-control form-control-lg is-invalid' aria-describedby='inputGroupPrepend3' readonly='true'>"+
+                                    "</div>"+
+                                "</div>"
+                                +
+                                "<div class='col-md-6 mb-4'>"+
+                                    "<label for='validationServer01'>Recharge Amount</label>"+
+                                    "<div class='input-group'>"+
+                                        "<input type='number' name='recharge_amount[]' value="+rechargeAmount+" class='form-control form-control-lg is-invalid' aria-describedby='inputGroupPrepend3' readonly='true'>"+
+                                    "</div>"+
+                                "</div>"
+                                +
+                            "</div>";
 
-            var html =  "<div class='form-row'>"+
-
-                            "<input type='hidden' name= id[] value="+id+">"
-                            +
-                            "<div class='col-md-6 mb-4'>"+
-                                "<label for='validationServerUsername'>Number</label>"+
-                                "<div class='input-group'>"+
-                                    "<input type='text' name='player_phone[]' value="+playerPhone+" class='form-control form-control-lg is-invalid' aria-describedby='inputGroupPrepend3' readonly='true'>"+
-                                "</div>"+
-                            "</div>"
-                            +
-                            "<div class='col-md-6 mb-4'>"+
-                                "<label for='validationServer01'>Recharge Amount</label>"+
-                                "<div class='input-group'>"+
-                                    "<input type='number' name='recharge_amount[]' value="+rechargeAmount+" class='form-control form-control-lg is-invalid' aria-describedby='inputGroupPrepend3' readonly='true'>"+
-                                "</div>"+
-                            "</div>"
-                            +
-                        "</div>";
-
-            $("#bodyForm").append(html);
-
-          }
-        );
-
-        
-
+                $("#bodyForm").append(html);
+              }
+            );
+          }); 
+        });
       });
+
+
 
     </script>
 
