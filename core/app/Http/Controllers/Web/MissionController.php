@@ -77,7 +77,12 @@ class MissionController extends Controller
             return  DataTables::eloquent($modal)
                     
                     ->addColumn('action', function(){
-                        $button = "<i class='fa fa-fw fa-edit tooltip-test' style='transform: scale(1.5);' title='View'></i>";
+
+                        $button = "<i class='fa fa-fw fa-eye tooltip-test' style='transform: scale(1.5);' title='View'></i>";
+
+                        $button .="&nbsp;&nbsp;&nbsp;";
+
+                        $button .= "<i class='fa fa-fw fa-edit tooltip-test' style='transform: scale(1.5);' title='Edit'></i>";
 
                         $button .="&nbsp;&nbsp;&nbsp;";
 

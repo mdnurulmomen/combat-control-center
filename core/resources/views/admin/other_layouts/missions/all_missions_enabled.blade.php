@@ -29,6 +29,145 @@
 
 
             <div class="row">
+
+                <!--- View Modal --->
+                <div class="modal fade" id="viewModal" role="dialog">
+                    <div class="modal-dialog  modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4> Mission Package Details </h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">  
+                                <div class="form-row name">
+                                    <div class="col-md-6">
+                                        <label for="validationServerUsername">Package Name</label>
+                                    </div>
+                                        
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row mission_type">
+                                    <div class="col-md-6">
+                                        <label for="validationServerUsername">Mission Type</label>
+                                    </div>
+                                        
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row description">
+                                    <div class="col-md-6">
+                                        <label for="validationServerUsername">Description</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row play_number">
+                                    <div class="col-md-6">
+                                        <label for="validationServer01">Number Game </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row play_time">
+                                    <div class="col-md-6">
+                                        <label for="validationServer01">Play Time</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row damage_opponent">
+                                    <div class="col-md-6">
+                                        <label for="validationServer01">Damage Opponent</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row kill_opponent">
+                                    <div class="col-md-6">
+                                        <label for="validationServer01">Kill Opponent</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row kill_monster">
+                                    <div class="col-md-6">
+                                        <label for="validationServer01">Kill Monster</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row travel_distance">
+                                    <div class="col-md-6">
+                                        <label for="validationServer01">Travel Distance</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row win_top_time">
+                                    <div class="col-md-6">
+                                        <label for="validationServer01">Be Winner</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row among_two_time">
+                                    <div class="col-md-6">
+                                        <label for="validationServer01">Be Among Two</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row among_three_time">
+                                    <div class="col-md-6">
+                                        <label for="validationServer01">Be Among Three</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row among_five_time">
+                                    <div class="col-md-6">
+                                        <label for="validationServer01">Be Among Five</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row closeButton mt-5">
+                                    <div class="col-sm-12">
+                                        <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Delete Modal -->                       
                 <div class="modal fade" id="deleteModal" role="dialog">
@@ -528,44 +667,96 @@
 
             $('#missionsTable').on( 'draw.dt', function () {
                 
-                /*
+                
                 $(".fa-eye").click(function() {
 
                     var clickedRow = $(this).closest("tr");
                     var clickedRowId = clickedRow.attr('id');
                     var expectedObject = globalVariable.find( x => x.id === clickedRowId );
 
-                    $( "#viewModal p:eq(0)" ).html( expectedObject.name );
-                    $( "#viewModal p:eq(1)" ).html( expectedObject.description );
-                    $( "#viewModal p:eq(2)" ).html( expectedObject.amount );
-                    $( "#viewModal p:eq(3)" ).html( expectedObject.price_taka +' taka /<br/>'+ expectedObject.price_gems +' gems /<br/>'+ expectedObject.price_coins +' coins');
-                    
-                    $( "#viewModal span:eq(0)" ).html( Math.max(expectedObject.discount_taka, expectedObject.discount_gems, expectedObject.discount_coins) + ' %' );
+                    console.log(expectedObject);
 
-                    if (expectedObject.discount_taka) {
-                        $( "#viewModal span:eq(1)" ).html( 'taka,' );
-                    }
-                    else{
-                        $( "#viewModal span:eq(1)" ).empty(); 
-                    }
+                    $( "#viewModal .form-row").hide();
 
-                    if (expectedObject.discount_gems) {
-                        $( "#viewModal span:eq(2)" ).html( 'gems,' );
-                    }
-                    else{
-                        $( "#viewModal span:eq(2)" ).empty(); 
-                    }
+                    if (expectedObject.name) {
 
-                    if (expectedObject.discount_coins) {
-                        $( "#viewModal span:eq(3)" ).html( 'coins' );
+                        $("#viewModal .form-row.name").show();
+                        $( "#viewModal p:eq(0)" ).html( expectedObject.name );
                     }
-                    else{
-                        $( "#viewModal span:eq(3)" ).empty(); 
+                    if (expectedObject.mission_type.mission_type_name) {
+
+                        $("#viewModal .form-row.mission_type").show();
+                        $( "#viewModal p:eq(1)" ).html( expectedObject.mission_type.mission_type_name );
+                    }
+                    if (expectedObject.description) {
+
+                        $("#viewModal .form-row.description").show();
+                        $( "#viewModal p:eq(2)" ).html( expectedObject.description );
+                    }
+                    if (expectedObject.play_number) {
+
+                        $("#viewModal .form-row.play_number").show();
+                        $( "#viewModal p:eq(3)" ).html( expectedObject.play_number );
                     }
 
+                    if (expectedObject.play_time) {
+
+                        $("#viewModal .form-row.play_time").show();
+                        $( "#viewModal p:eq(4)" ).html( expectedObject.play_time );
+                    }
+
+                    if (expectedObject.damage_opponent) {
+
+                        $("#viewModal .form-row.damage_opponent").show();
+                        $( "#viewModal p:eq(5)" ).html( expectedObject.damage_opponent );
+                    }
+
+                    if (expectedObject.kill_opponent) {
+
+                        $("#viewModal .form-row.kill_opponent").show();
+                        $( "#viewModal p:eq(6)" ).html( expectedObject.kill_opponent );
+                    }
+
+                    if (expectedObject.kill_monster) {
+
+                        $("#viewModal .form-row.kill_monster").show();
+                        $( "#viewModal p:eq(7)" ).html( expectedObject.kill_monster );
+                    }
+
+                    if (expectedObject.travel_distance) {
+
+                        $("#viewModal .form-row.travel_distance").show();
+                        $( "#viewModal p:eq(8)" ).html( expectedObject.travel_distance );
+                    }
+
+                    if (expectedObject.win_top_time) {
+
+                        $("#viewModal .form-row.win_top_time").show();
+                        $( "#viewModal p:eq(9)" ).html( expectedObject.win_top_time );
+                    }
+
+                    if (expectedObject.among_two_time) {
+
+                        $("#viewModal .form-row.among_two_time").show();
+                        $( "#viewModal p:eq(10)" ).html( expectedObject.among_two_time );
+                    }
+
+                    if (expectedObject.among_three_time) {
+
+                        $("#viewModal .form-row.among_three_time").show();
+                        $( "#viewModal p:eq(11)" ).html( expectedObject.among_three_time );
+                    }
+
+                    if (expectedObject.among_five_time) {
+
+                        $("#viewModal .form-row.among_five_time").show();
+                        $( "#viewModal p:eq(12)" ).html( expectedObject.among_five_time );
+                    }
+
+                    $("#viewModal .form-row.closeButton").show();
                     $('#viewModal').modal('toggle');
                 });
-                */
+                
 
                 $(".fa-edit").click(function() {
 
