@@ -17,8 +17,10 @@ class CreateModeratorsTable extends Migration
             $table->increments('id');
             $table->string('firstname')->nullable()->default('Full');
             $table->string('lastname')->nullable()->default('Name');
-            $table->string('username')->default('Moderator');
+            $table->string('username')->default('moderator');
             $table->string('password');
+            $table->boolean('is_verified')->default(false);
+            $table->boolean('active')->default(true);
             $table->rememberToken();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();

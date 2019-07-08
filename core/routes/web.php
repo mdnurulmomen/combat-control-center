@@ -21,7 +21,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
         
         Route::group(['middleware'=>'check.OTP'], function ()
         {
-
             Route::get('home', 'Web\AdminController@homeMethod')->name('admin.home');
         
             Route::get('profile', 'Web\AdminController@showProfileForm')->name('admin.update_profile');
