@@ -18,7 +18,6 @@ use App\Models\CoinPack;
 use App\Models\Treasure;
 use App\Models\Character;
 use App\Models\Animation;
-use App\Models\Moderator;
 use App\Models\BoostPack;
 use App\Models\Parachute;
 use App\Models\BundlePack;
@@ -26,11 +25,13 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\EmailLoginToken;
 use App\Models\AdminPanelSetting;
+use Spatie\Permission\Models\Role;
 use App\Models\TreasureRedemption;
 use App\Mail\EmailLoginConfirmation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+// use Spatie\Permission\Models\Permission;
 
 
 class AdminController extends Controller
@@ -47,7 +48,7 @@ class AdminController extends Controller
             'password'=>'required',
         ]);
 
-        if(Auth::guard('admin')->attempt(['username'=>$request->username, 'password'=>$request->password])){
+        if(Auth::guard('admin')->attempt(['username'=>$request->username, 'password'=>$request->password, 'active'=>'1' ])){
 
             return $this->emailLoginToken(Auth::guard('admin')->user()->id, $request);
         }
@@ -160,10 +161,6 @@ class AdminController extends Controller
         $animations = Animation::all();
         $parachutes = Parachute::all();
         $bundlePacks = BundlePack::all();
-
-        // $totalBots = User::where('type', 'bot')->count();
-        // $totalPlayers = User::where('type', 'player')->count();
-        // $totalEarned = optional(Earning::orderBy('total_earning', 'DESC')->first())->total_earning;
 
         $allRequestedTreasures = TreasureRedemption::where('status', 0)->orderBy('created_at', 'desc')->paginate(8);
 
@@ -278,15 +275,19 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Settings are Updated');
     }
 
-    public function submitCreateModeratorForm(Request $request)
+    public function submitCreateUserForm(Request $request)
     {
         $request->validate([
-            'username'=>'required|unique:moderators,username',
-            'email'=>'nullable|unique:moderators,email',
-            'picture'=>'nullable|image'
+            'username'=>'required|unique:users,username',
+            'email'=>'nullable|unique:users,email',
+            'picture'=>'nullable|image',
+            'role'=>'required',
+            'active'=>'required',
+            'picture'=>'nullable|image',
+            'phone'=>'nullable|numeric',
         ]);
 
-        $profile = new Moderator();
+        $profile = new Admin();
 
         $profile->firstname = $request->firstname;
         $profile->lastname =  $request->lastname;
@@ -294,6 +295,9 @@ class AdminController extends Controller
         $profile->password = Hash::make($request->password);
         $profile->email = $request->email;
         $profile->phone = $request->phone;
+
+        $profile->active = $request->active;
+        $profile->assignRole($request->role);
 
         $profile->profile_picture = $request->file('picture');
 
@@ -303,52 +307,57 @@ class AdminController extends Controller
 
         $profile->save();
 
-        return redirect()->back()->with('success', 'New Moderator is Created');
+        return redirect()->back()->with('success', 'New User is Created');
     }
 
-    public function showAllModerators()
+    public function showAllUsers()
     {
-        $moderators = Moderator::paginate(15);
-        return view('admin.other_layouts.moderators.all_moderators', compact('moderators'));
+        $users = Admin::paginate(15);
+        return view('admin.other_layouts.users.all_users', compact('users'));
     }
 
-    public function showModeratorEditForm($moderatorId)
+    public function showUserEditForm($userId)
     {
-        $moderatorToUpdate = Moderator::findOrFail($moderatorId);
-        return view('admin.other_layouts.moderators.edit_moderator', compact('moderatorToUpdate'));
+        $userToUpdate = Admin::findOrFail($userId);
+        return view('admin.other_layouts.users.edit_user', compact('userToUpdate'));
     }
 
-    public function submitModeratorEditForm(Request $request, $moderatorId)
+    public function submitUserEditForm(Request $request, $userId)
     {
-        $moderatorToUpdate = Moderator::findOrFail($moderatorId);
+        $userToUpdate = Admin::findOrFail($userId);
 
         $request->validate([
-            'username'=>'required|unique:moderators,username,'.$moderatorToUpdate->id,
-            'email'=>'nullable|email|unique:moderators,email,'.$moderatorToUpdate->id,
+            'username'=>'required|unique:users,username,'.$userToUpdate->id,
+            'email'=>'nullable|email|unique:users,email,'.$userToUpdate->id,
+            'role'=>'required',
+            'active'=>'required',
             'picture'=>'nullable|image',
             'phone'=>'nullable|numeric',
         ]);
 
-        $moderatorToUpdate->firstname = $request->firstname;
-        $moderatorToUpdate->lastname =  $request->lastname;
-        $moderatorToUpdate->username = $request->username;
-        $moderatorToUpdate->email = $request->email;
-        $moderatorToUpdate->phone = $request->phone;
+        $userToUpdate->firstname = $request->firstname;
+        $userToUpdate->lastname =  $request->lastname;
+        $userToUpdate->username = $request->username;
+        $userToUpdate->email = $request->email;
+        $userToUpdate->phone = $request->phone;
 
-        $moderatorToUpdate->profile_picture = $request->file('picture');
+        $userToUpdate->active = $request->active;
+        $userToUpdate->syncRoles($request->role);
 
-        $moderatorToUpdate->address = $request->address;
-        $moderatorToUpdate->city = $request->city;
-        $moderatorToUpdate->country = $request->country;
+        $userToUpdate->profile_picture = $request->file('picture');
 
-        $moderatorToUpdate->save();
+        $userToUpdate->address = $request->address;
+        $userToUpdate->city = $request->city;
+        $userToUpdate->country = $request->country;
 
-        return redirect()->back()->with(compact('moderatorToUpdate'))->with('success', 'Profile is Updated');
+        $userToUpdate->save();
+
+        return redirect()->back()->with(compact('userToUpdate'))->with('success', 'Profile is Updated');
     }
 
-    public function moderatorDeleteMethod($moderatorId)
+    public function userDeleteMethod($userId)
     {
-        Moderator::destroy($moderatorId);
+        Admin::destroy($userId);
         return redirect()->back()->with('success', 'Profile is Deleted');
     }
 
