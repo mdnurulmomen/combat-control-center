@@ -9,14 +9,29 @@
                         <h3 class="float-left">Enabled Gems Packs List </h3>
                     </div>
 
+
                     <div class="col-6">
-                        <a href="{{route('admin.view_disabled_gem_packs')}}" class="btn btn-outline-danger float-right" type="button">
+                        
+                        @if(auth()->user()->can('read'))
+
+                        <a href="{{route('admin.view_disabled_gem_packs')}}" class="btn btn-outline-danger float-right btn-sm" type="button">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                             Disabled Packs
-                        </a>    
-                        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
+                        </a>
+
+                        @endif
+
+                        @if(auth()->user()->can('create'))  
+
+                        <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addModal">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
                             New Gems Pack
                         </button>
+
+                        @endif
+
                     </div>
+
                 </div>
 
                 <hr>
@@ -31,7 +46,13 @@
                                 <th>Amount</th>
                                 <th>Price(Taka)</th>
                                 <th>Discount(Taka)</th>
+
+                                @if(auth()->user()->can('update'))
+                                
                                 <th class="actions">Actions</th>
+
+                                @endif
+
                             </tr>
                             </thead>
                             <tbody>
@@ -55,14 +76,9 @@
                                         <p>{{ $gem->discount_taka }}%</p>
                                     </td>
 
+                                    @if(auth()->user()->can('update'))
+
                                     <td>
-
-                                    {{--
-                                        <a href="{{ route('admin.update_gem_pack', $gem->id) }}" class="btn btn-icon btn-pill btn-success" data-toggle="tooltip" title="Edit">
-                                            <i class="fa fa-fw fa-edit"></i>
-                                        </a>
-                                            --}}
-
                                         <button class="btn btn-outline-success"  data-toggle="modal" data-target="#editModal{{$gem->id}}" title="Edit">
                                             <i class="fa fa-fw fa-edit" style="transform: scale(1.5);"></i>
                                         </button>    
@@ -71,8 +87,12 @@
                                             <i class="fa fa-fw fa-trash" style="transform: scale(1.5);"></i>
                                         </button>
                                     </td>
+
+                                    @endif
+
                                 </tr>
 
+                                @if(auth()->user()->can('update')) 
                                 <!--- Edit Modal --->
                                 <div class="modal fade" id="editModal{{$gem->id}}" role="dialog">
                                     <div class="modal-dialog modal-lg">
@@ -153,6 +173,9 @@
                                     </div>
                                 </div>
 
+                                @endif
+
+                                @if(auth()->user()->can('delete'))
                                 <!--Delete Modal -->
                                 <div class="modal fade" id="deleteModal{{$gem->id}}" role="dialog">
                                     <div class="modal-dialog">
@@ -180,8 +203,12 @@
                                     </div>
                                 </div>
 
+                                @endif
+
                             @endforeach
+
                             </tbody>
+
                         </table>
                         <div class="float-right">
                             {{ $gems->onEachSide(5)->links() }}
@@ -189,6 +216,8 @@
                     </div>
                 </div>
             </div>
+
+            @if(auth()->user()->can('create'))
 
             <div class="modal fade" id="addModal" role="dialog">
                 <div class="modal-dialog modal-lg">
@@ -268,6 +297,8 @@
                     </div>
                 </div>
             </div>
+
+            @endif
 
         </div>
 @stop

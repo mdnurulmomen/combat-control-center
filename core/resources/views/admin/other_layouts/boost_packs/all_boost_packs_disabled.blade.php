@@ -10,9 +10,16 @@
                         <h3 class="float-left">Disabled Boost Packs List </h3>
                     </div>
                     <div class="col-6">
-                        <a  href="{{route('admin.view_enabled_boost_packs')}}"  class="btn btn-outline-success float-right" type="button">
+                        
+                        @if(auth()->user()->can('read'))
+
+                        <a  href="{{route('admin.view_enabled_boost_packs')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             Enabled Packs
                         </a>
+
+                        @endif
+
                     </div>
                 </div>
 
@@ -28,7 +35,13 @@
                                 <th>Amount</th>
                                 <th>Prices</th>
                                 <th>Offers</th>
+
+                                @if(auth()->user()->can('update'))
+
                                 <th class="actions">Actions</th>
+
+                                @endif
+
                             </tr>
                             </thead>
                             <tbody>
@@ -55,15 +68,17 @@
                                         <p>{{ $boostPack->discount_coins }}% (coins)</p>
                                     </td>
                                     
+                                    @if(auth()->user()->can('update'))
                                     <td>
-
                                         <button class="btn btn-outline-danger" data-toggle="modal" data-target="#undoModal{{$boostPack->id}}" title="Undo">
                                             <i class="fa fa-fw fa-undo" style="transform: scale(1.5);"></i>
                                         </button>
 
                                     </td>
+                                    @endif
                                 </tr>
 
+                                @if(auth()->user()->can('update'))
                                 <!-- Undo Modal -->
                                 <div class="modal fade" id="undoModal{{$boostPack->id}}" role="dialog">
                                     <div class="modal-dialog">
@@ -92,6 +107,8 @@
 
                                     </div>
                                 </div>
+                                
+                                @endif
 
                             @endforeach
 

@@ -10,14 +10,29 @@
                         <h3 class="float-left">Enabled Weapons List </h3>
                     </div>
 
+
                     <div class="col-6">
-                        <a  href="{{route('admin.view_disabled_weapons')}}"  class="btn btn-outline-danger float-right" type="button">
+
+                        @if(auth()->user()->can('read'))
+                        
+                        <a  href="{{route('admin.view_disabled_weapons')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                             Disabled Weapons
                         </a>
-                        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
+
+                        @endif
+
+                        @if(auth()->user()->can('create'))
+
+                        <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addModal">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
                             New Weapon
                         </button>
+
+                        @endif
+
                     </div>
+
                 </div>
                     
                 <hr>
@@ -26,14 +41,22 @@
                     <div class="col-12 table-responsive">
 
                         <table class="table table-hover table-striped table-bordered text-center" cellspacing="0" width="100%">
+
                             <thead class="thead-dark">
-                            <tr>
-                                <th>Weapon Name</th>
-                                <th>Prices</th>
-                                <th>Discounts</th>
-                                <th class="actions">Actions</th>
-                            </tr>
+                                <tr>
+                                    <th>Weapon Name</th>
+                                    <th>Prices</th>
+                                    <th>Discounts</th>
+
+                                    @if(auth()->user()->can('update'))
+
+                                    <th class="actions">Actions</th>
+
+                                    @endif
+
+                                </tr>
                             </thead>
+
                             <tbody>
 
                             @if($weapons->isEmpty())
@@ -58,6 +81,8 @@
                                         <p>{{ $weapon->discount_coins }}% (coins)</p>
                                     </td>
 
+                                    @if(auth()->user()->can('update'))
+
                                     <td>
 
                                        <button class="btn btn-outline-success"  data-toggle="modal" data-target="#editModal{{$weapon->id}}" title="Edit">
@@ -67,15 +92,14 @@
                                         <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#deleteModal{{$weapon->id}}" title="Delete">
                                             <i class="fa fa-fw fa-trash" style="transform: scale(1.5);"></i>
                                         </button>
-                                    {{--
-                                        <a href="{{ route('admin.update_weapon', $weapon->id) }}" class="btn btn-icon btn-pill btn-success" data-toggle="tooltip" title="Edit">
-                                            <i class="fa fa-fw fa-edit"></i>
-                                        </a>
-                                            --}}
 
-                                        </a>
                                     </td>
+
+                                    @endif                                        
+
                                 </tr>
+
+                                @if(auth()->user()->can('update'))
 
                                 <!--- Edit Modal --->
                                 <div class="modal fade" id="editModal{{$weapon->id}}" role="dialog">
@@ -188,6 +212,10 @@
                                     </div>
                                 </div>
 
+                                @endif
+
+                                @if(auth()->user()->can('delete'))
+
                                 <!--Delete Modal -->
                                 <div class="modal fade" id="deleteModal{{$weapon->id}}" role="dialog">
                                     <div class="modal-dialog">
@@ -215,7 +243,10 @@
                                     </div>
                                 </div>
 
+                                @endif
+
                             @endforeach
+                            
                             </tbody>
                         </table>
 
@@ -225,6 +256,8 @@
                     </div>
                 </div>
             </div>
+
+            @if(auth()->user()->can('create'))
 
             <div class="modal fade" id="addModal" role="dialog">
                 <div class="modal-dialog modal-lg">
@@ -335,6 +368,8 @@
                     </div>
                 </div>
             </div>
+
+            @endif
 
         </div>
 

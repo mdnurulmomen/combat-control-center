@@ -10,9 +10,16 @@
                         <h3 class="float-left">Disabled Weapons List </h3>
                     </div>
                     <div class="col-6">
-                        <a  href="{{route('admin.view_enabled_weapons')}}"  class="btn btn-outline-danger float-right" type="button">
+
+                        @if(auth()->user()->can('read'))
+
+                        <a  href="{{route('admin.view_enabled_weapons')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                            <i class="fa fa-list" aria-hidden="true"></i>
                             Enabled Weapons
                         </a>
+
+                        @endif
+
                     </div>
                 </div>
                     
@@ -23,12 +30,18 @@
 
                         <table class="table table-hover table-striped table-bordered text-center" cellspacing="0" width="100%">
                             <thead class="thead-dark">
-                            <tr>
-                                <th>Weapon Name</th>
-                                <th>Prices</th>
-                                <th>Discounts</th>
-                                <th class="actions">Actions</th>
-                            </tr>
+                                <tr>
+                                    <th>Weapon Name</th>
+                                    <th>Prices</th>
+                                    <th>Discounts</th>
+
+                                    @if(auth()->user()->can('update'))
+                                    
+                                    <th class="actions">Actions</th>
+                                    
+                                    @endif
+
+                                </tr>
                             </thead>
                             <tbody>
 
@@ -54,17 +67,19 @@
                                         <p>{{ $weapon->discount_coins }}% (coins)</p>
                                     </td>
 
-                                    <td> 
+                                    @if(auth()->user()->can('update'))
 
+                                    <td> 
                                         <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoModal{{$weapon->id}}" title="Undo">
                                             <i class="fa fa-fw fa-undo" style="transform: scale(1.5);"></i>
                                         </button>
-
-                                        </a>
                                     </td>
+
+                                    @endif
+
                                 </tr>
 
-
+                                @if(auth()->user()->can('update'))
                                 <!--Undo Modal -->
                                 <div class="modal fade" id="undoModal{{$weapon->id}}" role="dialog">
                                     <div class="modal-dialog">
@@ -94,7 +109,10 @@
                                     </div>
                                 </div>
 
+                                @endif
+
                             @endforeach
+                            
                             </tbody>
                         </table>
 
@@ -104,6 +122,8 @@
                     </div>
                 </div>
             </div>
+
+            @if(auth()->user()->can('create'))
 
             <div class="modal fade" id="addModal" role="dialog">
                 <div class="modal-dialog modal-lg">
@@ -214,6 +234,8 @@
                     </div>
                 </div>
             </div>
+
+            @endif
 
         </div>
 

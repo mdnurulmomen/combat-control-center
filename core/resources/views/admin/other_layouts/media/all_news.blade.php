@@ -10,11 +10,17 @@
                         <h3 class="float-left"> News List </h3>
                     </div>
 
+                    @if(auth()->user()->can('create'))
+
                     <div class="col-6"> 
-                        <button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#addModal" title="Add">
+                        <button type="button" class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#addModal" title="Add">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
                             Create News
                         </button>
                     </div>
+
+                    @endif
+
                 </div>
 
                 <hr>
@@ -24,11 +30,17 @@
 
                         <table class="table table-hover table-striped table-bordered text-center" cellspacing="0" width="100%">
                             <thead class="thead-dark">
-                            <tr>
-                                <th>News Serial</th>
-                                <th>News Body</th>
-                                <th class="actions">Actions</th>
-                            </tr>
+                                <tr>
+                                    <th>News Serial</th>
+                                    <th>News Body</th>
+
+                                    @if(auth()->user()->can('update'))
+
+                                    <th class="actions">Actions</th>
+
+                                    @endif
+
+                                </tr>
                             </thead>
                             <tbody>
 
@@ -42,6 +54,9 @@
                                 <tr>
                                     <td>{{ $news->id }}</td>
                                     <td>{{ $news->body }}</td>
+
+                                    @if(auth()->user()->can('update'))
+
                                     <td>
                                         <button class="btn btn-outline-success" data-toggle="modal" data-target="#editModal{{$news->id}}" title="Edit">
                                             <i class="fa fa-fw fa-edit" style="transform: scale(1.5);"></i>
@@ -51,10 +66,13 @@
                                             <i class="fa fa-fw fa-trash" style="transform: scale(1.5);"></i>
                                         </button>
                                     </td>
+
+                                    @endif
+
                                 </tr>
 
-
-                                <!-- Modal -->
+                                @if(auth()->user()->can('update'))
+                                <!-- Update Modal -->
                                 <div class="modal fade" id="editModal{{$news->id}}" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -89,7 +107,10 @@
                                     </div>
                                 </div>
 
-                                <!-- Modal -->
+                                @endif
+
+                                @if(auth()->user()->can('delete'))
+                                <!-- Delete Modal -->
                                 <div class="modal fade" id="deleteModal{{$news->id}}" role="dialog">
                                     <div class="modal-dialog">
 
@@ -115,7 +136,10 @@
                                     </div>
                                 </div>
 
+                                @endif
+
                             @endforeach
+
                             </tbody>
                         </table>
 
@@ -125,6 +149,8 @@
                     </div>
                 </div>
             </div>
+
+            @if(auth()->user()->can('create'))
 
             <div class="modal fade" id="addModal" role="dialog">
                 <div class="modal-dialog">
@@ -159,6 +185,8 @@
                     </div>
                 </div>
             </div>
+
+            @endif
 
         </div>
 @stop

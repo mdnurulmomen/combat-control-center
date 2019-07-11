@@ -33,11 +33,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::put('settings/cms', 'Web\AdminController@submitAdminSettingsForm')->name('admin.settings_admin_panel_submit');
 
 
-            Route::post('moderator', 'Web\AdminController@submitCreateModeratorForm')->name('admin.created_moderator_submit');
-            Route::get('moderators/all', 'Web\AdminController@showAllModerators')->name('admin.view_moderators');
-            Route::get('moderator/{moderatorId}', 'Web\AdminController@showModeratorEditForm')->name('admin.update_moderator');
-            Route::put('moderator/{moderatorId}', 'Web\AdminController@submitModeratorEditForm')->name('admin.updated_moderator_submit');
-            Route::delete('moderator/{moderatorId}', 'Web\AdminController@moderatorDeleteMethod')->name('admin.delete_moderator');
+            Route::post('user', 'Web\AdminController@submitCreateUserForm')->name('admin.created_user_submit');
+            Route::get('users/all', 'Web\AdminController@showAllUsers')->name('admin.view_users');
+            // Route::get('users/{userId}', 'Web\AdminController@showUserEditForm')->name('admin.update_user');
+            Route::put('users/{userId}', 'Web\AdminController@submitUserEditForm')->name('admin.updated_user_submit');
+            Route::delete('users/{userId}', 'Web\AdminController@userDeleteMethod')->name('admin.delete_user');
 
 
             Route::get('api/all', 'Web\AdminController@showAllApi')->name('admin.view_api');

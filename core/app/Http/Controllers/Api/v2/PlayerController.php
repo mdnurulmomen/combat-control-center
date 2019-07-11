@@ -89,10 +89,11 @@ class PlayerController extends Controller
                 $userExist->device_info = '';
                 $userExist->phone = $request->mobileNo;
                 $userExist->login_type = 'true';
+                $userExist->profile_pic = $request->profilePic;
 
                 if ($request->facebookName || $request->gmailName) {
                     
-                    $userExist->username = $request->facebookName ?? $request->gmailName;
+                    $userExist->username = empty($request->facebookName) ? $request->gmailName : $request->facebookName;
                 }
                 else{
 
@@ -228,7 +229,7 @@ class PlayerController extends Controller
             
             if ($request->facebookName || $request->gmailName) {
                 
-                $newUser->username = $request->facebookName ?? $request->gmailName ;
+                $newUser->username = empty($request->facebookName) ? $request->gmailName : $request->facebookName;
             }
             else{
                 $newUser->username = $request->userName;

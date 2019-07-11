@@ -10,14 +10,27 @@
                     <h3 class="float-left">Enabled Treasure Types List </h3>
                 </div>
 
+
                 <div class="col-6">
-                    <a  href="{{route('admin.view_disabled_treasure_types')}}"  class="btn btn-outline-danger float-right" type="button">
+
+                    @if(auth()->user()->can('read'))
+
+                    <a  href="{{route('admin.view_disabled_treasure_types')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
                         Disabled Types
                     </a>
 
-                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addTreasureType">
+                    @endif
+
+                    @if(auth()->user()->can('create'))
+
+                    <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addTreasureType">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
                         New Treasure Type
                     </button>
+
+                    @endif
+
                 </div>
 
             </div>
@@ -33,7 +46,13 @@
                             <tr>
                                 <th>Type Serial</th>
                                 <th>Type Name</th>
+
+                                @if(auth()->user()->can('update'))
+
                                 <th class="actions">Actions</th>
+
+                                @endif
+
                             </tr>
                         </thead>
                         
@@ -49,6 +68,9 @@
                             <tr>
                                 <td>{{ $treasureType->id }}</td>
                                 <td>{{ $treasureType->treasure_type_name }}</td>
+
+                                @if(auth()->user()->can('update'))
+
                                 <td>
 
                                     <button class="btn btn-outline-success"  data-toggle="modal" data-target="#editTreasureType{{$treasureType->id}}">
@@ -60,9 +82,13 @@
                                     </button>
                                         
                                 </td>
+
+                                @endif
+
                             </tr>
 
-                        
+                        @if(auth()->user()->can('delete'))
+
                         <!-- Delete Modal -->                       
                         <div class="modal fade" id="deleteTreasureType{{$treasureType->id}}" role="dialog">
                             <div class="modal-dialog">
@@ -88,7 +114,11 @@
 
                             </div>
                         </div>
+
+                        @endif
                         
+                        @if(auth()->user()->can('update'))
+
                         <!-- Edit Modal -->  
                         <div class="modal fade" id="editTreasureType{{$treasureType->id}}" role="dialog">
                             <div class="modal-dialog modal-lg">
@@ -130,9 +160,11 @@
                                 </div>
                             </div>
                         </div>  
-                                
+                        
+                        @endif       
 
                         @endforeach
+
                         </tbody>
                     </table>
 
@@ -143,7 +175,7 @@
             </div>
         </div>
 
-        
+        @if(auth()->user()->can('create'))
 
         <div class="modal fade" id="addTreasureType" role="dialog">
             <div class="modal-dialog modal-lg">
@@ -182,6 +214,8 @@
                 </div>
             </div>
         </div>
+
+        @endif
 
     </div>
 @stop

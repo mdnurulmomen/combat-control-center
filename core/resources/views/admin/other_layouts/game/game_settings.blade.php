@@ -86,6 +86,7 @@
                     </div>
                    
                     <br>
+
                     <div class="form-group row">
                         <div class="col-sm-12">
                             <button type="submit" class="btn btn-lg btn-block btn-primary">Update</button>
@@ -112,30 +113,22 @@
 
         $(function () {
             $('#datetimepicker1').datetimepicker();
-        });
-
-        $(function () {
+            
             $('#datetimepicker2').datetimepicker();
-        });
-
-    </script>
-
-    <script>
-
-        $(function() {
+        
             $('#maintainance_mode').change(function() {
                 $(this).prop("checked") == true ? enable_date() : disable_date(); 
             })
+
+            function enable_date() {
+                $("input.maintainance_date").prop('disabled', false);
+            };
+
+            function disable_date() {
+                $("input.maintainance_date").prop('disabled', true);
+                $('input.maintainance_date').val("").datepicker("update");
+            };
         });
-
-        function enable_date() {
-            $("input.maintainance_date").prop('disabled', false);
-        };
-
-        function disable_date() {
-            $("input.maintainance_date").prop('disabled', true);
-            $('input.maintainance_date').val("").datepicker("update");
-        };
 
     </script>
 

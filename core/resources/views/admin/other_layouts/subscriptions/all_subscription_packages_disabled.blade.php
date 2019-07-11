@@ -10,9 +10,16 @@
                     <h3 class="float-left">Disabled Subscription Packages List </h3>
                 </div>
                 <div class="col-6">
-                    <a  href="{{route('admin.view_enabled_subscription_packages')}}"  class="btn btn-outline-success float-right" type="button">
+                    
+                    @if(auth()->user()->can('read'))
+
+                    <a  href="{{route('admin.view_enabled_subscription_packages')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                        <i class="fa fa-list" aria-hidden="true"></i>
                         Enabled Packages
                     </a>
+
+                    @endif
+
                 </div>
             </div>
 
@@ -29,7 +36,13 @@
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Cost(gems)</th>
+
+                                @if(auth()->user()->can('update'))
+                            
                                 <th>Action</th>
+                            
+                                @endif
+                            
                             </tr>
                         </thead>
                         
@@ -47,6 +60,9 @@
                                 <td>{{ $package->name }}</td>
                                 <td>{{ $package->subscriptionPackageType->name }}</td>
                                 <td>{{ $package->price_gem ?? 0 }}</td>
+
+                                @if(auth()->user()->can('update'))
+
                                 <td>
 
                                     <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoModal{{$package->id}}" title="Undo">
@@ -54,9 +70,12 @@
                                     </button>
                                         
                                 </td>
+
+                                @endif
+
                             </tr>
 
-                        
+                        @if(auth()->user()->can('update'))
                         <!-- Undo Modal -->                       
                         <div class="modal fade" id="undoModal{{$package->id}}" role="dialog">
                             <div class="modal-dialog">
@@ -84,6 +103,8 @@
 
                             </div>
                         </div> 
+
+                        @endif
 
                         @endforeach
                                 

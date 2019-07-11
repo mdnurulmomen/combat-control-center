@@ -15,6 +15,7 @@
 
             <div class="row">
                 
+                @if(auth()->user()->hasAnyRole(['moderator', 'admin']))
                 <!-- Modal -->
                 <div class="modal fade" id="deleteModal" role="dialog">
                     <div class="modal-dialog">
@@ -42,6 +43,8 @@
                         </div>
                     </div>
                 </div>
+                
+                @endif
 
             </div>
 
@@ -53,32 +56,13 @@
                             <tr>
                                 <th>Serial No.</th>
                                 <th>Number</th>
-                                <th class="actions">Actions</th>
+                                
+                                @if(auth()->user()->hasAnyRole(['moderator', 'admin']))
+                                    <th class="actions">Actions</th>
+                                @endif
                             </tr>
                         </thead>
-                    {{-- 
-                        <tbody>
 
-                        @if($allBlackListNumbers->isEmpty())
-                            <tr class="danger">
-                                <td class="text-danger" colspan='5'>No Data Found</td>
-                            </tr>
-                        @endif
-
-                        @foreach($allBlackListNumbers as $blackList)
-                            <tr>
-                                <td>{{ $blackList->id }}</td>
-                                <td>{{ $blackList->mobile_number }}</td>
-                                <td>
-                                    <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#deleteModal{{$blackList->id}}" title="Delete">
-                                        <i class="fa fa-fw fa-trash" style="transform: scale(1.5);"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                        @endforeach
-                        </tbody> 
-                                --}}
                     </table>
                 </div>
             </div>
@@ -101,7 +85,10 @@
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'mobile_number', name: 'mobile_number' },
-                    { data: 'action', name: 'action', orderable : false }
+                    
+                    @if(auth()->user()->hasAnyRole(['moderator', 'admin']))
+                        { data: 'action', name: 'action', orderable : false }
+                    @endif
                 ],
                 drawCallback:function(){
                     var api = this.api();
@@ -112,7 +99,9 @@
 
             $('#numberTable').on( 'draw.dt', function () {
                 
-                console.log(globalVariable);
+                // console.log(globalVariable);
+
+                @if(auth()->user()->hasAnyRole(['moderator', 'admin']))
 
                 $(".fa-trash").click(function() {
 
@@ -127,6 +116,8 @@
 
                     $('#deleteModal').modal('toggle');
                 });
+
+                @endif
             });
         });
 

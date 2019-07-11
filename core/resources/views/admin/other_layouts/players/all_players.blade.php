@@ -24,7 +24,9 @@
 
             <div class="row">
 
-                <!-- Modal -->
+                @if(auth()->user()->can('delete'))
+
+                <!-- Delete Modal -->
                 <div class="modal fade" id="deleteModal" role="dialog">
                     <div class="modal-dialog">
 
@@ -50,6 +52,8 @@
                         </div>
                     </div>
                 </div>
+
+                @endif
 
             </div>
 
@@ -122,6 +126,8 @@
 
             $('#playerTable').on( 'draw.dt', function () {
 
+                @if(auth()->user()->can('read'))
+
                 /*
                 $(".fa-eye").click(function() {
 
@@ -161,6 +167,9 @@
                 });
                 */
 
+                @endif
+
+                @if(auth()->user()->can('delete'))
 
                 $(".fa-trash").click(function() {
 
@@ -174,6 +183,9 @@
 
                     $('#deleteModal').modal('toggle');
                 });
+
+                @endif
+                
             });
         });
     </script>

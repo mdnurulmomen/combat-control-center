@@ -10,14 +10,33 @@
                     <h3 class="float-left"> Enabled Treasures List </h3>
                 </div>
 
+
                 <div class="col-6">
-                    <button type="button" class="btn btn-info float-right mr-3 ml-3" data-toggle="modal" data-target="#addType">
+
+
+                    @if(auth()->user()->can('create'))
+                    
+                    <button type="button" class="btn btn-info float-right mr-3 ml-3 btn-sm" data-toggle="modal" data-target="#addType">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
                         New Treasure Type
                     </button>
 
-                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
+                    <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addModal">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
                         New Treasure
                     </button>
+
+                    @endif
+
+                    @if(auth()->user()->can('read'))
+
+                    <a  href="{{route('admin.view_disabled_treasures')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        Disabled Treasures
+                    </a>
+
+                    @endif
+
                 </div>
 
             </div>
@@ -34,7 +53,13 @@
                                 <th>Treasure Serial</th>
                                 <th>Treasure Name</th>
                                 <th>Equivalent Cost</th>
+                                
+                                @if(auth()->user()->can('update'))
+
                                 <th class="actions">Actions</th>
+
+                                @endif
+
                             </tr>
                         </thead>
                         
@@ -51,6 +76,9 @@
                                 <td>{{ $treasure->id }}</td>
                                 <td>{{ $treasure->name }}</td>
                                 <td>{{ $treasure->equivalent_price }}</td>
+
+                                @if(auth()->user()->can('update'))
+
                                 <td>
 
                                     <button class="btn btn-outline-success"  data-toggle="modal" data-target="#editModal{{$treasure->id}}">
@@ -62,8 +90,12 @@
                                     </button>
                                         
                                 </td>
+
+                                @endif
+
                             </tr>
 
+                        @if(auth()->user()->can('delete'))
                         
                         <!-- Delete Modal -->                       
                         <div class="modal fade" id="deleteModal{{$treasure->id}}" role="dialog">
@@ -92,8 +124,11 @@
 
                             </div>
                         </div>
-                        
 
+                        @endif
+
+                        @if(auth()->user()->can('update'))
+                        
                         <div class="modal fade" id="editModal{{$treasure->id}}" role="dialog">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -232,8 +267,10 @@
                             </div>
                         </div>  
                                 
+                        @endif
 
                         @endforeach
+
                         </tbody>
                     </table>
 
@@ -243,6 +280,8 @@
                 </div>
             </div>
         </div>
+
+        @if(auth()->user()->can('create'))
 
         <div class="modal fade" id="addModal" role="dialog">
             <div class="modal-dialog modal-lg">
@@ -378,6 +417,10 @@
             </div>
         </div>
 
+        @endif
+
+        @if(auth()->user()->can('create'))
+
         <div class="modal fade" id="addType" role="dialog">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -415,6 +458,8 @@
                 </div>
             </div>
         </div>
+
+        @endif
 
     </div>
 @stop

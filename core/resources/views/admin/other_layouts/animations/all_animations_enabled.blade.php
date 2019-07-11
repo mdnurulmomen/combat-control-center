@@ -20,15 +20,29 @@
                     <h3 class="float-left">Enabled Animations List </h3>
                 </div>
 
+
                 <div class="col-6">
-                    <a  href="{{route('admin.view_disabled_animations')}}"  class="btn btn-outline-danger float-right" type="button">
+
+                @if(auth()->user()->can('read'))
+
+                    <a  href="{{route('admin.view_disabled_animations')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
                         Disabled Animations
                     </a>
 
-                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
+                @endif
+
+                @if(auth()->user()->can('create'))
+
+                    <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addModal">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
                         Create New Animation
                     </button>
+
+                @endif
+
                 </div>
+
             </div>
 
             <hr>
@@ -51,8 +65,10 @@
 
                 </div>
             </div>
-            <div class="row">
                 
+            <div class="row">
+
+                @if(auth()->user()->can('read'))
                 <!--- View Modal --->
                 <div class="modal fade" id="viewModal" role="dialog">
                     <div class="modal-dialog  modal-sm">
@@ -125,6 +141,10 @@
                         </div>
                     </div>
                 </div>
+
+                @endif
+
+                @if(auth()->user()->can('update'))
 
                 <!--- Edit Modal --->
                 <div class="modal fade" id="editModal" role="dialog">
@@ -236,6 +256,10 @@
                     </div>
                 </div>
 
+                @endif
+
+                @if(auth()->user()->can('delete'))
+
                 <!--Delete Modal -->
                 <div class="modal fade" id="deleteModal" role="dialog">
                     <div class="modal-dialog">
@@ -265,6 +289,10 @@
 
                     </div>
                 </div>
+
+                @endif
+
+                @if(auth()->user()->can('create'))
 
                 <div class="modal fade" id="addModal" role="dialog">
                     <div class="modal-dialog modal-lg">
@@ -381,6 +409,9 @@
                         </div>
                     </div>
                 </div>
+
+                @endif
+
             </div>
         </div> 
     </div>
@@ -437,6 +468,8 @@
 
             function makeEveryModal(settings, json) {
 
+                @if(auth()->user()->can('read'))
+
                 $(".fa-eye").click(function() {
 
                     var clickedRow = $(this).closest("tr");
@@ -474,6 +507,9 @@
 
                 });
 
+                @endif
+
+                @if(auth()->user()->can('update'))
 
                 $(".fa-edit").click(function() {
 
@@ -524,6 +560,10 @@
 
                 });
 
+                @endif
+
+                @if(auth()->user()->can('delete'))
+
                 $(".fa-trash").click(function() {
 
                     var clickedRow = $(this).closest("tr");
@@ -539,6 +579,8 @@
                     $('#deleteModal').modal('toggle');
 
                 });
+
+                @endif
             }
 
         });

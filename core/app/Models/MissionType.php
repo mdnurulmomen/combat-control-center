@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class MissionType extends Model
 {
 	use SoftDeletes;
-	
-   	public function relatedTreasures()
+
+
+   	public function missions()
     {
     	return $this->hasMany('App\Models\Mission', 'mission_type_id', 'id');
     }

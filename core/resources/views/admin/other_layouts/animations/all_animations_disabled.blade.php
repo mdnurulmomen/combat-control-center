@@ -10,9 +10,16 @@
                     </div>
 
                     <div class="col-6">
-                        <a  href="{{route('admin.view_enabled_animations')}}"  class="btn btn-outline-success float-right" type="button">
+
+                        @if(auth()->user()->can('read'))
+
+                        <a  href="{{route('admin.view_enabled_animations')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             Enabled Animations
                         </a>
+
+                        @endif
+
                     </div>
                 </div>
 
@@ -27,7 +34,13 @@
                                     <th>Animation Name</th>
                                     <th>Prices</th>
                                     <th>Discounts</th>
+                                    
+                                    @if(auth()->user()->can('update'))
+
                                     <th class="actions">Actions</th>
+
+                                    @endif
+
                                 </tr>
 
                             </thead>
@@ -56,6 +69,8 @@
                                         <p>{{ $animation->discount_coins }}% (coins)</p>
                                     </td>
 
+                                    @if(auth()->user()->can('update'))
+
                                     <td>
 
                                         <button class="btn btn-outline-danger" data-toggle="modal" data-target="#undoModal{{$animation->id}}" title="Undo">
@@ -63,9 +78,12 @@
                                         </button>
                                         
                                     </td>
+
+                                    @endif
+
                                 </tr>
 
-                            
+                                @if(auth()->user()->can('update'))
                                 <!--Undo Modal -->
                                 <div class="modal fade" id="undoModal{{$animation->id}}" role="dialog">
                                     <div class="modal-dialog">
@@ -94,9 +112,11 @@
 
                                     </div>
                                 </div>
-                                    
 
+                                @endif
+                                    
                             @endforeach
+
                             </tbody>
                         </table>
 

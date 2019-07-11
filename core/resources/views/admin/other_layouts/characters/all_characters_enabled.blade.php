@@ -21,336 +21,368 @@
                 </div>
 
                 <div class="col-6">
-                    <a href="{{route('admin.view_disabled_characters')}}" class="btn btn-outline-danger float-right" type="button">
+
+                    @if(auth()->user()->can('read'))
+                    
+                    <a href="{{route('admin.view_disabled_characters')}}" class="btn btn-outline-danger float-right btn-sm" type="button">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
                         Disabled Characters
                     </a>
+                    
+                    @endif
 
-                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
+                    @if(auth()->user()->can('create'))
+                    
+                    <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addModal">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
                         New Character
                     </button>
+                    
+                    @endif
+
                 </div>
+
             </div>
 
             <hr>
 
-            <!-- Delete Modal -->
-            <div class="modal fade" id="deleteModal" role="dialog">
-                <div class="modal-dialog">
 
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Confirmation</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <div class="row">
+                
+                @if(auth()->user()->can('read'))
+                <!--- View Modal --->
+                <div class="modal fade" id="viewModal" role="dialog">
+                    <div class="modal-dialog  modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4> Character Details </h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">  
+                                <div class="form-row">
+                                    <div class="col-md-5">
+                                        <label for="validationServerUsername">Name</label>
+                                    </div>
+                                        
+                                    <div class="col-md-7">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="form-row">
+                                    <div class="col-md-5">
+                                        <label for="validationServerUsername">Description</label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-md-5">
+                                        <label for="validationServer01">Price </label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row mb-4">
+                                    <div class="col-md-5">
+                                        <label for="validationServerUsername">Discount</label>
+                                    </div>
+
+                                    <div class="col-md-7">
+                                        <div>
+                                            <span></span>
+                                        </div>   
+                                        <div class="form-check form-check-inline">
+                                            <span></span>
+                                        </div>
+
+                                        <div class="form-check form-check-inline">
+                                            <span></span>
+                                        </div>
+
+                                        <div class="form-check form-check-inline">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-sm-12">
+                                        <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <form method="POST" action="">
+                    </div>
+                </div>
 
-                            @method('DELETE')
-                            @csrf
+                @endif
+
+                @if(auth()->user()->can('delete'))
+                <!-- Delete Modal -->
+                <div class="modal fade" id="deleteModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Confirmation</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <form method="POST" action="">
+
+                                @method('DELETE')
+                                @csrf
+
+                                <div class="modal-body">
+                                    <p>Are You Sure ??</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Yes</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+                @endif
+
+                @if(auth()->user()->can('create'))
+
+                <div class="modal fade" id="addModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h3> Create Character </h3>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
 
                             <div class="modal-body">
-                                <p>Are You Sure ??</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">Yes</button>
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            </div>
-                        </form>
-                    </div>
+                                
+                                <form method="post" action= "{{ route('admin.created_character_submit') }}" enctype="multipart/form-data">
+                                    @csrf
 
-                </div>
-            </div>
-
-            <!--- View Modal --->
-            <div class="modal fade" id="viewModal" role="dialog">
-                <div class="modal-dialog  modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4> Character Details </h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-
-                        <div class="modal-body">  
-                            <div class="form-row">
-                                <div class="col-md-5">
-                                    <label for="validationServerUsername">Name</label>
-                                </div>
-                                    
-                                <div class="col-md-7">
-                                    <p></p>
-                                </div>
-                            </div>
-
-                            
-                            <div class="form-row">
-                                <div class="col-md-5">
-                                    <label for="validationServerUsername">Description</label>
-                                </div>
-                                <div class="col-md-7">
-                                    <p></p>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="col-md-5">
-                                    <label for="validationServer01">Price </label>
-                                </div>
-                                <div class="col-md-7">
-                                    <p></p>
-                                </div>
-                            </div>
-
-                            <div class="form-row mb-4">
-                                <div class="col-md-5">
-                                    <label for="validationServerUsername">Discount</label>
-                                </div>
-
-                                <div class="col-md-7">
-                                    <div>
-                                        <span></span>
-                                    </div>   
-                                    <div class="form-check form-check-inline">
-                                        <span></span>
-                                    </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <span></span>
-                                    </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <span></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="col-sm-12">
-                                    <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="addModal" role="dialog">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <h3> Create Character </h3>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-
-                        <div class="modal-body">
-                            
-                            <form method="post" action= "{{ route('admin.created_character_submit') }}" enctype="multipart/form-data">
-                                @csrf
-
-                                <div class="form-row">
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Name</label>
-                                        <div class="input-group">
-                                            <input type="text" name="name" class="form-control form-control-lg is-invalid" placeholder="Unique Name(required)" aria-describedby="inputGroupPrepend3" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServer01">Type</label>
-                                        <select class="form-control form-control-lg is-valid" name="type" readonly>
-                                            <option value="character">Character</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Description</label>
-                                        <div class="input-group">
-                                            <input type="text" name="description" class="form-control form-control-lg is-valid" placeholder="Short Description" aria-describedby="inputGroupPrepend3">
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                                <div class="form-row">
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Price (taka)</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">@ taka</span>
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServerUsername">Name</label>
+                                            <div class="input-group">
+                                                <input type="text" name="name" class="form-control form-control-lg is-invalid" placeholder="Unique Name(required)" aria-describedby="inputGroupPrepend3" required="true">
                                             </div>
-                                            <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true" step="any">
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServer01">Price (gems)</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">@ gems</span>
-                                            </div>
-                                            <input type="number" name="price_gems" class="form-control form-control-lg is-invalid"  placeholder="(required)" required="true">
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServer01">Type</label>
+                                            <select class="form-control form-control-lg is-valid" name="type" readonly>
+                                                <option value="character">Character</option>
+                                            </select>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Price (coins)</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">@ coins</span>
-                                            </div>
-                                            <input type="number" name="price_coins" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-row mb-4">
-                                    <div class="col-md-5">
-                                        <label for="validationServerUsername">Discount</label>
-                                        <div class="input-group">
-                                            <input step="any" type="number" name="discount" class="form-control form-control-lg is-invalid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">%</span>
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServerUsername">Description</label>
+                                            <div class="input-group">
+                                                <input type="text" name="description" class="form-control form-control-lg is-valid" placeholder="Short Description" aria-describedby="inputGroupPrepend3">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-2 col-4">    
-                                        <div class="form-check form-check-inline mt-5">
-                                            <input name="discount_type[]" class="form-check-input" type="checkbox" value="taka">
-                                            <label class="form-check-label" for="inlineCheckbox1">@ taka</label>
+                                   
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServerUsername">Price (taka)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">@ taka</span>
+                                                </div>
+                                                <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true" step="any">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServer01">Price (gems)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">@ gems</span>
+                                                </div>
+                                                <input type="number" name="price_gems" class="form-control form-control-lg is-invalid"  placeholder="(required)" required="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServerUsername">Price (coins)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">@ coins</span>
+                                                </div>
+                                                <input type="number" name="price_coins" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-4">
-                                        <div class="form-check form-check-inline mt-5">
-                                            <input name="discount_type[]" class="form-check-input" type="checkbox" value="gems">
-                                            <label class="form-check-label" for="inlineCheckbox1">@ gems</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 col-4">
-                                        <div class="form-check form-check-inline mt-5">
-                                            <input name="discount_type[]" class="form-check-input" type="checkbox" value="coins">
-                                            <label class="form-check-label" for="inlineCheckbox1">@ coins</label>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <br>
-
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-lg btn-block btn-primary">Create</button>
+                                    <div class="form-row mb-4">
+                                        <div class="col-md-5">
+                                            <label for="validationServerUsername">Discount</label>
+                                            <div class="input-group">
+                                                <input step="any" type="number" name="discount" class="form-control form-control-lg is-invalid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2 col-4">    
+                                            <div class="form-check form-check-inline mt-5">
+                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="taka">
+                                                <label class="form-check-label" for="inlineCheckbox1">@ taka</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-4">
+                                            <div class="form-check form-check-inline mt-5">
+                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="gems">
+                                                <label class="form-check-label" for="inlineCheckbox1">@ gems</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-4">
+                                            <div class="form-check form-check-inline mt-5">
+                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="coins">
+                                                <label class="form-check-label" for="inlineCheckbox1">@ coins</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+
+                                    <br>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-lg btn-block btn-primary">Create</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal fade" id="editModal" role="dialog">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
+                @endif
 
-                        <div class="modal-header">
-                            <h3> Update Character </h3>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
+                @if(auth()->user()->can('update'))
 
-                        <div class="modal-body">
-                            
-                            <form method="post" action= "" enctype="multipart/form-data">
+                <div class="modal fade" id="editModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
 
-                                @csrf
-                                @method('PUT')
+                            <div class="modal-header">
+                                <h3> Update Character </h3>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
 
-                                <div class="form-row">
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Name</label>
-                                        <div class="input-group">
-                                            <input type="text" name="name" class="form-control form-control-lg is-invalid" placeholder="Unique Name(required)" aria-describedby="inputGroupPrepend3" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServer01">Type</label>
-                                        <select class="form-control form-control-lg is-valid" name="type" readonly>
-                                            <option value="character">Character</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Description</label>
-                                        <div class="input-group">
-                                            <input type="text" name="description" class="form-control form-control-lg is-valid" placeholder="Short Description" aria-describedby="inputGroupPrepend3">
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                                <div class="form-row">
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Price (taka)</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">@ taka</span>
+                            <div class="modal-body">
+                                
+                                <form method="post" action= "" enctype="multipart/form-data">
+
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServerUsername">Name</label>
+                                            <div class="input-group">
+                                                <input type="text" name="name" class="form-control form-control-lg is-invalid" placeholder="Unique Name(required)" aria-describedby="inputGroupPrepend3" required="true">
                                             </div>
-                                            <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true" step="any">
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServer01">Price (gems)</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">@ gems</span>
-                                            </div>
-                                            <input type="number" name="price_gems" class="form-control form-control-lg is-invalid"  placeholder="(required)" required="true">
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServer01">Type</label>
+                                            <select class="form-control form-control-lg is-valid" name="type" readonly>
+                                                <option value="character">Character</option>
+                                            </select>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Price (coins)</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">@ coins</span>
-                                            </div>
-                                            <input type="number" name="price_coins" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-row mb-4">
-                                    <div class="col-md-5">
-                                        <label for="validationServerUsername">Discount</label>
-                                        <div class="input-group">
-                                            <input step="any" type="number" name="discount" class="form-control form-control-lg is-invalid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">%</span>
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServerUsername">Description</label>
+                                            <div class="input-group">
+                                                <input type="text" name="description" class="form-control form-control-lg is-valid" placeholder="Short Description" aria-describedby="inputGroupPrepend3">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-2 col-4">    
-                                        <div class="form-check form-check-inline mt-5">
-                                            <input name="discount_type[]" class="form-check-input" type="checkbox" value="taka">
-                                            <label class="form-check-label" for="inlineCheckbox1">@ taka</label>
+                                   
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServerUsername">Price (taka)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">@ taka</span>
+                                                </div>
+                                                <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true" step="any">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServer01">Price (gems)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">@ gems</span>
+                                                </div>
+                                                <input type="number" name="price_gems" class="form-control form-control-lg is-invalid"  placeholder="(required)" required="true">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-4">
+                                            <label for="validationServerUsername">Price (coins)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">@ coins</span>
+                                                </div>
+                                                <input type="number" name="price_coins" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-4">
-                                        <div class="form-check form-check-inline mt-5">
-                                            <input name="discount_type[]" class="form-check-input" type="checkbox" value="gems">
-                                            <label class="form-check-label" for="inlineCheckbox1">@ gems</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 col-4">
-                                        <div class="form-check form-check-inline mt-5">
-                                            <input name="discount_type[]" class="form-check-input" type="checkbox" value="coins">
-                                            <label class="form-check-label" for="inlineCheckbox1">@ coins</label>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <br>
-
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-lg btn-block btn-primary">Update</button>
+                                    <div class="form-row mb-4">
+                                        <div class="col-md-5">
+                                            <label for="validationServerUsername">Discount</label>
+                                            <div class="input-group">
+                                                <input step="any" type="number" name="discount" class="form-control form-control-lg is-invalid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2 col-4">    
+                                            <div class="form-check form-check-inline mt-5">
+                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="taka">
+                                                <label class="form-check-label" for="inlineCheckbox1">@ taka</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-4">
+                                            <div class="form-check form-check-inline mt-5">
+                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="gems">
+                                                <label class="form-check-label" for="inlineCheckbox1">@ gems</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-4">
+                                            <div class="form-check form-check-inline mt-5">
+                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="coins">
+                                                <label class="form-check-label" for="inlineCheckbox1">@ coins</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+
+                                    <br>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-lg btn-block btn-primary">Update</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                @endif
+
             </div>
 
             <div class="row">
@@ -409,6 +441,8 @@
 
             $('#characterTable').on( 'draw.dt', function () {
 
+                @if(auth()->user()->can('read'))
+
                 $(".fa-eye").click(function() {
 
                     var clickedRow = $(this).closest("tr");
@@ -447,6 +481,10 @@
 
                     $('#viewModal').modal('toggle');
                 });
+
+                @endif
+
+                @if(auth()->user()->can('update'))
 
                 $(".fa-edit").click(function() {
 
@@ -494,6 +532,10 @@
                     $('#editModal').modal('toggle');
                 });
 
+                @endif
+
+                @if(auth()->user()->can('delete'))
+
                 $(".fa-trash").click(function() {
 
                     // alert('delete');
@@ -508,6 +550,9 @@
 
                     $('#deleteModal').modal('toggle');
                 });
+
+                @endif
+                
             });
         });
     </script>

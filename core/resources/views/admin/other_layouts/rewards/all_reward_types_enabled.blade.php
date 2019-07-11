@@ -10,14 +10,27 @@
                     <h3 class="float-left">Enabled Daily Login Reward Types List </h3>
                 </div>
 
+
                 <div class="col-6">
-                    <a  href="{{route('admin.view_disabled_reward_types')}}"  class="btn btn-outline-danger float-right" type="button">
+                    
+                    @if(auth()->user()->can('read'))
+                    
+                    <a  href="{{route('admin.view_disabled_reward_types')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
                         Disabled List
                     </a>
 
-                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addRewardType">
+                    @endif
+
+                    @if(auth()->user()->can('create'))
+
+                    <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addRewardType">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
                         New Reward Type
                     </button>
+
+                    @endif
+
                 </div>
 
             </div>
@@ -33,7 +46,13 @@
                             <tr>
                                 <th>Type Serial</th>
                                 <th>Type Name</th>
+
+                                @if(auth()->user()->can('update'))
+                                
                                 <th class="actions">Actions</th>
+                                
+                                @endif
+
                             </tr>
                         </thead>
                         
@@ -49,6 +68,9 @@
                             <tr>
                                 <td>{{ $rewardType->id }}</td>
                                 <td>{{ $rewardType->reward_type_name }}</td>
+                                
+                                @if(auth()->user()->can('update'))
+                                
                                 <td>
 
                                     <button class="btn btn-outline-success"  data-toggle="modal" data-target="#editRewardType{{$rewardType->id}}">
@@ -58,11 +80,15 @@
                                     <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#deleteRewardType{{$rewardType->id}}" title="Delete">
                                         <i class="fa fa-fw fa-trash" style="transform: scale(1.5);"></i>
                                     </button>
-                                        
+
                                 </td>
+                                        
+                                @endif
+
                             </tr>
 
-                        
+                        @if(auth()->user()->can('delete'))
+
                         <!-- Delete Modal -->                       
                         <div class="modal fade" id="deleteRewardType{{$rewardType->id}}" role="dialog">
                             <div class="modal-dialog">
@@ -88,7 +114,11 @@
 
                             </div>
                         </div>
-                        
+
+                        @endif
+
+                        @if(auth()->user()->can('update'))
+
                         <!-- Edit Modal -->  
                         <div class="modal fade" id="editRewardType{{$rewardType->id}}" role="dialog">
                             <div class="modal-dialog modal-lg">
@@ -131,8 +161,10 @@
                             </div>
                         </div>  
                                 
+                        @endif
 
                         @endforeach
+                        
                         </tbody>
                     </table>
 
@@ -143,7 +175,7 @@
             </div>
         </div>
 
-        
+        @if(auth()->user()->can('create'))
 
         <div class="modal fade" id="addRewardType" role="dialog">
             <div class="modal-dialog modal-lg">
@@ -182,6 +214,8 @@
                 </div>
             </div>
         </div>
+
+        @endif
 
     </div>
 @stop

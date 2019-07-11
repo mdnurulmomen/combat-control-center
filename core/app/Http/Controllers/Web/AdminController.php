@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use DB;
 use Mail;
 use Config;
+use DataTables;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\News;
@@ -310,10 +311,67 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'New User is Created');
     }
 
-    public function showAllUsers()
+    public function showAllUsers(Request $request)
     {
+        // dd(auth()->user()->getRoleNames()->first());
+
+        if ($request->ajax()) {
+
+            return  DataTables::of(Admin::query())
+
+                    ->setRowId(function ($user) {
+                        return $user->id;
+                    })
+
+                    ->setRowClass(function ($user) {
+                        return $user->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+                    })
+
+                    ->setRowAttr([
+                        'align' => 'center',
+                    ])
+
+                    ->addColumn('action', function(Admin $user) {
+
+                        $button = '';
+
+                        if(auth()->user()->can('read')){
+                            
+                            $button = "<i class='fa fa-fw fa-eye tooltip-test' style='transform: scale(1.5);' data-toggle='modal' data-target='#viewModal' title='View'></i>";
+
+                            $button .= "&nbsp;&nbsp;&nbsp;";
+                        }
+
+                        if(auth()->user()->can('update')){
+                            
+                            $button .= "<i class='fa fa-fw fa-edit text-success tooltip-test' style='transform: scale(1.5);' data-toggle='modal' data-target='#editModal' title='Edit'></i>";
+
+                            $button .= "&nbsp;&nbsp;&nbsp;";
+                        }
+
+                        if(auth()->user()->can('delete')){
+                            
+                            $button .= "<i class='fa fa-fw fa-trash text-danger tooltip-test' data-toggle='modal' data-target='#deleteModal' title='Delete' style='transform: scale(1.5);' ></i>";
+                        }
+
+                        return $button;
+                    })
+
+                    ->addColumn('role', function(Admin $user) {
+
+                        return $user->getRoleNames()->first();
+
+                    })   
+
+                    ->make(true);
+        }
+
+        return view('admin.other_layouts.users.all_users');
+        
+        /*
         $users = Admin::paginate(15);
         return view('admin.other_layouts.users.all_users', compact('users'));
+        */
     }
 
     public function showUserEditForm($userId)

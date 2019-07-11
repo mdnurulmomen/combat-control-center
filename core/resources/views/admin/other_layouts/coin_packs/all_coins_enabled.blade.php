@@ -10,15 +10,29 @@
                         <h3 class="float-left">Enabled Coin Packs List </h3>
                     </div>
 
+
                     <div class="col-6">
-                        <a href="{{route('admin.view_disabled_coin_packs')}}" class="btn btn-outline-danger float-right" type="button">
+                        
+                        @if(auth()->user()->can('read'))
+
+                        <a href="{{route('admin.view_disabled_coin_packs')}}" class="btn btn-outline-danger float-right btn-sm" type="button">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                             Disabled Packs
                         </a>
 
-                        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
+                        @endif
+
+                        @if(auth()->user()->can('create'))
+
+                        <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addModal">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
                             New Coins Pack
                         </button>
+
+                        @endif
+
                     </div>
+
                 </div>
 
                 <hr>
@@ -33,9 +47,13 @@
                                 <th>Amount</th>
                                 <th>Prices</th>
                                 <th>Discounts</th>
-                                <th class="actions">Actions</th>
+                                
+                                @if(auth()->user()->can('update'))
+                                    <th class="actions">Actions</th>
+                                @endif
                             </tr>
                             </thead>
+                            
                             <tbody>
 
                             @if($coins->isEmpty())
@@ -58,13 +76,10 @@
                                         <p>{{ $coin->discount_gems }}% (gems)</p>
                                     </td>
 
+                                    @if(auth()->user()->can('update'))
+                                    
                                     <td>
-                                    {{--
-                                        <a href="{{ route('admin.update_coin_pack', $coin->id) }}" class="btn btn-icon btn-pill btn-success" data-toggle="tooltip" title="Edit">
-                                            <i class="fa fa-fw fa-edit"></i>
-                                        </a>
-                                            --}}
-                                            
+
                                         <button class="btn btn-outline-success"  data-toggle="modal" data-target="#editModal{{$coin->id}}" title="Edit">
                                             <i class="fa fa-fw fa-edit" style="transform: scale(1.5);"></i>
                                         </button>    
@@ -74,9 +89,13 @@
                                         </button>
 
                                     </td>
+
+                                    @endif
+                                    
                                 </tr>
 
 
+                                @if(auth()->user()->can('update'))
                                 <!--- Edit Modal --->
                                 <div class="modal fade" id="editModal{{$coin->id}}" role="dialog">
                                     <div class="modal-dialog modal-lg">
@@ -179,6 +198,9 @@
                                     </div>
                                 </div>
 
+                                @endif
+
+                                @if(auth()->user()->can('delete'))
                                 <!-- Delete Modal -->
                                 <div class="modal fade" id="deleteModal{{$coin->id}}" role="dialog">
                                     <div class="modal-dialog">
@@ -204,7 +226,10 @@
                                     </div>
                                 </div>
 
+                                @endif
+
                             @endforeach
+
                             </tbody>
                         </table>
                         
@@ -214,6 +239,8 @@
                     </div>
                 </div>
             </div>
+
+            @if(auth()->user()->can('create'))
 
             <div class="modal fade" id="addModal" role="dialog">
                 <div class="modal-dialog modal-lg">
@@ -315,6 +342,8 @@
                     </div>
                 </div>
             </div>
+
+            @endif
 
         </div>
 @stop

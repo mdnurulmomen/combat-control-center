@@ -10,9 +10,16 @@
                         <h3 class="float-left"> Disabled Characters List </h3>
                     </div>
                     <div class="col-6">
-                        <a  href="{{route('admin.view_enabled_characters')}}"  class="btn btn-outline-success float-right" type="button">
+                        
+                        @if(auth()->user()->can('read'))
+
+                        <a  href="{{route('admin.view_enabled_characters')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             Enabled Characters
                         </a>
+
+                        @endif
+
                     </div>
                 </div>
 
@@ -27,7 +34,10 @@
                                 <th>Character Name</th>
                                 <th>Prices</th>
                                 <th>Discounts</th>
+
+                                @if(auth()->user()->can('update'))
                                 <th class="actions">Actions</th>
+                                @endif
                             </tr>
                             </thead>
                             <tbody>
@@ -56,12 +66,18 @@
 
                                     <td>
 
+                                        @if(auth()->user()->can('update'))
+
                                         <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoModal{{$character->id}}" title="Undo">
                                             <i class="fa fa-fw fa-undo" style="transform: scale(1.5);"></i> 
                                         </button>
 
+                                        @endif
+
                                     </td>
                                 </tr>
+
+                                @if(auth()->user()->can('update'))
          
                                 <!-- Undo Modal -->
                                 <div class="modal fade" id="undoModal{{$character->id}}" role="dialog">
@@ -95,7 +111,10 @@
                                     </div>
                                 </div>
 
+                                @endif
+
                             @endforeach
+
                             </tbody>
                         </table>
                         <div class="float-right">

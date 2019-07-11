@@ -10,11 +10,16 @@
                     <h3 class="float-left">Disabled Daily Login Rewards List </h3>
                 </div>
 
+                @if(auth()->user()->can('read'))
+
                 <div class="col-6">
-                    <a  href="{{route('admin.view_enabled_login_rewards')}}"  class="btn btn-outline-success float-right" type="button">
+                    <a  href="{{route('admin.view_enabled_login_rewards')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                        <i class="fa fa-list" aria-hidden="true"></i>
                         Enabled Rewards
                     </a>
                 </div>
+
+                @endif
 
             </div>
 
@@ -31,7 +36,13 @@
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Amount</th>
+
+                                @if(auth()->user()->can('update'))
+
                                 <th class="actions">Actions</th>
+
+                                @endif
+
                             </tr>
                         </thead>
                         
@@ -49,14 +60,19 @@
                                 <td>{{ $loginReward->name }}</td>
                                 <td>{{ $loginReward->rewardType->reward_type_name }}</td>
                                 <td>{{ $loginReward->amount }}</td>
+
+                                @if(auth()->user()->can('update'))
+                                
                                 <td>
                                     <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoDailyReward{{$loginReward->id}}" title="Delete">
                                         <i class="fa fa-fw fa-undo" style="transform: scale(1.5);"></i>
                                     </button>      
                                 </td>
+
+                                @endif
                             </tr>
 
-                        
+                        @if(auth()->user()->can('update'))
                         <!-- Delete Modal -->                       
                         <div class="modal fade" id="undoDailyReward{{$loginReward->id}}" role="dialog">
                             <div class="modal-dialog">
@@ -83,7 +99,9 @@
                                 </div>
 
                             </div>
-                        </div>   
+                        </div> 
+
+                        @endif  
 
                         @endforeach
 

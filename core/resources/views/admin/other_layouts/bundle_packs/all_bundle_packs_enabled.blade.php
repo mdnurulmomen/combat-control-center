@@ -22,14 +22,26 @@
                 </div>
 
                 <div class="col-6">
-                    <a href="{{route('admin.view_disabled_bundle_packs')}}" class="btn btn-outline-danger float-right" type="button">
+
+                    @if(auth()->user()->can('read'))
+                    
+                    <a href="{{route('admin.view_disabled_bundle_packs')}}" class="btn btn-outline-danger float-right btn-sm" type="button">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
                         Disabled Packs
                     </a>
 
-                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModal">
+                    @endif
+
+                    @if(auth()->user()->can('create'))
+
+                    <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addModal">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
                         New Bundle Pack
                     </button>
+
+                    @endif
                 </div>
+
             </div>
 
             <hr>
@@ -55,34 +67,8 @@
             </div>
 
             <div class="row">
-                <!-- Delete Modal -->
-                <div class="modal fade" id="deleteModal" role="dialog">
-                    <div class="modal-dialog">
 
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Confirmation</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <form method="POST" action="{{-- {{ route('admin.delete_bundle_pack', $bundlePack->id) }} --}}">
-
-                                @method('DELETE')
-                                @csrf
-
-                                <div class="modal-body">
-                                    <p>Are You Sure ??</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success">Yes</button>
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-
+                @if(auth()->user()->can('read'))
                 <!--- View Modal --->
                 <div class="modal fade" id="viewModal" role="dialog">
                     <div class="modal-dialog  modal-sm">
@@ -165,6 +151,40 @@
                     </div>
                 </div>
 
+                @endif
+
+                @if(auth()->user()->can('delete'))
+                <!-- Delete Modal -->
+                <div class="modal fade" id="deleteModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Confirmation</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <form method="POST" action="{{-- {{ route('admin.delete_bundle_pack', $bundlePack->id) }} --}}">
+
+                                @method('DELETE')
+                                @csrf
+
+                                <div class="modal-body">
+                                    <p>Are You Sure ??</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Yes</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+                @endif
+
+                @if(auth()->user()->can('create'))
                 <!--- Add Modal --->
                 <div class="modal fade" id="addModal" role="dialog">
                     <div class="modal-dialog modal-lg">
@@ -321,6 +341,9 @@
                         </div>
                     </div>
                 </div>
+                
+                @endif
+
             </div>
 
             <!--- Edit Modal --->
@@ -506,6 +529,8 @@
 
         $(document).ready(function(){
 
+            @if(auth()->user()->can('create'))
+
             $("#addButton").click(function(){
                 var html = "<div class='form-row newAdded'>"+
                                 "<div class='col-md-6 mb-4'>"+
@@ -547,6 +572,8 @@
             $("#removeButton").click(function(){
                 $(".newAdded:last").remove();
             });
+
+            @endif
 
 
             var globalVariable = '';
@@ -596,6 +623,8 @@
 
             $('#bundleTable').on( 'draw.dt', function () {
 
+                @if(auth()->user()->can('read'))
+
                 $(".fa-eye").click(function() {
 
                     // console.log(globalVariable);
@@ -640,6 +669,10 @@
 
                     $('#viewModal').modal('toggle');
                 });
+
+                @endif
+
+                @if(auth()->user()->can('delete'))
                 
                 $(".fa-trash").click(function() {
 
@@ -653,6 +686,8 @@
 
                     $('#deleteModal').modal('toggle');
                 });
+
+                @endif
             });
 
         });    

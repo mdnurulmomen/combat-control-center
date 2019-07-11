@@ -10,9 +10,16 @@
                         <h3 class="float-left">Disabled Coin Packs List </h3>
                     </div>
                     <div class="col-6">
-                        <a  href="{{route('admin.view_enabled_coin_packs')}}"  class="btn btn-outline-success float-right" type="button">
+                        
+                        @if(auth()->user()->can('read'))
+
+                        <a  href="{{route('admin.view_enabled_coin_packs')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             Enabled Packs
                         </a>
+
+                        @endif
+
                     </div>
                 </div>
 
@@ -28,7 +35,13 @@
                                 <th>Amount</th>
                                 <th>Prices</th>
                                 <th>Discounts</th>
+
+                                @if(auth()->user()->can('update'))
+                                
                                 <th class="actions">Actions</th>
+                                
+                                @endif
+
                             </tr>
                             </thead>
                             <tbody>
@@ -53,6 +66,7 @@
                                         <p>{{ $coin->discount_gems }}% (gems)</p>
                                     </td>
 
+                                    @if(auth()->user()->can('update'))
                                     <td>    
 
                                         <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoModal{{$coin->id}}" title="Undo">
@@ -60,10 +74,11 @@
                                         </button>
 
                                     </td>
+                                    @endif
                                 </tr>
 
 
-
+                                @if(auth()->user()->can('update'))
                                 <!-- Undo Modal -->
                                 <div class="modal fade" id="undoModal{{$coin->id}}" role="dialog">
                                     <div class="modal-dialog">
@@ -90,6 +105,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                @endif
 
                             @endforeach
                             </tbody>

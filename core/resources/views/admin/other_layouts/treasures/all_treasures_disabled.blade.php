@@ -6,8 +6,22 @@
         <div class="card-body">
             
             <div class="row">
+
                 <div class="col-6">
                     <h3 class="float-left">Disabled Treasures List </h3>
+                </div>
+
+                <div class="col-6">
+
+                    @if(auth()->user()->can('read'))
+
+                    <a  href="{{route('admin.view_enabled_treasures')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        Enabled Treasures
+                    </a>
+
+                    @endif
+                    
                 </div>
 
             </div>
@@ -24,7 +38,13 @@
                                 <th>Treasure Serial</th>
                                 <th>Treasure Name</th>
                                 <th>Equivalent Cost</th>
+
+                                @if(auth()->user()->can('update'))
+                                
                                 <th>Action</th>
+                                
+                                @endif
+
                             </tr>
                         </thead>
                         
@@ -41,6 +61,9 @@
                                 <td>{{ $treasure->id }}</td>
                                 <td>{{ $treasure->name }}</td>
                                 <td>{{ $treasure->equivalent_price }}</td>
+
+                                @if(auth()->user()->can('update'))
+
                                 <td>
 
                                     <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoModal{{$treasure->id}}" title="Undo">
@@ -48,9 +71,11 @@
                                     </button>
                                         
                                 </td>
+
+                                @endif
                             </tr>
 
-                        
+                        @if(auth()->user()->can('update'))
                         <!-- Undo Modal -->                       
                         <div class="modal fade" id="undoModal{{$treasure->id}}" role="dialog">
                             <div class="modal-dialog">
@@ -77,7 +102,9 @@
                                 </div>
 
                             </div>
-                        </div> 
+                        </div>
+
+                        @endif
 
                         @endforeach
                                 
@@ -90,6 +117,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 @stop

@@ -10,9 +10,16 @@
                         <h3 class="float-left"> Disbaled Parachutes List </h3>
                     </div>
                     <div class="col-6">
-                        <a  href="{{route('admin.view_enabled_parachutes')}}"  class="btn btn-outline-success float-right" type="button">
+
+                        @if(auth()->user()->can('read'))
+
+                        <a  href="{{route('admin.view_enabled_parachutes')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             Enabled Parachutes
                         </a>
+
+                        @endif
+
                     </div>
                 </div>
 
@@ -23,12 +30,20 @@
 
                         <table class="table table-hover table-striped table-bordered text-center" cellspacing="0" width="100%">
                             <thead class="thead-dark">
-                            <tr>
-                                <th>Parachute Name</th>
-                                <th>Prices</th>
-                                <th>Discounts</th>
-                                <th class="actions">Actions</th>
-                            </tr>
+
+                                <tr>
+                                    <th>Parachute Name</th>
+                                    <th>Prices</th>
+                                    <th>Discounts</th>
+
+                                    @if(auth()->user()->can('read'))
+                                    
+                                    <th class="actions">Actions</th>
+                                    
+                                    @endif
+
+                                </tr>
+
                             </thead>
                             <tbody>
 
@@ -54,15 +69,16 @@
                                         <p>{{ $parachute->discount_coins }}% (coins)</p>
                                     </td>
 
+                                    @if(auth()->user()->can('update'))
                                     <td>
-
                                         <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoModal{{$parachute->id}}" title="Undo">
                                             <i class="fa fa-fw fa-undo" style="transform: scale(1.5);"></i>
                                         </button>
-
                                     </td>
+                                    @endif
                                 </tr>
-                            
+                                
+                                @if(auth()->user()->can('update'))
                                 <!--Undo Modal -->
                                 <div class="modal fade" id="undoModal{{$parachute->id}}" role="dialog">
                                     <div class="modal-dialog">
@@ -91,7 +107,8 @@
 
                                     </div>
                                 </div>
-                                    
+                                
+                                @endif    
 
                             @endforeach
                             </tbody>

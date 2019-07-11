@@ -10,9 +10,16 @@
                     <h3 class="float-left"> Disabled Mission Types List </h3>
                 </div>
                 <div class="col-6">
-                    <a  href="{{route('admin.view_enabled_mission_types')}}"  class="btn btn-outline-success float-right" type="button">
+
+                    @if(auth()->user()->can('read'))
+
+                    <a  href="{{route('admin.view_enabled_mission_types')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                        <i class="fa fa-check" aria-hidden="true"></i>
                         Enabled Types
                     </a>
+
+                    @endif
+
                 </div>
             </div>
 
@@ -27,7 +34,11 @@
                             <tr>
                                 <th>Type Serial</th>
                                 <th>Type Name</th>
+
+                                @if(auth()->user()->can('update'))
                                 <th class="actions">Actions</th>
+                                @endif
+
                             </tr>
                         </thead>
                         
@@ -43,16 +54,19 @@
                             <tr>
                                 <td>{{ $missionType->id }}</td>
                                 <td>{{ $missionType->mission_type_name }}</td>
-                                <td>
 
+                                @if(auth()->user()->can('update'))
+
+                                <td>
                                     <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoMissionType{{$missionType->id}}" title="Undo">
                                         <i class="fa fa-fw fa-undo" style="transform: scale(1.5);"></i>
                                     </button>
-                                        
                                 </td>
+                                        
+                                @endif
                             </tr>
 
-                        
+                        @if(auth()->user()->can('update'))
                         <!-- Undo Modal -->                       
                         <div class="modal fade" id="undoMissionType{{$missionType->id}}" role="dialog">
                             <div class="modal-dialog">
@@ -77,7 +91,9 @@
                                 </div>
 
                             </div>
-                        </div> 
+                        </div>
+                        
+                        @endif 
 
                         @endforeach
                                 

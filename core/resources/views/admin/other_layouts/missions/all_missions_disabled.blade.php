@@ -11,7 +11,8 @@
                 </div>
 
                 <div class="col-6">
-                    <a  href="{{route('admin.view_enabled_missions')}}"  class="btn btn-outline-success float-right" type="button">
+                    <a  href="{{route('admin.view_enabled_missions')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                        <i class="fa fa-check" aria-hidden="true"></i>
                         Enabled Missions
                     </a>
                 </div>

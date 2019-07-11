@@ -22,14 +22,17 @@ class CharacterController extends Controller
 
                         $button = "<i class='fa fa-fw fa-eye' style='transform: scale(1.5);' title='View'></i>";
 
-                        $button .= "&nbsp;&nbsp;&nbsp;";
+                        if(auth()->user()->hasAnyRole(['moderator', 'admin'])){
 
-                        $button .=  "<i class='fa fa-fw fa-edit' style='transform: scale(1.5);' title='Edit'></i>";
+                            $button .= "&nbsp;&nbsp;&nbsp;";
 
-                        $button .= "&nbsp;&nbsp;&nbsp;";
+                            $button .=  "<i class='fa fa-fw fa-edit' style='transform: scale(1.5);' title='Edit'></i>";
 
-                        $button .= "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5);' title='Delete'></i>";
+                            $button .= "&nbsp;&nbsp;&nbsp;";
 
+                            $button .= "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5);' title='Delete'></i>";
+                        }
+                        
                         return $button;
 
                     })

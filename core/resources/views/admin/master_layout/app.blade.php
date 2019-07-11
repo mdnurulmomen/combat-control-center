@@ -95,6 +95,8 @@
           </a>
         </li>
 
+        @if(auth()->user()->can('setting'))
+
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/settings*') || Request::is('admin/gift*') || Request::is('admin/game/*') || Request::is('admin/rules/*')) active @endif" href="#" data-toggle="treeview">
             <i class="app-menu__icon fa fa-gear"></i>
@@ -169,10 +171,12 @@
           </ul>
         </li>
 
+        @endif
+
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/moderator*')) active @endif" href="{{route('admin.view_moderators')}}">
+          <a class="app-menu__item  @if(Request::is('admin/user*')) active @endif" href="{{route('admin.view_users')}}">
             <i class="app-menu__icon fa fa-user"></i>
-            <span class="app-menu__label">Moderators</span>
+            <span class="app-menu__label">Users</span>
           </a>
         </li>
 
@@ -189,13 +193,6 @@
             <span class="app-menu__label">Players</span>
           </a>
         </li>
-
-        {{-- <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/bot*')) active @endif" href="{{route('admin.view_bots')}}">
-            <i class="app-menu__icon fa fa-android"></i>
-            <span class="app-menu__label">Bot</span>
-          </a>
-        </li> --}}
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/image*')) active @endif" href="{{route('admin.view_images')}}">

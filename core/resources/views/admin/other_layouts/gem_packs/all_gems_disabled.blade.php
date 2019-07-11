@@ -8,10 +8,18 @@
                     <div class="col-6">
                         <h3 class="float-left">Disabled Gems Packs List </h3>
                     </div>
+
                     <div class="col-6">
-                        <a  href="{{route('admin.view_enabled_gem_packs')}}"  class="btn btn-outline-success float-right" type="button">
+                        
+                        @if(auth()->user()->can('read'))
+
+                        <a  href="{{route('admin.view_enabled_gem_packs')}}"  class="btn btn-outline-success float-right btn-sm" type="button">
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             Enabled Packs
                         </a>
+
+                        @endif
+
                     </div>
                 </div>
 
@@ -27,7 +35,13 @@
                                 <th>Amount</th>
                                 <th>Price(Taka)</th>
                                 <th>Discount(Taka)</th>
+
+                                @if(auth()->user()->can('update'))
+                            
                                 <th class="actions">Actions</th>
+
+                                @endif
+                            
                             </tr>
                             </thead>
                             <tbody>
@@ -51,6 +65,8 @@
                                         <p>{{ $gem->discount_taka }}%</p>
                                     </td>
 
+                                    @if(auth()->user()->can('update'))
+
                                     <td>   
 
                                         <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoModal{{$gem->id}}" title="Undo">
@@ -58,9 +74,11 @@
                                         </button>
 
                                     </td>
+
+                                    @endif
                                 </tr>
 
-
+                                @if(auth()->user()->can('update'))
                                 <!--Undo Modal -->
                                 <div class="modal fade" id="undoModal{{$gem->id}}" role="dialog">
                                     <div class="modal-dialog">
@@ -90,7 +108,10 @@
                                     </div>
                                 </div>
 
+                                @endif
+
                             @endforeach
+
                             </tbody>
                         </table>
                         <div class="float-right">
@@ -99,6 +120,8 @@
                     </div>
                 </div>
             </div>
+
+            @if(auth()->user()->can('create'))
 
             <div class="modal fade" id="addModal" role="dialog">
                 <div class="modal-dialog modal-lg">
@@ -178,6 +201,8 @@
                     </div>
                 </div>
             </div>
+
+            @endif
 
         </div>
 @stop

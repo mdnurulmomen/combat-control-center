@@ -80,13 +80,17 @@ class MissionController extends Controller
 
                         $button = "<i class='fa fa-fw fa-eye tooltip-test' style='transform: scale(1.5);' title='View'></i>";
 
-                        $button .="&nbsp;&nbsp;&nbsp;";
+                        if(auth()->user()->can('update')){
+                            
+                            $button .="&nbsp;&nbsp;&nbsp;";
 
-                        $button .= "<i class='fa fa-fw fa-edit tooltip-test' style='transform: scale(1.5);' title='Edit'></i>";
+                            $button .= "<i class='fa fa-fw fa-edit tooltip-test' style='transform: scale(1.5);' title='Edit'></i>";
 
-                        $button .="&nbsp;&nbsp;&nbsp;";
+                            $button .="&nbsp;&nbsp;&nbsp;";
 
-                        $button .= "<i class='fa fa-fw fa-trash tooltip-test' style='transform: scale(1.5);' title='Delete'></i>";
+                            $button .= "<i class='fa fa-fw fa-trash tooltip-test' style='transform: scale(1.5);' title='Delete'></i>";
+                            
+                        }
 
                         return $button;
                     })

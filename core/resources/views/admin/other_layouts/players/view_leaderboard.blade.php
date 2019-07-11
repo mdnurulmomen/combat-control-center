@@ -50,8 +50,8 @@
                 { data: 'treasure_won', name: 'treasure_won' },
             ],
             drawCallback: function(){
-                var api = this.api();
-                var json = api.ajax.json();
+                // var api = this.api();
+                // var json = api.ajax.json();
                 // console.log(json);
                 // console.log(json.data);
             }
