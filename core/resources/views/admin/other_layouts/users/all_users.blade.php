@@ -23,7 +23,7 @@
 
                     <div class="col-6">    
 
-                        @if(auth()->user()->can('create'))
+                        @if(auth()->user()->can('setting'))
                         
                         <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addModal">
                             <i class="fa fa-plus" aria-hidden="true"></i>
@@ -133,7 +133,7 @@
                 @endif
 
 
-                    @if(auth()->user()->can('update'))
+                    @if(auth()->user()->can('setting'))
                     <!--- Edit Modal --->
                     <div class="modal fade" id="editModal" role="dialog">
                         
@@ -234,7 +234,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Email</label>
-                                                                <input type="text" name="email" class="form-control is-valid"   value="">
+                                                                <input type="text" name="email" class="form-control is-valid" value="" required="true">
                                                             </div>
                                                         </div>    
 
@@ -311,7 +311,7 @@
 
                     @endif
 
-                    @if(auth()->user()->can('delete'))
+                    @if(auth()->user()->can('setting'))
                     <!--Delete Modal -->
                     <div class="modal fade" id="deleteModal" role="dialog">
                         <div class="modal-dialog">
@@ -344,7 +344,7 @@
                     @endif
 
 
-                    @if(auth()->user()->can('create'))
+                    @if(auth()->user()->can('setting'))
 
                     <div class="modal fade" id="addModal" role="dialog">
                         <div class="modal-dialog modal-lg">
@@ -444,7 +444,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Email</label>
-                                                                <input type="text" name="email" class="form-control is-valid"  placeholder="Email">
+                                                                <input type="text" name="email" class="form-control is-valid" placeholder="Email" required="true">
                                                             </div>
                                                         </div>    
 
@@ -600,7 +600,7 @@
 
                 @endif
 
-                @if(auth()->user()->can('update'))
+                @if(auth()->user()->can('setting'))
 
                 $(".fa-edit").click(function() {
 
@@ -636,7 +636,7 @@
 
                 @endif
 
-                @if(auth()->user()->can('delete'))
+                @if(auth()->user()->can('setting'))
 
                 $(".fa-trash").click(function() {
 

@@ -16,12 +16,12 @@
 
                     @if(auth()->user()->can('create'))
                     
-                    <button type="button" class="btn btn-info float-right mr-3 ml-3 btn-sm" data-toggle="modal" data-target="#addType">
+                    <button type="button" class="btn btn-info float-right btn-sm mr-1 ml-1 " data-toggle="modal" data-target="#addType">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         New Treasure Type
                     </button>
 
-                    <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addModal">
+                    <button type="button" class="btn btn-success float-right btn-sm mr-1 ml-1 " data-toggle="modal" data-target="#addModal">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         New Treasure
                     </button>
@@ -30,7 +30,7 @@
 
                     @if(auth()->user()->can('read'))
 
-                    <a  href="{{route('admin.view_disabled_treasures')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                    <a  href="{{route('admin.view_disabled_treasures')}}"  class="btn btn-outline-danger float-right btn-sm mr-1 ml-1 " type="button">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                         Disabled Treasures
                     </a>

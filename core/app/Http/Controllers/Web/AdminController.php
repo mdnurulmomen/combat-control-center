@@ -278,43 +278,47 @@ class AdminController extends Controller
 
     public function submitCreateUserForm(Request $request)
     {
-        $request->validate([
-            'username'=>'required|unique:users,username',
-            'email'=>'nullable|unique:users,email',
-            'picture'=>'nullable|image',
-            'role'=>'required',
-            'active'=>'required',
-            'picture'=>'nullable|image',
-            'phone'=>'nullable|numeric',
-        ]);
+        if (auth()->user()->can('setting')) {
 
-        $profile = new Admin();
+            $request->validate([
+                'username'=>'required|unique:users,username',
+                'email'=>'nullable|unique:users,email',
+                'picture'=>'nullable|image',
+                'role'=>'required',
+                'active'=>'required',
+                'picture'=>'nullable|image',
+                'phone'=>'nullable|numeric',
+            ]);
 
-        $profile->firstname = $request->firstname;
-        $profile->lastname =  $request->lastname;
-        $profile->username = $request->username;
-        $profile->password = Hash::make($request->password);
-        $profile->email = $request->email;
-        $profile->phone = $request->phone;
+            $profile = new Admin();
 
-        $profile->active = $request->active;
-        $profile->assignRole($request->role);
+            $profile->firstname = $request->firstname;
+            $profile->lastname =  $request->lastname;
+            $profile->username = $request->username;
+            $profile->password = Hash::make($request->password);
+            $profile->email = $request->email;
+            $profile->phone = $request->phone;
 
-        $profile->profile_picture = $request->file('picture');
+            $profile->active = $request->active;
+            $profile->assignRole($request->role);        
 
-        $profile->address = $request->address;
-        $profile->city = $request->city;
-        $profile->country = $request->country;
+            $profile->profile_picture = $request->file('picture');
 
-        $profile->save();
+            $profile->address = $request->address;
+            $profile->city = $request->city;
+            $profile->country = $request->country;
 
-        return redirect()->back()->with('success', 'New User is Created');
+            $profile->save();
+
+            return redirect()->back()->with('success', 'New User is Created');
+
+        }
+
+        return redirect()->back()->withErrors('Sorry, You dont have enough permission');
     }
 
     public function showAllUsers(Request $request)
     {
-        // dd(auth()->user()->getRoleNames()->first());
-
         if ($request->ajax()) {
 
             return  DataTables::of(Admin::query())
@@ -342,14 +346,11 @@ class AdminController extends Controller
                             $button .= "&nbsp;&nbsp;&nbsp;";
                         }
 
-                        if(auth()->user()->can('update')){
+                        if(auth()->user()->can('setting')){
                             
                             $button .= "<i class='fa fa-fw fa-edit text-success tooltip-test' style='transform: scale(1.5);' data-toggle='modal' data-target='#editModal' title='Edit'></i>";
 
                             $button .= "&nbsp;&nbsp;&nbsp;";
-                        }
-
-                        if(auth()->user()->can('delete')){
                             
                             $button .= "<i class='fa fa-fw fa-trash text-danger tooltip-test' data-toggle='modal' data-target='#deleteModal' title='Delete' style='transform: scale(1.5);' ></i>";
                         }
@@ -382,41 +383,50 @@ class AdminController extends Controller
 
     public function submitUserEditForm(Request $request, $userId)
     {
-        $userToUpdate = Admin::findOrFail($userId);
+        if (auth()->user()->can('setting')) {
+            
+            $userToUpdate = Admin::findOrFail($userId);
 
-        $request->validate([
-            'username'=>'required|unique:users,username,'.$userToUpdate->id,
-            'email'=>'nullable|email|unique:users,email,'.$userToUpdate->id,
-            'role'=>'required',
-            'active'=>'required',
-            'picture'=>'nullable|image',
-            'phone'=>'nullable|numeric',
-        ]);
+            $request->validate([
+                'username'=>'required|unique:users,username,'.$userToUpdate->id,
+                'email'=>'nullable|email|unique:users,email,'.$userToUpdate->id,
+                'role'=>'required',
+                'active'=>'required',
+                'picture'=>'nullable|image',
+                'phone'=>'nullable|numeric',
+            ]);
 
-        $userToUpdate->firstname = $request->firstname;
-        $userToUpdate->lastname =  $request->lastname;
-        $userToUpdate->username = $request->username;
-        $userToUpdate->email = $request->email;
-        $userToUpdate->phone = $request->phone;
+            $userToUpdate->firstname = $request->firstname;
+            $userToUpdate->lastname =  $request->lastname;
+            $userToUpdate->username = $request->username;
+            $userToUpdate->email = $request->email;
+            $userToUpdate->phone = $request->phone;
 
-        $userToUpdate->active = $request->active;
-        $userToUpdate->syncRoles($request->role);
+            $userToUpdate->active = $request->active;
+            $userToUpdate->syncRoles($request->role);            
 
-        $userToUpdate->profile_picture = $request->file('picture');
+            $userToUpdate->profile_picture = $request->file('picture');
 
-        $userToUpdate->address = $request->address;
-        $userToUpdate->city = $request->city;
-        $userToUpdate->country = $request->country;
+            $userToUpdate->address = $request->address;
+            $userToUpdate->city = $request->city;
+            $userToUpdate->country = $request->country;
 
-        $userToUpdate->save();
+            $userToUpdate->save();
 
-        return redirect()->back()->with(compact('userToUpdate'))->with('success', 'Profile is Updated');
+            return redirect()->back()->with(compact('userToUpdate'))->with('success', 'Profile is Updated');
+        }
+
+        return redirect()->back()->withErrors('Sorry, You dont have enough permission');
     }
 
     public function userDeleteMethod($userId)
     {
-        Admin::destroy($userId);
-        return redirect()->back()->with('success', 'Profile is Deleted');
+        if (auth()->user()->can('setting')) {
+            Admin::destroy($userId);
+            return redirect()->back()->with('success', 'Profile is Deleted');
+        }
+
+        return redirect()->back()->withErrors('Sorry, You dont have enough permission');
     }
 
     public function showAllApi()
