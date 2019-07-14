@@ -129,6 +129,14 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::post('talkTime/confirmed', 'Web\TreasureController@confirmTreasureRequested')->name('admin.confirm_treasure_requested');
 
             
+            Route::get('vendors/enabled', 'Web\VendorController@showEnabledvendors')->name('admin.view_enabled_vendors');
+            Route::get('vendors/disabled', 'Web\VendorController@showDisabledvendors')->name('admin.view_disabled_vendors');
+            Route::post('vendors', 'Web\VendorController@submitCreateVendorForm')->name('admin.created_vendor_submit');
+            Route::put('vendors/{vendorId}', 'Web\VendorController@submitVendorEditForm')->name('admin.updated_vendor_submit');
+            Route::delete('vendors/{vendorId}', 'Web\VendorController@vendorDeleteMethod')->name('admin.delete_vendor');
+            Route::patch('vendors/{vendorId}', 'Web\VendorController@vendorUndoMethod')->name('admin.undo_vendor');
+
+
             Route::get('weapons/enabled', 'Web\WeaponController@showEnabledweapons')->name('admin.view_enabled_weapons');
             Route::get('weapons/disabled', 'Web\WeaponController@showDisabledweapons')->name('admin.view_disabled_weapons');
             Route::post('weapons', 'Web\WeaponController@submitCreateWeaponForm')->name('admin.created_weapon_submit');

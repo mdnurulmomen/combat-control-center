@@ -370,6 +370,13 @@
         </li>
 
         <li class="treeview">
+          <a class="app-menu__item @if(Request::is('admin/vendor*')) active @endif" href="{{route('admin.view_enabled_vendors')}}">
+            <i class="app-menu__icon fa fa-industry"></i>
+            <span class="app-menu__label">Vendors</span>
+          </a>
+        </li>
+
+        <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/weapon*')) active @endif"  href="{{route('admin.view_enabled_weapons')}}">
             <i class="app-menu__icon fa fa-money"></i>
             <span class="app-menu__label">Weapons</span>
