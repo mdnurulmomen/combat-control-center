@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\v2;
 
 use Carbon\Carbon;
+use App\Models\Vendor;
+use GuzzleHttp\Client;
 use App\Models\Player;
 use App\Models\Earning;
 use App\Models\Treasure;
@@ -86,7 +88,7 @@ class TreasureController extends Controller
             'treasureId'=>'required',
             'playerPhone'=>'nullable|regex:/(01)[0-9]{9}/',
             'agentPhone' => 'nullable|regex:/(01)[0-9]{9}/',
-            'exchangingType'=>'required|in:coins,gems,MB,TalkTime,talkTime,talktime'
+            'exchangingType'=>'required|in:coins,gems,MB,TalkTime,talkTime,talktime,Burger'
         ]);
 
         $playerTreasureExist = PlayerTreasure::where('player_id', $request->userId)
@@ -102,35 +104,64 @@ class TreasureController extends Controller
 
             // initiated
             $status = 1;
+            $collectingPoint = '';
 
             if (Str::is('coins', $request->exchangingType)) {
 
                 $playerStatistics->increment($request->exchangingType, $treasureDetails->exchanging_coins);
+
+                $collectingPoint = 'game points';
                 $status = -1;
             }
 
             else if (Str::is('gems', $request->exchangingType)) {
                 
                 $playerStatistics->increment($request->exchangingType, $treasureDetails->exchanging_gems);
-                $status = -1;
-            }
 
-            else if (Str::is('MB', $request->exchangingType)) {
-                
+                $collectingPoint = 'game points';
                 $status = -1;
             }
 
             else if (Str::is('*alk*', $request->exchangingType)) {
                 
+                $collectingPoint = $request->playerPhone;
                 $status = 0;
             }
 
+
+
+            else if (Str::is('MB', $request->exchangingType)) {
+                
+                $collectingPoint = $request->playerPhone;
+                $status = -1;
+            }
+
+
+            else if (Str::is('*urger*', $request->exchangingType)) {
+                
+                $vendor = Vendor::where('mobile', $request->agentPhone)->first();
+
+                if (!$vendor) {
+                    
+                    return response()->json([
+                        'message' => 'No such agent found'
+                    ]);
+                }
+
+                $collectingPoint = $vendor->address.', '.$vendor->area.', '.$vendor->city.', '.$vendor->division;
+                $status = -1;
+
+                // Sending SMS to Vendor
+                $this->sendSmsToVendor($vendor, $treasureDetails, $request);
+            }
+
             // Updating Player Treasure
+            $playerTreasureExist->collecting_point = $collectingPoint;
             $playerTreasureExist->status = $status;
             $playerTreasureExist->save();
 
             // Creating Redeem History
-            $this->createTreasureRedemptionHistory($request, $treasureDetails);
+            $this->createTreasureRedemptionHistory($request, $treasureDetails, $playerTreasureExist);
             
             return response()->json(['message'=>'success'], 200); 
         }
@@ -138,7 +169,31 @@ class TreasureController extends Controller
         return response()->json(['error'=>'Treasure does not belong'], 422);
     }
 
-    public function createTreasureRedemptionHistory(Request $request, Treasure $treasureDetails)
+    public function sendSmsToVendor(Vendor $vendor, Treasure $treasureDetails, Request $request)
+    {
+        $client = new Client();
+
+        $username = 'treasure_hunt';
+        $password = 'Treasure@12';
+        $from = 'T hunt';
+        $to = $vendor->mobile;
+
+        $message = "User id : $request->userId, Mobile : $request->playerPhone has requested for a $treasureDetails->name";
+
+        $api = "https://api.mobireach.com.bd/SendTextMessage?Username=$username&Password=$password&From=$from&To=$to&Message=$message";
+
+        $response = $client->request('GET', "$api");
+
+
+        // if ($response->getStatusCode() != '200') {
+            
+        //     return response()->json(['error'=>'Message couldnt sent'], 422);
+        // }
+        
+        // return $response->getStatusCode();
+    }
+
+    public function createTreasureRedemptionHistory(Request $request, Treasure $treasureDetails, PlayerTreasure $playerTreasureExist)
     {
         $newTreasureRedemption = new TreasureRedemption();
         $newTreasureRedemption->player_id = $request->userId;
@@ -147,11 +202,8 @@ class TreasureController extends Controller
         $newTreasureRedemption->player_phone = $request->playerPhone;
         $newTreasureRedemption->agent_phone = $request->agentPhone;
 
-        if (Str::is('*alk*', $request->exchangingType)) {
-            $newTreasureRedemption->status = 0;
-        }else{
-            $newTreasureRedemption->status = -1;
-        }
+        $newTreasureRedemption->collecting_point = $playerTreasureExist->collecting_point;
+        $newTreasureRedemption->status = $playerTreasureExist->status;
 
         $newTreasureRedemption->equivalent_price = $treasureDetails->equivalent_price;
         $newTreasureRedemption->save(); 

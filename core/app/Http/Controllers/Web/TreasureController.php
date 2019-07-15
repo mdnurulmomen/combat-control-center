@@ -101,7 +101,7 @@ class TreasureController extends Controller
         $newTreasure->amount = $request->amount ?? 1;
         $newTreasure->equivalent_price = $request->equivalent_price;   
 
-        is_null($request->collecting_point) ? $newTreasure->collecting_point = -1 : $newTreasure->collecting_point = $request->collecting_point;
+        // is_null($request->collecting_point) ? $newTreasure->collecting_point = -1 : $newTreasure->collecting_point = $request->collecting_point;
         is_null($request->durability) ? $newTreasure->durability = -1 : $newTreasure->durability = $request->durability;
 
         is_null($request->exchanging_coins) ? $newTreasure->exchanging_coins = 0 : $newTreasure->exchanging_coins = $request->exchanging_coins;
@@ -131,7 +131,7 @@ class TreasureController extends Controller
         $treasureToUpdate->amount = $request->amount ?? 1;
         $treasureToUpdate->equivalent_price = $request->equivalent_price;   
 
-        is_null($request->collecting_point) ? $treasureToUpdate->collecting_point = -1 : $treasureToUpdate->collecting_point = $request->collecting_point;
+        // is_null($request->collecting_point) ? $treasureToUpdate->collecting_point = -1 : $treasureToUpdate->collecting_point = $request->collecting_point;
         is_null($request->durability) ? $treasureToUpdate->durability = -1 : $treasureToUpdate->durability = $request->durability;
 
         is_null($request->exchanging_coins) ? $treasureToUpdate->exchanging_coins = 0 : $treasureToUpdate->exchanging_coins = $request->exchanging_coins;
@@ -148,7 +148,7 @@ class TreasureController extends Controller
         $this->updateGiftTreasure($treasureToUpdate);
 
         // Updating PlayerTreasure who Got the Same Treasure
-        $this->updatePlayerGiftTreasure($treasureToUpdate);
+        // $this->updatePlayerGiftTreasure($treasureToUpdate);
 
         return redirect()->back()->with('success', 'Treasure has been Updated');
     }
@@ -165,6 +165,7 @@ class TreasureController extends Controller
         }
     }
 
+    /*
     public function updatePlayerGiftTreasure(Treasure $treasureToUpdate)
     {
         $allPlayerTreasures = PlayerTreasure::all();
@@ -173,7 +174,7 @@ class TreasureController extends Controller
 
             if ($playerTreasure->treasure_id == $treasureToUpdate->id) {
                 
-                $treasureToUpdate->collecting_point == -1 ? $playerTreasure->collecting_point = 'nearest point' : $playerTreasure->collecting_point = $treasureToUpdate->collecting_point;
+                // $treasureToUpdate->collecting_point == -1 ? $playerTreasure->collecting_point = 'nearest point' : $playerTreasure->collecting_point = $treasureToUpdate->collecting_point;
                 $treasureToUpdate->durability == -1 ? $playerTreasure->close_time = 'undefined' : $playerTreasure->close_time = date_add(date_create($playerTreasure->open_time), date_interval_create_from_date_string($treasureToUpdate->durability." days"));
 
                 $playerTreasure->save();
@@ -181,6 +182,7 @@ class TreasureController extends Controller
             }
         }
     }
+    */
 
     public function showAllTreasureGifted(Request $request)
     {    

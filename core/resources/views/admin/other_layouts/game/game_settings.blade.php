@@ -56,7 +56,7 @@
                         <div class="col-md-4">
                             <label for="validationServer01">Game Maintainance Mode </label>
 
-                            <input type="checkbox" name="maintainance_mode"  id="maintainance_mode" @if($settingsGame->maintainance_mode) checked @endif data-toggle="toggle" data-on="Maintainance On" data-off="Maintainance Off" data-onstyle="danger" data-offstyle="success" data-size="large">
+                            <input type="checkbox" name="maintainance_mode"  id="maintainance_mode" @if($settingsGame->maintainance_mode) checked @endif data-toggle="toggle" data-on="Maintainance On" data-off="Maintainance Off" data-onstyle="danger" data-offstyle="success" data-size="normal">
                         </div>
 
                         <div class="col-md-4">

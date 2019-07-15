@@ -13,4 +13,9 @@ class TreasureType extends Model
     {
     	return $this->hasMany('App\Models\Treasure', 'treasure_type_id', 'id');
     }
+
+    public function relatedVendors()
+    {
+    	return $this->hasMany(Vendor::class, 'treasure_type_id', 'id');
+    }
 }

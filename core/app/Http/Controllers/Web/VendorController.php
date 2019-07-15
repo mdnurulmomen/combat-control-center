@@ -25,6 +25,7 @@ class VendorController extends Controller
         $request->validate([
             'address'=>'required',
             'area'=>'required',
+            'city'=>'required',
             'division'=>'required',
             'mobile'=>'required|unique:vendors,mobile|regex:/(01)[0-9]{9}/',
             'treasure_type_id'=>'required|numeric'
@@ -35,13 +36,15 @@ class VendorController extends Controller
         $newVendor->name = $request->name;
         $newVendor->address = $request->address;
         $newVendor->area = $request->area;
+        $newVendor->city = $request->city;
+
+        $newVendor->logo_picture = $request->file('logo');
+
         $newVendor->division = $request->division;
         $newVendor->mobile = $request->mobile;
         $newVendor->treasure_type_id = $request->treasure_type_id;
 
         $newVendor->save();
-
-        // return $newVendor->mobile;
 
         return redirect()->back()->with('success', 'New Vendor has been Created');
     }
@@ -67,6 +70,10 @@ class VendorController extends Controller
         $vendorToUpdate->name = $request->name;
         $vendorToUpdate->address = $request->address;
         $vendorToUpdate->area = $request->area;
+        $vendorToUpdate->city = $request->city;
+
+        $vendorToUpdate->logo_picture = $request->file('logo');
+
         $vendorToUpdate->division = $request->division;
         $vendorToUpdate->mobile = $request->mobile;
         $vendorToUpdate->treasure_type_id = $request->treasure_type_id;

@@ -53,7 +53,7 @@
                                     
                                     <th>Name</th>
                                     <th>Type</th>
-                                    <th>Address</th>
+                                    <th>Logo</th>
                                     <th>Mobile</th>
 
                                     @if(auth()->user()->can('update'))
@@ -76,11 +76,12 @@
                             @foreach($vendors as $vendor)
 
                                 <tr>
+
                                     <td>{{ $vendor->name }}</td>
                                     <td>{{ $vendor->treasureType->treasure_type_name }}</td>
+
                                     <td>
-                                        <p>{{ $vendor->address }}, </p>
-                                        <p>{{ $vendor->area }}, {{ $vendor->division }} </p>
+                                        <img class="img-fluid" src="{{ asset($vendor->logo_picture) }}" alt="No Image">
                                     </td>
                                     
                                     <td>
@@ -107,7 +108,6 @@
 
                                 @if(auth()->user()->can('update'))
 
-                                <!--- Edit Modal --->
                                 <div class="modal fade" id="editModal{{$vendor->id}}" role="dialog">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
@@ -118,54 +118,96 @@
                                             </div>
 
                                             <div class="modal-body">
-                                                
-                                                <form method="post" action = "{{ route('admin.updated_vendor_submit', $vendor->id) }}" enctype="multipart/form-data">
 
+                                                <form method="post" action = "{{ route('admin.updated_vendor_submit', $vendor->id) }}" enctype="multipart/form-data">
+                                                    
                                                     @csrf
                                                     @method('put')
-                                                    
-                                                    <div class="form-row">
-                                                        <div class="col-md-4 mb-4">
-                                                            <label for="validationServerUsername">Name</label>
-                                                            <div class="input-group">
-                                                                <input type="text" name="name" class="form-control form-control-lg is-invalid" value="{{ $vendor->name }}" aria-describedby="inputGroupPrepend3" required="true">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 mb-4">
-                                                            <label for="validationServer01">Type</label>
-                                                            <select class="form-control form-control-lg is-valid" name="treasure_type_id">
 
-                                                                @foreach(App\Models\TreasureType::all() as $treasureType)
-                                                                <option value="{{ $treasureType->id }}" @if($treasureType->id == $vendor->treasure_type_id) selected="true" @endif>{{ $treasureType->treasure_type_name }}</option>
-                                                                @endforeach
+                                                    <div class="row">      
+                                                        <div class="col-md-6">
+                                                            <h4 class="tile-title">Card Title</h4>
+                                                            <div class="tile">
+                                                                <div class="tile-body">
+                                                                    
+                                                                    <div class="form-row mb-4">
+                                                                        <label for="validationServerUsername">Name</label>
+                                                                        <div class="input-group">
+                                                                            <input type="text" name="name" class="form-control  is-invalid" value="{{ $vendor->name }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                        </div>
+                                                                    </div>
 
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-4 mb-4">
-                                                            <label for="validationServerUsername">Phone</label>
-                                                            <div class="input-group">
-                                                                <input type="tel" name="mobile" class="form-control form-control-lg is-invalid" value="{{ $vendor->mobile }}" aria-describedby="inputGroupPrepend3" required="true">
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                                    <div class="form-row mb-4">
+                                                                        <label for="validationServer01">Type</label>
+                                                                        <select class="form-control  is-valid" name="treasure_type_id">
 
-                                                    <div class="form-row">
-                                                        <div class="col-md-4 mb-4">
-                                                            <label for="validationServerUsername">Address</label>
-                                                            <div class="input-group">
-                                                                <input type="text" name="address" class="form-control form-control-lg is-invalid" value="{{ $vendor->address }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                            @foreach(App\Models\TreasureType::all() as $treasureType)
+                                                                            
+                                                                            <option value="{{ $treasureType->id }}" @if($treasureType->id == $vendor->treasure_type_id) selected="true" @endif>{{ $treasureType->treasure_type_name }}</option>
+
+                                                                            @endforeach
+
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="form-row mb-4">
+                                                                        <label for="validationServerUsername">Phone</label>
+                                                                        <div class="input-group">
+                                                                            <input type="tel" name="mobile" class="form-control  is-invalid" value="{{ $vendor->mobile }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-row mb-4">
+                                                                        <label for="validationServerUsername" class="col-12">Change Logo</label>
+
+                                                                        <div class="col-6">
+                                                                            <div class="input-group">
+                                                                                <input type="file" name="logo" class="form-control  is-valid" aria-describedby="inputGroupPrepend3">
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-6 text-center">
+                                                                            <img src="{{ asset($vendor->logo_picture) }}" class="img-thumbnail" alt="Cinque Terre">
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4 mb-4">
-                                                            <label for="validationServerUsername">Area</label>
-                                                            <div class="input-group">
-                                                                <input type="text" name="area" class="form-control form-control-lg is-invalid" value="{{ $vendor->area }}" aria-describedby="inputGroupPrepend3" required="true">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 mb-4">
-                                                            <label for="validationServerUsername">Division</label>
-                                                            <div class="input-group">
-                                                                <input type="text" name="division" class="form-control form-control-lg is-invalid" value="{{ $vendor->division }}" aria-describedby="inputGroupPrepend3" required="true">
+
+                                                        <div class="col-md-6">
+                                                            <h4 class="tile-title">Card Title</h4>
+                                                            <div class="tile">
+                                                                <div class="tile-body">                         
+
+                                                                    <div class="form-row mb-4">
+                                                                        <label for="validationServerUsername">Address</label>
+                                                                        <div class="input-group">
+                                                                            <input type="text" name="address" class="form-control  is-invalid" value="{{ $vendor->address }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-row mb-4">    
+                                                                        <label for="validationServerUsername">Area</label>
+                                                                        <div class="input-group">
+                                                                            <input type="text" name="area" class="form-control  is-invalid" value="{{ $vendor->area }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-row mb-4">
+                                                                        <label for="validationServerUsername">City</label>
+                                                                        <div class="input-group">
+                                                                            <input type="text" name="city" class="form-control  is-invalid" value="{{ $vendor->city }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-row mb-4">
+                                                                        <label for="validationServerUsername">Division</label>
+                                                                        <div class="input-group">
+                                                                            <input type="text" name="division" class="form-control  is-invalid" value="{{ $vendor->division }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -253,7 +295,7 @@
                                     <div class="col-md-12 mb-4">
                                         <label for="validationServer01">Type Name</label>
                                         <div class="input-group">
-                                            <input step="any" type="text" name="treasure_type_name" class="form-control form-control-lg is-invalid"  placeholder="Type Name" required="true">
+                                            <input step="any" type="text" name="treasure_type_name" class="form-control  is-invalid"  placeholder="Type Name" required="true">
                                         </div>
                                     </div>
                                 </div>
@@ -283,61 +325,89 @@
                         </div>
 
                         <div class="modal-body">
-                            
+
                             <form method="post" action= "{{ route('admin.created_vendor_submit') }}" enctype="multipart/form-data">
                                 
                                 @csrf
 
-                                <div class="form-row">
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Name</label>
-                                        <div class="input-group">
-                                            <input type="text" name="name" class="form-control form-control-lg is-invalid" placeholder="Name" aria-describedby="inputGroupPrepend3" required="true">
+                                <div class="row">      
+                                    <div class="col-md-6">
+                                        <h4 class="tile-title">Card Title</h4>
+                                        <div class="tile">
+                                            <div class="tile-body">
+                                                
+                                                <div class="form-row mb-4">
+                                                    <label for="validationServerUsername">Name</label>
+                                                    <div class="input-group">
+                                                        <input type="text" name="name" class="form-control  is-invalid" placeholder="Name" aria-describedby="inputGroupPrepend3" required="true">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row mb-4">
+                                                    <label for="validationServer01">Type</label>
+                                                    <select class="form-control  is-valid" name="treasure_type_id">
+
+                                                        @foreach(App\Models\TreasureType::all() as $treasureType)
+
+                                                        <option value="{{ $treasureType->id }}">
+                                                            {{ $treasureType->treasure_type_name }}
+                                                        </option>
+
+                                                        @endforeach
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-row mb-4">
+                                                    <label for="validationServerUsername">Phone</label>
+                                                    <div class="input-group">
+                                                        <input type="tel" name="mobile" class="form-control  is-invalid" placeholder="Phone" aria-describedby="inputGroupPrepend3" required="true">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row mb-4">
+                                                    <label for="validationServerUsername">Logo</label>
+                                                    <div class="input-group">
+                                                        <input type="file" name="logo" class="form-control  is-invalid" aria-describedby="inputGroupPrepend3" required="true">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServer01">Type</label>
+                                    <div class="col-md-6">
+                                        <h4 class="tile-title">Card Title</h4>
+                                        <div class="tile">
+                                            <div class="tile-body">                         
 
-                                        <select class="form-control form-control-lg is-valid" name="treasure_type_id">
+                                                <div class="form-row mb-4">
+                                                    <label for="validationServerUsername">Address</label>
+                                                    <div class="input-group">
+                                                        <input type="text" name="address" class="form-control  is-invalid" placeholder="Address" aria-describedby="inputGroupPrepend3" required="true">
+                                                    </div>
+                                                </div>
 
-                                            @foreach(App\Models\TreasureType::all() as $treasureType)
+                                                <div class="form-row mb-4">    
+                                                    <label for="validationServerUsername">Area</label>
+                                                    <div class="input-group">
+                                                        <input type="text" name="area" class="form-control  is-invalid" placeholder="Area" aria-describedby="inputGroupPrepend3" required="true">
+                                                    </div>
+                                                </div>
 
-                                            <option value="{{ $treasureType->id }}">
-                                                {{ $treasureType->treasure_type_name }}
-                                            </option>
+                                                <div class="form-row mb-4">
+                                                    <label for="validationServerUsername">City</label>
+                                                    <div class="input-group">
+                                                        <input type="text" name="city" class="form-control  is-invalid" placeholder="City" aria-describedby="inputGroupPrepend3" required="true">
+                                                    </div>
+                                                </div>
 
-                                            @endforeach
-
-                                        </select>
-
-                                    </div>
-
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Phone</label>
-                                        <div class="input-group">
-                                            <input type="tel" name="mobile" class="form-control form-control-lg is-invalid" placeholder="Phone" aria-describedby="inputGroupPrepend3" required="true">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Address</label>
-                                        <div class="input-group">
-                                            <input type="text" name="address" class="form-control form-control-lg is-invalid" placeholder="Address" aria-describedby="inputGroupPrepend3" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Area</label>
-                                        <div class="input-group">
-                                            <input type="text" name="area" class="form-control form-control-lg is-invalid" placeholder="Area" aria-describedby="inputGroupPrepend3" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-4">
-                                        <label for="validationServerUsername">Division</label>
-                                        <div class="input-group">
-                                            <input type="text" name="division" class="form-control form-control-lg is-invalid" placeholder="Division" aria-describedby="inputGroupPrepend3" required="true">
+                                                <div class="form-row mb-4">
+                                                    <label for="validationServerUsername">Division</label>
+                                                    <div class="input-group">
+                                                        <input type="text" name="division" class="form-control  is-invalid" placeholder="Division" aria-describedby="inputGroupPrepend3" required="true">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

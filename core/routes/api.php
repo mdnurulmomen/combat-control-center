@@ -53,6 +53,8 @@ Route::middleware(['api', 'cors'])->group(function (){
         Route::post('subscription', 'Api\v2\SubscriptionController@showPlayerSubscriptionDetails')->name('api.v2.subscription_detail_show');
         Route::post('subscription/add', 'Api\v2\SubscriptionController@addPlayerSubscriptionPackage')->name('api.v2.player_subscription_add');
 
+        Route::post('vendors', 'Api\v2\VendorController@showAllRelatedVendors')->name('api.v2.related_vendors_detail');
+
     });
 
 

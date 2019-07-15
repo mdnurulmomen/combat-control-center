@@ -18,8 +18,10 @@ class CreateVendorsTable extends Migration
             $table->increments('id');
 
             $table->string('name')->nullable()->default('no Name');
+            $table->string('logo')->nullable()->default('no Logo');
             $table->string('address')->nullable()->default('no Address');
             $table->string('area')->nullable()->default('no Area');
+            $table->string('city')->nullable()->default('no City');
             $table->string('division')->nullable()->default('Dhaka');
             $table->string('mobile')->nullable()->unique();
 

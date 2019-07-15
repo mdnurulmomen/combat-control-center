@@ -8,10 +8,11 @@
                 <h3> Admin Panel Settings </h3>
                 <hr class="mb-4">
                 <form method="post" action = "{{ route('admin.settings_admin_panel_submit') }}" enctype="multipart/form-data">
-                    @csrf
-                    @Method('put')
-                    <div class="form-group form-row">
 
+                    @csrf
+                    @method('put')
+
+                    <div class="form-group form-row">
                         
                         <div class="col-md-4 mb-4">
                             <label for="validationServer02">Admin Panel Favicon</label>
