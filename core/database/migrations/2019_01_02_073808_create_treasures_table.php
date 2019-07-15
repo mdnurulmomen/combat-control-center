@@ -16,12 +16,12 @@ class CreateTreasuresTable extends Migration
         Schema::create('treasures', function (Blueprint $table) {
             $table->increments('id');
             
-            $table->string('name')->default('name');
-            $table->string('description')->default('description');
-            $table->integer('amount')->default(1);
+            $table->string('name')->nullable()->default('name');
+            $table->string('description')->nullable()->default('description');
+            $table->integer('amount')->nullable()->default(1);
             $table->float('equivalent_price', 12, 2)->nullable()->default(0);
             
-            $table->string('collecting_point')->nullable()->default('Nearest');
+            // $table->string('collecting_point')->nullable()->default('Nearest');
             $table->string('durability')->nullable()->default('-1');
 
             $table->mediumInteger('exchanging_coins')->default(0);

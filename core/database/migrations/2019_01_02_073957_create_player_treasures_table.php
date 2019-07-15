@@ -16,7 +16,7 @@ class CreatePlayerTreasuresTable extends Migration
         Schema::create('player_treasures', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('redeem_code')->nullable();
-            $table->string('collecting_point')->default('Nearest Point');
+            $table->string('collecting_point')->nullable()->default('Not Collected');
             $table->timestamp('open_time');
             $table->timestamp('close_time');
             $table->integer('status')->nullable()->default('1');
