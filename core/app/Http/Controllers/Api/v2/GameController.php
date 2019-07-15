@@ -298,7 +298,10 @@ class GameController extends Controller
         $playerStatisticToUpdate->save();
 
         // If Treasure is Won
-        $this->addPlayerTreasure($request, $playerStatisticToUpdate);
+        if ($request->totalTreasureWon > 0) {
+            
+            $this->addPlayerTreasure($request, $playerStatisticToUpdate);
+        }
 
         return [
             
@@ -319,30 +322,27 @@ class GameController extends Controller
     // If Player Win Treasure after Game Over
     public function addPlayerTreasure(Request $request, PlayerStatistic $playerStatisticToUpdate)
     {
-        if ($request->totalTreasureWon > 0) {
+        $giftTreasure = GiftTreasure::first();
+        $treasureDetails = Treasure::find($giftTreasure->treasure_id);
 
-            $giftTreasure = GiftTreasure::first();
-            $treasureDetails = Treasure::find($giftTreasure->treasure_id);
+        // Create Player new Treasure
 
-            // Create Player new Treasure
+        $newPlayerTreasure = new PlayerTreasure();
 
-            $newPlayerTreasure = new PlayerTreasure();
+        $newPlayerTreasure->redeem_code = Str::random(8);
 
-            $newPlayerTreasure->redeem_code = Str::random(8);
+        // $treasureDetails->collecting_point == -1 ? $newPlayerTreasure->collecting_point = 'nearest point' : $newPlayerTreasure->collecting_point = $treasureDetails->collecting_point;
 
-            $treasureDetails->collecting_point == -1 ? $newPlayerTreasure->collecting_point = 'nearest point' : $newPlayerTreasure->collecting_point = $treasureDetails->collecting_point;
+        $newPlayerTreasure->open_time = now();
 
-            $newPlayerTreasure->open_time = now();
+        $treasureDetails->durability == -1 ? $newPlayerTreasure->close_time = 'undefined' : $newPlayerTreasure->close_time = now()->addDay($treasureDetails->durability) ;
+        
+        $newPlayerTreasure->status = 1;
+        $newPlayerTreasure->treasure_id = $giftTreasure->treasure_id;
+        $newPlayerTreasure->player_id = $request->userId;
 
-            $treasureDetails->durability == -1 ? $newPlayerTreasure->close_time = 'undefined' : $newPlayerTreasure->close_time = now()->addDay($treasureDetails->durability) ;
-            
-            $newPlayerTreasure->status = 1;
-            $newPlayerTreasure->treasure_id = $giftTreasure->treasure_id;
-            $newPlayerTreasure->player_id = $request->userId;
+        $newPlayerTreasure->save();
 
-            $newPlayerTreasure->save();
-
-            $playerStatisticToUpdate->increment('treasure_won', $request->totalTreasureWon);
-        }  
+        $playerStatisticToUpdate->increment('treasure_won', $request->totalTreasureWon);      
     }
 }

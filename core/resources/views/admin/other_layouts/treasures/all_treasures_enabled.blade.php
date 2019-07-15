@@ -13,29 +13,30 @@
 
                 <div class="col-6">
 
+                    @if(auth()->user()->can('read'))
+
+                    <a  href="{{route('admin.view_disabled_treasures')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        Disabled Treasures
+                    </a>
+
+                    @endif
 
                     @if(auth()->user()->can('create'))
                     
-                    <button type="button" class="btn btn-info float-right btn-sm mr-1 ml-1 " data-toggle="modal" data-target="#addType">
+                    <button type="button" class="btn btn-info btn-sm float-right mr-1 ml-1 " data-toggle="modal" data-target="#addType">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         New Treasure Type
                     </button>
 
-                    <button type="button" class="btn btn-success float-right btn-sm mr-1 ml-1 " data-toggle="modal" data-target="#addModal">
+                    <button type="button" class="btn btn-success btn-sm float-right " data-toggle="modal" data-target="#addModal">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         New Treasure
                     </button>
 
                     @endif
 
-                    @if(auth()->user()->can('read'))
-
-                    <a  href="{{route('admin.view_disabled_treasures')}}"  class="btn btn-outline-danger float-right btn-sm mr-1 ml-1 " type="button">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                        Disabled Treasures
-                    </a>
-
-                    @endif
+                    
 
                 </div>
 
@@ -182,7 +183,7 @@
                                             </div>
 
                                             <div class="form-row">
-                                                <div class="col-md-3 mb-4">
+                                                <div class="col-md-6 mb-4">
                                                     <label for="validationServer01">Approximate Cost</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -192,47 +193,6 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3 mb-4">
-                                                    <label for="validationServerUsername">Exchanging Coins</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">@ coins</span>
-                                                        </div>
-                                                        <input type="text" name="exchanging_coins" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_coins }}" aria-describedby="inputGroupPrepend3">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3 mb-4">
-                                                    <label for="validationServerUsername">Exchanging Gems</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">@ gems</span>
-                                                        </div>
-                                                        <input type="number" name="exchanging_gems" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_gems }}"  aria-describedby="inputGroupPrepend3" min="1">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3 mb-4">
-                                                    <label for="validationServerUsername">Exchanging MB</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">@ megabyte</span>
-                                                        </div>
-                                                        <input type="number" name="exchanging_megabyte" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_megabyte }}"  aria-describedby="inputGroupPrepend3" step=".5">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-row">
-                                                <div class="col-md-6 mb-4">
-                                                    <label for="validationServerUsername">Collecting Point</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">@ place</span>
-                                                        </div>
-                                                        <input type="text" name="collecting_point" class="form-control form-control-lg is-valid" value="{{ $treasure->collecting_point }}" aria-describedby="inputGroupPrepend3">
-                                                    </div>
-                                                </div>
                                                 <div class="col-md-6 mb-4">
                                                     <label for="validationServerUsername">Durability</label>
                                                     <div class="input-group">
@@ -242,6 +202,50 @@
                                                         <input type="number" name="durability" class="form-control form-control-lg is-valid" value="{{ $treasure->durability }}"  aria-describedby="inputGroupPrepend3" step="any">
                                                     </div>
                                                 </div>
+                                            </div>
+
+                                            <div class="form-row">
+
+                                                <div class="col-md-4 mb-4">
+                                                    <label for="validationServerUsername">Exchanging Coins</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">@ coins</span>
+                                                        </div>
+                                                        <input type="text" name="exchanging_coins" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_coins }}" aria-describedby="inputGroupPrepend3">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 mb-4">
+                                                    <label for="validationServerUsername">Exchanging Gems</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">@ gems</span>
+                                                        </div>
+                                                        <input type="number" name="exchanging_gems" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_gems }}"  aria-describedby="inputGroupPrepend3" min="0">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 mb-4">
+                                                    <label for="validationServerUsername">Exchanging MB</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">@ megabyte</span>
+                                                        </div>
+                                                        <input type="number" name="exchanging_megabyte" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_megabyte }}"  aria-describedby="inputGroupPrepend3" step=".5">
+                                                    </div>
+                                                </div>
+
+                                                {{-- <div class="col-md-6 mb-4">
+                                                    <label for="validationServerUsername">Collecting Point</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">@ place</span>
+                                                        </div>
+                                                        <input type="text" name="collecting_point" class="form-control form-control-lg is-valid" value="{{ $treasure->collecting_point }}" aria-describedby="inputGroupPrepend3">
+                                                    </div>
+                                                </div> --}}
+                                                
                                             </div>
 
                                             <div class="form-row">
@@ -332,7 +336,7 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="col-md-3 mb-4">
+                                <div class="col-md-6 mb-4">
                                     <label for="validationServer01">Approximate Cost</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -342,46 +346,6 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3 mb-4">
-                                    <label for="validationServerUsername">Exchanging Coins</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">@ coins</span>
-                                        </div>
-                                        <input type="number" name="exchanging_coins" class="form-control form-control-lg is-valid" placeholder="Coins"aria-describedby="inputGroupPrepend3" min="1">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-4">
-                                    <label for="validationServerUsername">Exchanging Gems</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">@ gems</span>
-                                        </div>
-                                        <input type="number" name="exchanging_gems" class="form-control form-control-lg is-valid" placeholder="Gems" aria-describedby="inputGroupPrepend3" min="1">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 mb-4">
-                                    <label for="validationServerUsername">Exchanging MB</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">@ megabyte</span>
-                                        </div>
-                                        <input type="number" name="exchanging_megabyte" class="form-control form-control-lg is-valid" placeholder="MB"  aria-describedby="inputGroupPrepend3" step=".5">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="col-md-6 mb-4">
-                                    <label for="validationServerUsername">Collecting Point</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">@ place</span>
-                                        </div>
-                                        <input type="text" name="collecting_point" class="form-control form-control-lg is-valid" placeholder="Please Leave if Unspecific" aria-describedby="inputGroupPrepend3">
-                                    </div>
-                                </div>
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServerUsername">Durability</label>
                                     <div class="input-group">
@@ -391,6 +355,50 @@
                                         <input type="number" name="durability" class="form-control form-control-lg is-valid" placeholder="Please Leave if Unlimited" aria-describedby="inputGroupPrepend3" step="any">
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="col-md-4 mb-4">
+                                    <label for="validationServerUsername">Exchanging Coins</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">@ coins</span>
+                                        </div>
+                                        <input type="number" name="exchanging_coins" class="form-control form-control-lg is-valid" placeholder="Coins"aria-describedby="inputGroupPrepend3" min="1">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4 mb-4">
+                                    <label for="validationServerUsername">Exchanging Gems</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">@ gems</span>
+                                        </div>
+                                        <input type="number" name="exchanging_gems" class="form-control form-control-lg is-valid" placeholder="Gems" aria-describedby="inputGroupPrepend3" min="0">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-4">
+                                    <label for="validationServerUsername">Exchanging MB</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">@ megabyte</span>
+                                        </div>
+                                        <input type="number" name="exchanging_megabyte" class="form-control form-control-lg is-valid" placeholder="MB"  aria-describedby="inputGroupPrepend3" step=".5">
+                                    </div>
+                                </div>
+
+                                {{-- <div class="col-md-6 mb-4">
+                                    <label for="validationServerUsername">Collecting Point</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">@ place</span>
+                                        </div>
+                                        <input type="text" name="collecting_point" class="form-control form-control-lg is-valid" placeholder="Please Leave if Unspecific" aria-describedby="inputGroupPrepend3">
+                                    </div>
+                                </div> --}}
+                                
                             </div>
 
                             <div class="form-row">
