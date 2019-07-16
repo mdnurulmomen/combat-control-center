@@ -102,7 +102,7 @@ class TreasureController extends Controller
             $treasureDetails = Treasure::find($request->treasureId);
             $playerStatistics = PlayerStatistic::where('player_id', $request->userId)->first();
 
-            // initiated
+            // initialisation
             $status = 1;
             $collectingPoint = '';
 
@@ -128,9 +128,22 @@ class TreasureController extends Controller
                 $status = 0;
             }
 
-
-
             else if (Str::is('MB', $request->exchangingType)) {
+                
+                $playerPhone = Str::start($request->playerPhone, '88');
+
+                if (Str::startsWith($playerPhone, '88016') || Str::startsWith($playerPhone, '88018')) {
+
+                    // Send MB Pack to User
+                    $response = $this->sendUserDataPack();
+                }
+
+                else{
+
+                    return response()->json([
+                        'message' => 'Operator must be Robi or airtel'
+                    ]);
+                }
                 
                 $collectingPoint = $request->playerPhone;
                 $status = -1;
@@ -169,6 +182,43 @@ class TreasureController extends Controller
         return response()->json(['error'=>'Treasure does not belong'], 422);
     }
 
+    public function sendUserDataPack()
+    {
+        $grantType = "password";
+        $userName = "MIFE_DV_TREASURE";
+        $password = "T-#u|\|T@2O!9O2!3";
+        $scope  = "PRODUCTION";
+
+        $consumerKey = "Nm2tROFJV3QtcxkrovlPco_ObHAa";
+        $consumerSecret = "id8n7HgLUZL0tJ2PsAeB5fxkZI0a";
+        $basicAuthorization = base64_encode($consumerKey.':'.$consumerSecret);
+
+        $headers = [
+            'Authorization' => "Basic $basicAuthorization",
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ];
+        
+        $client = new Client([
+            'headers' => $headers
+        ]);
+
+        $response = $client->request('POST', 'https://api.robi.com.bd/token', [
+
+            'form_params' => [
+                'grant_type' => $grantType,
+                'username' => $userName,
+                'password' => $password,
+                'scope' => $scope,
+            ]
+        ]);
+
+        $request = json_decode($response->getBody());
+
+        $accessToken = $request->access_token;
+
+        return ;
+    }
+
     public function sendSmsToVendor(Vendor $vendor, Treasure $treasureDetails, Request $request)
     {
         $client = new Client();
@@ -184,13 +234,12 @@ class TreasureController extends Controller
 
         $response = $client->request('GET', "$api");
 
-
-        // if ($response->getStatusCode() != '200') {
+        /*
+        if ($response->getStatusCode() === 200) {
             
-        //     return response()->json(['error'=>'Message couldnt sent'], 422);
-        // }
-        
-        // return $response->getStatusCode();
+            return response()->json(['error'=>'Message couldnt sent'], 422);
+        }
+       */ 
     }
 
     public function createTreasureRedemptionHistory(Request $request, Treasure $treasureDetails, PlayerTreasure $playerTreasureExist)
