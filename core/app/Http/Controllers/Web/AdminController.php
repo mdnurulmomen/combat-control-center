@@ -37,6 +37,11 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+    public function index()
+    {
+        return redirect('/admin');
+    }
+
     public function showLoginForm()
     {
         return view('admin.other_layouts.login.login');

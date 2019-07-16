@@ -1,5 +1,7 @@
 <?php
 
+Route::get('/', 'Web\AdminController@index');
+
 Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
 
     Route::group(['middleware'=>'guest:admin'], function ()
@@ -29,66 +31,72 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::post('password', 'Web\AdminController@submitPasswordForm')->name('admin.updated_password_submit');
 
 
-            Route::get('settings/cms', 'Web\AdminController@showAdminSettingsForm')->name('admin.settings_admin_panel');
-            Route::put('settings/cms', 'Web\AdminController@submitAdminSettingsForm')->name('admin.settings_admin_panel_submit');
+            Route::group(['middleware' => ['permission:setting']], function () {
+
+                Route::get('settings/cms', 'Web\AdminController@showAdminSettingsForm')->name('admin.settings_admin_panel');
+                Route::put('settings/cms', 'Web\AdminController@submitAdminSettingsForm')->name('admin.settings_admin_panel_submit');
+            });    
 
 
             Route::post('user', 'Web\AdminController@submitCreateUserForm')->name('admin.created_user_submit');
             Route::get('users/all', 'Web\AdminController@showAllUsers')->name('admin.view_users');
-            // Route::get('users/{userId}', 'Web\AdminController@showUserEditForm')->name('admin.update_user');
             Route::put('users/{userId}', 'Web\AdminController@submitUserEditForm')->name('admin.updated_user_submit');
             Route::delete('users/{userId}', 'Web\AdminController@userDeleteMethod')->name('admin.delete_user');
 
 
             Route::get('api/all', 'Web\AdminController@showAllApi')->name('admin.view_api');
 
+            Route::group(['middleware' => ['permission:setting']], function () {
 
-            Route::get('game/settings', 'Web\GameController@showGameSettingsForm')->name('admin.settings_game');
-            Route::put('game/settings', 'Web\GameController@submitGameSettingsForm')->name('admin.settings_game_submit');
-
-
-            Route::get('rules/settings', 'Web\GameController@showRulesSettingsForm')->name('admin.settings_rules');
-            Route::put('rules/settings', 'Web\GameController@submitRulesSettingsForm')->name('admin.settings_rules_submit');
+                Route::get('game/settings', 'Web\GameController@showGameSettingsForm')->name('admin.settings_game');
+                Route::put('game/settings', 'Web\GameController@submitGameSettingsForm')->name('admin.settings_game_submit');
 
 
-            Route::get('gift-treasures', 'Web\GiftController@showTreasureSettingsForm')->name('admin.settings_gift_treasure');
-            Route::put('gift-treasures', 'Web\GiftController@submitTreasureSettingsForm')->name('admin.settings_gift_treasure_submit');
+                Route::get('rules/settings', 'Web\GameController@showRulesSettingsForm')->name('admin.settings_rules');
+                Route::put('rules/settings', 'Web\GameController@submitRulesSettingsForm')->name('admin.settings_rules_submit');
 
 
-            Route::get('gift-animations', 'Web\GiftController@showGiftAnimations')->name('admin.settings_gift_animations');
-            Route::put('gift-animations', 'Web\GiftController@submitGiftAnimations')->name('admin.settings_gift_animations_submit');
+                Route::get('gift-treasures', 'Web\GiftController@showTreasureSettingsForm')->name('admin.settings_gift_treasure');
+                Route::put('gift-treasures', 'Web\GiftController@submitTreasureSettingsForm')->name('admin.settings_gift_treasure_submit');
 
 
-            Route::get('gift-boostpacks', 'Web\GiftController@showGiftBoostPacks')->name('admin.settings_gift_boost_packs');
-            Route::put('gift-boostpacks', 'Web\GiftController@submitGiftBoostPacks')->name('admin.settings_gift_boost_packs_submit');
+                Route::get('gift-animations', 'Web\GiftController@showGiftAnimations')->name('admin.settings_gift_animations');
+                Route::put('gift-animations', 'Web\GiftController@submitGiftAnimations')->name('admin.settings_gift_animations_submit');
 
 
-            Route::get('gift-characters', 'Web\GiftController@showGiftCharacters')->name('admin.setting_gift_characters');
-            Route::put('gift-characters', 'Web\GiftController@submitGiftCharacters')->name('admin.setting_gift_characters_submit');
+                Route::get('gift-boostpacks', 'Web\GiftController@showGiftBoostPacks')->name('admin.settings_gift_boost_packs');
+                Route::put('gift-boostpacks', 'Web\GiftController@submitGiftBoostPacks')->name('admin.settings_gift_boost_packs_submit');
 
 
-            Route::get('gift-parachutes', 'Web\GiftController@showGiftParachutes')->name('admin.setting_gift_parachutes');
-            Route::put('gift-parachutes', 'Web\GiftController@submitGiftParachutes')->name('admin.setting_gift_parachutes_submit');
+                Route::get('gift-characters', 'Web\GiftController@showGiftCharacters')->name('admin.setting_gift_characters');
+                Route::put('gift-characters', 'Web\GiftController@submitGiftCharacters')->name('admin.setting_gift_characters_submit');
 
 
-            Route::get('gift-weapons', 'Web\GiftController@showGiftWeapons')->name('admin.setting_gift_weapons');
-            Route::put('gift-weapons', 'Web\GiftController@submitGiftWeapons')->name('admin.setting_gift_weapons_submit'); 
+                Route::get('gift-parachutes', 'Web\GiftController@showGiftParachutes')->name('admin.setting_gift_parachutes');
+                Route::put('gift-parachutes', 'Web\GiftController@submitGiftParachutes')->name('admin.setting_gift_parachutes_submit');
 
 
-            Route::get('gift-points', 'Web\GiftController@showGiftPoints')->name('admin.setting_gift_points');
-            Route::put('gift-points', 'Web\GiftController@submitGiftPoints')->name('admin.setting_gift_points_submit');        
+                Route::get('gift-weapons', 'Web\GiftController@showGiftWeapons')->name('admin.setting_gift_weapons');
+                Route::put('gift-weapons', 'Web\GiftController@submitGiftWeapons')->name('admin.setting_gift_weapons_submit'); 
+
+
+                Route::get('gift-points', 'Web\GiftController@showGiftPoints')->name('admin.setting_gift_points');
+                Route::put('gift-points', 'Web\GiftController@submitGiftPoints')->name('admin.setting_gift_points_submit');        
+            });
+
 
 
             Route::get('players/all', 'Web\PlayerController@showAllPlayers')->name('admin.view_players');
-            Route::get('player/{playerId}', 'Web\PlayerController@showPlayerEditForm')->name('admin.update_player');
+            // Route::get('player/{playerId}', 'Web\PlayerController@showPlayerEditForm')->name('admin.update_player');
             Route::put('player/{playerId}/', 'Web\PlayerController@submitPlayerEditForm')->name('admin.updated_player_submit');
             Route::delete('player/{playerId}', 'Web\PlayerController@deletePlayerMethod')->name('admin.delete_player');
 
             
-            Route::post('bot', 'Web\PlayerController@submitCreateBotForm')->name('admin.created_bot_submit');
             Route::get('bots/all', 'Web\PlayerController@showAllBots')->name('admin.view_bots');
-            Route::get('bot/{botId}', 'Web\PlayerController@showBotEditForm')->name('admin.update_bot');
+            Route::post('bot', 'Web\PlayerController@submitCreateBotForm')->name('admin.created_bot_submit');
+            // Route::get('bot/{botId}', 'Web\PlayerController@showBotEditForm')->name('admin.update_bot');
             Route::put('bot/{botId}/', 'Web\PlayerController@submitBotEditForm')->name('admin.updated_bot_submit');
+            
             Route::get('leaderboard', 'Web\PlayerController@showLeaderboard')->name('admin.view_leaderboard');
             Route::delete('bot/{botId}', 'Web\PlayerController@deleteBotMethod')->name('admin.delete_bot');
 
@@ -185,7 +193,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::patch('coin-packs/{coinPackId}', 'Web\WealthController@CoinPackUndoMethod')->name('admin.undo_coin_pack');
 
 
-            Route::get('gem-packs', 'Web\WealthController@showAllGemPacks')->name('admin.view_gem_packs');
+            // Route::get('gem-packs', 'Web\WealthController@showAllGemPacks')->name('admin.view_gem_packs');
             Route::get('gem-packs/enabled', 'Web\WealthController@showEnabledGemPacks')->name('admin.view_enabled_gem_packs');
             Route::get('gem-packs/disabled', 'Web\WealthController@showDisabledGemPacks')->name('admin.view_disabled_gem_packs');
             Route::post('gem-packs', 'Web\WealthController@submitCreatedGemPack')->name('admin.created_gem_pack_submit');
