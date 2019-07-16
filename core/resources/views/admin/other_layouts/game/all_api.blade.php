@@ -274,6 +274,16 @@
                                                 </td>
                                             </tr>
 
+                                            <tr class="info">
+                                                <th scope="row">18</th>
+                                                <td>vendors</td>
+                                                <td>Get List of Specific Vendors</td>
+                                                <td>Post</td>
+                                                <td>
+                                                    <span>type (required)</span>
+                                                </td>
+                                            </tr>
+
                                         </tbody>
                                     </table>
 
@@ -528,6 +538,16 @@
                                                 <td>
                                                     <span>userId (required),</span>
                                                     <span>subscriptionPackageId (required),</span>
+                                                </td>
+                                            </tr>
+
+                                            <tr class="info">
+                                                <th scope="row">18</th>
+                                                <td>vendors</td>
+                                                <td>Get List of Specific Vendors</td>
+                                                <td>Post</td>
+                                                <td>
+                                                    <span>type (required)</span>
                                                 </td>
                                             </tr>
 
