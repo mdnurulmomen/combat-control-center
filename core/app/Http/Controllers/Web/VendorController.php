@@ -2,14 +2,40 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Models\City;
 use App\Models\Vendor;
+use App\Models\Division;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class VendorController extends Controller
 {
-   	public function showEnabledVendors()
+   	public function showEnabledVendors(Request $request)
     {
+        if ($request->ajax()) {
+            
+            if ($request->has('divisionId')) {
+                
+                $request->validate([
+                    'divisionId'=>'required|exists:divisions,id'
+                ]);
+
+                $divisionToLoad = Division::find($request->divisionId);
+                return $allRelatedCities = $divisionToLoad->cities;
+            }
+
+            if ($request->has('cityId')) {
+                
+                $request->validate([
+                    'cityId'=>'required|exists:cities,id'
+                ]);
+
+                $cityToLoad = City::find($request->cityId);
+                return $allRelatedAreas = $cityToLoad->areas;
+            }
+
+        }
+        
         $vendors = Vendor::paginate(6);
         return view('admin.other_layouts.vendors.all_vendors_enabled', compact('vendors'));
     }
@@ -24,9 +50,9 @@ class VendorController extends Controller
     {
         $request->validate([
             'address'=>'required',
-            'area'=>'required',
-            'city'=>'required',
-            'division'=>'required',
+            'area_id'=>'required',
+            'city_id'=>'required',
+            'division_id'=>'required',
             'mobile'=>'required|unique:vendors,mobile|regex:/(01)[0-9]{9}/',
             'treasure_type_id'=>'required|numeric'
         ]);
@@ -35,12 +61,12 @@ class VendorController extends Controller
 
         $newVendor->name = $request->name;
         $newVendor->address = $request->address;
-        $newVendor->area = $request->area;
-        $newVendor->city = $request->city;
+        $newVendor->area_id = $request->area_id;
+        $newVendor->city_id = $request->city_id;
+        $newVendor->division_id = $request->division_id;
 
         $newVendor->logo_picture = $request->file('logo');
 
-        $newVendor->division = $request->division;
         $newVendor->mobile = $request->mobile;
         $newVendor->treasure_type_id = $request->treasure_type_id;
 
@@ -61,20 +87,21 @@ class VendorController extends Controller
 
         $request->validate([
             'address'=>'required',
-            'area'=>'required',
-            'division'=>'required',
+            'area_id'=>'required',
+            'city_id'=>'required',
+            'division_id'=>'required',
             'mobile'=>'required|regex:/(01)[0-9]{9}/|unique:vendors,mobile,'.$vendorToUpdate->id,
             'treasure_type_id'=>'required|numeric'
         ]);
 
         $vendorToUpdate->name = $request->name;
         $vendorToUpdate->address = $request->address;
-        $vendorToUpdate->area = $request->area;
-        $vendorToUpdate->city = $request->city;
+        $vendorToUpdate->area_id = $request->area_id;
+        $vendorToUpdate->city_id = $request->city_id;
 
         $vendorToUpdate->logo_picture = $request->file('logo');
 
-        $vendorToUpdate->division = $request->division;
+        $vendorToUpdate->division_id = $request->division_id;
         $vendorToUpdate->mobile = $request->mobile;
         $vendorToUpdate->treasure_type_id = $request->treasure_type_id;
 

@@ -370,10 +370,31 @@
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/vendor*')) active @endif" href="{{route('admin.view_enabled_vendors')}}">
+          <a class="app-menu__item @if(Request::is('admin/vendor*') || Request::is('admin/area*') || Request::is('admin/citie*')) active @endif" href="#" data-toggle="treeview">
             <i class="app-menu__icon fa fa-industry"></i>
-            <span class="app-menu__label">Vendors</span>
+            <span class="app-menu__label">Vendor</span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
+
+          <ul class="treeview-menu">
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_areas') active @endif"  href="{{route('admin.view_enabled_areas')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Areas
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_cities') active @endif"  href="{{route('admin.view_enabled_cities')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Cities
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Request::is('admin/vendor*')) active @endif" href="{{route('admin.view_enabled_vendors')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Vendors
+                </a>
+              </li>
+          </ul>
         </li>
 
         <li class="treeview">

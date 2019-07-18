@@ -335,7 +335,7 @@ class GameController extends Controller
 
         $newPlayerTreasure->open_time = now();
 
-        $treasureDetails->durability == -1 ? $newPlayerTreasure->close_time = 'undefined' : $newPlayerTreasure->close_time = now()->addDay($treasureDetails->durability) ;
+        $treasureDetails->durability == -1 ? $newPlayerTreasure->close_time = false : $newPlayerTreasure->close_time = now()->addDay($treasureDetails->durability) ;
         
         $newPlayerTreasure->status = 1;
         $newPlayerTreasure->treasure_id = $giftTreasure->treasure_id;

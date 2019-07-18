@@ -17,4 +17,9 @@ class TreasureRedemption extends Model
     {
     	return $this->belongsTo('App\Models\Treasure', 'treasure_id', 'id');
     }
+
+    public function playerTreasure()
+    {
+        return $this->belongsTo('App\Models\PlayerTreasure', 'player_treasure_serial', 'id');
+    }
 }

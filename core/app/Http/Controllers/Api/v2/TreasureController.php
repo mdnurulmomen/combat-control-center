@@ -17,6 +17,7 @@ use App\Http\Traits\RetrieveToken;
 use App\Models\TreasureRedemption;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RequestWithToken;
+use App\Http\Resources\v2\Player\PlayerTreasureRedeemed;
 use App\Http\Resources\v2\Game\TreasureResource;
 use App\Http\Resources\v2\Player\PlayerTreasureResource;
 
@@ -53,6 +54,7 @@ class TreasureController extends Controller
         $payload = $this->retrieveToken($postman);
 
         if (is_null($payload)) {
+
             return response()->json(['error'=>'Invalid token'], 422);
         }
 
@@ -77,6 +79,7 @@ class TreasureController extends Controller
         $payload = $this->retrieveToken($postman);
 
         if (is_null($payload)) {
+
             return response()->json(['error'=>'Invalid token'], 422);
         }
 
@@ -140,9 +143,7 @@ class TreasureController extends Controller
 
                 else{
 
-                    return response()->json([
-                        'message' => 'Operator must be Robi or airtel'
-                    ]);
+                    return response()->json(['error' => 'Operator must be Robi or airtel'], 422);
                 }
                 
                 $collectingPoint = $request->playerPhone;
@@ -156,12 +157,11 @@ class TreasureController extends Controller
 
                 if (!$vendor) {
                     
-                    return response()->json([
-                        'message' => 'No such agent found'
-                    ]);
+                    return response()->json( ['error' => 'No such agent found'], 422);
                 }
 
-                $collectingPoint = $vendor->address.', '.$vendor->area.', '.$vendor->city.', '.$vendor->division;
+                $collectingPoint = $vendor->address.', '.$vendor->area->name.', '.$vendor->city->name.', '.$vendor->division->name;
+
                 $status = -1;
 
                 // Sending SMS to Vendor
@@ -169,14 +169,13 @@ class TreasureController extends Controller
             }
 
             // Updating Player Treasure
-            $playerTreasureExist->collecting_point = $collectingPoint;
             $playerTreasureExist->status = $status;
             $playerTreasureExist->save();
 
             // Creating Redeem History
-            $this->createTreasureRedemptionHistory($request, $treasureDetails, $playerTreasureExist);
-            
-            return response()->json(['message'=>'success'], 200); 
+            $this->createTreasureRedemptionHistory($request, $treasureDetails, $playerTreasureExist, $collectingPoint);
+
+            return ['message'=>'success', 'redemptionDetails'=> new PlayerTreasureRedeemed($playerTreasureExist)];
         }
 
         return response()->json(['error'=>'Treasure does not belong'], 422);
@@ -228,7 +227,9 @@ class TreasureController extends Controller
         $from = 'T hunt';
         $to = $vendor->mobile;
 
-        $message = "User id : $request->userId, Mobile : $request->playerPhone has requested for a $treasureDetails->name";
+        $playerName = Player::find($request->userId)->user->username;
+
+        $message = "User Name : $playerName, Mobile : $request->playerPhone has requested for a $treasureDetails->name";
 
         $api = "https://api.mobireach.com.bd/SendTextMessage?Username=$username&Password=$password&From=$from&To=$to&Message=$message";
 
@@ -242,7 +243,7 @@ class TreasureController extends Controller
        */ 
     }
 
-    public function createTreasureRedemptionHistory(Request $request, Treasure $treasureDetails, PlayerTreasure $playerTreasureExist)
+    public function createTreasureRedemptionHistory(Request $request, Treasure $treasureDetails, PlayerTreasure $playerTreasureExist, $collectingPoint)
     {
         $newTreasureRedemption = new TreasureRedemption();
         $newTreasureRedemption->player_id = $request->userId;
@@ -251,10 +252,11 @@ class TreasureController extends Controller
         $newTreasureRedemption->player_phone = $request->playerPhone;
         $newTreasureRedemption->agent_phone = $request->agentPhone;
 
-        $newTreasureRedemption->collecting_point = $playerTreasureExist->collecting_point;
+        $newTreasureRedemption->collecting_point = $collectingPoint;
         $newTreasureRedemption->status = $playerTreasureExist->status;
 
         $newTreasureRedemption->equivalent_price = $treasureDetails->equivalent_price;
+        $newTreasureRedemption->player_treasure_serial = $playerTreasureExist->id;
         $newTreasureRedemption->save(); 
     }
 }

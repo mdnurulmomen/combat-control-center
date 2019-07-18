@@ -16,6 +16,22 @@ class Vendor extends Model
     	return $this->belongsTo(TreasureType::class, 'treasure_type_id', 'id');
     }
 
+    public function division()
+    {
+    	return $this->belongsTo(Division::class, 'division_id', 'id');
+    }
+
+    public function city()
+    {
+    	return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    public function area()
+    {
+    	return $this->belongsTo(Area::class, 'area_id', 'id');
+    }
+
+
     public function getLogoPictureAttribute()
 	{
 	    return 'assets/admin/images/vendor/'.$this->logo;

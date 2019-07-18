@@ -87,7 +87,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
 
 
             Route::get('players/all', 'Web\PlayerController@showAllPlayers')->name('admin.view_players');
-            // Route::get('player/{playerId}', 'Web\PlayerController@showPlayerEditForm')->name('admin.update_player');
             Route::put('player/{playerId}/', 'Web\PlayerController@submitPlayerEditForm')->name('admin.updated_player_submit');
             Route::delete('player/{playerId}', 'Web\PlayerController@deletePlayerMethod')->name('admin.delete_player');
 
@@ -137,12 +136,28 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::post('talkTime/confirmed', 'Web\TreasureController@confirmTreasureRequested')->name('admin.confirm_treasure_requested');
 
             
-            Route::get('vendors/enabled', 'Web\VendorController@showEnabledvendors')->name('admin.view_enabled_vendors');
-            Route::get('vendors/disabled', 'Web\VendorController@showDisabledvendors')->name('admin.view_disabled_vendors');
+            Route::get('vendors/enabled', 'Web\VendorController@showEnabledVendors')->name('admin.view_enabled_vendors');
+            Route::get('vendors/disabled', 'Web\VendorController@showDisabledVendors')->name('admin.view_disabled_vendors');
             Route::post('vendors', 'Web\VendorController@submitCreateVendorForm')->name('admin.created_vendor_submit');
             Route::put('vendors/{vendorId}', 'Web\VendorController@submitVendorEditForm')->name('admin.updated_vendor_submit');
             Route::delete('vendors/{vendorId}', 'Web\VendorController@vendorDeleteMethod')->name('admin.delete_vendor');
             Route::patch('vendors/{vendorId}', 'Web\VendorController@vendorUndoMethod')->name('admin.undo_vendor');
+
+            Route::get('cities/enabled', 'Web\LocationController@showEnabledCities')->name('admin.view_enabled_cities');
+            Route::get('cities/disabled', 'Web\LocationController@showDisabledCities')->name('admin.view_disabled_cities');
+            Route::post('cities', 'Web\LocationController@submitCreateCityForm')->name('admin.created_city_submit');
+            Route::put('cities/{cityId}', 'Web\LocationController@submitCityEditForm')->name('admin.updated_city_submit');
+            Route::delete('cities/{cityId}', 'Web\LocationController@cityDeleteMethod')->name('admin.delete_city');
+            Route::patch('cities/{cityId}', 'Web\LocationController@cityUndoMethod')->name('admin.undo_city');
+
+
+            Route::get('areas/enabled', 'Web\LocationController@showEnabledAreas')->name('admin.view_enabled_areas');
+            Route::get('areas/disabled', 'Web\LocationController@showDisabledAreas')->name('admin.view_disabled_areas');
+            Route::post('areas', 'Web\LocationController@submitCreateAreaForm')->name('admin.created_area_submit');
+            Route::put('areas/{areaId}', 'Web\LocationController@submitAreaEditForm')->name('admin.updated_area_submit');
+            Route::delete('areas/{areaId}', 'Web\LocationController@areaDeleteMethod')->name('admin.delete_area');
+            Route::patch('areas/{areaId}', 'Web\LocationController@areaUndoMethod')->name('admin.undo_area');
+
 
 
             Route::get('weapons/enabled', 'Web\WeaponController@showEnabledweapons')->name('admin.view_enabled_weapons');

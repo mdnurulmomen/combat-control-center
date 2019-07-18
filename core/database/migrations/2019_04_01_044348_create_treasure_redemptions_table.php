@@ -23,8 +23,9 @@ class CreateTreasureRedemptionsTable extends Migration
             $table->string('equivalent_price')->nullable();
             $table->string('player_phone')->nullable();
             $table->string('agent_phone')->nullable();
-            $table->string('collecting_point')->default('Nearest Point');
+            $table->string('collecting_point')->default('Not Collected');
             $table->integer('status')->nullable()->default('-1');
+            $table->integer('player_treasure_serial');
 
             $table->timestamps();
         });

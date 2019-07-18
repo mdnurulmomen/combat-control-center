@@ -61,7 +61,7 @@
                                     
                                     <td>
                                         <p>{{ $vendor->address }}, </p>
-                                        <p>{{ $vendor->area }}, {{ $vendor->division }} </p>
+                                        <p>{{ $vendor->area->name }}, {{ $vendor->division->name }} </p>
                                     </td>
 
                                     @if(auth()->user()->can('update'))

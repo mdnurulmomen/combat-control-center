@@ -25,8 +25,8 @@ class PlayerTreasureRemained extends JsonResource
             'exchangingGems'=>$this->treasure->exchanging_gems,
             'exchangingMB'=>$this->treasure->exchanging_megabyte,
             'winningTime'=>$this->open_time,
-            // 'collectedOn'=>$this->updated_at,
-            'collectedPoint'=>$this->collecting_point,
+            // 'collectedOn'=>$this->updated_at->format('Y-m-d H:i:s'),
+            // 'collectedPoint'=>$this->treasureRedemption->collecting_point,
             'closingTime'=>$this->close_time,
             'status'=>$this->status,
             'description'=>$this->treasure->description

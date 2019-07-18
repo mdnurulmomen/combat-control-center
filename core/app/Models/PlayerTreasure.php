@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlayerTreasure extends Model
 {
-    protected $table = 'player_treasures';
     protected $guarded = [];
+    protected $table = 'player_treasures';
 
     public function player()
     {
@@ -17,5 +17,10 @@ class PlayerTreasure extends Model
     public function treasure()
     {
     	return $this->belongsTo('App\Models\Treasure', 'treasure_id', 'id');
+    }
+
+    public function treasureRedemption()
+    {
+        return $this->hasOne('App\Models\TreasureRedemption', 'player_treasure_serial', 'id');
     }
 }

@@ -19,13 +19,13 @@ class VendorsResource extends JsonResource
         return [
 
             'name' => $this->name,
-            'logo' => asset($this->logo_picture),
-            'address' => $this->address,
-            'area' => $this->area,
-            'city' => $this->city,
-            'division' => $this->division,
-            'mobile' => $this->mobile,
             'treasure_type' => $this->treasureType->treasure_type_name,
+            'logo' => asset($this->logo_picture),
+            'mobile' => $this->mobile,
+            'address' => $this->address,
+            'area' => $this->area->name,
+            'city' => $this->city->name,
+            'division' => $this->division->name,
 
         ];
     }

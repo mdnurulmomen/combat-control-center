@@ -23,7 +23,7 @@ class TreasureResource extends JsonResource
             'exchangingCoins'=>$this->exchanging_coins,
             'exchangingGems'=>$this->exchanging_gems,
             'exchangingMB'=>$this->exchanging_megabyte,
-            'collectingPoint'=>$this->collecting_point == -1 ? 'nearest' : $this->collecting_point,
+            // 'collectingPoint'=>$this->collecting_point == -1 ? 'nearest' : $this->collecting_point,
             'durability'=>$this->durability == -1 ? 'undefined' : $this->durability
         ];
     }

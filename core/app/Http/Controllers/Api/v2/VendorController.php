@@ -40,9 +40,7 @@ class VendorController extends Controller
 
         }
 
-        return response()->json([
-            'message' => 'No agent for this type'
-        ]);
+        return response()->json(['message' => 'No agent for this type'], 422);
 
     }
 }
