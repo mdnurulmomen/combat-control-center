@@ -83,6 +83,7 @@ class RewardController extends Controller
     public function submitDailyLoginRewardCreateForm(Request $request)
     {
         $request->validate([
+            'name'=>'required',
         	'reward_type'=>'required',
             'amount'=>'required'
         ]);
@@ -102,6 +103,7 @@ class RewardController extends Controller
         $rewardToUpdate =  DailyLoginReward::find($rewardTypeId);
 
         $request->validate([
+            'name'=>'required',
         	'reward_type'=>'required',
             'amount'=>'required'
         ]);
