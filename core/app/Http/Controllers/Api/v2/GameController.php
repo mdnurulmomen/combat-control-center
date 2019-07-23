@@ -334,8 +334,8 @@ class GameController extends Controller
         // $treasureDetails->collecting_point == -1 ? $newPlayerTreasure->collecting_point = 'nearest point' : $newPlayerTreasure->collecting_point = $treasureDetails->collecting_point;
 
         $newPlayerTreasure->open_time = now();
-
-        $treasureDetails->durability == -1 ? $newPlayerTreasure->close_time = false : $newPlayerTreasure->close_time = now()->addDay($treasureDetails->durability) ;
+        
+        is_numeric($treasureDetails->durability) ? $newPlayerTreasure->close_time = now()->addDay($treasureDetails->durability) : $newPlayerTreasure->close_time = false;
         
         $newPlayerTreasure->status = 1;
         $newPlayerTreasure->treasure_id = $giftTreasure->treasure_id;
