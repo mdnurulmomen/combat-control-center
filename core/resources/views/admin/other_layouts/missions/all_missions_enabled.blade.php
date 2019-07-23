@@ -15,21 +15,23 @@
 
                     @if(auth()->user()->can('read'))
 
-                    <a  href="{{route('admin.view_disabled_missions')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                    <a  href="{{route('admin.view_disabled_missions')}}"  class="btn btn-outline-danger float-right btn-sm mr-1 ml-1" type="button">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                         Disabled Missions
                     </a>
 
                     @endif
 
+                {{-- 
                     @if(auth()->user()->can('create'))
 
-                    <button type="button" class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#addType">
+                    <button type="button" class="btn btn-info float-right btn-sm mr-1 ml-1" data-toggle="modal" data-target="#addType">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         New Mission Type
                     </button>
 
-                    @endif
+                    @endif 
+                            --}}
 
                     @if(auth()->user()->can('create'))
 
@@ -174,7 +176,16 @@
                                     <div class="col-md-6">
                                         <label for="validationServer01">Be Among Five</label>
                                     </div>
+                                    <div class="col-md-6 mt-1">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row reward_amount">
                                     <div class="col-md-6">
+                                        <label for="validationServer01">Reward Amount</label>
+                                    </div>
+                                    <div class="col-md-6 mt-1">
                                         <p></p>
                                     </div>
                                 </div>
@@ -208,7 +219,9 @@
                                 @csrf
                                 
                                 <div class="modal-body">
-                                    <p>Are You Sure ??</p>
+                                    <p>You are about to delete.</p> 
+                                    <p class="text-muted">This item will be removed to recycle bin.</p>
+                                    <h5>Do you want to proceed ?</h5>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-success">Yes</button>
@@ -224,13 +237,16 @@
 
                 @if(auth()->user()->can('create'))
                 
+
                 <div class="modal fade" id="addModal" role="dialog">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
 
                             <div class="modal-header">
                                 <h3> Create Mission </h3>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    &times;
+                                </button>
                             </div>
 
                             <div class="modal-body">
@@ -239,151 +255,223 @@
                                     
                                     @csrf
 
-                                    <div class="form-row">
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServer01">Mission Type</label>
+                                    <div class="row">    
+                                        <div class="col-md-12">
+                                            <h4>Mission Identity</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">    
+                                                    <div class="form-row">
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServer01">Mission Type</label>
 
-                                            <select class="form-control form-control-lg is-invalid" name="mission_type_id" required="true">
-                                                
-                                                @foreach(App\Models\MissionType::all() as $missionType)
-                                                <option value="{{ $missionType->id }}">
-                                                    {{ $missionType->mission_type_name }}
-                                                </option>
-                                                @endforeach
+                                                            <select class="form-control form-control-lg is-invalid" name="mission_type_id" required="true">
+                                                                
+                                                                <option disabled="true" selected="true">
+                                                                    --Please Select Mission Type--
+                                                                </option>
 
-                                            </select>
-                                        </div>
+                                                                @foreach(App\Models\MissionType::all() as $missionType)
 
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServer01">Mission Name</label>
-                                            <div class="input-group">
-                                                <input type="text" name="name" class="form-control form-control-lg is-valid"  placeholder="Mission Name">
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServer01">Mission Description</label>
-                                            <div class="input-group">
-                                                <input type="text" name="description" class="form-control form-control-lg is-valid" placeholder="Short Description">
+                                                                    <option value="{{ $missionType->id }}">
+                                                                        {{ $missionType->mission_type_name }}
+                                                                    </option>
+                                                                
+                                                                @endforeach
+
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServer01">Mission Name</label>
+                                                            <div class="input-group">
+                                                                <input type="text" name="name" class="form-control form-control-lg is-invalid"  placeholder="Mission Name" required="true">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServer01">Mission Description</label>
+                                                            <div class="input-group">
+                                                                <input type="text" name="description" class="form-control form-control-lg is-valid">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-4">
-                                            <label for="validationServer01">Play Time</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ times</span>
-                                                </div>
-                                                <input type="number" name="play_number" class="form-control form-control-lg is-valid"  placeholder="Number Games to Play">
+                                    <div class="row more">    
+                                        <div class="col-md-12">
+                                            <h4>More Game Mission</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">    
+                                                    <div class="form-row">
+                                                        <div class="col-md-6 mb-4">
+                                                            <label for="validationServer01">Play Time</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ times</span>
+                                                                </div>
+                                                                <input type="number" name="play_number" class="form-control form-control-lg is-valid"  placeholder="Number Games to Play">
 
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 mb-4">
+                                                            <label for="validationServerUsername">Play Duration </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ hour</span>
+                                                                </div>
+                                                                <input type="number" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration"aria-describedby="inputGroupPrepend3" min="1" step="any">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-6 mb-4">
-                                            <label for="validationServerUsername">Play Duration </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ hour</span>
+                                    <div class="row opponent">    
+                                        <div class="col-md-12">
+                                            <h4>Mission Opponent</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Kill Target</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ player</span>
+                                                                </div>
+                                                                <input type="number" name="kill_opponent" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Player" aria-describedby="inputGroupPrepend3">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
-                                                <input type="number" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration"aria-describedby="inputGroupPrepend3" min="1" step="any">
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-4">
-                                            <label for="validationServerUsername">Damage Opponent</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ amount</span>
+                                    <div class="row monster">
+                                        <div class="col-md-12">
+                                            <h4>Mission Monoster</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Kill Target</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ monster</span>
+                                                                </div>
+                                                                <input type="number" name="kill_monster" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Monster" aria-describedby="inputGroupPrepend3" step="any">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
-                                                <input type="number" name="damage_opponent" class="form-control form-control-lg is-valid" placeholder="Damage to Opponent" aria-describedby="inputGroupPrepend3" min="1">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-4">
-                                            <label for="validationServerUsername">Kill Opponent</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ player</span>
+                                    <div class="row win"> 
+                                        <div class="col-md-12">
+                                            <h4>Winning Mission</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Win First Position </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ times</span>
+                                                                </div>
+                                                                <input type="number" name="win_top_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
-                                                <input type="number" name="kill_opponent" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Player" aria-describedby="inputGroupPrepend3">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-                                            <label for="validationServerUsername">Kill Opponent</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ monster</span>
-                                                </div>
-                                                <input type="number" name="kill_monster" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Monster" aria-describedby="inputGroupPrepend3" step="any">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-4">
-                                            <label for="validationServerUsername">Travel Distance</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ meter</span>
+                                    <div class="row among">  
+                                        <div class="col-md-12">
+                                            <h4>Mission Position Among</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    <div class="form-row">
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServerUsername">Win Among Two </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ times</span>
+                                                                </div>
+                                                                <input type="number" name="among_two_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServerUsername">Win Among Three </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ times</span>
+                                                                </div>
+                                                                <input type="number" name="among_three_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServerUsername">Win Among Five </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ times</span>
+                                                                </div>
+                                                                <input type="number" name="among_five_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any">
+                                                            </div>
+                                                        </div>
+                                                    </div>   
                                                 </div>
-                                                <input type="number" name="travel_distance" class="form-control form-control-lg is-valid" placeholder="Distance to Travel"aria-describedby="inputGroupPrepend3" min="1" step="any">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-row">
-                                        <div class="col-md-3 mb-4">
-                                            <label for="validationServerUsername">Win First Position </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ times</span>
+                                    <div class="row reward">    
+                                        <div class="col-md-12">
+                                            <h4>Reward Details</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Reward Amount</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ xp</span>
+                                                                </div>
+                                                                <input type="number" name="reward_amount" class="form-control form-control-lg is-valid rewardInput" placeholder="Amount of Reward" aria-describedby="inputGroupPrepend3">
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <input type="number" name="win_top_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 mb-4">
-                                            <label for="validationServerUsername">Win Among Two </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ times</span>
-                                                </div>
-                                                <input type="number" name="among_two_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 mb-4">
-                                            <label for="validationServerUsername">Win Among Three </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ times</span>
-                                                </div>
-                                                <input type="number" name="among_three_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 mb-4">
-                                            <label for="validationServerUsername">Win Among Five </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ times</span>
-                                                </div>
-                                                <input type="number" name="among_five_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any">
                                             </div>
                                         </div>
                                     </div>
-
 
                                     <br>
 
-                                    <div class="form-group row">
+                                    <div class="form-row">
                                         <div class="col-sm-12">
                                             <button type="submit" class="btn btn-lg btn-block btn-primary">Create</button>
                                         </div>
                                     </div>
+                                    
                                 </form>
 
                             </div>
@@ -392,6 +480,8 @@
                 </div>
 
                 @endif
+
+            {{--
 
                 @if(auth()->user()->can('create'))
 
@@ -433,7 +523,8 @@
                     </div>
                 </div>
 
-                @endif
+                @endif 
+                        --}}
 
                 @if(auth()->user()->can('update'))
 
@@ -455,150 +546,221 @@
                                     @csrf
                                     @method('PUT')
 
-                                    <div class="form-row">
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServer01">Mission Type</label>
+                                    <div class="row">    
+                                        <div class="col-md-12">
+                                            <h4>Mission Identity</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">    
+                                                    <div class="form-row">
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServer01">Mission Type</label>
 
-                                            <select class="form-control form-control-lg is-invalid" name="mission_type_id" required="true">
-                                                
-                                                @foreach(App\Models\MissionType::all() as $missionType)
-                                                    <option value="{{ $missionType->id }}">
-                                                        {{ $missionType->mission_type_name }}
-                                                    </option>
-                                                @endforeach
+                                                            <select class="form-control form-control-lg is-invalid" name="mission_type_id" required="true">
+                                                                
+                                                                @foreach(App\Models\MissionType::all() as $missionType)
 
-                                            </select>
-                                        </div>
+                                                                    <option value="{{ $missionType->id }}">
+                                                                        {{ $missionType->mission_type_name }}
+                                                                    </option>
+                                                                
+                                                                @endforeach
 
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServer01">Mission Name</label>
-                                            <div class="input-group">
-                                                <input type="text" name="name" class="form-control form-control-lg is-valid"  placeholder="Mission Name" value="">
-                                            </div>
-                                        </div>
+                                                            </select>
+                                                        </div>
 
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServer01">Mission Description</label>
-                                            <div class="input-group">
-                                                <input type="text" name="description" class="form-control form-control-lg is-valid" value="">
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServer01">Mission Name</label>
+                                                            <div class="input-group">
+                                                                <input type="text" name="name" class="form-control form-control-lg is-invalid"  placeholder="Mission Name" value="" required="true">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServer01">Mission Description</label>
+                                                            <div class="input-group">
+                                                                <input type="text" name="description" class="form-control form-control-lg is-valid" value="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-4">
-                                            <label for="validationServer01">Play Time</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ times</span>
-                                                </div>
-                                                <input type="number" name="play_number" class="form-control form-control-lg is-valid"  placeholder="Number Games to Play" value="">
+                                    <div class="row more">    
+                                        <div class="col-md-12">
+                                            <h4>More Game Mission</h4>
 
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="col-md-6 mb-4">
+                                                            <label for="validationServer01">Play Time</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ times</span>
+                                                                </div>
+                                                                <input type="number" name="play_number" class="form-control form-control-lg is-valid"  placeholder="Number Games to Play" value="">
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 mb-4">
+                                                            <label for="validationServerUsername">Play Duration </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ hour</span>
+                                                                </div>
+                                                                <input type="number" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration" aria-describedby="inputGroupPrepend3" min="1" step="any" value="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-6 mb-4">
-                                            <label for="validationServerUsername">Play Duration </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ hour</span>
+                                    <div class="row opponent">    
+                                        <div class="col-md-12">
+                                            <h4>Mission Opponent</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Kill Target</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ player</span>
+                                                                </div>
+                                                                <input type="number" name="kill_opponent" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Player" aria-describedby="inputGroupPrepend3" value="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
-                                                <input type="number" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration"aria-describedby="inputGroupPrepend3" min="1" step="any" value="">
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-4">
-                                            <label for="validationServerUsername">Damage Opponent</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ amount</span>
+                                    <div class="row monster">
+                                        <div class="col-md-12">
+                                            <h4>Mission Monster</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Kill Target</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ monster</span>
+                                                                </div>
+                                                                <input type="number" name="kill_monster" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Monster" aria-describedby="inputGroupPrepend3" step="any" value="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
-                                                <input type="number" name="damage_opponent" class="form-control form-control-lg is-valid" placeholder="Damage to Opponent" aria-describedby="inputGroupPrepend3" value="">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-4">
-                                            <label for="validationServerUsername">Kill Opponent</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ player</span>
+                                    <div class="row win"> 
+                                        <div class="col-md-12">
+                                            <h4>Winning Mission</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername"> Winning Target </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ times</span>
+                                                                </div>
+                                                                <input type="number" name="win_top_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" value="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
-                                                <input type="number" name="kill_opponent" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Player" aria-describedby="inputGroupPrepend3" value="">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-                                            <label for="validationServerUsername">Kill Opponent</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ monster</span>
-                                                </div>
-                                                <input type="number" name="kill_monster" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Monster" aria-describedby="inputGroupPrepend3" step="any" value="">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-4">
-                                            <label for="validationServerUsername">Travel Distance</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ meter</span>
+                                    <div class="row among">  
+                                        <div class="col-md-12">
+                                            <h4>Mission Position Among</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    <div class="form-row">
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServerUsername">Win Among Two </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ times</span>
+                                                                </div>
+                                                                <input type="number" name="among_two_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any" value="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServerUsername">Win Among Three </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ times</span>
+                                                                </div>
+                                                                <input type="number" name="among_three_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any" value="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 mb-4">
+                                                            <label for="validationServerUsername">Win Among Five </label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ times</span>
+                                                                </div>
+                                                                <input type="number" name="among_five_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any" value="">
+                                                            </div>
+                                                        </div>
+                                                    </div>   
                                                 </div>
-                                                <input type="number" name="travel_distance" class="form-control form-control-lg is-valid" placeholder="Distance to Travel"aria-describedby="inputGroupPrepend3" min="1" step="any" value="">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-row">
-                                        <div class="col-md-3 mb-4">
-                                            <label for="validationServerUsername">Win First Position </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ times</span>
+                                    <div class="row reward">    
+                                        <div class="col-md-12">
+                                            <h4>Reward Details</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Reward Amount</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ xp</span>
+                                                                </div>
+                                                                <input type="number" name="reward_amount" class="form-control form-control-lg is-valid rewardInput" placeholder="Amount of Reward" aria-describedby="inputGroupPrepend3" value="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <input type="number" name="win_top_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" value="">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 mb-4">
-                                            <label for="validationServerUsername">Win Among Two </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ times</span>
-                                                </div>
-                                                <input type="number" name="among_two_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any" value="">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 mb-4">
-                                            <label for="validationServerUsername">Win Among Three </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ times</span>
-                                                </div>
-                                                <input type="number" name="among_three_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any" value="">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 mb-4">
-                                            <label for="validationServerUsername">Win Among Five </label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ times</span>
-                                                </div>
-                                                <input type="number" name="among_five_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any" value="">
                                             </div>
                                         </div>
                                     </div>
+
 
                                     <br>
 
-                                    <div class="form-group row">
+                                    <div class="form-row">
                                         <div class="col-sm-12">
                                             <button type="submit" class="btn btn-lg btn-block btn-primary">Update</button>
                                         </div>
                                     </div>
+
                                 </form>
 
                             </div>
@@ -624,39 +786,6 @@
                             </tr>
                         </thead>
                         
-                    {{-- 
-                        <tbody>
-
-                        @if($missions->isEmpty())
-                            <tr class="danger">
-                                <td class="text-danger" colspan='5'>No Data Found</td>
-                            </tr>
-                        @endif
-                        
-                        @foreach($missions as $mission)
-                        
-                        
-                            <tr>
-                                <td>{{ $mission->id }}</td>
-                                <td>{{ $mission->name }}</td>
-                                <td>{{ $mission->mission_type_id }}</td>
-                                <td>
-
-                                    <button class="btn btn-outline-success"  data-toggle="modal" data-target="#editModal{{$mission->id}}">
-                                        <i class="fa fa-fw fa-edit" style="transform: scale(1.5);"></i>
-                                    </button>
-
-                                    <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#deleteModal{{$mission->id}}" title="Delete">
-                                        <i class="fa fa-fw fa-trash" style="transform: scale(1.5);"></i>
-                                    </button>
-                                        
-                                </td>
-                            </tr> 
-                                
-                        @endforeach
-
-                        </tbody> 
-                                --}}
                     </table>
 
                 </div>
@@ -732,27 +861,29 @@
                         $("#viewModal .form-row.mission_type").show();
                         $( "#viewModal p:eq(1)" ).html( expectedObject.mission_type.mission_type_name );
                     }
+
                     if (expectedObject.description) {
 
                         $("#viewModal .form-row.description").show();
                         $( "#viewModal p:eq(2)" ).html( expectedObject.description );
                     }
+
                     if (expectedObject.play_number) {
 
                         $("#viewModal .form-row.play_number").show();
-                        $( "#viewModal p:eq(3)" ).html( expectedObject.play_number );
+                        $( "#viewModal p:eq(3)" ).html( expectedObject.play_number  + " times" );
                     }
 
                     if (expectedObject.play_time) {
 
                         $("#viewModal .form-row.play_time").show();
-                        $( "#viewModal p:eq(4)" ).html( expectedObject.play_time );
+                        $( "#viewModal p:eq(4)" ).html( expectedObject.play_time  + " hours" );
                     }
 
                     if (expectedObject.damage_opponent) {
 
                         $("#viewModal .form-row.damage_opponent").show();
-                        $( "#viewModal p:eq(5)" ).html( expectedObject.damage_opponent );
+                        $( "#viewModal p:eq(5)" ).html( expectedObject.damage_opponent + " times"  );
                     }
 
                     if (expectedObject.kill_opponent) {
@@ -770,31 +901,37 @@
                     if (expectedObject.travel_distance) {
 
                         $("#viewModal .form-row.travel_distance").show();
-                        $( "#viewModal p:eq(8)" ).html( expectedObject.travel_distance );
+                        $( "#viewModal p:eq(8)" ).html( expectedObject.travel_distance + " meters");
                     }
 
                     if (expectedObject.win_top_time) {
 
                         $("#viewModal .form-row.win_top_time").show();
-                        $( "#viewModal p:eq(9)" ).html( expectedObject.win_top_time );
+                        $( "#viewModal p:eq(9)" ).html( expectedObject.win_top_time + " times" );
                     }
 
                     if (expectedObject.among_two_time) {
 
                         $("#viewModal .form-row.among_two_time").show();
-                        $( "#viewModal p:eq(10)" ).html( expectedObject.among_two_time );
+                        $( "#viewModal p:eq(10)" ).html( expectedObject.among_two_time + " times" );
                     }
 
                     if (expectedObject.among_three_time) {
 
                         $("#viewModal .form-row.among_three_time").show();
-                        $( "#viewModal p:eq(11)" ).html( expectedObject.among_three_time );
+                        $( "#viewModal p:eq(11)" ).html( expectedObject.among_three_time + " times" );
                     }
 
                     if (expectedObject.among_five_time) {
 
                         $("#viewModal .form-row.among_five_time").show();
-                        $( "#viewModal p:eq(12)" ).html( expectedObject.among_five_time );
+                        $( "#viewModal p:eq(12)" ).html( expectedObject.among_five_time + " times" );
+                    }
+
+                    if (expectedObject.reward_amount) {
+
+                        $("#viewModal .form-row.reward_amount").show();
+                        $( "#viewModal p:eq(13)" ).html( expectedObject.reward_amount + " xp" );
                     }
 
                     $("#viewModal .form-row.closeButton").show();
@@ -815,24 +952,59 @@
 
                     $("#editModal form").attr("action", home + '/admin/missions/' +  expectedObject.id );
 
+                    // $( "#editModal .row:gt(0)").hide();
+                    $( "#editModal .row:not(':first'):not('.reward')").hide();
+
+                    $("#editModal select").val(expectedObject.mission_type_id);
                     $( "#editModal input[name*='name']" ).val( expectedObject.name );
                     $( "#editModal input[name*='description']" ).val( expectedObject.description );
+
+                    if (expectedObject.play_number || expectedObject.play_time) {
+
+                        $("#editModal .row.more").show();
+                        
+                    }
+
+                    if (expectedObject.kill_opponent) {
+
+                        $("#editModal .row.opponent").show();
+                        
+                    }
+
+                    if (expectedObject.kill_monster) {
+
+                        $("#editModal .row.monster").show();
+                        
+                    }
+
+                    if (expectedObject.win_top_time) {
+
+                        $("#editModal .row.win").show();
+                        
+                    }
+
+                    if (expectedObject.among_two_time || expectedObject.among_three_time || expectedObject.among_five_time) {
+
+                        $("#editModal .row.among").show();
+                        
+                    }
+
                     $( "#editModal input[name*='play_number']" ).val( expectedObject.play_number );
                     $( "#editModal input[name*='play_time']" ).val( expectedObject.play_time );
-                    $( "#editModal input[name*='damage_opponent']" ).val( expectedObject.damage_opponent );
+
+                    // $( "#editModal input[name*='damage_opponent']" ).val( expectedObject.damage_opponent );
+
                     $( "#editModal input[name*='kill_opponent']" ).val( expectedObject.kill_opponent );
-
-
                     $( "#editModal input[name*='kill_monster']" ).val( expectedObject.kill_monster );
-                    $( "#editModal input[name*='travel_distance']" ).val( expectedObject.travel_distance );
+
+                    // $( "#editModal input[name*='travel_distance']" ).val( expectedObject.travel_distance );
+
                     $( "#editModal input[name*='win_top_time']" ).val( expectedObject.win_top_time );
                     $( "#editModal input[name*='among_two_time']" ).val( expectedObject.among_two_time );
                     $( "#editModal input[name*='among_three_time']" ).val( expectedObject.among_three_time );
-
-
                     $( "#editModal input[name*='among_five_time']" ).val( expectedObject.among_five_time );
 
-                    $("#editModal select").val(expectedObject.mission_type_id);
+                    $( "#editModal input[name*='reward_amount']" ).val( expectedObject.reward_amount );
 
                     $('#editModal').modal('toggle');
                 });
@@ -855,6 +1027,51 @@
                 });
 
                 @endif
+
+
+                $( "select[name='mission_type_id']" ).change(function() {
+
+                    var openedModal = $(this).closest('.modal').attr('id');
+
+                    // $( "#"+openedModal+" .row:gt(0)").hide();
+                    
+                    $( "#"+openedModal+" .row").not(':first').not(':last').hide();
+
+                    
+                    var selectedMissionType = $(this).find('option:selected').text();                    
+
+                    // alert(selectedMissionType);
+
+                    var missionTypes = [ "More", "Opponent", "Monster", "Win", "Among"];
+
+                    var matchedType = '';
+
+                    $.each( missionTypes, function( index, value ) {
+
+                        var searchResult = selectedMissionType.search(value);
+                        
+                        // alert(searchResult);
+
+                        if (searchResult > -1) {
+
+                            matchedType = value.toLowerCase();
+                            // alert(matchedType);
+                            $( "#"+openedModal+" .row."+matchedType).show();
+                        }
+
+                    });
+
+                });
+                
+               
+                $( "input[type=number]:not(.rewardInput)" ).keypress(function() {
+
+                    // $('input[type=number]').not(this).not(':last').val('');
+                    $('input[type=number]').not(this).not('.rewardInput').val('');
+
+
+                });
+
             });  
         });
 

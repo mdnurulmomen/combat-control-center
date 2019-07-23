@@ -1,4 +1,35 @@
 @extends('admin.master_layout.app')
+
+@push('extraStyleLink')
+
+  <style type="text/css">      
+
+      .arrow-right{
+          height:40px;
+          background:red;
+          color:#fff;
+          position:relative;
+          width:200px;
+          text-align:center;
+          line-height:40px;
+          margin-right: 2rem;
+      }
+      .arrow-right:after{
+          content:"";
+          position:absolute;
+          height:0;
+          width:0;
+          left:100%;
+          top:0;
+          border:20px solid transparent;
+          border-left: 20px solid red;
+
+      } 
+
+  </style>
+
+@endpush
+
 @section('contents')
     <div class="content p-4">
         
@@ -17,7 +48,7 @@
                            <h5>Weapon Serial</h5>
                        </div> 
 
-                       <div class="col-md-4 col-4 mb-4">
+                       <div class="col-md-3 col-3">
                            <h5>Weapon Name</h5>
                        </div> 
 
@@ -33,7 +64,7 @@
 
                         <div class="col-md-2 col-2 mb-4">{{$key + 1}}</div>
 
-                        <div class="col-md-4 col-4 mb-4">
+                        <div class="col-md-3 col-3 arrow-right">
                             <label for="validationServer01">{{ $weapon->name }}</label>
                         </div>
 

@@ -79,7 +79,7 @@
     <!-- Sidebar menu-->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
-      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="{{ asset('assets/admin/images/profile/'.\Illuminate\Support\Facades\Auth::guard('admin')->user()->picture) }}" alt="User Image">
+      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="{{ asset(\Illuminate\Support\Facades\Auth::guard('admin')->user()->profile_picture) }}" alt="User Image">
         <div>
           <p class="app-sidebar__user-name">
             {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->username}}
@@ -258,17 +258,27 @@
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/mission-types*')) active @endif" href="{{route('admin.view_enabled_mission_types')}}">
-            <i class="app-menu__icon fa fa-list-alt"></i>
-            <span class="app-menu__label">Mission Types</span>
-          </a>
-        </li>
-
-        <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/missions*')) active @endif"  href="{{route('admin.view_enabled_missions')}}">
+          <a class="app-menu__item @if(Request::is('admin/mission*')) active @endif" href="#" data-toggle="treeview">
             <i class="app-menu__icon fa fa-money"></i>
             <span class="app-menu__label">Missions</span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
+
+          <ul class="treeview-menu">
+            
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_mission_types') active @endif"  href="{{route('admin.view_enabled_mission_types')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Mission Types
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_missions') active @endif"  href="{{route('admin.view_enabled_missions')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Missions
+                </a>
+              </li>
+
+          </ul>
         </li>
 
 
@@ -291,21 +301,30 @@
             <i class="app-menu__icon fa fa-shopping-cart"></i>
             <span class="app-menu__label">Purchase</span>
           </a>
-        </li>
+        </li>        
 
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/reward-types*')) active @endif" href="{{route('admin.view_enabled_reward_types')}}">
-            <i class="app-menu__icon fa fa-object-group"></i>
-            <span class="app-menu__label">Reward Types</span>
-          </a>
-        </li>
-
-
-        <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/daily-login-reward*')) active @endif" href="{{route('admin.view_enabled_login_rewards')}}">
-            <i class="app-menu__icon fa fa-trophy"></i>
+          <a class="app-menu__item @if(Request::is('admin/daily-login-reward*') || Request::is('admin/reward-types*')) active @endif" href="#" data-toggle="treeview">
+            <i class="app-menu__icon fa fa-money"></i>
             <span class="app-menu__label">Rewards</span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
+
+          <ul class="treeview-menu">
+            
+              <li>
+                <a class="treeview-item  @if(Request::is('admin/reward-types*')) active @endif"  href="{{route('admin.view_enabled_reward_types')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Reward Types
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item  @if(Request::is('admin/daily-login-reward*')) active @endif" href="{{route('admin.view_enabled_login_rewards')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Rewards
+                </a>
+              </li>
+
+          </ul>
         </li>
 
         <li class="treeview">
@@ -323,29 +342,23 @@
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/treasure-types*')) active @endif" href="{{route('admin.view_enabled_treasure_types')}}">
-            <i class="app-menu__icon fa fa-trophy"></i>
-            <span class="app-menu__label">Treasure Types</span>
-          </a>
-        </li>
-
-        <li class="treeview">
-          <a class="app-menu__item @if(Request::is('admin/treasures*')) active @endif" href="#" data-toggle="treeview">
+          <a class="app-menu__item @if(Request::is('admin/treasure*')) active @endif" href="#" data-toggle="treeview">
             <i class="app-menu__icon fa fa-money"></i>
             <span class="app-menu__label">Treasure</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
 
           <ul class="treeview-menu">
+            
               <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_treasures') active @endif"  href="{{route('admin.view_enabled_treasures')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Treasures Enabled
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_treasure_types') active @endif"  href="{{route('admin.view_enabled_treasure_types')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Treasure Types
                 </a>
               </li>
 
               <li>
-                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_disabled_treasures') active @endif"  href="{{route('admin.view_disabled_treasures')}}" rel="noopener">
-                  <i class="icon fa fa-circle-o"></i> Treasures Disabled
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_treasures') active @endif"  href="{{route('admin.view_enabled_treasures')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Treasures Enabled
                 </a>
               </li>
 

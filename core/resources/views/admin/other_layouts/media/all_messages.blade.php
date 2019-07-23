@@ -75,7 +75,7 @@
                                 @if(auth()->user()->can('update'))
                                 <!--Update Modal -->
                                 <div class="modal fade" id="editModal{{$message->id}}" role="dialog">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
 
                                             <div class="modal-header">
@@ -99,7 +99,7 @@
                                                     <div class="form-row mb-4">
                                                         <div class="col-md-12">
                                                             <label for="validationServer01">Message</label>
-                                                            <textarea name="body" class="form-control form-control-lg" rows="5"> {{ $message->body }} </textarea>
+                                                            <textarea name="body" class="form-control form-control-lg is-invalid" rows="5"> {{ $message->body }} </textarea>
                                                         </div>
                                                     </div>
                                                     
@@ -134,7 +134,11 @@
                                                 @method('DELETE')
                                                 @csrf
                                                 <div class="modal-body">
-                                                    <p>Are You Sure ??</p>
+                                                    <p>You are about to delete.</p> 
+
+                                                    <p class="text-muted">This action cannot be undone.</p>
+                                                    
+                                                    <h5>Do you want to proceed ?</h5>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="submit" class="btn btn-success">Yes</button>

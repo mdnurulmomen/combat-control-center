@@ -25,22 +25,22 @@
 
                     @if(auth()->user()->can('create'))
 
-                    <button type="button" class="btn btn-outline-info float-right btn-sm mr-1 ml-1 " data-toggle="modal" data-target="#addCity">
+                    <button type="button" class="btn btn-info float-right btn-sm mr-1 ml-1 " data-toggle="modal" data-target="#addCity">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                         City
                     </button>
 
-                    <button type="button" class="btn btn-outline-info float-right btn-sm " data-toggle="modal" data-target="#addArea">
+                    <button type="button" class="btn btn-warning float-right btn-sm " data-toggle="modal" data-target="#addArea">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                         Area
                     </button>
 
-                    <button type="button" class="btn btn-outline-info float-right btn-sm mr-1 ml-1 " data-toggle="modal" data-target="#addType">
+                    <button type="button" class="btn btn-success float-right btn-sm mr-1 ml-1 " data-toggle="modal" data-target="#addType">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                         Treasure Type
                     </button>
 
-                    <button type="button" class="btn btn-outline-info float-right btn-sm" data-toggle="modal" data-target="#addVendor">
+                    <button type="button" class="btn btn-primary float-right btn-sm" data-toggle="modal" data-target="#addVendor">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         Vendor
                     </button>
@@ -570,7 +570,11 @@
                                             @csrf
 
                                             <div class="modal-body">
-                                                <p>Are You Sure ??</p>
+                                                <p>You are about to delete.</p> 
+
+                                                <p class="text-muted">This item will be removed to recycle bin.</p>
+                                                
+                                                <h5>Do you want to proceed ?</h5>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="submit" class="btn btn-success">Yes</button>

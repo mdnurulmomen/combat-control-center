@@ -25,7 +25,7 @@
 
                     @if(auth()->user()->can('read'))
                     
-                    <a href="{{route('admin.view_disabled_bundle_packs')}}" class="btn btn-outline-danger float-right btn-sm" type="button">
+                    <a href="{{route('admin.view_disabled_bundle_packs')}}" class="btn btn-outline-danger float-right btn-sm mr-1 ml-1" type="button">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                         Disabled Packs
                     </a>
@@ -170,7 +170,13 @@
                                 @csrf
 
                                 <div class="modal-body">
-                                    <p>Are You Sure ??</p>
+
+                                    <p>You are about to delete.</p> 
+
+                                    <p class="text-muted">This item will be removed to recycle bin.</p>
+                                    
+                                    <h5>Do you want to proceed ?</h5>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-success">Yes</button>
@@ -203,135 +209,176 @@
 
                                     @csrf
 
-                                    <div class="form-row">
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServerUsername">Bundle Name</label>
-                                            <div class="input-group">
-                                                <input type="text" name="name" class="form-control form-control-lg is-invalid" placeholder="Unique Name(required)" aria-describedby="inputGroupPrepend3" required="true">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServer01">Type</label>
-                                            <select class="form-control form-control-lg is-valid" name="type" readonly>
-                                                <option value="Bundle">Bundle Pack</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServerUsername">Description</label>
-                                            <div class="input-group">
-                                                <input type="text" name="description" class="form-control form-control-lg is-valid" placeholder="Short Description" aria-describedby="inputGroupPrepend3">
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-4">
-                                            <label for="validationServer01">Bundle Component Type</label>
-                                            <select class="form-control form-control-lg is-invalid" name="elements[]" required="true">
-                                                <option selected="true" disabled="true" value="0">
-                                                    -- please select an option --
-                                                </option>
-                                                <option value="Coins Pack">
-                                                    Coins Pack
-                                                </option>
-                                                <option value="Gems Pack">
-                                                    Gems Pack
-                                                </option>
-                                                <option value="Megabyte">
-                                                    Megabyte
-                                                </option>
-                                                
-                                                @foreach(App\Models\BoostPack::all() as $boostPack)
-                                                <option value="{{ $boostPack->name }}">
-                                                    {{ $boostPack->name }}
-                                                </option>
-                                                @endforeach
+                                    <div class="row">
+                                        
+                                        <div class="col-md-6">
 
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-                                            <label for="validationServerUsername">Amount</label>
-                                            <div class="input-group">
-                                                <input type="number" name="amount[]" class="form-control form-control-lg is-invalid" placeholder="Amount of Component" aria-describedby="inputGroupPrepend3" required="true" min='1'>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            <h4>Bundle Introduction</h4>
 
-                                    <div id="addElement"></div>
-
-                                    <div class="form-row">
-                                        <div class="col-sm-9 mb-4"> </div>
-
-                                        <div class="col-sm-3 text-right mb-4">
-                                            <i class="fa fa-plus-circle " style="font-size:30px;color:green;" id="addButton"></i>
-                                            <i class="fa fa-minus-circle" style="font-size:30px;color:red;" id="removeButton"></i>
-                                        </div>
-                                    </div>
-                                  
-                                    <div class="form-row">
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServerUsername">Price (taka)</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ taka</span>
-                                                </div>
-                                                <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true" step="any">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServerUsername">Price (gems)</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ gems</span>
-                                                </div>
-                                                <input type="number" name="price_gems" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mb-4">
-                                            <label for="validationServer01">Price (coins)</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">@ coins</span>
-                                                </div>
-                                                <input type="number" name="price_coins" class="form-control form-control-lg is-invalid"  placeholder="(required)" required="true">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row mb-4">
-                                        <div class="col-md-5">
-                                            <label for="validationServerUsername">Discount</label>
-                                            <div class="input-group">
-                                                <input type="number" name="discount" class="form-control form-control-lg is-invalid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100" step="any">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">%</span>
+                                            <div class="tile">    
+                                                <div class="tile-body">    
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Bundle Name</label>
+                                                            <div class="input-group">
+                                                                <input type="text" name="name" class="form-control form-control-lg is-invalid" placeholder="Unique Name(required)" aria-describedby="inputGroupPrepend3" required="true">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServer01">Type</label>
+                                                            <select class="form-control form-control-lg is-valid" name="type" readonly>
+                                                                <option value="Bundle">Bundle Pack</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Description</label>
+                                                            <div class="input-group">
+                                                                <input type="text" name="description" class="form-control form-control-lg is-valid" placeholder="Short Description" aria-describedby="inputGroupPrepend3">
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-2 col-4">    
-                                            <div class="form-check form-check-inline mt-5">
-                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="taka">
-                                                <label class="form-check-label" for="inlineCheckbox1">@ taka</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 col-4">
-                                            <div class="form-check form-check-inline mt-5">
-                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="gems">
-                                                <label class="form-check-label" for="inlineCheckbox1">@ gems</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 col-4">
-                                            <div class="form-check form-check-inline mt-5">
-                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="coins">
-                                                <label class="form-check-label" for="inlineCheckbox1">@ coins</label>
+
+                                        <div class="col-md-6">
+                                            <h4>Price Details</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Price (taka)</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ taka</span>
+                                                                </div>
+                                                                <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true" step="any">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServerUsername">Price (gems)</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ gems</span>
+                                                                </div>
+                                                                <input type="number" name="price_gems" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 mb-4">
+                                                            <label for="validationServer01">Price (coins)</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">@ coins</span>
+                                                                </div>
+                                                                <input type="number" name="price_coins" class="form-control form-control-lg is-invalid"  placeholder="(required)" required="true">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <h4>Component Details</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    <div class="form-row">
+                                                        <div class="col-md-6 mb-4">
+                                                            <label for="validationServer01">Bundle Component Type</label>
+                                                            <select class="form-control form-control-lg is-invalid" name="elements[]" required="true">
+                                                                <option selected="true" disabled="true" value="0">
+                                                                    -- please select an option --
+                                                                </option>
+                                                                <option value="Coins Pack">
+                                                                    Coins Pack
+                                                                </option>
+                                                                <option value="Gems Pack">
+                                                                    Gems Pack
+                                                                </option>
+                                                                <option value="Megabyte">
+                                                                    Megabyte
+                                                                </option>
+                                                                
+                                                                @foreach(App\Models\BoostPack::all() as $boostPack)
+                                                                <option value="{{ $boostPack->name }}">
+                                                                    {{ $boostPack->name }}
+                                                                </option>
+                                                                @endforeach
+
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 mb-4">
+                                                            <label for="validationServerUsername">Amount</label>
+                                                            <div class="input-group">
+                                                                <input type="number" name="amount[]" class="form-control form-control-lg is-invalid" placeholder="Amount of Component" aria-describedby="inputGroupPrepend3" required="true" min='1'>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div id="addElement"></div>
+                                                    <div class="form-row">
+                                                        <div class="col-sm-9 mb-4"> </div>
+
+                                                        <div class="col-sm-3 text-right mb-4">
+                                                            <i class="fa fa-plus-circle " style="font-size:30px;color:green;" id="addButton"></i>
+                                                            <i class="fa fa-minus-circle" style="font-size:30px;color:red;" id="removeButton"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        
+                                        <div class="col-md-12">
+                                            <h4>Discount Details</h4>
+                                            <div class="tile">
+                                                <div class="tile-body">
+                                                    
+                                                    <div class="form-row mb-4">
+                                                        <div class="col-md-5">
+                                                            <label for="validationServerUsername">Discount</label>
+                                                            <div class="input-group">
+                                                                <input type="number" name="discount" class="form-control form-control-lg is-invalid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100" step="any">
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text">%</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-2 col-4">    
+                                                            <div class="form-check form-check-inline mt-5">
+                                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="taka">
+                                                                <label class="form-check-label" for="inlineCheckbox1">@ taka</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 col-4">
+                                                            <div class="form-check form-check-inline mt-5">
+                                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="gems">
+                                                                <label class="form-check-label" for="inlineCheckbox1">@ gems</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 col-4">
+                                                            <div class="form-check form-check-inline mt-5">
+                                                                <input name="discount_type[]" class="form-check-input" type="checkbox" value="coins">
+                                                                <label class="form-check-label" for="inlineCheckbox1">@ coins</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                  
 
                                     <br>
 
-                                    <div class="form-group row">
+                                    <div class="form-row">
                                         <div class="col-sm-12">
                                             <button type="submit" class="btn btn-lg btn-block btn-primary">Create</button>
                                         </div>

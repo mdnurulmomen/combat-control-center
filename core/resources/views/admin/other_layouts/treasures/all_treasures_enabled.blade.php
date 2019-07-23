@@ -10,7 +10,6 @@
                     <h3 class="float-left"> Enabled Treasures List </h3>
                 </div>
 
-
                 <div class="col-6">
 
                     @if(auth()->user()->can('read'))
@@ -114,7 +113,10 @@
                                         @csrf
                                         
                                         <div class="modal-body">
-                                            <p>Are You Sure ??</p>
+                                            <p>You are about to delete.</p> 
+                                            <p class="text-muted">This may cause error to related player.</p>
+                                            
+                                            <h5>Do you want to proceed ?</h5>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-success">Yes</button>
@@ -165,7 +167,6 @@
 
                                                 </div>
 
-
                                                 <div class="col-md-4 mb-4">
                                                     <label for="validationServer01">Treasure Name </label>
                                                     <div class="input-group">
@@ -196,10 +197,10 @@
                                                 <div class="col-md-6 mb-4">
                                                     <label for="validationServerUsername">Durability</label>
                                                     <div class="input-group">
-                                                        <div class="input-group-prepend">
+                                                        <input type="text" name="durability" class="form-control form-control-lg is-valid" value="{{ $treasure->durability ?? -1 }}"  aria-describedby="inputGroupPrepend3" step="any">
+                                                        <div class="input-group-append">
                                                             <span class="input-group-text">@ days</span>
                                                         </div>
-                                                        <input type="number" name="durability" class="form-control form-control-lg is-valid" value="{{ $treasure->durability }}"  aria-describedby="inputGroupPrepend3" step="any">
                                                     </div>
                                                 </div>
                                             </div>
@@ -349,10 +350,10 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServerUsername">Durability</label>
                                     <div class="input-group">
-                                        <div class="input-group-prepend">
+                                        <input type="text" name="durability" class="form-control form-control-lg is-valid" placeholder="Please Leave if Unlimited" aria-describedby="inputGroupPrepend3" step="any">
+                                        <div class="input-group-append">
                                             <span class="input-group-text">@ days</span>
                                         </div>
-                                        <input type="number" name="durability" class="form-control form-control-lg is-valid" placeholder="Please Leave if Unlimited" aria-describedby="inputGroupPrepend3" step="any">
                                     </div>
                                 </div>
                             </div>

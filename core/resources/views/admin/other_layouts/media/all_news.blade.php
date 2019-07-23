@@ -91,12 +91,12 @@
                                                     <div class="form-row mb-4">
                                                         <div class="col-md-12">
                                                             <label for="validationServer01">News</label>
-                                                            <textarea name="body" class="form-control form-control-lg" rows="5" id="news"> {{ $news->body }} </textarea>
+                                                            <textarea name="body" class="form-control form-control-lg is-invalid" rows="5" id="news"> {{ $news->body }} </textarea>
                                                         </div>
                                                     </div>
                                                     
                                                     <br>
-                                                    <div class="form-group row">
+                                                    <div class="form-row">
                                                         <div class="col-sm-12">
                                                             <button type="submit" class="btn btn-lg btn-block btn-primary">Update</button>
                                                         </div>
@@ -124,7 +124,11 @@
                                                 @method('DELETE')
                                                 @csrf
                                                 <div class="modal-body">
-                                                    <p>Are You Sure ??</p>
+                                                    <p>You are about to delete.</p> 
+                                                    
+                                                    <p class="text-muted">This action cannot be undone.</p>
+                                                    
+                                                    <h5>Do you want to proceed ?</h5>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="submit" class="btn btn-success">Yes</button>
@@ -169,13 +173,13 @@
                                 <div class="form-row mb-4">
                                     <div class="col-md-12">
                                         <label for="validationServer01">News</label>
-                                        <textarea name="body" class="form-control form-control-lg" rows="5" id="news"></textarea>
+                                        <textarea name="body" class="form-control form-control-lg is-invalid" rows="5" id="news"></textarea>
                                     </div>
                                 </div>
                                 
                                 <br>
                                 
-                                <div class="form-group row">
+                                <div class="form-row">
                                     <div class="col-sm-12">
                                         <button type="submit" class="btn btn-lg btn-block btn-primary">Create</button>
                                     </div>

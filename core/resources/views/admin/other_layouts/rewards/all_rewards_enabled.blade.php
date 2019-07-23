@@ -15,7 +15,7 @@
 
                     @if(auth()->user()->can('read'))
 
-                    <a  href="{{route('admin.view_disabled_login_rewards')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                    <a  href="{{route('admin.view_disabled_login_rewards')}}"  class="btn btn-outline-danger float-right btn-sm mr-1 ml-1" type="button">
                         Disabled Rewards
                     </a>
 
@@ -106,7 +106,13 @@
                                         @method('DELETE')
                                         @csrf
                                         <div class="modal-body">
-                                            <p>Are You Sure ??</p>
+                                            
+                                            <p>You are about to delete.</p> 
+
+                                            <p class="text-muted">This item will be removed to recycle bin.</p>
+                                            
+                                            <h5>Do you want to proceed ?</h5>
+
                                         </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-success">Yes</button>
@@ -127,7 +133,7 @@
                                 <div class="modal-content">
 
                                     <div class="modal-header">
-                                        <h3> Edit Reward Type</h3>
+                                        <h3> Edit Reward Package</h3>
                                         <button type="button" class="close" data-dismiss="modal">
                                             &times;
                                         </button>
@@ -168,14 +174,14 @@
                                                 <div class="col-md-6 mb-4">
                                                     <label for="validationServer01">Reward Name</label>
                                                     <div class="input-group">
-                                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-invalid"  value="{{ $loginReward->name }}">
+                                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-invalid"  value="{{ $loginReward->name }}" required="true">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="form-row">
                                                 <div class="col-md-6 mb-4">
-                                                    <label for="validationServer01">Amount</label>
+                                                    <label for="validationServer01">Amount (coins, gems, boost)</label>
                                                     
                                                     <div class="input-group">
                                                         <input step="1" type="number" name="amount" class="form-control form-control-lg is-invalid"  value="{{ $loginReward->amount }}" required="true">
@@ -185,7 +191,7 @@
                                                 <div class="col-md-6 mb-4">
                                                     <label for="validationServer01">Description</label>
                                                     <div class="input-group">
-                                                        <input step="any" type="text" name="description" class="form-control form-control-lg is-invalid" value="{{ $loginReward->description }}">
+                                                        <input step="any" type="text" name="description" class="form-control form-control-lg is-valid" value="{{ $loginReward->description }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -226,7 +232,7 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h3> Add Login Reward</h3>
+                        <h3> New Reward Pack</h3>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
@@ -265,14 +271,14 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServer01">Reward Name</label>
                                     <div class="input-group">
-                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-valid"  placeholder="Reward Name">
+                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-invalid"  placeholder="Reward Name" required="true">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="col-md-6 mb-4">
-                                    <label for="validationServer01">Amount</label>
+                                    <label for="validationServer01">Amount (coins, gems, boost)</label>
                                     
                                     <div class="input-group">
                                         <input step="1" type="number" name="amount" class="form-control form-control-lg is-invalid"  placeholder="Reward Name" required="true" min="1">

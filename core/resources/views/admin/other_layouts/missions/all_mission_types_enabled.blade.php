@@ -15,12 +15,14 @@
 
                     @if(auth()->user()->can('read'))
 
-                    <a  href="{{route('admin.view_disabled_mission_types')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                    <a  href="{{route('admin.view_disabled_mission_types')}}"  class="btn btn-outline-danger float-right btn-sm mr-1 ml-1" type="button">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                         Disabled Types
                     </a>
 
                     @endif
+
+                    {{-- 
 
                     @if(auth()->user()->can('create'))
 
@@ -29,7 +31,10 @@
                         New Mission Type
                     </button>
 
-                    @endif
+                    @endif 
+
+                    --}}
+                    
                 </div>
 
             </div>
@@ -72,9 +77,11 @@
                                 
                                 <td>
 
+                                {{-- 
                                     <button class="btn btn-outline-success"  data-toggle="modal" data-target="#editMissionType{{$missionType->id}}">
                                         <i class="fa fa-fw fa-edit" style="transform: scale(1.5);"></i>
-                                    </button>
+                                    </button> 
+                                                --}}
 
                                     <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#deleteMissionType{{$missionType->id}}" title="Delete">
                                         <i class="fa fa-fw fa-trash" style="transform: scale(1.5);"></i>
@@ -101,7 +108,10 @@
                                         @method('DELETE')
                                         @csrf
                                         <div class="modal-body">
-                                            <p>Are You Sure ??</p>
+                                            <p>You are about to delete.</p> 
+                                            <p class="text-muted">This may cause error to related missions.</p>
+                                            
+                                            <h5>Do you want to proceed ?</h5>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-success">Yes</button>
@@ -115,6 +125,7 @@
 
                         @endif
 
+                    {{-- 
                         @if(auth()->user()->can('update'))
                         <!-- Edit Modal -->  
                         <div class="modal fade" id="editMissionType{{$missionType->id}}" role="dialog">
@@ -158,7 +169,8 @@
                             </div>
                         </div>
 
-                        @endif 
+                        @endif  
+                                --}}
                                 
 
                         @endforeach
@@ -174,6 +186,7 @@
         </div>
 
         
+    {{-- 
         @if(auth()->user()->can('create'))
 
         <div class="modal fade" id="addMissionType" role="dialog">
@@ -214,7 +227,8 @@
             </div>
         </div>
 
-        @endif
+        @endif 
+                --}}
 
     </div>
 @stop

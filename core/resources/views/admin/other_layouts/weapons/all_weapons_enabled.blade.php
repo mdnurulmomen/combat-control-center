@@ -15,7 +15,7 @@
 
                         @if(auth()->user()->can('read'))
                         
-                        <a  href="{{route('admin.view_disabled_weapons')}}"  class="btn btn-outline-danger float-right btn-sm" type="button">
+                        <a  href="{{route('admin.view_disabled_weapons')}}"  class="btn btn-outline-danger float-right btn-sm mr-1 ml-1" type="button">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                             Disabled Weapons
                         </a>
@@ -230,7 +230,9 @@
                                                 @method('DELETE')
                                                 @csrf
                                                 <div class="modal-body">
-                                                    <p>Are You Sure ??</p>
+                                                    <p>You are about to delete.</p> 
+                                                    <p class="text-muted">This may hamper gift weapons. Please update gift items laterly.</p>
+                                                    <h5>Do you want to proceed ?</h5>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="submit" class="btn btn-success">Yes</button>

@@ -12,7 +12,7 @@
                     <div class="form-group row">
                         <div class="col-sm-4">
                             <label for="validationServer02">User Registration :</label>
-                            <input type="checkbox" name="user_registration" @if($settingsUser->user_registration==1) checked @endif  data-toggle="toggle" data-on="Allowed" data-off="Not Allowed" data-onstyle="success" data-offstyle="danger">
+                            <input type="checkbox" name="user_registration" @if($settingsUser->user_registration==1) checked @endif  data-toggle="toggle" data-on="Allowed" data-off="Not Allowed" data-onstyle="success" data-offstyle="danger" data-size="normal">
                         </div>
                         <div class="col-md-4">
                             <label for="validationServer02">Email Verification :</label>
@@ -27,7 +27,7 @@
                     <br>
                     <div class="form-group row">
                         <div class="col-sm-12">
-                            <button type="submit" class="btn btn-block btn-primary">Update</button>
+                            <button type="submit" class="btn btn-block btn-primary btn-lg">Update</button>
                         </div>
                     </div>
                 </form>
