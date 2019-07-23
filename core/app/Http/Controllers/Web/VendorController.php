@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Models\City;
 use App\Models\Vendor;
 use App\Models\Division;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -67,7 +68,7 @@ class VendorController extends Controller
 
         $newVendor->logo_picture = $request->file('logo');
 
-        $newVendor->mobile = $request->mobile;
+        $newVendor->mobile = Str::start($request->mobile, '88');
         $newVendor->treasure_type_id = $request->treasure_type_id;
 
         $newVendor->save();
@@ -102,7 +103,7 @@ class VendorController extends Controller
         $vendorToUpdate->logo_picture = $request->file('logo');
 
         $vendorToUpdate->division_id = $request->division_id;
-        $vendorToUpdate->mobile = $request->mobile;
+        $vendorToUpdate->mobile = Str::start($request->mobile, '88');
         $vendorToUpdate->treasure_type_id = $request->treasure_type_id;
 
         $vendorToUpdate->save();
