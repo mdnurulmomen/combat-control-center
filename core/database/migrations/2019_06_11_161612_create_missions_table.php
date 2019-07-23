@@ -30,6 +30,7 @@ class CreateMissionsTable extends Migration
             $table->mediumInteger('among_three_time')->nullable()->default(0);
             $table->mediumInteger('among_five_time')->nullable()->default(0);
             $table->mediumInteger('mission_type_id');
+            $table->mediumInteger('reward_amount')->default(0);
             
             $table->softDeletes();
             $table->timestamps();

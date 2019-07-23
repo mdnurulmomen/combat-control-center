@@ -29,7 +29,7 @@ class MissionController extends Controller
         ]);
 
         $newMissionType = new MissionType();
-        $newMissionType->mission_type_name = ucfirst($request->mission_type_name);
+        $newMissionType->mission_type_name = ucwords($request->mission_type_name);
         $newMissionType->save();
 
         return redirect()->back()->with('success', 'New Mission Type has been Created');
@@ -43,7 +43,7 @@ class MissionController extends Controller
             'mission_type_name'=>'required|unique:mission_types,mission_type_name,'.$missionTypeToUpdate->id
         ]);
 
-        $missionTypeToUpdate->mission_type_name = ucfirst($request->mission_type_name);
+        $missionTypeToUpdate->mission_type_name = ucwords($request->mission_type_name);
         $missionTypeToUpdate->save();
 
         return redirect()->back()->with('success', 'Mission Type has been Updated');
@@ -84,11 +84,11 @@ class MissionController extends Controller
                             
                             $button .="&nbsp;&nbsp;&nbsp;";
 
-                            $button .= "<i class='fa fa-fw fa-edit tooltip-test' style='transform: scale(1.5);' title='Edit'></i>";
+                            $button .= "<i class='fa fa-fw fa-edit tooltip-test text-success' style='transform: scale(1.5);' title='Edit'></i>";
 
                             $button .="&nbsp;&nbsp;&nbsp;";
 
-                            $button .= "<i class='fa fa-fw fa-trash tooltip-test' style='transform: scale(1.5);' title='Delete'></i>";
+                            $button .= "<i class='fa fa-fw fa-trash tooltip-test text-danger' style='transform: scale(1.5);' title='Delete'></i>";
                             
                         }
 
@@ -127,7 +127,15 @@ class MissionController extends Controller
     public function submitCreateMissionForm(Request $request)
     {
         $request->validate([
-            'mission_type_id'=>'required'
+            'mission_type_id'=>'required',
+            'name'=>'required',
+
+            'kill_opponent'=>'required_without_all:kill_monster,win_top_time,among_two_time,among_three_time,among_five_time',
+            'kill_monster'=>'required_without_all:kill_opponent,win_top_time,among_two_time,among_three_time,among_five_time',
+            'win_top_time'=>'required_without_all:kill_monster,kill_opponent,among_two_time,among_three_time,among_five_time',
+            'among_two_time'=>'required_without_all:kill_monster,win_top_time,kill_opponent,among_three_time,among_five_time',
+            'among_three_time'=>'required_without_all:kill_monster,win_top_time,among_two_time,kill_opponent,among_five_time',
+            'among_five_time'=>'required_without_all:kill_monster,win_top_time,among_two_time,among_three_time,kill_opponent'
         ]);
 
         $newMission = Mission::create([
@@ -135,15 +143,16 @@ class MissionController extends Controller
         	'description' => $request->description,
         	'play_number' => $request->play_number,
         	'play_time' => $request->play_time,
-        	'damage_opponent' => $request->damage_opponent,
+        	// 'damage_opponent' => $request->damage_opponent,
         	'kill_opponent' => $request->kill_opponent,
         	'kill_monster' => $request->kill_monster,
-        	'travel_distance' => $request->travel_distance,
+        	// 'travel_distance' => $request->travel_distance,
         	'win_top_time' => $request->win_top_time,
         	'among_two_time' => $request->among_two_time,
         	'among_three_time' => $request->among_three_time,
         	'among_five_time' => $request->among_five_time,
-        	'mission_type_id' => $request->mission_type_id
+            'mission_type_id' => $request->mission_type_id,
+        	'reward_amount' => $request->reward_amount
         ]);
 
         return redirect()->back()->with('success', 'New Mission has been Created');
@@ -152,7 +161,15 @@ class MissionController extends Controller
     public function submitMissionEditForm(Request $request, $missionId)
     {
         $request->validate([
-            'mission_type_id'=>'required'
+            'mission_type_id'=>'required',
+            'name'=>'required',
+
+            'kill_opponent'=>'required_without_all:kill_monster,win_top_time,among_two_time,among_three_time,among_five_time',
+            'kill_monster'=>'required_without_all:kill_opponent,win_top_time,among_two_time,among_three_time,among_five_time',
+            'win_top_time'=>'required_without_all:kill_monster,kill_opponent,among_two_time,among_three_time,among_five_time',
+            'among_two_time'=>'required_without_all:kill_monster,win_top_time,kill_opponent,among_three_time,among_five_time',
+            'among_three_time'=>'required_without_all:kill_monster,win_top_time,among_two_time,kill_opponent,among_five_time',
+            'among_five_time'=>'required_without_all:kill_monster,win_top_time,among_two_time,among_three_time,kill_opponent'
         ]);
 
         $missionToUpdate = Mission::findOrFail($missionId);
@@ -162,15 +179,16 @@ class MissionController extends Controller
         	'description' => $request->description,
         	'play_number' => $request->play_number,
         	'play_time' => $request->play_time,
-        	'damage_opponent' => $request->damage_opponent,
+        	// 'damage_opponent' => $request->damage_opponent,
         	'kill_opponent' => $request->kill_opponent,
         	'kill_monster' => $request->kill_monster,
-        	'travel_distance' => $request->travel_distance,
+        	// 'travel_distance' => $request->travel_distance,
         	'win_top_time' => $request->win_top_time,
         	'among_two_time' => $request->among_two_time,
         	'among_three_time' => $request->among_three_time,
         	'among_five_time' => $request->among_five_time,
-        	'mission_type_id' => $request->mission_type_id
+        	'mission_type_id' => $request->mission_type_id,
+            'reward_amount' => $request->reward_amount
         ]);
 
         return redirect()->back()->with('success', 'Mission has been Updated');
