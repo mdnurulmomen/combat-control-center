@@ -113,7 +113,7 @@ class TreasureController extends Controller
 
                 $playerStatistics->increment($request->exchangingType, $treasureDetails->exchanging_coins);
 
-                $collectingPoint = 'game points';
+                $collectingPoint = 'Game Currency';
                 $status = -1;
             }
 
@@ -121,7 +121,7 @@ class TreasureController extends Controller
                 
                 $playerStatistics->increment($request->exchangingType, $treasureDetails->exchanging_gems);
 
-                $collectingPoint = 'game points';
+                $collectingPoint = 'Game Currency';
                 $status = -1;
             }
 
@@ -146,14 +146,16 @@ class TreasureController extends Controller
                     return response()->json(['error' => 'Operator must be Robi or airtel'], 422);
                 }
                 
-                $collectingPoint = $request->playerPhone;
+                $collectingPoint = 'MB, Mobile : '.$request->playerPhone;
                 $status = -1;
             }
 
 
             else if (Str::is('*urger*', $request->exchangingType)) {
+
+                $agentPhone = Str::start($request->agentPhone, '88');
                 
-                $vendor = Vendor::where('mobile', $request->agentPhone)->first();
+                $vendor = Vendor::where('mobile', $agentPhone)->first();
 
                 if (!$vendor) {
                     
