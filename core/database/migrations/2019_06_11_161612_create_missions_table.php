@@ -21,10 +21,8 @@ class CreateMissionsTable extends Migration
             $table->longText('description')->nullable();
             $table->mediumInteger('play_number')->nullable()->default(0);
             $table->mediumInteger('play_time')->nullable()->default(0);
-            $table->mediumInteger('damage_opponent')->nullable()->default(0);
             $table->mediumInteger('kill_opponent')->nullable()->default(0);
             $table->mediumInteger('kill_monster')->nullable()->default(0);
-            $table->mediumInteger('travel_distance')->nullable()->default(0);
             $table->mediumInteger('win_top_time')->nullable()->default(0);
             $table->mediumInteger('among_two_time')->nullable()->default(0);
             $table->mediumInteger('among_three_time')->nullable()->default(0);
