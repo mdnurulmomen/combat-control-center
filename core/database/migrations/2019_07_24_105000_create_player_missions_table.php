@@ -26,6 +26,8 @@ class CreatePlayerMissionsTable extends Migration
             $table->mediumInteger('progress_among_three_time')->nullable()->default(0);
             $table->mediumInteger('progress_among_five_time')->nullable()->default(0);
 
+            $table->boolean('status')->nullable()->default(true);
+
             $table->mediumInteger('player_id');
             $table->mediumInteger('mission_id');
 
