@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\Models\PlayHistory;
 use App\Models\GameSetting;
 use App\Models\GiftTreasure;
+use App\Models\PlayerMission;
 use Illuminate\Http\Request;
 use App\Models\PlayerTreasure;
 use App\Models\PlayerBoostPack;
@@ -264,35 +265,93 @@ class GameController extends Controller
         // New Game History
         $newGameHistory = $this->createNewGameHistory($playerToUpdate, $request);
 
-        $playerStatisticToUpdate->increment('coins', $request->coinsGainInCurrentMatch ?? 0);
-        $playerStatisticToUpdate->increment('gems', $request->gemsGainInCurrentMatch ?? 0);
+        $playerStatisticToUpdate->increment('battle_played');
 
-        $numberXpMultiplier = $playerBoostPacksToUpdate->xp_multiplier;
+        $newGameHistory->player_rank == 1 ? $playerStatisticToUpdate->increment('battle_wins') : 1;
 
-        if($numberXpMultiplier) {
-
-            $playerStatisticToUpdate->increment('xp_point', $request->xpGainInCurrentMatch * 2 ?? 0);
+        if ($request->xpGainInCurrentMatch) {
             
-            // Decrement xpMultiplier
-            $playerBoostPacksToUpdate->decrement('xp_multiplier');
-        } 
-         
-        else{
+            $numberXpMultiplier = $playerBoostPacksToUpdate->xp_multiplier;
+            
+            if($numberXpMultiplier) {
 
-            $playerStatisticToUpdate->increment('xp_point', $request->xpGainInCurrentMatch ?? 0);
+                $playerStatisticToUpdate->increment('xp_point', $request->xpGainInCurrentMatch * 2 ?? 0);
+                
+                // Decrement xpMultiplier
+                $playerBoostPacksToUpdate->decrement('xp_multiplier');
+            } 
+             
+            else{
+
+                $playerStatisticToUpdate->increment('xp_point', $request->xpGainInCurrentMatch ?? 0);
+            }
         }
 
-        $playerStatisticToUpdate->increment('battle_played');
-        $newGameHistory->player_rank == 1 ? $playerStatisticToUpdate->increment('battle_wins') : 1;
-        $playerStatisticToUpdate->increment('treasure_collected', $request->totalTreasureCollected ?? 0);
-        $playerStatisticToUpdate->increment('opponent_killed', $request->totalOpponentsKilled ?? 0);
-        $playerStatisticToUpdate->increment('monster_killed', $request->totalMonsterKilled ?? 0);
-        $playerStatisticToUpdate->increment('double_killed', $request->totalDoubleKills ?? 0);
-        $playerStatisticToUpdate->increment('triple_killed', $request->totalTripleKills ?? 0);
-        $playerStatisticToUpdate->increment('items_collected', $request->totalItemsCollectedInField ?? 0);
-        $playerStatisticToUpdate->increment('guns_collected', $request->totalGunsCollectedInField ?? 0);
-        $playerStatisticToUpdate->increment('crates_collected', $request->totalCratesCollected ?? 0);
-        $playerStatisticToUpdate->increment('air_drops', $request->totalAirDropsCollected ?? 0);
+        if ($request->coinsGainInCurrentMatch) {
+            
+            $playerStatisticToUpdate->increment('coins', $request->coinsGainInCurrentMatch);
+        }
+
+        if ($request->gemsGainInCurrentMatch) {
+            
+            $playerStatisticToUpdate->increment('gems', $request->gemsGainInCurrentMatch);
+
+        }
+
+        if ($request->totalTreasureCollected) {
+            
+            $playerStatisticToUpdate->increment('treasure_collected', $request->totalTreasureCollected);
+
+        }
+
+        if ($request->totalOpponentsKilled) {
+            
+            $playerStatisticToUpdate->increment('opponent_killed', $request->totalOpponentsKilled);
+
+        }
+
+        if ($request->totalMonsterKilled) {
+            
+            $playerStatisticToUpdate->increment('monster_killed', $request->totalMonsterKilled);
+
+        }
+
+        if ($request->totalDoubleKills) {
+            
+            $playerStatisticToUpdate->increment('double_killed', $request->totalDoubleKills);
+
+        }
+
+        if ($request->totalTripleKills) {
+            
+            $playerStatisticToUpdate->increment('triple_killed', $request->totalTripleKills);
+
+        }
+
+        if ($request->totalItemsCollectedInField) {
+            
+            $playerStatisticToUpdate->increment('items_collected', $request->totalItemsCollectedInField);
+
+        }
+
+        if ($request->totalGunsCollectedInField) {
+            
+            $playerStatisticToUpdate->increment('guns_collected', $request->totalGunsCollectedInField);
+
+        }
+
+        if ($request->totalCratesCollected) {
+            
+            $playerStatisticToUpdate->increment('crates_collected', $request->totalCratesCollected); 
+
+        }
+
+        if ($request->totalAirDropsCollected) {
+            
+            $playerStatisticToUpdate->increment('air_drops', $request->totalAirDropsCollected ?? 0); 
+
+        }
+        
         $playerStatisticToUpdate->player_level = $this->definePlayerLevel($playerStatisticToUpdate->xp_point);
         $playerStatisticToUpdate->player_id = $request->userId;
         $playerStatisticToUpdate->save();
@@ -303,10 +362,71 @@ class GameController extends Controller
             $this->addPlayerTreasure($request, $playerStatisticToUpdate);
         }
 
-        return [
+        $missionExists = PlayerMission::where('player_id', $request->userId)->whereDate('updated_at', today())->get();
+        
+        if (!$missionExists->isEmpty()) {
+
+            $updateMissionProgression = $this->updateMissionProgression($request, $missionExists);
+
+        }
+
+        return ['statistics'=>new StatisticsResource($playerStatisticToUpdate)];
+    }
+
+    public function updateMissionProgression(Request $request, $missions)
+    {       
+        foreach ($missions as $mission) {
             
-            'statistics'=>new StatisticsResource($playerStatisticToUpdate),
-        ];
+            $mission->progress_play_number++;
+
+            if ($request->matchPlayDuration) {
+
+                $mission->progress_play_time +=  $request->matchPlayDuration;
+            }
+
+            if ($request->totalOpponentsKilled) {
+
+                $mission->progress_kill_opponent +=  $request->totalOpponentsKilled;
+            }
+
+            if ($request->totalMonsterKilled) {
+                
+                $mission->progress_kill_monster +=  $request->totalMonsterKilled;
+            }
+
+
+            if ($request->playerRankInCurrentMatch == 1) {
+                
+                $mission->progress_win_top_time++;
+                $mission->progress_among_two_time++;
+                $mission->progress_among_three_time++;
+                $mission->progress_among_five_time++;
+
+            }
+
+            else if ($request->playerRankInCurrentMatch < 3) {
+                
+                $mission->progress_among_two_time++;
+                $mission->progress_among_three_time++;
+                $mission->progress_among_five_time++;
+
+            }
+
+            else if ($request->playerRankInCurrentMatch < 4) {
+                
+                $mission->progress_among_three_time++;
+                $mission->progress_among_five_time++;
+
+            }
+
+            else if ($request->playerRankInCurrentMatch < 6) {
+                
+                $mission->progress_among_five_time++;
+
+            }
+
+            $mission->save();
+        }
     }
 
     public function createNewGameHistory(Player $playerToUpdate, Request $request)
@@ -330,8 +450,6 @@ class GameController extends Controller
         $newPlayerTreasure = new PlayerTreasure();
 
         $newPlayerTreasure->redeem_code = Str::random(8);
-
-        // $treasureDetails->collecting_point == -1 ? $newPlayerTreasure->collecting_point = 'nearest point' : $newPlayerTreasure->collecting_point = $treasureDetails->collecting_point;
 
         $newPlayerTreasure->open_time = now();
         

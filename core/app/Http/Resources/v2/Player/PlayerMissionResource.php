@@ -20,7 +20,7 @@ class PlayerMissionResource extends JsonResource
             'type'=>$this->mission->missionType->mission_type_name,
             'description'=>$this->mission->description,
             'rewardAmount'=>$this->mission->reward_amount,
-            'isRewarded'=>$this->rewarded,
+            'isRewarded'=>$this->rewarded ?? 0,
         ];
  
         if (Str::contains($this->mission->missionType->mission_type_name, ['Play', 'More'])) {
@@ -55,7 +55,20 @@ class PlayerMissionResource extends JsonResource
             
             $arrayToReturn['target'] = $this->mission->among_two_time ?? $this->mission->among_three_time ?? $this->mission->among_five_time;
 
-            $arrayToReturn['progress'] = $this->progress_among_two_time ?? $this->progress_among_three_time ?? $this->progress_among_five_time ?? 0;
+            if ($this->mission->among_two_time) {
+                
+                $arrayToReturn['progress'] = $this->progress_among_two_time;
+            }
+
+            else if ($this->mission->among_three_time) {
+                
+                $arrayToReturn['progress'] = $this->progress_among_three_time;
+            }
+
+            else if ($this->mission->among_five_time) {
+                
+                $arrayToReturn['progress'] = $this->progress_among_five_time;
+            }
             
         }   
 

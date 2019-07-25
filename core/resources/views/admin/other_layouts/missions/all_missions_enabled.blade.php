@@ -308,7 +308,7 @@
                                                 <div class="tile-body">    
                                                     <div class="form-row">
                                                         <div class="col-md-6 mb-4">
-                                                            <label for="validationServer01">Play Time</label>
+                                                            <label for="validationServer01">Play Game</label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
@@ -324,7 +324,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ hour</span>
                                                                 </div>
-                                                                <input type="number" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration"aria-describedby="inputGroupPrepend3" min="1" step="any">
+                                                                <input type="number" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration"aria-describedby="inputGroupPrepend3" min="0" step="any">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -596,7 +596,7 @@
                                                     
                                                     <div class="form-row">
                                                         <div class="col-md-6 mb-4">
-                                                            <label for="validationServer01">Play Time</label>
+                                                            <label for="validationServer01">Play Game</label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
@@ -612,7 +612,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ hour</span>
                                                                 </div>
-                                                                <input type="number" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration" aria-describedby="inputGroupPrepend3" min="1" step="any" value="">
+                                                                <input type="number" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration" aria-describedby="inputGroupPrepend3" min="0" step="any" value="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -877,7 +877,7 @@
                     if (expectedObject.play_time) {
 
                         $("#viewModal .form-row.play_time").show();
-                        $( "#viewModal p:eq(4)" ).html( expectedObject.play_time  + " hours" );
+                        $( "#viewModal p:eq(4)" ).html( expectedObject.play_time  + " Minutes" );
                     }
 
                     if (expectedObject.damage_opponent) {
@@ -990,7 +990,7 @@
                     }
 
                     $( "#editModal input[name*='play_number']" ).val( expectedObject.play_number );
-                    $( "#editModal input[name*='play_time']" ).val( expectedObject.play_time );
+                    $( "#editModal input[name*='play_time']" ).val( expectedObject.play_time / 60 );
 
                     // $( "#editModal input[name*='damage_opponent']" ).val( expectedObject.damage_opponent );
 
