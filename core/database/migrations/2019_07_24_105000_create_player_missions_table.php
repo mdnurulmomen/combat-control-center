@@ -17,16 +17,17 @@ class CreatePlayerMissionsTable extends Migration
             
             $table->increments('id');
 
-            $table->mediumInteger('progress_play_number')->nullable()->default(0);
-            $table->mediumInteger('progress_play_time')->nullable()->default(0);
-            $table->mediumInteger('progress_kill_opponent')->nullable()->default(0);
-            $table->mediumInteger('progress_kill_monster')->nullable()->default(0);
-            $table->mediumInteger('progress_win_top_time')->nullable()->default(0);
-            $table->mediumInteger('progress_among_two_time')->nullable()->default(0);
-            $table->mediumInteger('progress_among_three_time')->nullable()->default(0);
-            $table->mediumInteger('progress_among_five_time')->nullable()->default(0);
+            $table->mediumInteger('progress_play_number')->nullable();
+            $table->mediumInteger('progress_play_time')->nullable();
+            $table->mediumInteger('progress_kill_opponent')->nullable();
+            $table->mediumInteger('progress_kill_monster')->nullable();
+            $table->mediumInteger('progress_win_top_time')->nullable();
+            $table->mediumInteger('progress_among_two_time')->nullable();
+            $table->mediumInteger('progress_among_three_time')->nullable();
+            $table->mediumInteger('progress_among_five_time')->nullable();
 
-            $table->boolean('status')->nullable()->default(true);
+            $table->boolean('rewarded')->nullable()->default(false);
+            $table->boolean('mission_completion')->nullable()->default(false);
 
             $table->mediumInteger('player_id');
             $table->mediumInteger('mission_id');

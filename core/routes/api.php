@@ -55,6 +55,9 @@ Route::middleware(['api', 'cors'])->group(function (){
 
         Route::post('vendors', 'Api\v2\VendorController@showAllRelatedVendors')->name('api.v2.related_vendors_detail');
 
+        Route::post('missions', 'Api\v2\MissionController@showPlayerMissions')->name('api.v2.set_player_missions');
+
+
     });
 
 

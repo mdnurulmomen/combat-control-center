@@ -93,6 +93,11 @@ class Player extends Model
         return $this->hasMany('App\Models\PlayHistory');
     }
 
+    public function playerMissions()
+    {
+        return $this->hasMany('App\Models\PlayerMission', 'player_id', 'id');
+    }
+
     public function allNews()
     {
         return News::all();
