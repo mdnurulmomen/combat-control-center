@@ -39,6 +39,11 @@ class PurchaseController extends Controller
     }
     */
 
+    protected $itemId;
+    protected $userId;
+    protected $gatewayName;
+    protected $paymentId;
+
     public function addPlayerCharacter($characterIndexToAdd, $playerId, $itemToDeduct, $priceToDeduct)
     {
         $alreadyExist = PlayerCharacter::where('player_id', $playerId)
@@ -55,6 +60,8 @@ class PurchaseController extends Controller
             $playerCharacter->character_index = $characterIndexToAdd;
             $playerCharacter->player_id = $playerId;
             $playerCharacter->save();
+
+            $this->addPurchaseHistory();
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -76,6 +83,8 @@ class PurchaseController extends Controller
             $playerWeapon->weapon_index = $weaponIndexToAdd;
             $playerWeapon->player_id = $playerId;
             $playerWeapon->save();
+
+            $this->addPurchaseHistory();
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -97,6 +106,8 @@ class PurchaseController extends Controller
             $playerParachute->parachute_index = $parachuteId;
             $playerParachute->player_id = $playerId;
             $playerParachute->save();
+
+            $this->addPurchaseHistory();
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -119,6 +130,8 @@ class PurchaseController extends Controller
             $playerAnimation->animation_index = $animationIndexToAdd;
             $playerAnimation->player_id = $playerId;
             $playerAnimation->save();
+
+            $this->addPurchaseHistory();
         }
 
         return response()->json(['message'=>'success'], 200);
@@ -156,6 +169,8 @@ class PurchaseController extends Controller
             else if (Str::is('X*', $boostPackName)) {
                 $playerBoostPack->increment('xp_multiplier', $boostPackToAdd->amount);
             }
+
+            $this->addPurchaseHistory();
 
             return response()->json(['message'=>'success'], 200);
         }
@@ -208,7 +223,9 @@ class PurchaseController extends Controller
                     $playerBoostPacks->increment('xp_multiplier', $component->amount ?? 0);
                 }
             }
-            
+
+            $this->addPurchaseHistory();
+
             return response()->json(['message'=>'success'], 200);
         }
 
@@ -225,8 +242,13 @@ class PurchaseController extends Controller
         ]);
 
         // Item Details
-        $item = Store::find($request->itemId);
-        $player = Player::find($request->userId);
+        $this->itemId = $request->itemId;
+        $this->userId = $request->userId;
+        $this->gatewayName = $request->gatewayName;
+        $this->paymentId = $request->paymentId ?? 'None';
+
+        $item = Store::find($this->itemId);
+        $player = Player::find($this->userId);
 
         if (!$player || !$item) {
 
@@ -235,29 +257,21 @@ class PurchaseController extends Controller
 
         $playerStatistics = $player->playerStatistics;
 
-        // Purchase History
-        $newPurchase = new Purchase();
-        $newPurchase->item_id = $request->itemId;
-        $newPurchase->buyer_id = $request->userId;
-        $newPurchase->gateway_name = $request->gatewayName;
-        $newPurchase->payment_id = $request->paymentId ?? 'None';
-        $newPurchase->save();
-
         // purchase
-        if (Str::is('*oin*', $request->gatewayName) || Str::is('*em*', $request->gatewayName)) {
+        if (Str::is('*oin*', $this->gatewayName) || Str::is('*em*', $this->gatewayName)) {
 
             // Gems/Coins Cant be Purchased with Coins
-            if(Str::is('*oin*', $request->gatewayName) && $item->offered_price_coins <= $playerStatistics->coins && $item->type != 'Gems Pack' && $item->type != 'Coins Pack'){
-                
+            if(Str::is('*oin*', $this->gatewayName) && $item->offered_price_coins <= $playerStatistics->coins && $item->type != 'Gems Pack' && $item->type != 'Coins Pack'){
+
                 $price = $item->offered_price_coins;
-                return $this->addPurchasedItem($item, $request->userId, 'coins', $price);
+                return $this->addPurchasedItem($item, $this->userId, 'coins', $price);
             }
 
             // Gems Cant be Purchased with Gems
-            else if(Str::is('*em*', $request->gatewayName) && $item->offered_price_gems <= $playerStatistics->gems  && $item->type != 'Gems Pack'){
-                
+            else if(Str::is('*em*', $this->gatewayName) && $item->offered_price_gems <= $playerStatistics->gems  && $item->type != 'Gems Pack'){
+
                 $price = $item->offered_price_gems;
-                return $this->addPurchasedItem($item, $request->userId, 'gems', $price);
+                return $this->addPurchasedItem($item, $this->userId, 'gems', $price);
             }
 
             else{
@@ -267,17 +281,30 @@ class PurchaseController extends Controller
 
         // For Other Gateways
         else{
+
             $price =0;
-            return $this->addPurchasedItem($item, $request->userId, 'coins', $price);
+
+            return $this->addPurchasedItem($item, $this->userId, 'coins', $price);
         }
 
+    }
+
+    public function addPurchaseHistory()
+    {
+        // Purchase History
+        $newPurchase = new Purchase();
+        $newPurchase->item_id = $this->itemId;
+        $newPurchase->buyer_id = $this->userId;
+        $newPurchase->gateway_name = $this->gatewayName;
+        $newPurchase->payment_id = $this->paymentId ?? 'None';
+        $newPurchase->save();
     }
 
     public function addPurchasedItem(Store $item, $userId, $itemToDeduct, $priceToDeduct)
     {
         $playerStatistics = Player::find($userId)->playerStatistics;
 
-        if($item->type=='character'){
+        if($item->type == 'character'){
 
             $allCharactersName = Character::all()->pluck('name')->toArray();
             $characterIndexToAdd = array_search($item->name, $allCharactersName);   // Returns Array Index Number Or Key
@@ -316,13 +343,16 @@ class PurchaseController extends Controller
             $playerStatistics->decrement($itemToDeduct, $priceToDeduct);
             $playerStatistics->increment('coins', $item->amount ?? 0);
             
+            $this->addPurchaseHistory();
             return response()->json(['message'=>'success'], 200);
             
         }
 
         else if($item->type=='Gems Pack'){
             
-            $playerStatistics->increment('gems', $item->amount ?? 0); 
+            $playerStatistics->increment('gems', $item->amount ?? 0);
+
+            $this->addPurchaseHistory();
             return response()->json(['message'=>'success'], 200);
         }
 

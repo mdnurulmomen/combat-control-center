@@ -24,8 +24,10 @@ class PlayerTreasureRedeemed extends JsonResource
             'exchangingCoins'=>$this->treasure->exchanging_coins,
             'exchangingGems'=>$this->treasure->exchanging_gems,
             'exchangingMB'=>$this->treasure->exchanging_megabyte,
-            'collectingTime'=>$this->open_time,
-            'collectingPoint'=>$this->collecting_point,
+            'exchangedWith'=>optional($this->treasureRedemption)->exchanging_type ?? 'MB',
+            'winningTime'=>$this->open_time,
+            'collectedOn'=>$this->updated_at->format('Y-m-d H:i:s'),
+            'collectedPoint'=>optional($this->treasureRedemption)->collecting_point ?? 'Game Currency',
             'closingTime'=>$this->close_time,
             'status'=>$this->status,
             'description'=>$this->treasure->description

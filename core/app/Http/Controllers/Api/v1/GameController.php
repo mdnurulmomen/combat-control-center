@@ -11,12 +11,12 @@ use Illuminate\Support\Str;
 use App\Models\PlayHistory;
 use App\Models\GameSetting;
 use App\Models\GiftTreasure;
+use App\Models\PlayerMission;
 use Illuminate\Http\Request;
 use App\Models\PlayerTreasure;
 use App\Models\PlayerBoostPack;
 use App\Models\PlayerStatistic;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Facades\JWTFactory;
+use App\Http\Traits\RetrieveToken;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\DefinePlayerLevel;
 use App\Http\Resources\v1\Game\GameResource;
@@ -42,14 +42,14 @@ class GameController extends Controller
 
         $player = Player::find($request->userId);
 
-        if (is_null($player)) {
+        /*if (is_null($player)) {
 
             return response()->json(['error'=>'Invalid player'], 422);
-        }
+        }*/
 
         // If Game is Paid Mode 
         if (Str::is('*olo', $request->matchType)) {
-            
+                
             //  if player is subscribed    
             if ($player->subscribed()->count()) {
                 
@@ -70,7 +70,7 @@ class GameController extends Controller
 
                 // Add earning for solo mode
                 $this->addEarnings($lastEarning, $matchRate);
-            }  
+            }
         }
 
         // Reducing all selections for match start
@@ -82,6 +82,19 @@ class GameController extends Controller
         }
         
         return new MatchResource($player);
+    
+        // $returningData = new MatchResource($player);
+
+        // $payload = JWTFactory::emptyClaims()->data($returningData)->make();
+        // return $token = JWTAuth::encode($payload);
+
+        // JWTFactory::emptyClaims();
+        // $token = JWTAuth::customClaims([$returningData])->fromUser($returningData);
+        // $token = JWTAuth::fromUser($returningData, $returningData);
+
+        // return response()->json([
+        //     'token' => $token
+        // ]);
     }
 
     // Add earning for solo mode
@@ -123,7 +136,7 @@ class GameController extends Controller
         $playerBoostPacks = $player->playerBoostPacks;
         $itemToDecrement = array();
 
-        if($request->gameBoostItems['meleeBooster'] > 102) {
+        if($request->gameBoostItems->meleeBooster > 102) {
 
             if($playerBoostPacks->melee_boost > 0)
                 $itemToDecrement[] = 'melee_boost'; 
@@ -131,7 +144,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient melee booster'], 401);
         } 
             
-        if($request->gameBoostItems['lightBooster'] > 0) {
+        if($request->gameBoostItems->lightBooster > 0) {
 
             if($playerBoostPacks->light_boost > 0)
                 $itemToDecrement[] = 'light_boost';
@@ -139,7 +152,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient light booster'], 401);
         } 
 
-        if($request->gameBoostItems['heavyBooster'] > 106) {
+        if($request->gameBoostItems->heavyBooster > 106) {
 
             if($playerBoostPacks->heavy_boost > 0)
                 $itemToDecrement[] = 'heavy_boost'; 
@@ -147,7 +160,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient heavy booster'], 401);
         }
 
-        if($request->gameBoostItems['ammoBoost']) {
+        if($request->gameBoostItems->ammoBoost) {
 
             if($playerBoostPacks->ammo_boost > 0)
                 $itemToDecrement[] = 'ammo_boost';  
@@ -155,7 +168,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient ammo booster'], 401);
         }
 
-        if($request->gameBoostItems['speedBoost']) {
+        if($request->gameBoostItems->speedBoost) {
 
             if($playerBoostPacks->speed_boost > 0)
                 $itemToDecrement[] = 'speed_boost'; 
@@ -163,7 +176,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient speed booster'], 401);
         }
 
-        if($request->gameBoostItems['armorBoost']) {
+        if($request->gameBoostItems->armorBoost) {
 
             if($playerBoostPacks->armor_boost > 0)
                 $itemToDecrement[] = 'armor_boost'; 
@@ -171,7 +184,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient armor booster'], 401);
         }
 
-        if($request->gameBoostItems['rangeBoost']) {
+        if($request->gameBoostItems->rangeBoost) {
 
             if($playerBoostPacks->range_boost > 0)
                 $itemToDecrement[] = 'range_boost'; 
@@ -179,7 +192,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient range booster'], 401);
         }
 
-        if($request->gameBoostItems['xpMultiplier']) {
+        if($request->gameBoostItems->xpMultiplier) {
 
             if($playerBoostPacks->xp_multiplier < 1)
                 return response()->json(['error'=>'Not sufficient xp booster'], 401);
@@ -198,6 +211,17 @@ class GameController extends Controller
 
     public function updateGameOverHistory (Request $request)
     {
+        // return encrypt($request->token);
+        // return openssl_encrypt($request->payload, 'AES-256-CBC', 'IjtT8uqTWOHQ6xRBfqA2tVEhNgjGzlPy', 0, '0000000000000000');
+
+        // try {
+            // return decrypt($request->payload);
+        // } catch (DecryptException $e) {
+        //     
+        // }        
+
+        // $decryptedJWTPayload = openssl_decrypt($request->payload, 'AES-256-CBC', 'IjtT8uqTWOHQ6xRBfqA2tVEhNgjGzlPy', 0, '0000000000000000');
+
         $request->validate([
             'userId'=>'required|exists:players,id',
             'matchPlayDuration'=>'required'
@@ -220,46 +244,168 @@ class GameController extends Controller
         // New Game History
         $newGameHistory = $this->createNewGameHistory($playerToUpdate, $request);
 
-        $playerStatisticToUpdate->increment('coins', $request->coinsGainInCurrentMatch ?? 0);
-        $playerStatisticToUpdate->increment('gems', $request->gemsGainInCurrentMatch ?? 0);
+        $playerStatisticToUpdate->increment('battle_played');
 
-        $numberXpMultiplier = $playerBoostPacksToUpdate->xp_multiplier;
+        $newGameHistory->player_rank == 1 ? $playerStatisticToUpdate->increment('battle_wins') : 1;
 
-        if($numberXpMultiplier) {
-
-            $playerStatisticToUpdate->increment('xp_point', $request->xpGainInCurrentMatch * 2 ?? 0);
+        if ($request->xpGainInCurrentMatch) {
             
-            // Decrement xpMultiplier
-            $playerBoostPacksToUpdate->decrement('xp_multiplier');
-        } 
-         
-        else{
+            $numberXpMultiplier = $playerBoostPacksToUpdate->xp_multiplier;
+            
+            if($numberXpMultiplier) {
 
-            $playerStatisticToUpdate->increment('xp_point', $request->xpGainInCurrentMatch ?? 0);
+                $playerStatisticToUpdate->increment('xp_point', $request->xpGainInCurrentMatch * 2 ?? 0);
+                
+                // Decrement xpMultiplier
+                $playerBoostPacksToUpdate->decrement('xp_multiplier');
+            } 
+             
+            else{
+
+                $playerStatisticToUpdate->increment('xp_point', $request->xpGainInCurrentMatch ?? 0);
+            }
         }
 
-        $playerStatisticToUpdate->increment('battle_played');
-        $newGameHistory->player_rank == 1 ? $playerStatisticToUpdate->increment('battle_wins') : 1;
-        $playerStatisticToUpdate->increment('treasure_collected', $request->totalTreasureCollected ?? 0);
-        $playerStatisticToUpdate->increment('opponent_killed', $request->totalOpponentsKilled ?? 0);
-        $playerStatisticToUpdate->increment('monster_killed', $request->totalMonsterKilled ?? 0);
-        $playerStatisticToUpdate->increment('double_killed', $request->totalDoubleKills ?? 0);
-        $playerStatisticToUpdate->increment('triple_killed', $request->totalTripleKills ?? 0);
-        $playerStatisticToUpdate->increment('items_collected', $request->totalItemsCollectedInField ?? 0);
-        $playerStatisticToUpdate->increment('guns_collected', $request->totalGunsCollectedInField ?? 0);
-        $playerStatisticToUpdate->increment('crates_collected', $request->totalCratesCollected ?? 0);
-        $playerStatisticToUpdate->increment('air_drops', $request->totalAirDropsCollected ?? 0);
+        if ($request->coinsGainInCurrentMatch) {
+            
+            $playerStatisticToUpdate->increment('coins', $request->coinsGainInCurrentMatch);
+        }
+
+        if ($request->gemsGainInCurrentMatch) {
+            
+            $playerStatisticToUpdate->increment('gems', $request->gemsGainInCurrentMatch);
+
+        }
+
+        if ($request->totalTreasureCollected) {
+            
+            $playerStatisticToUpdate->increment('treasure_collected', $request->totalTreasureCollected);
+
+        }
+
+        if ($request->totalOpponentsKilled) {
+            
+            $playerStatisticToUpdate->increment('opponent_killed', $request->totalOpponentsKilled);
+
+        }
+
+        if ($request->totalMonsterKilled) {
+            
+            $playerStatisticToUpdate->increment('monster_killed', $request->totalMonsterKilled);
+
+        }
+
+        if ($request->totalDoubleKills) {
+            
+            $playerStatisticToUpdate->increment('double_killed', $request->totalDoubleKills);
+
+        }
+
+        if ($request->totalTripleKills) {
+            
+            $playerStatisticToUpdate->increment('triple_killed', $request->totalTripleKills);
+
+        }
+
+        if ($request->totalItemsCollectedInField) {
+            
+            $playerStatisticToUpdate->increment('items_collected', $request->totalItemsCollectedInField);
+
+        }
+
+        if ($request->totalGunsCollectedInField) {
+            
+            $playerStatisticToUpdate->increment('guns_collected', $request->totalGunsCollectedInField);
+
+        }
+
+        if ($request->totalCratesCollected) {
+            
+            $playerStatisticToUpdate->increment('crates_collected', $request->totalCratesCollected); 
+
+        }
+
+        if ($request->totalAirDropsCollected) {
+            
+            $playerStatisticToUpdate->increment('air_drops', $request->totalAirDropsCollected ?? 0); 
+
+        }
+        
         $playerStatisticToUpdate->player_level = $this->definePlayerLevel($playerStatisticToUpdate->xp_point);
         $playerStatisticToUpdate->player_id = $request->userId;
         $playerStatisticToUpdate->save();
 
         // If Treasure is Won
-        $this->addPlayerTreasure($request, $playerStatisticToUpdate);
-
-        return [
+        if ($request->totalTreasureWon > 0) {
             
-            'statistics'=>new StatisticsResource($playerStatisticToUpdate),
-        ];
+            $this->addPlayerTreasure($request, $playerStatisticToUpdate);
+        }
+
+        $missionExists = PlayerMission::where('player_id', $request->userId)->whereDate('updated_at', today())->get();
+        
+        if (!$missionExists->isEmpty()) {
+
+            $updateMissionProgression = $this->updateMissionProgression($request, $missionExists);
+
+        }
+
+        return ['statistics'=>new StatisticsResource(PlayerStatistic::find($playerStatisticToUpdate->id))];
+    }
+
+    public function updateMissionProgression(Request $request, $missions)
+    {       
+        foreach ($missions as $mission) {
+            
+            $mission->progress_play_number++;
+
+            if ($request->matchPlayDuration) {
+
+                $mission->progress_play_time +=  $request->matchPlayDuration;
+            }
+
+            if ($request->totalOpponentsKilled) {
+
+                $mission->progress_kill_opponent +=  $request->totalOpponentsKilled;
+            }
+
+            if ($request->totalMonsterKilled) {
+                
+                $mission->progress_kill_monster +=  $request->totalMonsterKilled;
+            }
+
+
+            if ($request->playerRankInCurrentMatch == 1) {
+                
+                $mission->progress_win_top_time++;
+                $mission->progress_among_two_time++;
+                $mission->progress_among_three_time++;
+                $mission->progress_among_five_time++;
+
+            }
+
+            else if ($request->playerRankInCurrentMatch < 3) {
+                
+                $mission->progress_among_two_time++;
+                $mission->progress_among_three_time++;
+                $mission->progress_among_five_time++;
+
+            }
+
+            else if ($request->playerRankInCurrentMatch < 4) {
+                
+                $mission->progress_among_three_time++;
+                $mission->progress_among_five_time++;
+
+            }
+
+            else if ($request->playerRankInCurrentMatch < 6) {
+                
+                $mission->progress_among_five_time++;
+
+            }
+
+            $mission->save();
+        }
     }
 
     public function createNewGameHistory(Player $playerToUpdate, Request $request)
@@ -275,34 +421,25 @@ class GameController extends Controller
     // If Player Win Treasure after Game Over
     public function addPlayerTreasure(Request $request, PlayerStatistic $playerStatisticToUpdate)
     {
-        if ($request->totalTreasureWon > 0) {
+        $giftTreasure = GiftTreasure::first();
+        $treasureDetails = Treasure::find($giftTreasure->treasure_id);
 
-            $giftTreasure = GiftTreasure::first();
-            $treasureDetails = Treasure::find($giftTreasure->treasure_id);
+        // Create Player new Treasure
 
-            // Create Player new Treasure
+        $newPlayerTreasure = new PlayerTreasure();
 
-            if ($treasureDetails && $giftTreasure) {
-                
-                $newPlayerTreasure = new PlayerTreasure();
+        $newPlayerTreasure->redeem_code = Str::random(8);
 
-                $newPlayerTreasure->redeem_code = Str::random(8);
+        $newPlayerTreasure->open_time = now();
+        
+        is_numeric($treasureDetails->durability) ? $newPlayerTreasure->close_time = now()->addDay($treasureDetails->durability) : $newPlayerTreasure->close_time = false;
+        
+        $newPlayerTreasure->status = 1;
+        $newPlayerTreasure->treasure_id = $giftTreasure->treasure_id;
+        $newPlayerTreasure->player_id = $request->userId;
 
-                $treasureDetails->collecting_point == -1 ? $newPlayerTreasure->collecting_point = 'nearest point' : $newPlayerTreasure->collecting_point = $treasureDetails->collecting_point;
+        $newPlayerTreasure->save();
 
-                $newPlayerTreasure->open_time = now();
-
-                $treasureDetails->durability == -1 ? $newPlayerTreasure->close_time = 'undefined' : $newPlayerTreasure->close_time = now()->addDay($treasureDetails->durability) ;
-                
-                $newPlayerTreasure->status = 1;
-                $newPlayerTreasure->treasure_id = $giftTreasure->treasure_id;
-                $newPlayerTreasure->player_id = $request->userId;
-
-                $newPlayerTreasure->save();
-            }
-
-
-            $playerStatisticToUpdate->increment('treasure_won', $request->totalTreasureWon);
-        }  
+        $playerStatisticToUpdate->increment('treasure_won', $request->totalTreasureWon);      
     }
 }

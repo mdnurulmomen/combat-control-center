@@ -8,6 +8,7 @@ use App\Models\Player;
 use App\Models\Leader;
 use App\Models\GiftPoint;
 use App\Models\GiftWeapon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PlayerWeapon;
 use App\Models\GiftCharacter;
@@ -20,6 +21,7 @@ use App\Models\PlayerParachute;
 use App\Models\PlayerBoostPack;
 use App\Models\DailyLoginCheck;
 use App\Models\PlayerStatistic;
+use App\Models\DailyLoginReward;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
@@ -48,14 +50,99 @@ class PlayerController extends Controller
     public function checkPlayerExist(Request $request)
     {
         $request->validate([
-          'facebookId'=>'required_without:userDeviceId'
+
+          'mobileNo'=>'required_without:userDeviceId',
+          
+        ]);
+
+        if (is_null($request->mobileNo) || empty($request->mobileNo)) {
+            
+            if ($userExist = User::takenDeviceId($request->userDeviceId)->first()) {
+
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
+            }
+
+            else {
+
+                return $this->createPlayerMethod($request);
+            }
+        }
+
+        else {
+
+            // For Users who are Identified by phone
+            if ($userExist = User::takenMobileNo($request->mobileNo)->first()) {
+
+                /*
+                // for old user who had device id and mobile no.
+                $userExist->device_info = '';
+                $request->has('profilePic') ? $userExist->profile_pic = $request->profilePic : 0 ;
+                $request->has('userEmail') ? $userExist->email = $request->userEmail : 0 ;
+                $userExist->save();
+                */
+
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
+            }
+
+            // For Guest User who are Identified by userDeviceId
+            elseif ($userExist = User::takenDeviceId($request->userDeviceId)->first()) {
+
+                // Updating Guest User
+                $userExist->device_info = '';
+                $userExist->phone = $request->mobileNo;
+                $userExist->login_type = 'true';
+                $userExist->profile_pic = $request->profilePic;
+
+                if ($request->facebookName || $request->gmailName) {
+                    
+                    $userExist->username = empty($request->facebookName) ? $request->gmailName : $request->facebookName;
+                }
+                else{
+
+                    $userExist->username = $request->userName;
+                }
+
+                $request->has('userEmail') ? $userExist->email = $request->userEmail : 0;
+                $request->has('facebookId') ? $userExist->facebook_id = $request->facebookId : 0;
+                $request->has('facebookName') ? $userExist->facebook_name = $request->facebookName : 0;
+                $request->has('gmailId') ? $userExist->gmail_id = $request->gmailId : 0;
+                $request->has('gmailName') ? $userExist->gmail_name = $request->gmailName : 0;
+                $userExist->save();
+
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
+            }
+
+            // For Old User who were Identified by facebookId
+            elseif ($userExist = User::takenFacebookId($request->facebookId)->first()) {
+
+                // Updating Guest User with NEW data
+                $userExist->phone = $request->mobileNo;
+
+                $request->has('userEmail') ? $userExist->email = $request->userEmail : 0;
+                $request->has('facebookName') ? $userExist->facebook_name = $request->facebookName : 0;
+                $userExist->save();
+
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
+            } 
+
+            else{
+                return $this->createPlayerMethod($request);
+            }
+        }
+        
+
+        /*
+        $request->validate([
+
+          'facebookId'=>'required_without:userDeviceId',
+          
         ]);
 
         if(is_null($request->facebookId) || empty($request->facebookId) ) {
 
             if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
 
-                return redirect()->route('api.v1.player_show', $userExist->player->id);
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
             else{
                 return $this->createPlayerMethod($request);
@@ -66,7 +153,7 @@ class PlayerController extends Controller
 
             if ($userExist = User::where('facebook_id', $request->facebookId)->first()) {
 
-                return redirect()->route('api.v1.player_show', $userExist->player->id);
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
 
             else if ($userExist = User::where('device_info', $request->userDeviceId)->first()) {
@@ -81,22 +168,92 @@ class PlayerController extends Controller
 
                 $userExist->save();
 
-                return redirect()->route('api.v1.player_show', $userExist->player->id);
+                return redirect()->route('api.v2.player_show', $userExist->player->id);
             }
 
             else{
                 return $this->createPlayerMethod($request);
             }
         }
+        */
     }
 
     public function createPlayerMethod($request)
     {
         // Creating New User
+        $newUser = $this->createUser($request);        
+
+        // Creating New Player
+        $newPlayer = $this->createPlayer($newUser, $request);
+
+        // Creating New Players Boost Packs
+        $this->createPlayerBoostPacks($newPlayer);   
+
+        // Creating New Players Statistics
+        $this->createPlayerStatistics($newPlayer);
+
+        // Creating New Players Gift Characters
+        $this->createPlayerGiftCharacters($newPlayer);
+
+        // Creating New Players Gift Animations
+        $this->createPlayerGiftAnimations($newPlayer);
+
+        // Creating New Players Gift Parachutes
+        $this->createPlayerGiftParachutes($newPlayer);
+
+        // Creating New Players Gift Weapons
+        $this->createPlayerGiftWeapons($newPlayer);
+        
+        // Creating New Players Consecutive Daily Login History
+        $this->createDailyLoginDays($newPlayer);
+
+
+        return new PlayerResource($newPlayer);
+    }
+    
+
+    public function createUser($request)
+    {
+        $newUser = new User();
+        $newUser->phone = $request->mobileNo;
+        $newUser->email = $request->userEmail ?? '';
+        $newUser->location = $request->userLocation ?? 'Dhaka';
+        $newUser->facebook_id = $request->facebookId ?? '';
+        $newUser->facebook_name = $request->facebookName ?? '';
+        $newUser->gmail_id = $request->gmailId ?? '';
+        $newUser->gmail_name = $request->gmailName ?? '';
+        $newUser->profile_pic = $request->profilePic ?? '';
+        $newUser->country = $request->country ?? 'Bangladesh';
+        $newUser->connection_type = $request->connectionType;
+        $newUser->type = strtolower('player');
+
+        if ($request->mobileNo) {
+            
+            if ($request->facebookName || $request->gmailName) {
+                
+                $newUser->username = empty($request->facebookName) ? $request->gmailName : $request->facebookName;
+            }
+            else{
+                $newUser->username = $request->userName;
+            }
+
+            $newUser->device_info = '';
+            $newUser->login_type = 'true';
+        }else{
+            $newUser->username = $request->userName;
+            $newUser->device_info = $request->userDeviceId;
+            $newUser->login_type = 'false' ;
+        }
+        
+        $newUser->save();
+        
+
+        /*
+        // Creating New User
         $newUser = new User();
         $newUser->username = $request->facebookName ?? $request->userName;
-        $newUser->phone = $request->mobileNo;
-        $newUser->email = $request->userEmail;
+        $newUser->phone = $request->mobileNo ?? '';
+        $newUser->email = $request->userEmail ?? '';
         $newUser->location = $request->userLocation ?? 'Dhaka';
         $newUser->facebook_id = $request->facebookId ?? '';
         $newUser->facebook_name = $request->facebookName ?? '';
@@ -107,21 +264,26 @@ class PlayerController extends Controller
         empty($request->facebookId) ? $newUser->device_info = $request->userDeviceId : $newUser->device_info = '';
         empty($request->facebookId) ? $newUser->login_type = 'false' : $newUser->login_type = 'true';
         $newUser->save();
+        */
 
+        return $newUser;
+    }
 
-        // Creating New Player
-        $newPlayer = Player::firstOrCreate(array('id' => $newUser->id));
-        $newPlayer->selected_parachute = $request->selectedParachute ?? 0;
-        $newPlayer->selected_character = $request->selectedCharacter ?? 0;
-        $newPlayer->selected_animation = $request->selectedAnimation ?? 0;
-        $newPlayer->selected_weapon = $request->selectedWeapon ?? 0;
-        $newPlayer->user_id = $newUser->id;
-        $newPlayer->save();
+    public function createPlayer(User $newUser, $request)
+    {
+        return $newUser->player()->create([
+            'selected_parachute' => $request->selectedParachute ?? 0,
+            'selected_character' => $request->selectedCharacter ?? 0,
+            'selected_animation' => $request->selectedAnimation ?? 0,
+            'selected_weapon' => $request->selectedWeapon ?? 0,
+        ]);
+    }
 
+    public function createPlayerBoostPacks(Player $newPlayer)
+    {
+        $giftBoostPack = GiftBoostPack::first();
 
-        // Creating New Players Boost Packs
-        $giftBoostPack = GiftBoostPack::first();            
-        $newPlayerBoostPack = PlayerBoostPack::firstOrCreate([
+        $newPlayer->playerBoostPacks()->create([
             'melee_boost' => $giftBoostPack->gift_melee_boost ?? 0,
             'light_boost' => $giftBoostPack->gift_light_boost ?? 0,
             'heavy_boost' => $giftBoostPack->gift_heavy_boost ?? 0,
@@ -130,134 +292,224 @@ class PlayerController extends Controller
             'speed_boost' => $giftBoostPack->gift_speed_boost ?? 0,
             'armor_boost' => $giftBoostPack->gift_armor_boost ?? 0,
             'xp_multiplier' => $giftBoostPack->gift_multiplier_boost ?? 0,
-            'player_id' => $newPlayer->id,
         ]);
-          
+    }
 
-        // Creating New Players Statistics
+    public function createPlayerStatistics(Player $newPlayer)
+    {
         $giftPoints = GiftPoint::first();
-        $newPlayerStatistic = PlayerStatistic::firstOrCreate([
+
+        $newPlayer->playerStatistics()->create([
             'coins' => $giftPoints->gift_coins ?? 0,
             'gems' => $giftPoints->gift_gems ?? 0,
-            'player_id' => $newPlayer->id
         ]);
+    }
 
-
-        // Creating New Players Gift Characters
+    public function createPlayerGiftCharacters(Player $newPlayer)
+    {
         $giftCharacters = GiftCharacter::all();
 
         if ($giftCharacters->isNotEmpty() && !$giftCharacters->contains('gift_character_index', -1)) {
             
             foreach ($giftCharacters as $giftCharacter) {
-                $newPlayerCharacter = new PlayerCharacter();
-                $newPlayerCharacter->character_index = $giftCharacter->gift_character_index;
-                $newPlayerCharacter->player_id = $newPlayer->id;
-                $newPlayerCharacter->save();
+
+                $newPlayerCharacter = $newPlayer->playerCharacters()->create([
+
+                    'character_index' => $giftCharacter->gift_character_index,
+                ]);
             }
-        } 
+        }
+    }
 
-
-        // Creating New Players Gift Animations
+    public function createPlayerGiftAnimations(Player $newPlayer)
+    {
         $giftAnimations = GiftAnimation::all();
 
         if ($giftAnimations->isNotEmpty() && !$giftAnimations->contains('gift_animation_index', -1)) {
 
             foreach ($giftAnimations as $giftAnimation) {
-                $newPlayerAnimation = new PlayerAnimation();
-                $newPlayerAnimation->animation_index = $giftAnimation->gift_animation_index;
-                $newPlayerAnimation->player_id = $newPlayer->id;
-                $newPlayerAnimation->save();
+
+                $newPlayerAnimation = $newPlayer->playerAnimations()->create([
+
+                    'animation_index' => $giftAnimation->gift_animation_index,
+                ]);
             }
         }
+    }
 
-
-        // Creating New Players Gift Parachutes
-        $giftParachutes = GiftParachute::all();
-
-        if ($giftParachutes->isNotEmpty() && !$giftParachutes->contains('gift_parachute_index', -1)) { 
-
-            foreach ($giftParachutes as $giftParachute) {
-                $newPlayerParachute = new PlayerParachute();
-                $newPlayerParachute->parachute_index = $giftParachute->gift_parachute_index;
-                $newPlayerParachute->player_id = $newPlayer->id;
-                $newPlayerParachute->save();
-            }
-        }
-
-
-        // Creating New Players Gift Weapons
+    public function createPlayerGiftWeapons(Player $newPlayer)
+    {
         $giftWeapons = GiftWeapon::all();
 
         if ($giftWeapons->isNotEmpty() && !$giftWeapons->contains('gift_weapon_index', -1)) {
 
             foreach ($giftWeapons as $giftWeapon) {
-                $newPlayerWeapon = new PlayerWeapon();
-                $newPlayerWeapon->weapon_index = $giftWeapon->gift_weapon_index;
-                $newPlayerWeapon->player_id = $newPlayer->id;
-                $newPlayerWeapon->save();
+
+                $newPlayerWeapon = $newPlayer->playerWeapons()->create([
+
+                    'weapon_index' => $giftWeapon->gift_weapon_index,
+                ]);
             }
         }
-
-
-        // Creating New Players Login History
-        $newLogin = DailyLoginCheck::firstOrCreate(array('player_id' => $newPlayer->id));
-        $newLogin->player_id = $newPlayer->id;
-        $newLogin->consecutive_days = 1;
-        $newLogin->save();
-
-        return new PlayerResource($newPlayer);
     }
-    
 
-    // Creating Players Login Data
+    public function createPlayerGiftParachutes(Player $newPlayer)
+    {
+        $giftParachutes = GiftParachute::all();
+
+        if ($giftParachutes->isNotEmpty() && !$giftParachutes->contains('gift_parachute_index', -1)) { 
+            foreach ($giftParachutes as $giftParachute) {
+
+                $newPlayerParachute = $newPlayer->playerParachutes()->create([
+
+                    'parachute_index' => $giftParachute->gift_parachute_index,
+                ]);
+            }
+        }
+    }
+
+    public function createDailyLoginDays(Player $newPlayer)
+    {
+        $newPlayer->checkLoginDays()->create([
+
+            'consecutive_days' => 1,
+            'reward_status' => 1,
+            'created_at' => now(), 
+            'updated_at' => now()
+        ]);
+    }
+
+    // Updating Players Daily Login Data
     public function consecutiveLoginDays($playerId)
     {
         $playerLogin = DailyLoginCheck::where('player_id', $playerId)->first();
 
         if (is_null($playerLogin) || empty($playerLogin)) {
             
-            DailyLoginCheck::create(['player_id' => $playerId, 'consecutive_days' => 1]);
+            $newPlayer = Player::find($playerId);
+            $this->createDailyLoginDays($newPlayer);
         }
 
-        else{
+        else {
 
-            $previousLoginDate = new Carbon($playerLogin->updated_at);
-            $currentDate = Carbon::now();
+            $date = Carbon::parse(optional($playerLogin->updated_at)->format('d-m-Y') ?? "01-01-2019");
+            $now = now()->format('d-m-Y');
+            $difference = $date->diffInDays($now);
 
-            $difference = $previousLoginDate->diffInDays($currentDate);
+            if($difference == 0){
 
-            if($difference>0 && $difference<2){
-                $playerLogin->increment('consecutive_days');
-            }else{
-               $playerLogin->consecutive_days = 1; 
+                $playerLogin->update([
+
+                    'created_at' => null
+                ]);
             }
-            
-            $playerLogin->save();               // To Update updated_at
+
+            elseif($difference > 0 && $difference < 2){
+
+                $playerLogin->update([
+                    'consecutive_days' => $playerLogin->consecutive_days + 1,             
+                    'reward_status' => 1,
+                    'created_at' => $playerLogin->updated_at, 
+                    'updated_at' => now()
+                ]);
+            }
+
+            elseif($difference > 1){
+                
+                $playerLogin->update([
+                    'consecutive_days' => 1,
+                    'reward_status' => 1,
+                    'created_at' => $playerLogin->updated_at, 
+                    'updated_at' => now()
+                ]);
+
+            }  
         }
     }
 
-    public function showPlayerDetails($playerId)
+    // For View Player API
+    public function showPlayerDetails(Request $request, $playerId = null)
     {   
-        $playerToShow = Player::find($playerId);
+        $playerToShow = Player::find($request->userId ?? $playerId);
 
         if(is_null($playerToShow) || empty($playerToShow)){
 
             return response()->json(['error'=>'Invalid player'], 422);
         }
 
-        $this->consecutiveLoginDays($playerId);
+        $this->consecutiveLoginDays($playerToShow->id);
         
+        $this->rewardDailyLoginPrize($playerToShow->checkLoginDays);
+
         return new PlayerResource($playerToShow);
     }
 
-    public function editUserInfo(UserRequest $request)
+    public function rewardDailyLoginPrize(DailyLoginCheck $dailyLoginCheck)
     {
-        $request_1 = $request->only(['username','phone', 'device_info', 'email', 'location', 'facebook_id', 'facebook_name', 'profile_pic', 'login_type', 'connection_type']);
+        if ($dailyLoginCheck->reward_status) {
+            
+            $prizeToReward = DailyLoginReward::with('rewardType')->get()->get($dailyLoginCheck->consecutive_days-1);
+
+            
+            if ($prizeToReward) {
+
+                $playerStatisticToUpdate = Player::find($dailyLoginCheck->player_id)->playerStatistics;
+                
+                $playerBoostPackToUpdate = Player::find($dailyLoginCheck->player_id)->playerBoostPacks; 
+                
+                if (Str::is('*oin', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerStatisticToUpdate->increment('coins', $prizeToReward->amount);
+                }
+
+                elseif (Str::is('*em', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerStatisticToUpdate->increment('gems', $prizeToReward->amount);
+                }
+
+                elseif (Str::is('*peed*', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerBoostPackToUpdate->increment('speed_boost', $prizeToReward->amount);
+                }
+
+                elseif (Str::is('*rmor*', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerBoostPackToUpdate->increment('armor_boost', $prizeToReward->amount);
+                }
+
+                elseif (Str::is('*mmo*', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerBoostPackToUpdate->increment('ammo_boost', $prizeToReward->amount);
+                }
+
+                elseif (Str::is('*PBoost', $prizeToReward->rewardType->reward_type_name)) {
+                    
+                    $playerBoostPackToUpdate->increment('xp_multiplier', $prizeToReward->amount);
+                }
+
+                $dailyLoginCheck->update(['reward_status' => 0]);
+            }
+        }
+    }
+
+    public function editUserInfo(Request $request)
+    {
+        $request->validate([
+            'userId'=>'required|exists:users,id'
+        ]);
+
+        $request = $this->sanitize($request);
+
+        $request_1 = $request->only(['username', 'email', 'location', 'profile_pic', 'connection_type', 'country']);
 
         $request_2 = $request->only(['player_batch','selected_parachute', 'selected_character', 'selected_animation', 'selected_weapon']);
 
-        $request_1 = array_filter($request_1);
+        // Filtering null values to prevent null updation
+        $request_1 = array_filter($request_1, function($value) {
+            return ($value !== null); 
+        });
 
+        // Filtering null values to prevent null updation
         $request_2 = array_filter($request_2, function($value) {
             return ($value !== null && $value !== false); 
         });
@@ -277,17 +529,62 @@ class PlayerController extends Controller
         return response()->json(['error'=>'Invalid user'], 422);
     }
 
-    public function definePlayerLever($currentXpPoint)
+    public function sanitize(Request $request)
     {
-        $x = 0;
-        $m = 0;
-
-        while ($m <= $currentXpPoint) {
-            $x++;
-            $m += $x * ($x + 1) * 25;
+        if (!empty($request->facebookName)) {
+            $request['username'] = $request->facebookName;
         }
+        else{
+            $request['username'] = $request->userName;
+        }
+        
+        unset($request['userName']);
 
-        return $x;
+        $request['email'] = $request->userEmail;
+        unset($request['userEmail']);
+
+        $request['location'] = $request->userLocation;
+        unset($request['userLocation']);
+
+        $request['facebook_id'] = $request->facebookId;
+        unset($request['facebookId']);
+
+        $request['facebook_name'] = $request->facebookName;
+        unset($request['facebookName']);
+
+        $request['profile_pic'] = $request->profilePic;
+        unset($request['profilePic']);
+
+        $request['connection_type'] = $request->connectionType;
+        unset($request['connectionType']);
+
+        /*
+        if (empty($request->facebook_id)) {
+            $request['device_info'] = $request->userDeviceId;
+            $request['login_type'] = 'false';
+        }
+        else{
+            $request['device_info'] = '';
+            $request['login_type'] = 'true';
+        }
+        */
+
+        $request['player_batch'] = $request->playerBatch;
+        unset($request['playerBatch']);
+
+        $request['selected_parachute'] = $request->selectedParachute;
+        unset($request['selectedParachute']);
+
+        $request['selected_character'] = $request->selectedCharacter;
+        unset($request['selectedCharacter']);
+
+        $request['selected_animation'] = $request->selectedAnimation;
+        unset($request['selectedAnimation']);
+
+        $request['selected_weapon'] = $request->selectedWeapon;
+        unset($request['selectedWeapon']);
+
+        return $request;
     }
 
     public function showLeaderboard(Request $request)
@@ -303,8 +600,20 @@ class PlayerController extends Controller
             return response()->json(['message'=>'No player found'], 422);
         }
 
+        // Deleting all data from leader board
         Leader::truncate();
 
+        // Creating leader board for current data
+        $this->createLeadershipBoard($topLeaders);
+
+        $leaders = Leader::take(20)->get();
+        $myPossition = Player::find($request->userId)->playerLeadershipPosition ?? null;
+
+        return ['topLeaders' => LeaderResource::collection($leaders), 'myPossition'=> new MyLeaderResource($myPossition)];
+    }
+
+    public function createLeadershipBoard($topLeaders)
+    {
         foreach($topLeaders as $leader){
             $newLeader = new Leader();
             $newLeader->username = $leader->player->user->username;
@@ -316,14 +625,7 @@ class PlayerController extends Controller
             $newLeader->player_id = $leader->player_id;
             $newLeader->save();
         }
-
-        $leaders = Leader::take(20)->get();
-        $myPossition = Player::find($request->userId)->playerLeadershipPosition ?? null;
-
-
-        return ['topLeaders' => LeaderResource::collection($leaders), 'myPossition'=> new MyLeaderResource($myPossition)];
     }
-
 
     public function updateMultipleAssets(Request $request)
     {
@@ -336,9 +638,9 @@ class PlayerController extends Controller
         $playerStatisticsToUpdate = $playerToUpdate->playerStatistics;
         $playerBoostPacksToUpdate = $playerToUpdate->playerBoostPacks;
 
-        $coins = $request->coinsEarned ?? 0;
-        $gems = $request->gemsEarned ?? 0;
-        $xp_multiplier = $request->xpMultiplierEarned ?? 0;
+        $coins = empty($request->coinsEarned) ? 0 : $request->coinsEarned;
+        $gems = empty($request->gemsEarned) ? 0 : $request->gemsEarned;
+        $xp_multiplier = empty($request->xpMultiplierEarned) ? 0 : $request->xpMultiplierEarned;
 
         $playerStatisticsToUpdate->increment('coins', $coins);
         $playerStatisticsToUpdate->increment('gems', $gems);
