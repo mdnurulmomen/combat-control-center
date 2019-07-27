@@ -10,7 +10,8 @@ Route::middleware(['api', 'cors'])->group(function (){
 
         Route::get('game/version', 'Api\v1\GameController@showGameVersion')->name('api.v1.game_version');
         Route::post('user', 'Api\v1\PlayerController@checkPlayerExist')->name('api.v1.user_create');
-        Route::get('player/{playerId}', 'Api\v1\PlayerController@showPlayerDetails')->name('api.v1.player_show');
+        Route::get('player/{playerId}/show', 'Api\v1\PlayerController@showPlayerDetails')->name('api.v1.player_show'); 
+        Route::post('player/show', 'Api\v1\PlayerController@showPlayerDetails')->name('api.v1.player_show_2');
         Route::post('player', 'Api\v1\PlayerController@editUserInfo')->name('api.v1.player_update');
         Route::get('store', 'Api\v1\StoreController@showAllStore')->name('api.v1.store_show');
         Route::post('store', 'Api\v1\PurchaseController@purchaseStoreItem')->name('api.v1.store_purchase');
@@ -24,9 +25,12 @@ Route::middleware(['api', 'cors'])->group(function (){
         Route::post('treasure', 'Api\v1\TreasureController@playerTreasureList')->name('api.v1.player_treasure_list');
         Route::post('treasure/redemption', 'Api\v1\TreasureController@treasureRedemption')->name('api.v1.treasure_redemption');
 
-
         Route::post('subscription', 'Api\v1\SubscriptionController@showPlayerSubscriptionDetails')->name('api.v1.subscription_detail_show');
         Route::post('subscription/add', 'Api\v1\SubscriptionController@addPlayerSubscriptionPackage')->name('api.v1.player_subscription_add');
+
+        Route::post('vendors', 'Api\v1\VendorController@showAllRelatedVendors')->name('api.v1.related_vendors_detail');
+
+        Route::post('missions', 'Api\v1\MissionController@showPlayerMissions')->name('api.v1.set_player_missions');
 
     });
 

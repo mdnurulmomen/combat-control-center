@@ -76,10 +76,10 @@
 
                                             <tr class="info">
                                                 <th scope="row">3</th>
-                                                <td>player/{playerId}</td>
+                                                <td>player/show</td>
                                                 <td>Player Details</td>
-                                                <td>Get</td>
-                                                <td>None</td>
+                                                <td>Post</td>
+                                                <td>userId (Required)</td>
                                             </tr>
 
                                             <tr class="info">
@@ -146,14 +146,13 @@
                                                     <span>userId (required),</span>
                                                     <span>battleMode,</span>
                                                     <span>coinsGainInCurrentMatch,</span>
-                                                    <span>gemsGainInCurrentMatch,</span>
                                                     <span>totalOpponentsKilled,</span>
                                                     <span>totalMonsterKilled,</span>
                                                     <span>totalDoubleKills,</span>
                                                     <span>totalTripleKills,</span>
                                                     <span>totalTreasureCollected,</span>
                                                     <span>totalTreasureWon,</span>
-                                                    <span>totalGunsCollectedInField, </p>
+                                                    <span>totalGunsCollectedInField, </span>
                                                     <span>totalItemsCollectedInField, </span>
                                                     <span>totalCratesCollected, </span>
                                                     <span>totalAirDropsCollected, </span>
@@ -284,7 +283,18 @@
                                                 </td>
                                             </tr>
 
+                                            <tr class="info">
+                                                <th scope="row">19</th>
+                                                <td>missions</td>
+                                                <td>Enable $Status of Player Missions </td>
+                                                <td>Post</td>
+                                                <td>
+                                                    <span>userId (required)</span>
+                                                </td>
+                                            </tr>
+
                                         </tbody>
+                                        
                                     </table>
 
                                 </div>
@@ -420,7 +430,7 @@
                                                     <span>totalTripleKills,</span>
                                                     <span>totalTreasureCollected,</span>
                                                     <span>totalTreasureWon,</span>
-                                                    <span>totalGunsCollectedInField, </p>
+                                                    <span>totalGunsCollectedInField, </span>
                                                     <span>totalItemsCollectedInField, </span>
                                                     <span>totalCratesCollected, </span>
                                                     <span>totalAirDropsCollected, </span>
@@ -551,7 +561,18 @@
                                                 </td>
                                             </tr>
 
+                                            <tr class="info">
+                                                <th scope="row">19</th>
+                                                <td>missions</td>
+                                                <td>Enable $Status of Player Missions </td>
+                                                <td>Post</td>
+                                                <td>
+                                                    <span>userId (required)</span>
+                                                </td>
+                                            </tr>
+
                                         </tbody>
+
                                     </table>
 
                                 </div>
