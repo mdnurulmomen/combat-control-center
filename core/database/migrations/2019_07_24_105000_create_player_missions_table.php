@@ -18,7 +18,8 @@ class CreatePlayerMissionsTable extends Migration
             $table->increments('id');
 
             $table->mediumInteger('progress_play_number')->nullable();
-            $table->mediumInteger('progress_play_time')->nullable();
+            $table->float('progress_play_time', 8, 2)->nullable();
+            // $table->mediumInteger('progress_play_time')->nullable();
             $table->mediumInteger('progress_kill_opponent')->nullable();
             $table->mediumInteger('progress_kill_monster')->nullable();
             $table->mediumInteger('progress_win_top_time')->nullable();

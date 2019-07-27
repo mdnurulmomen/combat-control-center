@@ -17,7 +17,8 @@ class CreatePlayHistoriesTable extends Migration
             $table->bigIncrements('id');
             $table->timestamp('game_date');
             $table->string('battle_mode')->nullable();
-            $table->string('play_duration')->default(0);
+            $table->float('play_duration', 8, 2)->default(0);
+            // $table->string('play_duration')->default(0);
             $table->mediumInteger('player_rank');
             $table->bigInteger('player_id');
             $table->timestamps();
