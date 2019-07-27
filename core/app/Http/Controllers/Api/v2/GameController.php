@@ -370,7 +370,7 @@ class GameController extends Controller
 
         }
 
-        return ['statistics'=>new StatisticsResource($playerStatisticToUpdate)];
+        return ['statistics'=>new StatisticsResource(PlayerStatistic::find($playerStatisticToUpdate->id))];
     }
 
     public function updateMissionProgression(Request $request, $missions)
