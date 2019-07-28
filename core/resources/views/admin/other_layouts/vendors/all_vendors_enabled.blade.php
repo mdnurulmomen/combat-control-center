@@ -251,9 +251,14 @@
 
                                                     <div class="form-row mb-4">
                                                         <label for="validationServerUsername">Phone</label>
+
                                                         <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">88</span>
+                                                            </div>
                                                             <input type="tel" name="mobile" class="form-control  is-invalid" placeholder="Phone" aria-describedby="inputGroupPrepend3" required="true">
                                                         </div>
+
                                                     </div>
 
                                                     <div class="form-row mb-4">
@@ -389,7 +394,7 @@
                                 </td>
                                 
                                 <td>
-                                    <p>{{ $vendor->mobile }}</p>
+                                    <p>{{ ltrim($vendor->mobile, '88') }}</p>
                                 </td>
 
                                 @if(auth()->user()->can('update'))
@@ -457,7 +462,10 @@
                                                                 <div class="form-row mb-4">
                                                                     <label for="validationServerUsername">Phone</label>
                                                                     <div class="input-group">
-                                                                        <input type="tel" name="mobile" class="form-control  is-invalid" value="{{ $vendor->mobile }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text">88</span>
+                                                                        </div>
+                                                                        <input type="tel" name="mobile" class="form-control  is-invalid" value="{{ ltrim($vendor->mobile, '88') }}" aria-describedby="inputGroupPrepend3" required="true">
                                                                     </div>
                                                                 </div>
 

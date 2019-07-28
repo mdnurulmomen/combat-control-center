@@ -248,7 +248,7 @@
                                                     <span>treasureId (required),</span>
                                                     <span>playerPhone,</span>
                                                     <span>agentPhone,</span>
-                                                    <span>exchangingType (coins,gems,MB,TalkTime,talkTime,talktime)</span>
+                                                    <span>exchangingType (coins,gems,MB,TalkTime,talkTime,talktime,Burger)</span>
                                                 </td>
                                             </tr>
 
@@ -526,7 +526,7 @@
                                                     <span>treasureId (required),</span>
                                                     <span>playerPhone,</span>
                                                     <span>agentPhone,</span>
-                                                    <span>exchangingType (coins,gems,MB,TalkTime,talkTime,talktime)</span>
+                                                    <span>exchangingType (coins,gems,MB,TalkTime,talkTime,talktime,Burger)</span>
                                                 </td>
                                             </tr>
 
