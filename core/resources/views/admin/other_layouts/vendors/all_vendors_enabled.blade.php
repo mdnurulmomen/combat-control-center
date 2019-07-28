@@ -369,9 +369,11 @@
                         <tbody>
 
                         @if($vendors->isEmpty())
+
                             <tr class="danger">
                                 <td class="text-danger" colspan='5'>No Data Found</td>
                             </tr>
+
                         @endif
                         
                         @foreach($vendors as $vendor)
@@ -379,6 +381,7 @@
                             <tr>
 
                                 <td>{{ $vendor->name }}</td>
+
                                 <td>{{ $vendor->treasureType->treasure_type_name }}</td>
 
                                 <td>
@@ -636,8 +639,6 @@
 
                     $.each( result, function(objectArraykey, value) {
 
-                        // console.log(this.id);
-
                         $("select[name*='city_id']").append("<option value='" + this.id + "'>" + this.name + "</option>");
 
                     });
@@ -676,8 +677,6 @@
                     $("input[name*='address']").val('');
 
                     $.each( result, function(objectArraykey, value) {
-
-                        // console.log(this.name);
 
                         $("select[name*='area_id']").append("<option value='" + this.id + "'>" + this.name + "</option>");
 

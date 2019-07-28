@@ -37,7 +37,7 @@ class VendorController extends Controller
 
         }
         
-        $vendors = Vendor::paginate(6);
+        $vendors = Vendor::with('treasureType')->paginate(6);
         return view('admin.other_layouts.vendors.all_vendors_enabled', compact('vendors'));
     }
 

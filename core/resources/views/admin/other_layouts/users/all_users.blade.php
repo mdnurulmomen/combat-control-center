@@ -27,7 +27,7 @@
                         
                         <button type="button" class="btn btn-success float-right btn-sm" data-toggle="modal" data-target="#addModal">
                             <i class="fa fa-plus" aria-hidden="true"></i>
-                            Create User
+                            New User
                         </button>
                         
                         @endif

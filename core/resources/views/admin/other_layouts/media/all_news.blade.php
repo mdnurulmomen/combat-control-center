@@ -15,7 +15,7 @@
                     <div class="col-6"> 
                         <button type="button" class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#addModal" title="Add">
                             <i class="fa fa-plus" aria-hidden="true"></i>
-                            Create News
+                            New News
                         </button>
                     </div>
 
