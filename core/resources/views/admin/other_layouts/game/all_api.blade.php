@@ -286,7 +286,7 @@
                                             <tr class="info">
                                                 <th scope="row">19</th>
                                                 <td>missions</td>
-                                                <td>Enable $Status of Player Missions </td>
+                                                <td>Enable & Status of Player Missions </td>
                                                 <td>Post</td>
                                                 <td>
                                                     <span>userId (required)</span>
@@ -564,7 +564,7 @@
                                             <tr class="info">
                                                 <th scope="row">19</th>
                                                 <td>missions</td>
-                                                <td>Enable $Status of Player Missions </td>
+                                                <td>Enable & Status of Player Missions </td>
                                                 <td>Post</td>
                                                 <td>
                                                     <span>userId (required)</span>
