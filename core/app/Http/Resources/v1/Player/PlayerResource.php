@@ -20,7 +20,7 @@ class PlayerResource extends JsonResource
     {
 
         return [
-            'playerBasicInfo'=>new PlayerUserDetails($this->user),
+            'playerBasicInfo'=> new PlayerUserDetails($this->user),
             
             'playerAdvanceInfo'=>new PlayerSelectionDetails($this),
 
@@ -30,7 +30,7 @@ class PlayerResource extends JsonResource
             
             'totalBoostItems'=>new PlayerBoostDetails($this),
 
-            /*'playerSubscriptionDetails' => new PlayerSubscriptionResource($this->subscriptionPackage()->where('player_id', $this->id)->where('status', 1)->first() ?? new PlayerSubscription() ),*/
+            /*'playerSubscriptionDetails' => new PlayerSubscriptionResource($this->subscriptionPackage()->where('player_id', $this->id)->where('status', 1)->first() ?? new PlayerSubscription() ), */
 
             'playerSubscriptionDetails' => new PlayerSubscriptionResource($this->subscribed()->first() ?? new PlayerSubscription() ),
 
@@ -38,7 +38,7 @@ class PlayerResource extends JsonResource
 
             'messages'=>new MessageCollection($this->allMessages()),
 
-            // 'consequentLoginDays'=>$this->checkLoginDays->consecutive_days
+            'dailyLoginReward'=>new PlayerDailyLoginResource($this),
         ];
     }
 }
