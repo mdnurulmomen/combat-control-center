@@ -61,6 +61,7 @@ class TreasureController extends Controller
     {
         $treasureTypeToDelete = TreasureType::find($treasureTypeId);
         $treasureTypeToDelete->relatedTreasures()->delete(); 
+        $treasureTypeToDelete->relatedVendors()->delete(); 
         $treasureTypeToDelete->delete();
 
         return redirect()->back()->with('success', 'Treasure Type is Deleted');
@@ -70,6 +71,7 @@ class TreasureController extends Controller
     {
         $treasureTypeToUndo = TreasureType::withTrashed()->find($treasureTypeId);
         $treasureTypeToUndo->relatedTreasures()->restore();
+        $treasureTypeToUndo->relatedVendors()->restore();
         $treasureTypeToUndo->restore();
 
         return redirect()->back()->with('success', 'Treasure Type is Restored'); 
@@ -83,7 +85,7 @@ class TreasureController extends Controller
 
     public function showDisabledTreasures()
     {
-        $treasures = Treasure::onlyTrashed()->with('treasureType')->paginate(6);
+        $treasures = Treasure::onlyTrashed()->paginate(6);
         return view('admin.other_layouts.treasures.all_treasures_disabled', compact('treasures'));
     }
 

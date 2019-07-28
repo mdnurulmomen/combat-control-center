@@ -43,7 +43,8 @@ class VendorController extends Controller
 
     public function showDisabledVendors()
     {
-        $vendors = Vendor::onlyTrashed()->with(['treasureType', 'division', 'city', 'area'])->paginate(6);
+        $vendors = Vendor::onlyTrashed()->with(['treasureType'])->paginate(6);
+
         return view('admin.other_layouts.vendors.all_vendors_disabled', compact('vendors'));
     }
     

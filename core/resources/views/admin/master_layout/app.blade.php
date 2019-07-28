@@ -176,7 +176,7 @@
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/user*')) active @endif" href="{{route('admin.view_users')}}">
             <i class="app-menu__icon fa fa-user"></i>
-            <span class="app-menu__label">Users</span>
+            <span class="app-menu__label">Login Users</span>
           </a>
         </li>
 

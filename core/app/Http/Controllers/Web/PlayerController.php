@@ -136,17 +136,18 @@ class PlayerController extends Controller
     {
         $playerToDelete = Player::find($playerId);
 
+        $playerToDelete->playerMissions()->delete();
         $playerToDelete->playerHistories()->delete();
         $playerToDelete->playerStatistics()->delete();
-        $playerToDelete->playerTreasures()->delete();
-        $playerToDelete->playerCharacters()->delete();
-        $playerToDelete->playerAnimations()->delete();
-        $playerToDelete->playerParachutes()->delete();
-        $playerToDelete->playerWeapons()->delete();
         // $playerToDelete->playerAchievements()->delete();
+        $playerToDelete->playerTreasures()->delete();
+        $playerToDelete->playerWeapons()->delete();
+        $playerToDelete->playerParachutes()->delete();
+        $playerToDelete->playerAnimations()->delete();
+        $playerToDelete->playerCharacters()->delete();
         $playerToDelete->playerBoostPacks()->delete();
-        $playerToDelete->checkLoginDays()->delete();
         $playerToDelete->subscriptionPackage()->delete();
+        $playerToDelete->checkLoginDays()->delete();
         $playerToDelete->user()->delete();
         
         $playerToDelete->delete();
@@ -330,6 +331,26 @@ class PlayerController extends Controller
         $botToDelete->player->delete();
         
         $botToDelete->delete();
+
+
+        /*
+        $playerToDelete = Player::find($playerId);
+        $playerToDelete->playerMissions()->delete();
+        $playerToDelete->playerHistories()->delete();
+        $playerToDelete->playerStatistics()->delete();
+        // $playerToDelete->playerAchievements()->delete();
+        $playerToDelete->playerTreasures()->delete();
+        $playerToDelete->playerWeapons()->delete();
+        $playerToDelete->playerParachutes()->delete();
+        $playerToDelete->playerAnimations()->delete();
+        $playerToDelete->playerCharacters()->delete();
+        $playerToDelete->playerBoostPacks()->delete();
+        $playerToDelete->subscriptionPackage()->delete();
+        $playerToDelete->checkLoginDays()->delete();
+        $playerToDelete->user()->delete();
+        
+        $playerToDelete->delete();
+        */
 
         return redirect()->back()->with('success', 'Bot is Deleted');
     }

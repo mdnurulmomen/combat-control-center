@@ -109,8 +109,6 @@
                     if (!searching) {
 
                         $(row).hide();
-                        
-                        // console.log(data.created_at);
 
                         var rowDate = new Date(data.created_at).toDateString();
                         var today = new Date().toDateString();
@@ -121,6 +119,14 @@
                         }
 
                     }
+                },
+
+                drawCallback : function(settings){
+
+                    var api = this.api();
+                    var json = api.ajax.json();
+                    globalVariable = json.data;
+                    // console.log(globalVariable);
                 }
             });
 

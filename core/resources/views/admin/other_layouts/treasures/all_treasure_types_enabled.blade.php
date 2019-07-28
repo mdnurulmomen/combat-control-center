@@ -104,7 +104,7 @@
                                         @csrf
                                         <div class="modal-body">
                                             <p>You are about to delete.</p> 
-                                            <p class="text-muted">This may cause error to related treasure.</p>
+                                            <p class="text-muted">This may delete related treasures & vendors.</p>
                                             
                                             <h5>Do you want to proceed ?</h5>
                                         </div>

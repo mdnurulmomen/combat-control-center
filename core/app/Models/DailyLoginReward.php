@@ -11,6 +11,6 @@ class DailyLoginReward extends Model
 
    	public function rewardType()
    	{
-   		return $this->belongsTo(RewardType::class, 'reward_type_id', 'id');
+   		return $this->belongsTo(RewardType::class, 'reward_type_id', 'id')->withTrashed();
    	}
 }

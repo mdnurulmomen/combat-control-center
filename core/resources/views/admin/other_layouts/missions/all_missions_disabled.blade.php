@@ -47,7 +47,7 @@
                             <tr>
                                 <td>{{ $mission->id }}</td>
                                 <td>{{ $mission->name }}</td>
-                                <td>{{ $mission->mission_type_id }}</td>
+                                <td>{{ $mission->missionType->mission_type_name }}</td>
                                 <td>
 
                                     <button class="btn btn-outline-danger"  data-toggle="modal" data-target="#undoModal{{$mission->id}}" title="Undo">

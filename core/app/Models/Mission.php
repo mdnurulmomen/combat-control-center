@@ -14,6 +14,6 @@ class Mission extends Model
 
     public function missionType()
     {
-    	return $this->belongsTo('App\Models\MissionType', 'mission_type_id', 'id');
+    	return $this->belongsTo('App\Models\MissionType', 'mission_type_id', 'id')->withTrashed();
     }
 }

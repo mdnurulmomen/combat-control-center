@@ -13,7 +13,7 @@ class Vendor extends Model
 
     public function treasureType()
     {
-    	return $this->belongsTo(TreasureType::class, 'treasure_type_id', 'id');
+    	return $this->belongsTo(TreasureType::class, 'treasure_type_id', 'id')->withTrashed();
     }
 
     public function division()

@@ -53,7 +53,7 @@ class MissionController extends Controller
     public function missionTypeDeleteMethod($missionTypeId)
     {
         $missionTypeToDelete = MissionType::find($missionTypeId);
-        // $missionTypeToDelete->relatedMissions()->delete(); 
+        $missionTypeToDelete->missions()->delete(); 
         $missionTypeToDelete->delete();
 
         return redirect()->back()->with('success', 'Mission Type is Deleted');
