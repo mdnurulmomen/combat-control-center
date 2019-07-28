@@ -224,7 +224,7 @@
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/bundle-pack*')) active @endif" href="{{route('admin.view_enabled_bundle_packs')}}">
-            <i class="app-menu__icon fa fa-gear"></i>
+            <i class="app-menu__icon fa fa-gift"></i>
             <span class="app-menu__label">Bundle Packs</span>
           </a>
         </li>
@@ -291,7 +291,7 @@
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/parachute*')) active @endif" href="{{route('admin.view_enabled_parachutes')}}">
-            <i class="app-menu__icon fa fa-money"></i>
+            <i class="app-menu__icon fa fa-bullseye"></i>
             <span class="app-menu__label">Parachutes</span>
           </a>
         </li>
@@ -305,7 +305,7 @@
 
         <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/daily-login-reward*') || Request::is('admin/reward-types*')) active @endif" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-money"></i>
+            <i class="app-menu__icon fa fa-trophy"></i>
             <span class="app-menu__label">Rewards</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
@@ -336,14 +336,14 @@
 
         <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/subscription*')) active @endif" href="{{route('admin.view_enabled_subscription_packages')}}">
-            <i class="app-menu__icon fa fa-money"></i>
+            <i class="app-menu__icon fa fa-free-code-camp"></i>
             <span class="app-menu__label">Subscriptions</span>
           </a>
         </li>
 
         <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/treasure*')) active @endif" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-money"></i>
+            <i class="app-menu__icon fa fa-btc"></i>
             <span class="app-menu__label">Treasure</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
@@ -412,7 +412,7 @@
 
         <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/weapon*')) active @endif"  href="{{route('admin.view_enabled_weapons')}}">
-            <i class="app-menu__icon fa fa-money"></i>
+            <i class="app-menu__icon fa fa-cogs"></i>
             <span class="app-menu__label">Weapons</span>
           </a>
         </li>
