@@ -136,7 +136,7 @@ class GameController extends Controller
         $playerBoostPacks = $player->playerBoostPacks;
         $itemToDecrement = array();
 
-        if($request->gameBoostItems->meleeBooster > 102) {
+        if($request->gameBoostItems['meleeBooster'] > 102) {
 
             if($playerBoostPacks->melee_boost > 0)
                 $itemToDecrement[] = 'melee_boost'; 
@@ -144,7 +144,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient melee booster'], 401);
         } 
             
-        if($request->gameBoostItems->lightBooster > 0) {
+        if($request->gameBoostItems['lightBooster'] > 0) {
 
             if($playerBoostPacks->light_boost > 0)
                 $itemToDecrement[] = 'light_boost';
@@ -152,7 +152,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient light booster'], 401);
         } 
 
-        if($request->gameBoostItems->heavyBooster > 106) {
+        if($request->gameBoostItems['heavyBooster'] > 106) {
 
             if($playerBoostPacks->heavy_boost > 0)
                 $itemToDecrement[] = 'heavy_boost'; 
@@ -160,7 +160,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient heavy booster'], 401);
         }
 
-        if($request->gameBoostItems->ammoBoost) {
+        if($request->gameBoostItems['ammoBoost']) {
 
             if($playerBoostPacks->ammo_boost > 0)
                 $itemToDecrement[] = 'ammo_boost';  
@@ -168,7 +168,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient ammo booster'], 401);
         }
 
-        if($request->gameBoostItems->speedBoost) {
+        if($request->gameBoostItems['speedBoost']) {
 
             if($playerBoostPacks->speed_boost > 0)
                 $itemToDecrement[] = 'speed_boost'; 
@@ -176,7 +176,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient speed booster'], 401);
         }
 
-        if($request->gameBoostItems->armorBoost) {
+        if($request->gameBoostItems['armorBoost']) {
 
             if($playerBoostPacks->armor_boost > 0)
                 $itemToDecrement[] = 'armor_boost'; 
@@ -184,7 +184,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient armor booster'], 401);
         }
 
-        if($request->gameBoostItems->rangeBoost) {
+        if($request->gameBoostItems['rangeBoost']) {
 
             if($playerBoostPacks->range_boost > 0)
                 $itemToDecrement[] = 'range_boost'; 
@@ -192,7 +192,7 @@ class GameController extends Controller
                 return response()->json(['error'=>'Not sufficient range booster'], 401);
         }
 
-        if($request->gameBoostItems->xpMultiplier) {
+        if($request->gameBoostItems['xpMultiplier']) {
 
             if($playerBoostPacks->xp_multiplier < 1)
                 return response()->json(['error'=>'Not sufficient xp booster'], 401);
