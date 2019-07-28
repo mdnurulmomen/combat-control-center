@@ -22,7 +22,7 @@ class MatchResource extends JsonResource implements JWTSubject
         ];
     }
 
-    public function getJWTIdentifier()
+    /*public function getJWTIdentifier()
     {
       return $this->getKey();
     }
@@ -30,5 +30,5 @@ class MatchResource extends JsonResource implements JWTSubject
     public function getJWTCustomClaims()
     {
       return [];
-    }
+    }*/
 }
