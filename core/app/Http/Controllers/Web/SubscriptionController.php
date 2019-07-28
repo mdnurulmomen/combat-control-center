@@ -13,7 +13,7 @@ class SubscriptionController extends Controller
     {
         if($request->ajax()){
 
-            $model = SubscriptionPackage::with('subscriptionPackageType');
+            $model = SubscriptionPackage::with('subscriptionPackageType')->select('subscription_packages.*');
 
             return  DataTables::eloquent($model)
 

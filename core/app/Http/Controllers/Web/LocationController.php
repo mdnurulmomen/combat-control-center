@@ -11,13 +11,13 @@ class LocationController extends Controller
 {
    	public function showEnabledCities()
     {
-        $cities = City::paginate(6);
+        $cities = City::with('division')->paginate(6);
         return view('admin.other_layouts.locations.all_cities_enabled', compact('cities'));
     }
 
     public function showDisabledCities()
     {
-        $cities = City::onlyTrashed()->paginate(6);
+        $cities = City::onlyTrashed()->with('division')->paginate(6);
         return view('admin.other_layouts.locations.all_cities_disabled', compact('cities'));
     }
 
@@ -73,13 +73,13 @@ class LocationController extends Controller
 
     public function showEnabledAreas()
     {
-        $areas = Area::paginate(6);
+        $areas = Area::with('city')->paginate(6);
         return view('admin.other_layouts.locations.all_areas_enabled', compact('areas'));
     }
 
     public function showDisabledAreas()
     {
-        $areas = Area::onlyTrashed()->paginate(6);
+        $areas = Area::onlyTrashed()->with('city')->paginate(6);
         return view('admin.other_layouts.locations.all_areas_disabled', compact('areas'));
     }
 

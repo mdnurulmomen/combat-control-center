@@ -83,7 +83,7 @@ class TreasureController extends Controller
 
     public function showDisabledTreasures()
     {
-        $treasures = Treasure::onlyTrashed()->paginate(6);
+        $treasures = Treasure::onlyTrashed()->with('treasureType')->paginate(6);
         return view('admin.other_layouts.treasures.all_treasures_disabled', compact('treasures'));
     }
 

@@ -17,7 +17,7 @@ class BundleController extends Controller
     {
         if($request->ajax()){
 
-            $model = BundlePack::with('bundleComponents');
+            $model = BundlePack::with('bundleComponents')->select('bundle_packs.*');
 
             return  DataTables::eloquent($model)
 
@@ -68,6 +68,7 @@ class BundleController extends Controller
     public function showDisabledBundlePacks()
     {
         $bundlePacks = BundlePack::onlyTrashed()->with('bundleComponents')->paginate(6);
+        
         return view('admin.other_layouts.bundle_packs.all_bundle_packs_disabled', compact('bundlePacks'));
     }
 

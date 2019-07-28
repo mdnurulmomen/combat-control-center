@@ -120,7 +120,7 @@ class MissionController extends Controller
 
     public function showDisabledMissions()
     {
-        $missions = Mission::onlyTrashed()->paginate(6);
+        $missions = Mission::onlyTrashed()->with('missionType')->paginate(6);
         return view('admin.other_layouts.missions.all_missions_disabled', compact('missions'));
     }
 

@@ -37,13 +37,13 @@ class VendorController extends Controller
 
         }
         
-        $vendors = Vendor::with('treasureType')->paginate(6);
+        $vendors = Vendor::with(['treasureType', 'division', 'city', 'area'])->paginate(6);
         return view('admin.other_layouts.vendors.all_vendors_enabled', compact('vendors'));
     }
 
     public function showDisabledVendors()
     {
-        $vendors = Vendor::onlyTrashed()->paginate(6);
+        $vendors = Vendor::onlyTrashed()->with(['treasureType', 'division', 'city', 'area'])->paginate(6);
         return view('admin.other_layouts.vendors.all_vendors_disabled', compact('vendors'));
     }
     
@@ -78,7 +78,7 @@ class VendorController extends Controller
 
     public function showVendorEditForm(Request$request, $vendorId)
     {
-        $vendorToUpdate = Vendor::findOrFail($vendorId);
+        $vendorToUpdate = Vendor::with(['treasureType', 'division', 'city', 'area'])->findOrFail($vendorId);
         return view('admin.other_layouts.vendors.edit_vendor', compact('vendorToUpdate'));
     }
 
