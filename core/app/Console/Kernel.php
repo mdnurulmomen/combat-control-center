@@ -2,8 +2,8 @@
 
 namespace App\Console;
 
-use App\Models\PlayerSubscription;
 use Illuminate\Console\Scheduling\Schedule;
+// use App\Console\Commands\PlayerTreasureAndSubscription;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+    
+        Commands\PlayerTreasureAndSubscription::class,
     ];
 
     /**
@@ -25,14 +26,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-
-        $schedule->call(
-            function(){
-                PlayerSubscription::where('end_time','<', now())->update(['status' => 0]);
-            }
-        )->everyMinute();
+        $schedule->command('playerTreasureAndSubscirption:day')
+                 ->everyMinute();
     }
 
     /**
