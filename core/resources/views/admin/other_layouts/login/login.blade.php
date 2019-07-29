@@ -8,15 +8,12 @@
 	<!-- Favicon -->
     <link rel="icon" href="{{ asset('assets/admin/images/settings/favicon.png') }}" type="image/gif" sizes="16x16">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/bootstrap.min.css') }}">
-<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/font-awesome.min.css') }}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/util.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/login.css') }}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/toastr.min.css') }}">
-<!--===============================================================================================-->
+	
 </head>
 
 
@@ -56,16 +53,19 @@
 						</div>
 
 						<div>
-							<a href="#" class="txt1">
+							{{-- <a href="#" class="txt1">
 								Forgot Password?
-							</a>
+							</a> --}}
+							<button class="login100-form-btn">
+								Login
+							</button>
 						</div>
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
+						{{-- <button class="login100-form-btn">
 							Login
-						</button>
+						</button> --}}
 					</div>
 				</form>
 			</div>
@@ -77,19 +77,29 @@
 	<script src="{{ asset('assets/admin/js/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('assets/admin/js/login.js') }}"></script>
 <!--===============================================================================================-->
-	<script src="{{ asset('assets/admin/js/toastr.min.js') }}"></script>
-<!--===============================================================================================-->
-	<script>
-		(function ($) {
-			$(document).ready(function () {
-				@if($errors->any())
-				@foreach($errors->all() as $error)
-				toastr.error("{{ $error }}", "Whoops")
-				@endforeach
-				@endif
-			});
-		})(jQuery);
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+	<script type="text/javascript">
+		
+		$( document ).ready(function() {
+
+			@if ($errors->any())
+
+				Swal.fire({
+				  	title: 'Whoops!',
+				  	text: "{{ $errors->first() }}",
+				  	type: 'error',
+				  	showConfirmButton: false,
+				  	timer: 1500
+				});
+
+			@endif
+
+		});
+
 	</script>
+
 <!--===============================================================================================-->
 </body>
 </html>
