@@ -132,7 +132,7 @@
 
             function disable_date() {
                 $("input.maintainance_date").prop('disabled', true);
-                $('input.maintainance_date').val("").datepicker("update");
+                $('input.maintainance_date').val("");
             };
         });
 

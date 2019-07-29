@@ -173,6 +173,13 @@ class AdminController extends Controller
         return view('admin.other_layouts.home.home', compact('characters', 'weapons', 'treasures', 'animations', 'parachutes', 'coinPacks', 'gemPacks', 'bundlePacks', 'allNews', 'allMessages', 'allRequestedTreasures'));
     }
 
+    public function showAnalyticData()
+    {
+
+        return 123;
+        return view('admin.other_layouts.analytic.analytic', compact(''));
+    }
+
     public function showProfileForm()
     {
         $profile =  Auth::guard('admin')->user();

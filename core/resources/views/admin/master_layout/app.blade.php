@@ -95,6 +95,17 @@
           </a>
         </li>
 
+        @if(auth()->user()->can('analytic'))
+
+        <li>
+          <a class="app-menu__item @if(Request::is('admin/analytic*')) active @endif" href="{{route('admin.show_analytic_data')}}">
+            <i class="app-menu__icon fa fa-bar-chart"></i>
+            <span class="app-menu__label">Analytics</span>
+          </a>
+        </li>
+
+        @endif
+
         @if(auth()->user()->can('setting'))
 
         <li class="treeview">
@@ -259,7 +270,7 @@
 
         <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/mission*')) active @endif" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-money"></i>
+            <i class="app-menu__icon fa fa-play"></i>
             <span class="app-menu__label">Missions</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
           </a>

@@ -31,6 +31,12 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::post('password', 'Web\AdminController@submitPasswordForm')->name('admin.updated_password_submit');
 
 
+            Route::group(['middleware' => ['permission:analytic']], function () {
+
+                Route::get('analytics', 'Web\AdminController@showAnalyticData')->name('admin.show_analytic_data');
+            }); 
+
+
             Route::group(['middleware' => ['permission:setting']], function () {
 
                 Route::get('settings/cms', 'Web\AdminController@showAdminSettingsForm')->name('admin.settings_admin_panel');
