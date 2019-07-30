@@ -59,7 +59,7 @@ class GameController extends Controller
 
                 $playerStatistics = $player->playerStatistics;
                 $matchRate = GameSetting::first()->game_rate ?? 0;
-                $lastEarning = Earning::orderBy('total_earning', 'DESC')->first();       // Last Day Earning
+                $lastEarning = Earning::orderBy('total_gems_earning', 'DESC')->first();       // Last Day Earning
                 
                 if($playerStatistics->gems < $matchRate) {
                     return response()->json(['error'=>'Not sufficient gems'], 400); 
@@ -103,8 +103,8 @@ class GameController extends Controller
         if (is_null($lastEarning)) {
             
             $newEarning = new Earning();
-            $newEarning->current_earning = 0 + $matchRate ?? 0;
-            $newEarning->total_earning =  0 + $matchRate ?? 0;
+            $newEarning->current_gems_earning = 0 + $matchRate ?? 0;
+            $newEarning->total_gems_earning =  0 + $matchRate ?? 0;
             $newEarning->save();   
         }
 
@@ -117,15 +117,15 @@ class GameController extends Controller
             if ($difference > 0) {
 
                 $newEarning = new Earning();
-                $newEarning->current_earning = $lastEarning->current_earning + $matchRate;
-                $newEarning->total_earning = $lastEarning->total_earning + $matchRate;
+                $newEarning->current_gems_earning = $lastEarning->current_gems_earning + $matchRate;
+                $newEarning->total_gems_earning = $lastEarning->total_gems_earning + $matchRate;
                 $newEarning->save();           
             }
 
             else{
 
-                $lastEarning->increment('current_earning', $matchRate);
-                $lastEarning->increment('total_earning', $matchRate);
+                $lastEarning->increment('current_gems_earning', $matchRate);
+                $lastEarning->increment('total_gems_earning', $matchRate);
             }
         }
     }
