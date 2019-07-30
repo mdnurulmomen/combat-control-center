@@ -48,7 +48,7 @@
       <ul class="app-nav">
         
         <li class="app-search">
-          <input class="app-search__input text-center" type="text" value="💎 {{ App\Models\Earning::latest()->first()->total_earning }}" placeholder="Search" readonly="true">
+          <input class="app-search__input text-center" type="text" value="💎 {{ App\Models\Earning::latest()->first()->total_gems_earning ?? 0}}" placeholder="Search" readonly="true">
         </li>
 
         <!-- User Menu-->
