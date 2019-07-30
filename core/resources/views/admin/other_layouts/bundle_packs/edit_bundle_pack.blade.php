@@ -18,7 +18,6 @@
                 @csrf
                 @method('PUT')
 
-
                 <div class="row">
                     
                     <div class="col-md-6">
@@ -31,7 +30,7 @@
                                     <div class="col-md-12 mb-4">
                                         <label for="validationServerUsername">Bundle Name</label>
                                         <div class="input-group">
-                                            <input type="text" name="name" class="form-control form-control-lg is-invalid" value="{{ $bundlePackToUpdate->name }}" aria-describedby="inputGroupPrepend3" required="true">
+                                            <input type="text" name="name" class="form-control form-control-lg @if($errors->has('name')) is-invalid @endif" value="{{ $bundlePackToUpdate->name }}" aria-describedby="inputGroupPrepend3" required="true">
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-4">
@@ -63,7 +62,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ taka</span>
                                             </div>
-                                            <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" value="{{ $bundlePackToUpdate->price_taka }}" aria-describedby="inputGroupPrepend3" required="true" step="any">
+                                            <input type="number" name="price_taka" class="form-control form-control-lg @if($errors->has('price_taka')) is-invalid @endif" value="{{ $bundlePackToUpdate->price_taka }}" aria-describedby="inputGroupPrepend3" required="true" step="any">
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-4">
@@ -72,7 +71,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ gems</span>
                                             </div>
-                                            <input type="number" name="price_gems" class="form-control form-control-lg is-invalid" value="{{ $bundlePackToUpdate->price_gems }}" aria-describedby="inputGroupPrepend3" required="true">
+                                            <input type="number" name="price_gems" class="form-control form-control-lg @if($errors->has('price_gems')) is-invalid @endif" value="{{ $bundlePackToUpdate->price_gems }}" aria-describedby="inputGroupPrepend3" required="true">
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-4">
@@ -81,7 +80,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ coins</span>
                                             </div>
-                                            <input type="number" name="price_coins" class="form-control form-control-lg is-invalid" value="{{ $bundlePackToUpdate->price_coins }}" required="true">
+                                            <input type="number" name="price_coins" class="form-control form-control-lg @if($errors->has('price_coins')) is-invalid @endif" value="{{ $bundlePackToUpdate->price_coins }}" required="true">
                                         </div>
                                     </div>
                                 </div>
@@ -105,7 +104,7 @@
                                 <div class="form-row newAdded">
                                     <div class="col-md-6 mb-4">
                                         <label for="validationServer01">Component Type</label>
-                                        <select class="form-control form-control-lg is-invalid" name="elements[]" required="true">
+                                        <select class="form-control form-control-lg @if($errors->has('elements')) is-invalid @endif" name="elements[]" required="true">
                                             <option selected="true" disabled="true" value="0">
                                                 -- please select an option --
                                             </option>
@@ -131,7 +130,7 @@
                                     <div class="col-md-6 mb-4">
                                         <label for="validationServerUsername">Component Amount</label>
                                         <div class="input-group">
-                                            <input type="number" name="amount[]" class="form-control form-control-lg is-invalid" value="{{ $component->amount }}" aria-describedby="inputGroupPrepend3" required="true" min='1'>
+                                            <input type="number" name="amount[]" class="form-control form-control-lg @if($errors->has('amount')) is-invalid @endif" value="{{ $component->amount }}" aria-describedby="inputGroupPrepend3" required="true" min='1'>
                                         </div>
                                     </div>
                                 </div>
@@ -162,7 +161,7 @@
                                     <div class="col-md-4 col-12">
                                         <label for="validationServerUsername">Discount</label>
                                         <div class="input-group">
-                                            <input type="number" name="discount" class="form-control form-control-lg is-invalid" value="{{max($bundlePackToUpdate->discount_taka, $bundlePackToUpdate->discount_gems, $bundlePackToUpdate->discount_coins)}}" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100" step="any">
+                                            <input type="number" name="discount" class="form-control form-control-lg" value="{{max($bundlePackToUpdate->discount_taka, $bundlePackToUpdate->discount_gems, $bundlePackToUpdate->discount_coins)}}" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100" step="any">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">%</span>
                                             </div>
