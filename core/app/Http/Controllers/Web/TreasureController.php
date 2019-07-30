@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
-use DB;
+// use DB;
 use DataTables;
 use Carbon\Carbon;
 use App\Models\Treasure;

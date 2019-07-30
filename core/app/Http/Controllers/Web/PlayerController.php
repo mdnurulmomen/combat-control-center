@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
-use Log;
+// use Log;
 use DataTables;
 use Carbon\Carbon;
 use App\Models\User;

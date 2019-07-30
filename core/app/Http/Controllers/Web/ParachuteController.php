@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Web;
 
 use App\Models\Parachute;
-use App\Http\Traits\UpdateStore;
 use Illuminate\Http\Request;
+use App\Http\Traits\UpdateStore;
 use App\Http\Controllers\Controller;
 
 class ParachuteController extends Controller

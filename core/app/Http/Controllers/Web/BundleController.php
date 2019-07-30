@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Web;
 
 use DataTables;
 use App\Models\BundlePack;
+use Illuminate\Http\Request;
 use App\Models\BundleComponent;
 use App\Http\Traits\UpdateStore;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class BundleController extends Controller

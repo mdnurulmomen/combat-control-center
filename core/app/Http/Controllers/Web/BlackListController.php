@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Web;
 
 use DataTables;
-use App\Models\BlackListedNumber;
 use Illuminate\Http\Request;
+use App\Models\BlackListedNumber;
 use App\Http\Controllers\Controller;
 
 class BlackListController extends Controller
