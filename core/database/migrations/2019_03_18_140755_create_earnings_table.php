@@ -16,8 +16,11 @@ class CreateEarningsTable extends Migration
         Schema::create('earnings', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->float('current_earning', 10, 2)->nullable()->default(0);
-            $table->float('total_earning', 20, 2)->nullable()->default(0);
+            $table->bigInteger('current_gems_earning')->nullable()->default(0);
+            $table->bigInteger('total_gems_earning')->nullable()->default(0);
+
+            $table->float('current_currency_earning', 10, 2)->nullable()->default(0);
+            $table->float('total_currency_earning', 20, 2)->nullable()->default(0);
 
             $table->timestamps();
         });
