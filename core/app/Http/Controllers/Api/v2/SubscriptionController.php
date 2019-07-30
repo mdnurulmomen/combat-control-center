@@ -117,13 +117,13 @@ class SubscriptionController extends Controller
     public function addEarnings($packagePrice)
     {
         // Last Day Earning
-        $lastEarning = Earning::orderBy('total_earning', 'DESC')->first();   
+        $lastEarning = Earning::orderBy('total_gems_earning', 'DESC')->first();   
 
         if (is_null($lastEarning)) {
             
             $newEarning = new Earning();
-            $newEarning->current_earning = 0 + $packagePrice ?? 0;
-            $newEarning->total_earning =  0 + $packagePrice ?? 0;
+            $newEarning->current_gems_earning = 0 + $packagePrice ?? 0;
+            $newEarning->total_gems_earning =  0 + $packagePrice ?? 0;
             $newEarning->save();   
         }
 
@@ -136,15 +136,15 @@ class SubscriptionController extends Controller
             if ($difference > 0) {
 
                 $newEarning = new Earning();
-                $newEarning->current_earning = $lastEarning->current_earning + $packagePrice;
-                $newEarning->total_earning = $lastEarning->total_earning + $packagePrice;
+                $newEarning->current_gems_earning = $lastEarning->current_gems_earning + $packagePrice;
+                $newEarning->total_gems_earning = $lastEarning->total_gems_earning + $packagePrice;
                 $newEarning->save();           
             }
 
             else{
 
-                $lastEarning->increment('current_earning', $packagePrice);
-                $lastEarning->increment('total_earning', $packagePrice);
+                $lastEarning->increment('current_gems_earning', $packagePrice);
+                $lastEarning->increment('total_gems_earning', $packagePrice);
             }
         }
     }
