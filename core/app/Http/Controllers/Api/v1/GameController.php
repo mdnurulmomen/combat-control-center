@@ -445,6 +445,10 @@ class GameController extends Controller
 
         $newPlayerTreasure->save();
 
-        $playerStatisticToUpdate->increment('treasure_won', $request->totalTreasureWon);      
+        $playerStatisticToUpdate->increment('treasure_won', $request->totalTreasureWon); 
+
+        // Countdown total treasure collected
+        $giftTreasure->increment('total_treasure_collected');
+
     }
 }
