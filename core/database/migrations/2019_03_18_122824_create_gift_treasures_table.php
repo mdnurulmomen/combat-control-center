@@ -21,6 +21,10 @@ class CreateGiftTreasuresTable extends Migration
             $table->integer('required_percentage')->nullable()->default(0);
             $table->mediumInteger('required_earn')->nullable()->default(0);
 
+            $table->mediumInteger('total_treasure_gifted')->nullable()->default(0);
+            $table->mediumInteger('total_treasure_collected')->nullable()->default(0);
+
+
             $table->timestamps();
         });
     }
