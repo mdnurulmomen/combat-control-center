@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use Carbon\Carbon;
 use App\Models\Store;
 use App\Models\Player;
 use App\Models\Weapon;
+use App\Models\Earning;
 use App\Models\GemPack;
 use App\Models\CoinPack;
 use App\Models\Purchase;
@@ -56,6 +58,12 @@ class PurchaseController extends Controller
 
             $playerStatistics->decrement($itemToDeduct, $priceToDeduct);
 
+            if (!$priceToDeduct) {
+                
+                $this->updateEarnings();
+
+            }
+
             $playerCharacter = new PlayerCharacter();
             $playerCharacter->character_index = $characterIndexToAdd;
             $playerCharacter->player_id = $playerId;
@@ -79,6 +87,12 @@ class PurchaseController extends Controller
 
             $playerStatistics->decrement($itemToDeduct, $priceToDeduct);
 
+            if (!$priceToDeduct) {
+                
+                $this->updateEarnings();
+
+            }
+
             $playerWeapon = new PlayerWeapon();
             $playerWeapon->weapon_index = $weaponIndexToAdd;
             $playerWeapon->player_id = $playerId;
@@ -90,10 +104,10 @@ class PurchaseController extends Controller
         return response()->json(['message'=>'success'], 200);
     }
 
-    public function addPlayerParachute($parachuteId, $playerId, $itemToDeduct, $priceToDeduct)
+    public function addPlayerParachute($parachuteIndexToAdd, $playerId, $itemToDeduct, $priceToDeduct)
     {
         $alreadyExist = PlayerParachute::where('player_id', $playerId)
-                                        ->where('parachute_index', $parachuteId)
+                                        ->where('parachute_index', $parachuteIndexToAdd)
                                         ->exists();
 
         if(!$alreadyExist){
@@ -102,8 +116,14 @@ class PurchaseController extends Controller
 
             $playerStatistics->decrement($itemToDeduct, $priceToDeduct);
 
+            if (!$priceToDeduct) {
+                
+                $this->updateEarnings();
+
+            }
+
             $playerParachute = new PlayerParachute();
-            $playerParachute->parachute_index = $parachuteId;
+            $playerParachute->parachute_index = $parachuteIndexToAdd;
             $playerParachute->player_id = $playerId;
             $playerParachute->save();
 
@@ -125,6 +145,12 @@ class PurchaseController extends Controller
             $playerStatistics = Player::find($playerId)->playerStatistics;
 
             $playerStatistics->decrement($itemToDeduct, $priceToDeduct);
+
+            if (!$priceToDeduct) {
+                
+                $this->updateEarnings();
+
+            }
 
             $playerAnimation = new PlayerAnimation();
             $playerAnimation->animation_index = $animationIndexToAdd;
@@ -275,6 +301,7 @@ class PurchaseController extends Controller
             }
 
             else{
+
                 return response()->json(['error'=>'Not Sufficient Coins or Gems or Invalid Request'], 401);
             }
         }
@@ -282,9 +309,52 @@ class PurchaseController extends Controller
         // For Other Gateways
         else{
 
-            $price =0;
+            $price = 0;
 
             return $this->addPurchasedItem($item, $this->userId, 'coins', $price);
+        }
+
+    }
+
+    public function updateEarnings()
+    {
+        $item = Store::find($this->itemId);
+        $priceToAdd = $item->offered_price_taka;
+
+        $lastEarning = Earning::latest()->first();
+
+        if (is_null($lastEarning)) {
+            
+            $newEarning = new Earning();
+            $newEarning->current_currency_earning = $priceToAdd;
+            $newEarning->total_currency_earning =  $priceToAdd;
+            $newEarning->save();   
+        }
+
+        else {
+
+            $lastEarningDate = Carbon::parse($lastEarning->updated_at->format('d-m-Y'));
+            $presentDate = today()->format('d-m-Y');
+            $difference = $lastEarningDate->diffInDays($presentDate);
+
+            if ($difference > 0) {
+
+                $newEarning = new Earning();
+
+                $newEarning->current_gems_earning = $lastEarning->current_gems_earning;
+                $newEarning->total_gems_earning = $lastEarning->total_gems_earning;
+
+                $newEarning->current_currency_earning = $lastEarning->current_currency_earning + $priceToAdd;
+                $newEarning->total_currency_earning = $lastEarning->total_currency_earning + $priceToAdd;
+
+                $newEarning->save();           
+            }
+
+            else{
+
+                $lastEarning->increment('current_currency_earning', $priceToAdd);
+                $lastEarning->increment('total_currency_earning', $priceToAdd);
+            }
         }
 
     }
@@ -341,24 +411,45 @@ class PurchaseController extends Controller
         else if($item->type=='Coins Pack'){
 
             $playerStatistics->decrement($itemToDeduct, $priceToDeduct);
-            $playerStatistics->increment('coins', $item->amount ?? 0);
+            $playerStatistics->increment('coins', $item->amount);
             
+            if (!$priceToDeduct) {
+                
+                $this->updateEarnings();
+
+            }
+
             $this->addPurchaseHistory();
+
             return response()->json(['message'=>'success'], 200);
             
         }
 
         else if($item->type=='Gems Pack'){
             
-            $playerStatistics->increment('gems', $item->amount ?? 0);
+            $playerStatistics->increment('gems', $item->amount);
+
+            if (!$priceToDeduct) {
+                
+                $this->updateEarnings();
+
+            }
 
             $this->addPurchaseHistory();
+
             return response()->json(['message'=>'success'], 200);
         }
 
         else if($item->type=='Boost Pack'){
             
             $playerStatistics->decrement($itemToDeduct, $priceToDeduct);
+    
+            if (!$priceToDeduct) {
+                
+                $this->updateEarnings();
+
+            }
+
             $boostPackToAdd = BoostPack::where('name', $item->name)->first();
 
             return $this->addPlayerBoostPack($boostPackToAdd, $userId);
@@ -367,6 +458,13 @@ class PurchaseController extends Controller
         else if($item->type=='Bundle'){
 
             $playerStatistics->decrement($itemToDeduct, $priceToDeduct);
+
+            if (!$priceToDeduct) {
+                
+                $this->updateEarnings();
+
+            }
+
             return $this->addPlayerBundlePack($item->bundle_id, $userId);
         }
     }

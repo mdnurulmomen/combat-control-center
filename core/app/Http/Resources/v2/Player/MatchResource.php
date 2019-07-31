@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources\v2\Player;
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MatchResource extends JsonResource implements JWTSubject
+class MatchResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,13 +21,4 @@ class MatchResource extends JsonResource implements JWTSubject
         ];
     }
 
-    /*public function getJWTIdentifier()
-    {
-      return $this->getKey();
-    }
-
-    public function getJWTCustomClaims()
-    {
-      return [];
-    }*/
 }

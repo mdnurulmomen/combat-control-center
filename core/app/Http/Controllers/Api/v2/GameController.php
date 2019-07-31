@@ -71,7 +71,7 @@ class GameController extends Controller
 
                 $playerStatistics = $player->playerStatistics;
                 $matchRate = GameSetting::first()->game_rate ?? 0;
-                $lastEarning = Earning::orderBy('total_gems_earning', 'DESC')->first();       // Last Day Earning
+                $lastEarning = Earning::latest()->first();       // Last Day Earning
                 
                 if($playerStatistics->gems < $matchRate) {
                     return response()->json(['error'=>'Not sufficient gems'], 400); 
@@ -110,27 +110,32 @@ class GameController extends Controller
     }
 
     // Add earning for solo mode
-    public function addEarnings(Earning $lastEarning, $matchRate)
+    public function addEarnings(Earning $lastEarning = null, $matchRate)
     {
         if (is_null($lastEarning)) {
             
             $newEarning = new Earning();
-            $newEarning->current_gems_earning = 0 + $matchRate ?? 0;
-            $newEarning->total_gems_earning =  0 + $matchRate ?? 0;
+            $newEarning->current_gems_earning = $matchRate;
+            $newEarning->total_gems_earning =  $matchRate;
             $newEarning->save();   
         }
 
         else {
 
             $lastEarningDate = Carbon::parse($lastEarning->updated_at->format('d-m-Y'));
-            $presentDate = Carbon::now()->format('d-m-Y');
+            $presentDate = today()->format('d-m-Y');
             $difference = $lastEarningDate->diffInDays($presentDate);
 
             if ($difference > 0) {
 
                 $newEarning = new Earning();
+
                 $newEarning->current_gems_earning = $lastEarning->current_gems_earning + $matchRate;
                 $newEarning->total_gems_earning = $lastEarning->total_gems_earning + $matchRate;
+
+                $newEarning->current_currency_earning = $lastEarning->current_currency_earning;
+                $newEarning->total_currency_earning = $lastEarning->total_currency_earning;
+
                 $newEarning->save();           
             }
 

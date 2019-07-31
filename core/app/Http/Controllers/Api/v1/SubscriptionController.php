@@ -97,27 +97,32 @@ class SubscriptionController extends Controller
     public function addEarnings($packagePrice)
     {
         // Last Day Earning
-        $lastEarning = Earning::orderBy('total_gems_earning', 'DESC')->first();   
+        $lastEarning = Earning::latest()->first();   
 
         if (is_null($lastEarning)) {
             
             $newEarning = new Earning();
-            $newEarning->current_gems_earning = 0 + $packagePrice ?? 0;
-            $newEarning->total_gems_earning =  0 + $packagePrice ?? 0;
+            $newEarning->current_gems_earning = $packagePrice;
+            $newEarning->total_gems_earning =  $packagePrice;
             $newEarning->save();   
         }
 
         else {
 
             $lastEarningDate = Carbon::parse(optional($lastEarning->updated_at)->format('d-m-Y') ?? '01-01-2000');
-            $presentDate = Carbon::now()->format('d-m-Y');
+            $presentDate = today()->format('d-m-Y');
             $difference = $lastEarningDate->diffInDays($presentDate);
 
             if ($difference > 0) {
 
                 $newEarning = new Earning();
+
                 $newEarning->current_gems_earning = $lastEarning->current_gems_earning + $packagePrice;
                 $newEarning->total_gems_earning = $lastEarning->total_gems_earning + $packagePrice;
+
+                $newEarning->current_currency_earning = $lastEarning->current_currency_earning;
+                $newEarning->total_currency_earning = $lastEarning->total_currency_earning;
+
                 $newEarning->save();           
             }
 

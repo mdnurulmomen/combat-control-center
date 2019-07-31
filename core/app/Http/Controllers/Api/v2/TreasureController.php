@@ -27,7 +27,7 @@ class TreasureController extends Controller
 
     public function treasureIdentifier()
     {
-        $updatedEarn = Earning::orderBy('total_gems_earning', 'DESC')->first();
+        $updatedEarn = Earning::latest()->first();
         $currentEarn = $updatedEarn->current_gems_earning ?? 0;
 
         $giftTreasure = GiftTreasure::first();
