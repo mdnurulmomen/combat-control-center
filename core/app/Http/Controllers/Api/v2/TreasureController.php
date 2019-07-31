@@ -40,10 +40,14 @@ class TreasureController extends Controller
             if ($treasureDetails) {
                 
                 $updatedEarn->decrement('current_gems_earning', $required_earn ?? 0);
+
+                // Countdown total treasure collected
+                $giftTreasure->increment('total_treasure_gifted');
+                
                 return ['giftTreasure'=>'true', 'treasureDetails'=>new TreasureResource($treasureDetails)];
             }
 
-            return ['giftTreasure'=>'false'];
+            return ['giftTreasure'=>'false', 'message'=>'Gift Treasure not Found'];
         }
 
         return ['giftTreasure'=>'false'];
