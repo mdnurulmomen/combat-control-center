@@ -98,7 +98,7 @@
         @if(auth()->user()->can('analytic'))
 
         <li>
-          <a class="app-menu__item @if(Request::is('admin/analytic*')) active @endif" href="{{route('admin.show_analytic_data')}}">
+          <a class="app-menu__item @if(Request::is('admin/analytic*')) active @endif" href="{{route('admin.show_talktime_analytics')}}">
             <i class="app-menu__icon fa fa-bar-chart"></i>
             <span class="app-menu__label">Analytics</span>
           </a>

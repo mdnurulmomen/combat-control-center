@@ -33,7 +33,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
 
             Route::group(['middleware' => ['permission:analytic']], function () {
 
-                Route::get('analytics', 'Web\AdminController@showAnalyticData')->name('admin.show_analytic_data');
+                Route::get('analytics-talktime', 'Web\AdminController@showTalktimeAnalytics')->name('admin.show_talktime_analytics');
+
+                Route::get('analytics-earnings', 'Web\AdminController@showEarningAnalytics')->name('admin.show_earnings_analytics');
+
+                // Route::get('analytics', 'Web\AdminController@showAnalyticData')->name('admin.show_analytic_data');
             }); 
 
 

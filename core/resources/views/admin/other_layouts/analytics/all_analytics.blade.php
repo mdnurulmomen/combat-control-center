@@ -29,14 +29,14 @@
 
                         </div>                        
 
-                        <div class="row ">
+                        <div class="row">
 
                             <div class="col-md-6 text-center">
                                 <div class="widget-small info">
                                     <i class="icon fa fa-stack  ">#</i>
 
                                     <div class="info">
-                                        <h4><b>25</b> </h4>
+                                        <h4 class="talkTimeNumber"><b>{{ $allTreasureRedemptions->count() }}</b> </h4>
                                     </div>
                                 </div>    
                             </div>
@@ -45,7 +45,9 @@
                                 <div class="widget-small info">
                                     <i class="icon fa fa-money "></i>
                                     <div class="info">
-                                        <h4><b>4</b> </h4>
+                                        <h4 class="talkTimeCost">
+                                            <b>{{ $allTreasureRedemptions->count() }}</b> 
+                                        </h4>
                                     </div>
                                 </div>
                             </div> 
@@ -115,12 +117,6 @@
 
             $("input.talkTimeTable").change(function() { 
 
-                /*$.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                    }
-                });*/
-
                 jQuery.ajax({
 
                     url: "{{ route('admin.show_talktime_analytics') }}",
@@ -130,7 +126,14 @@
                         talkTimeEndDate: $("input[name=talkTimeEndDate]").val(),
                     },
                     success: function(result){
+                        
                         console.log(result);
+                        $('h4.talkTimeNumber').text(result.length);
+
+                        
+                        $('h4.talkTimeCost').text(result.length);
+
+
                     }
                 });
 
