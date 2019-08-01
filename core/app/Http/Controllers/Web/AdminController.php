@@ -178,6 +178,8 @@ class AdminController extends Controller
     {   
         if ($request->ajax()) {
 
+            // return  $request->talkTimeEndDate;
+
             if ($request->talkTimeStartDate && $request->talkTimeEndDate) {
 
                 $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->whereBetween('updated_at', [$request->talkTimeStartDate, $request->talkTimeEndDate])->get();
@@ -196,7 +198,7 @@ class AdminController extends Controller
             
             }
 
-            return $allTreasureRedemptions;
+            return ['totalNumber'=>$allTreasureRedemptions->count(), 'totalCost'=>$allTreasureRedemptions->sum('equivalent_price')];
 
         }
 

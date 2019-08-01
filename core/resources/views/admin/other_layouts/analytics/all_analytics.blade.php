@@ -110,7 +110,7 @@
         $( function() {
 
             $('.datePicker').datepicker({
-                format: "yy-mm-dd",
+                format: "yyyy-mm-dd",
                 autoclose: true,
                 todayHighlight: true
             });
@@ -128,10 +128,10 @@
                     success: function(result){
                         
                         console.log(result);
-                        $('h4.talkTimeNumber').text(result.length);
+                        $('h4.talkTimeNumber').text(result.totalNumber);
 
-                        
-                        $('h4.talkTimeCost').text(result.length);
+
+                        $('h4.talkTimeCost').text(result.totalCost);
 
 
                     }
