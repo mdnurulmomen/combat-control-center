@@ -15,6 +15,7 @@ use App\Models\Weapon;
 // use App\Models\Earning;
 use App\Models\GemPack;
 use App\Models\Message;
+use App\Models\Purchase;
 use App\Models\CoinPack;
 use App\Models\Treasure;
 use App\Models\Character;
@@ -173,11 +174,35 @@ class AdminController extends Controller
         return view('admin.other_layouts.home.home', compact('characters', 'weapons', 'treasures', 'animations', 'parachutes', 'coinPacks', 'gemPacks', 'bundlePacks', 'allNews', 'allMessages', 'allRequestedTreasures'));
     }
 
-    public function showAnalyticData()
-    {
+    public function showTalktimeAnalytics(Request $request)
+    {   
+        if ($request->ajax()) {
 
-        return 123;
-        return view('admin.other_layouts.analytic.analytic', compact(''));
+            if ($request->talkTimeStartDate && $request->talkTimeEndDate) {
+
+                $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->whereBetween('updated_at', [$request->talkTimeStartDate, $request->talkTimeEndDate])->get();
+            
+            }
+
+            else if ($request->talkTimeStartDate) {
+
+                $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->whereDate('updated_at', '>=', $request->talkTimeStartDate)->get();
+            
+            }
+
+            else if ($request->talkTimeEndDate) {
+
+                $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->whereDate('updated_at', '<=', $request->talkTimeEndDate)->get();
+            
+            }
+
+            return $allTreasureRedemptions;
+
+        }
+
+        $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->get();
+
+        return view('admin.other_layouts.analytics.all_analytics', compact('allTreasureRedemptions'));
     }
 
     public function showProfileForm()
