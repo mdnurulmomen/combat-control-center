@@ -220,9 +220,7 @@
                                     <i class="icon fa fa-money "></i>
                                     <div class="info">
                                         <h4 class="gemPacksCost">
-                                            
-                                            BDT : 
-                                            <b></b> 
+                                            BDT : <b></b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -231,6 +229,50 @@
                         </div>
                     </div>
                 </div> 
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-12">
+            <div class="tile">
+
+                <div class="tile-title-w-btn">
+                    
+                    <h3 class="tile-title">Purchase </h3>
+                    
+                </div>  
+
+                <div class="card mb-3 border-dark">
+
+                    <div class="card-body">                       
+
+                        <div class="row">
+
+                            <table class="table table-hover table-striped table-bordered text-center" cellspacing="0" width="100%" id="purchaseTable">
+                        
+                                <thead>
+
+                                    <tr>
+                                        <th>Item Id</th>
+                                        <th>Buyer Id</th>
+                                        <th>Buyer Name</th>
+                                        <th>Mobile Number</th>
+                                        <th>Location</th>
+                                        <th>Gateway</th>
+                                    </tr>
+
+                                </thead>
+                                
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div> 
+
             </div>
         </div>
 
@@ -336,8 +378,27 @@
                         $('h4.gemPacksCost').html('BDT : <b>' + result.totalCost + '</b>');
 
                     }
+
                 });
 
+            });
+
+
+            $('#purchaseTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('admin.show_purchase_analytics') }}",
+                columns: [
+                    { data: 'item_id', name: 'item_id' },
+                    { data: 'buyer_id', name: 'buyer_id' },
+                    { data: 'buyer.user.username', name: 'buyer.user.username' },
+                    { data: 'buyer.user.phone', name: 'buyer.user.phone' },
+                    { data: 'buyer.user.location', name: 'buyer.user.location' },
+                    { data: 'gateway_name', name: 'gateway_name' }
+                ],
+                initComplete : function(settings, json){
+                    console.log(json.data);
+                }
             });              
 
         });

@@ -319,6 +319,20 @@ class AdminController extends Controller
 
     }
 
+    public function showPurchaseAnalytics(Request $request)
+    {
+
+        if ($request->ajax()) {
+            
+            $purchases = Purchase::with('buyer.user')->select('purchases.*');
+
+            return  DataTables::eloquent($purchases)
+
+                    ->make(true);
+        }
+
+    }
+
     public function showProfileForm()
     {
         $profile =  Auth::guard('admin')->user();
