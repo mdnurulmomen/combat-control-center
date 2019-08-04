@@ -9,6 +9,7 @@ use DataTables;
 use Carbon\Carbon;
 // use App\Models\User;
 use App\Models\News;
+use App\Models\Store;
 use App\Models\Admin;
 use App\Models\Leader;
 use App\Models\Weapon;
@@ -25,6 +26,7 @@ use App\Models\BoostPack;
 use App\Models\Parachute;
 use App\Models\BundlePack;
 use Illuminate\Support\Str;
+use App\Models\GiftTreasure;
 use Illuminate\Http\Request;
 use App\Mail\EmailLoginToken;
 use App\Models\AdminPanelSetting;
@@ -202,10 +204,16 @@ class AdminController extends Controller
         }
 
         $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->get();
+        
         $updatedEarning = Earning::latest()->first();
+        
         $allPhysicalTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%urge%')->get();
+        
+        $allSoldGemPacks = Purchase::where('item_id', 'like', 'GmsPck%')->get();
 
-        return view('admin.other_layouts.analytics.all_analytics', compact('allTreasureRedemptions', 'updatedEarning', 'allPhysicalTreasureRedemptions'));
+        $treasureCounter = GiftTreasure::first();
+
+        return view('admin.other_layouts.analytics.all_analytics', compact('allTreasureRedemptions', 'updatedEarning', 'allPhysicalTreasureRedemptions', 'allSoldGemPacks', 'treasureCounter'));
     }
 
     public function showEarningAnalytics(Request $request)
@@ -267,6 +275,45 @@ class AdminController extends Controller
             }
 
             return ['totalNumber'=>$allPhysicalTreasureRedemptions->count(), 'totalCost'=>$allPhysicalTreasureRedemptions->sum('equivalent_price')];
+
+        }
+
+    }
+
+    public function showGemPacksAnalytics(Request $request)
+    {   
+        if ($request->ajax()) {
+
+            if ($request->gemsPackStartDate && $request->gemsPackEndDate) {
+
+                $allSoldGemPacks = Purchase::where('item_id', 'like', 'GmsPck%')->whereDate('updated_at', '>=', $request->gemsPackStartDate)->whereDate('updated_at', '<=', $request->gemsPackEndDate)->get();
+            
+            }
+
+            else if ($request->gemsPackStartDate) {
+
+                $allSoldGemPacks = Purchase::where('item_id', 'like', 'GmsPck%')->whereDate('updated_at', '>=', $request->gemsPackStartDate)->get();
+            
+            }
+
+            else if ($request->gemsPackEndDate) {
+
+                $allSoldGemPacks = Purchase::where('item_id', 'like', 'GmsPck%')->whereDate('updated_at', '<=', $request->gemsPackEndDate)->get();
+            
+            }
+
+            $totalCost = 0;
+
+            if (!$allSoldGemPacks->isEmpty()) {
+
+                foreach ($allSoldGemPacks as $gemPack) {
+                    
+                    $totalCost += Store::find($gemPack->item_id)->offered_price_taka ?? 0;
+                }
+            }
+
+
+            return ['totalNumber'=>$allSoldGemPacks->count(), 'totalCost'=>$totalCost];
 
         }
 

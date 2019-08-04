@@ -110,10 +110,23 @@
         
         <div class="col-md-6">
             <div class="tile">
-                <h3 class="tile-title">Physical Treasures</h3>
+
+                <div class="tile-title-w-btn">
+                    <h3 class="tile-title">Physical Treasure </h3> 
+                        
+                    <button class="btn btn-danger btn-sm mb-3">
+                        # Treasure Gifted : {{ $treasureCounter->total_treasure_gifted }}
+                    </button>
+
+                    <button class="btn btn-success btn-sm mb-3">
+                        # Treasure Collected : {{ $treasureCounter->total_treasure_collected }}
+                    </button>
+                    
+                </div>  
 
                 <div class="card mb-3 border-dark">
-                    <div class="card-body">
+
+                    <div class="card-body">                                     
 
                         <div class="row">
 
@@ -153,6 +166,63 @@
                                             
                                             BDT : 
                                             <b>{{ $allPhysicalTreasureRedemptions->sum('equivalent_price') }}</b> 
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div> 
+
+                        </div>
+
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="tile">
+                <h3 class="tile-title">Gems</h3>
+
+                <div class="card mb-3 border-dark">
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-4">
+                                <label for="validationServerUsername">Start Date</label>
+                                <div class="input-group">
+                                    <input class="form-control datePicker gemPacksTable" type="text" name="gemsPackStartDate" placeholder="Select Date" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label for="validationServerUsername">Close Date</label>
+                                <div class="input-group">
+                                    <input class="form-control datePicker gemPacksTable" type="text" name="gemsPackEndDate" placeholder="Select Date" autocomplete="off">
+                                </div>
+                            </div>
+
+                        </div>                        
+
+                        <div class="row">
+
+                            <div class="col-md-6 text-center">
+                                <div class="widget-small info">
+                                    <i class="icon fa fa-stack  ">#</i>
+
+                                    <div class="info">
+                                        <h4 class="gemPacksNumber"><b>{{ $allSoldGemPacks->count() }}</b> </h4>
+                                    </div>
+                                </div>    
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="widget-small info">
+                                    <i class="icon fa fa-money "></i>
+                                    <div class="info">
+                                        <h4 class="gemPacksCost">
+                                            
+                                            BDT : 
+                                            <b></b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -242,6 +312,28 @@
                         // console.log(result);
                         $('h4.treasureNumber').html('<b>' + result.totalNumber + '</b>');
                         $('h4.treasureCost').html('BDT : <b>' + result.totalCost + '</b>');
+
+                    }
+                });
+
+            });
+
+            $("input.gemPacksTable").change(function() { 
+
+                jQuery.ajax({
+
+                    url: "{{ route('admin.show_gem_packs_analytics') }}",
+                    method: 'get',
+                    data: {
+                        gemsPackStartDate: $("input[name=gemsPackStartDate]").val(),
+                        gemsPackEndDate: $("input[name=gemsPackEndDate]").val(),
+                    },
+
+                    success: function(result){
+                        
+                        // console.log(result);
+                        $('h4.gemPacksNumber').html('<b>' + result.totalNumber + '</b>');
+                        $('h4.gemPacksCost').html('BDT : <b>' + result.totalCost + '</b>');
 
                     }
                 });

@@ -39,6 +39,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
 
                 Route::get('analytics-treasures', 'Web\AdminController@showTreasureAnalytics')->name('admin.show_treasures_analytics');
 
+                Route::get('analytics-gemPacks', 'Web\AdminController@showGemPacksAnalytics')->name('admin.show_gem_packs_analytics');
+
                 // Route::get('analytics', 'Web\AdminController@showAnalyticData')->name('admin.show_analytic_data');
             }); 
 
