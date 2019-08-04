@@ -36,7 +36,9 @@
                                     <i class="icon fa fa-stack  ">#</i>
 
                                     <div class="info">
-                                        <h4 class="talkTimeNumber"><b>{{ $allTreasureRedemptions->count() }}</b> </h4>
+                                        <h4 class="talkTimeNumber">
+                                            <b>{{ $allTreasureRedemptions->count() }}</b> 
+                                        </h4>
                                     </div>
                                 </div>    
                             </div>
@@ -101,6 +103,67 @@
                 
             </div>
         </div>
+
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-6">
+            <div class="tile">
+                <h3 class="tile-title">Physical Treasures</h3>
+
+                <div class="card mb-3 border-dark">
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-4">
+                                <label for="validationServerUsername">Start Date</label>
+                                <div class="input-group">
+                                    <input class="form-control datePicker treasureTable" type="text" name="treasureStartDate" placeholder="Select Date" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label for="validationServerUsername">Close Date</label>
+                                <div class="input-group">
+                                    <input class="form-control datePicker treasureTable" type="text" name="treasureEndDate" placeholder="Select Date" autocomplete="off">
+                                </div>
+                            </div>
+
+                        </div>                        
+
+                        <div class="row">
+
+                            <div class="col-md-6 text-center">
+                                <div class="widget-small info">
+                                    <i class="icon fa fa-stack  ">#</i>
+
+                                    <div class="info">
+                                        <h4 class="treasureNumber"><b>{{ $allPhysicalTreasureRedemptions->count() }}</b> </h4>
+                                    </div>
+                                </div>    
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="widget-small info">
+                                    <i class="icon fa fa-money "></i>
+                                    <div class="info">
+                                        <h4 class="treasureCost">
+                                            
+                                            BDT : 
+                                            <b>{{ $allPhysicalTreasureRedemptions->sum('equivalent_price') }}</b> 
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div> 
+
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
     </div>
 
 @stop
@@ -161,7 +224,29 @@
                     }
                 });
 
-            });               
+            });
+
+            $("input.treasureTable").change(function() { 
+
+                jQuery.ajax({
+
+                    url: "{{ route('admin.show_treasures_analytics') }}",
+                    method: 'get',
+                    data: {
+                        treasureStartDate: $("input[name=treasureStartDate]").val(),
+                        treasureEndDate: $("input[name=treasureEndDate]").val(),
+                    },
+
+                    success: function(result){
+                        
+                        // console.log(result);
+                        $('h4.treasureNumber').html('<b>' + result.totalNumber + '</b>');
+                        $('h4.treasureCost').html('BDT : <b>' + result.totalCost + '</b>');
+
+                    }
+                });
+
+            });              
 
         });
 

@@ -203,8 +203,9 @@ class AdminController extends Controller
 
         $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->get();
         $updatedEarning = Earning::latest()->first();
+        $allPhysicalTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%urge%')->get();
 
-        return view('admin.other_layouts.analytics.all_analytics', compact('allTreasureRedemptions', 'updatedEarning'));
+        return view('admin.other_layouts.analytics.all_analytics', compact('allTreasureRedemptions', 'updatedEarning', 'allPhysicalTreasureRedemptions'));
     }
 
     public function showEarningAnalytics(Request $request)
@@ -234,13 +235,41 @@ class AdminController extends Controller
                 $previousEarning = Earning::find($allExpectedEarnings->first()->id - 1)->total_currency_earning ?? 0;
             
             }
-            
+
 
             $totalEarning = (optional($allExpectedEarnings->last())->total_currency_earning ?? 0) - $previousEarning;
 
             return ['totalEarning'=>$totalEarning ?? 0];
 
         }
+    }
+
+    public function showTreasureAnalytics(Request $request)
+    {
+        if ($request->ajax()) {
+
+            if ($request->treasureStartDate && $request->treasureEndDate) {
+
+                $allPhysicalTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%urge%')->whereDate('updated_at', '>=', $request->treasureStartDate)->whereDate('updated_at', '<=', $request->treasureEndDate)->get();
+            
+            }
+
+            else if ($request->treasureStartDate) {
+
+                $allPhysicalTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%urge%')->whereDate('updated_at', '>=', $request->treasureStartDate)->get();
+            
+            }
+
+            else if ($request->treasureEndDate) {
+
+                $allPhysicalTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%urge%')->whereDate('updated_at', '<=', $request->treasureEndDate)->get();
+            
+            }
+
+            return ['totalNumber'=>$allPhysicalTreasureRedemptions->count(), 'totalCost'=>$allPhysicalTreasureRedemptions->sum('equivalent_price')];
+
+        }
+
     }
 
     public function showProfileForm()
