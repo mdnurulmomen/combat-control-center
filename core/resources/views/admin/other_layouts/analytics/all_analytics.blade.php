@@ -16,14 +16,14 @@
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Start Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker talkTimeTable" type="text" name="talkTimeStartDate" placeholder="Select Date">
+                                    <input class="form-control datePicker talkTimeTable" type="text" name="talkTimeStartDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Close Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker talkTimeTable" type="text" name="talkTimeEndDate" placeholder="Select Date">
+                                    <input class="form-control datePicker talkTimeTable" type="text" name="talkTimeEndDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
 
@@ -46,7 +46,9 @@
                                     <i class="icon fa fa-money "></i>
                                     <div class="info">
                                         <h4 class="talkTimeCost">
-                                            <b>{{ $allTreasureRedemptions->count() }}</b> 
+                                            
+                                            BDT : 
+                                            <b>{{ $allTreasureRedemptions->sum('equivalent_price') }}</b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -68,14 +70,14 @@
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Start Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker" id="earningStartDate" type="text" placeholder="Select Date">
+                                    <input class="form-control datePicker earningTable" type="text" name="earningStartDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Close Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker" id="earningEndDate" type="text" placeholder="Select Date">
+                                    <input class="form-control datePicker earningTable" type="text" name="earningEndDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -86,7 +88,9 @@
                                 <div class="widget-small info">
                                     <i class="icon fa fa-money"></i>
                                     <div class="info">
-                                        <h4><b>4</b> </h4>
+                                        <h4 class="earningAmount">
+                                            BDT : <b>{{ $updatedEarning->total_currency_earning }}</b> 
+                                        </h4>
                                     </div>
                                 </div>
                             </div>  
@@ -125,19 +129,39 @@
                         talkTimeStartDate: $("input[name=talkTimeStartDate]").val(),
                         talkTimeEndDate: $("input[name=talkTimeEndDate]").val(),
                     },
+
                     success: function(result){
                         
-                        console.log(result);
-                        $('h4.talkTimeNumber').text(result.totalNumber);
-
-
-                        $('h4.talkTimeCost').text(result.totalCost);
-
+                        // console.log(result);
+                        $('h4.talkTimeNumber').html('<b>' + result.totalNumber + '</b>');
+                        $('h4.talkTimeCost').html('BDT : <b>' + result.totalCost + '</b>');
 
                     }
                 });
 
-            });              
+            });
+
+            $("input.earningTable").change(function() { 
+
+                // alert($("input[name=earningEndDate]").val());
+
+                jQuery.ajax({
+
+                    url: "{{ route('admin.show_earnings_analytics') }}",
+                    method: 'get',
+                    data: {
+                        earningStartDate: $("input[name=earningStartDate]").val(),
+                        earningEndDate: $("input[name=earningEndDate]").val(),
+                    },
+
+                    success: function(result){
+                        
+                        $('h4.earningAmount').html('BDT : <b>' + result.totalEarning + '</b>');
+
+                    }
+                });
+
+            });               
 
         });
 

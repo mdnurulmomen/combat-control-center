@@ -12,6 +12,7 @@ use App\Models\News;
 use App\Models\Admin;
 use App\Models\Leader;
 use App\Models\Weapon;
+use App\Models\Earning;
 // use App\Models\Earning;
 use App\Models\GemPack;
 use App\Models\Message;
@@ -178,11 +179,9 @@ class AdminController extends Controller
     {   
         if ($request->ajax()) {
 
-            // return  $request->talkTimeEndDate;
-
             if ($request->talkTimeStartDate && $request->talkTimeEndDate) {
 
-                $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->whereBetween('updated_at', [$request->talkTimeStartDate, $request->talkTimeEndDate])->get();
+                $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->whereDate('updated_at', '>=', $request->talkTimeStartDate)->whereDate('updated_at', '<=', $request->talkTimeEndDate)->get();
             
             }
 
@@ -203,8 +202,45 @@ class AdminController extends Controller
         }
 
         $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->get();
+        $updatedEarning = Earning::latest()->first();
 
-        return view('admin.other_layouts.analytics.all_analytics', compact('allTreasureRedemptions'));
+        return view('admin.other_layouts.analytics.all_analytics', compact('allTreasureRedemptions', 'updatedEarning'));
+    }
+
+    public function showEarningAnalytics(Request $request)
+    {
+        if ($request->ajax()) {
+
+            if ($request->earningStartDate && $request->earningEndDate) {
+
+                $allExpectedEarnings = Earning::whereDate('updated_at', '>=', $request->earningStartDate)->whereDate('updated_at', '<=', $request->earningEndDate)->get();
+
+                $previousEarning = (optional(Earning::find(optional($allExpectedEarnings->first())->id - 1))->total_currency_earning ?? 0);
+            
+            }
+
+            else if ($request->earningStartDate) {
+
+                $allExpectedEarnings = Earning::whereDate('updated_at', '>=', $request->earningStartDate)->get();
+
+                $previousEarning = Earning::find($allExpectedEarnings->first()->id - 1)->total_currency_earning ?? 0;
+            
+            }
+
+            else if ($request->earningEndDate) {
+
+                $allExpectedEarnings = Earning::whereDate('updated_at', '<=', $request->earningEndDate)->get();
+
+                $previousEarning = Earning::find($allExpectedEarnings->first()->id - 1)->total_currency_earning ?? 0;
+            
+            }
+            
+
+            $totalEarning = (optional($allExpectedEarnings->last())->total_currency_earning ?? 0) - $previousEarning;
+
+            return ['totalEarning'=>$totalEarning ?? 0];
+
+        }
     }
 
     public function showProfileForm()
