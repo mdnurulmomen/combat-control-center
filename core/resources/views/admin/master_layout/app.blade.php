@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     
     <meta name="description" content="This is a responsive admin panel built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
@@ -336,6 +337,7 @@
               </li>
 
           </ul>
+          
         </li>
 
         <li class="treeview">
@@ -535,4 +537,5 @@
     @stack('scripts')
     
   </body>
+
 </html>

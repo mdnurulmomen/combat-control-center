@@ -16,14 +16,14 @@
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Start Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker talkTimeTable" type="text" name="talkTimeStartDate" placeholder="Select Date" autocomplete="off">
+                                    <input class="form-control is-valid datePicker talkTimeTable" type="text" name="talkTimeStartDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Close Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker talkTimeTable" type="text" name="talkTimeEndDate" placeholder="Select Date" autocomplete="off">
+                                    <input class="form-control is-valid datePicker talkTimeTable" type="text" name="talkTimeEndDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
 
@@ -72,14 +72,14 @@
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Start Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker earningTable" type="text" name="earningStartDate" placeholder="Select Date" autocomplete="off">
+                                    <input class="form-control is-valid datePicker earningTable" type="text" name="earningStartDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Close Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker earningTable" type="text" name="earningEndDate" placeholder="Select Date" autocomplete="off">
+                                    <input class="form-control is-valid datePicker earningTable" type="text" name="earningEndDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -110,20 +110,27 @@
         
         <div class="col-md-6">
             <div class="tile">
+                   
+               <div class="row">
+                   
+                   <div class="col-md-7 col-5">
+                        <h3 class="tile-title">Physical Treasure </h3> 
+                   </div>
 
-                <div class="tile-title-w-btn">
-                    <h3 class="tile-title">Physical Treasure </h3> 
+                   <div class="col-md-5 col-7 text-right">
                         
-                    <button class="btn btn-danger btn-sm mb-3">
-                        # Treasure Gifted : {{ $treasureCounter->total_treasure_gifted }}
-                    </button>
-
-                    <button class="btn btn-success btn-sm mb-3">
-                        # Treasure Collected : {{ $treasureCounter->total_treasure_collected }}
-                    </button>
+                        <p class="bg-warning text-center m-0">
+                            # Treasure Gifted : {{ $treasureCounter->total_treasure_gifted }}
+                        </p>
                     
-                </div>  
+                        <p class="bg-warning text-center m-0">
+                            # Treasure Picked : {{ $treasureCounter->total_treasure_collected }}
+                        </p>    
+                       
+                   </div>
 
+                </div>
+                
                 <div class="card mb-3 border-dark">
 
                     <div class="card-body">                                     
@@ -133,14 +140,14 @@
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Start Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker treasureTable" type="text" name="treasureStartDate" placeholder="Select Date" autocomplete="off">
+                                    <input class="form-control is-valid datePicker treasureTable" type="text" name="treasureStartDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Close Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker treasureTable" type="text" name="treasureEndDate" placeholder="Select Date" autocomplete="off">
+                                    <input class="form-control is-valid datePicker treasureTable" type="text" name="treasureEndDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
 
@@ -190,14 +197,14 @@
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Start Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker gemPacksTable" type="text" name="gemsPackStartDate" placeholder="Select Date" autocomplete="off">
+                                    <input class="form-control is-valid datePicker gemPacksTable" type="text" name="gemsPackStartDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
 
                             <div class="col-md-6 mb-4">
                                 <label for="validationServerUsername">Close Date</label>
                                 <div class="input-group">
-                                    <input class="form-control datePicker gemPacksTable" type="text" name="gemsPackEndDate" placeholder="Select Date" autocomplete="off">
+                                    <input class="form-control is-valid datePicker gemPacksTable" type="text" name="gemsPackEndDate" placeholder="Select Date" autocomplete="off">
                                 </div>
                             </div>
 
@@ -220,7 +227,23 @@
                                     <i class="icon fa fa-money "></i>
                                     <div class="info">
                                         <h4 class="gemPacksCost">
-                                            BDT : <b></b> 
+                                            
+                                            @php
+
+                                                $totalCost = 0;
+
+                                                if (!$allSoldGemPacks->isEmpty()) {
+                                                    
+                                                    foreach($allSoldGemPacks as $soldPack){
+
+                                                        $totalCost += App\Models\Store::find($soldPack->item_id)->offered_price_taka ?? 0;
+                                                    }
+                                                }
+
+                                                
+                                            @endphp
+
+                                            BDT : <b>{{ $totalCost }}</b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -282,7 +305,11 @@
 
 @push('scripts')
 
+    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js">
+    </script>
+
     <script src="{{ asset('assets/admin/js/bootstrap-datepicker.min.js') }}"></script>
+
 
     <script type="text/javascript">
         
@@ -307,9 +334,9 @@
 
                     success: function(result){
                         
-                        // console.log(result);
-                        $('h4.talkTimeNumber').html('<b>' + result.totalNumber + '</b>');
-                        $('h4.talkTimeCost').html('BDT : <b>' + result.totalCost + '</b>');
+                        $('h4.talkTimeNumber').html('<b>' + result.totalNumber + '</b>').effect( "shake", {distance : 7}, 500 );
+                        
+                        $('h4.talkTimeCost').html('BDT : <b>' + result.totalCost + '</b>').effect( "shake", {distance : 7}, 500 );
 
                     }
                 });
@@ -317,8 +344,6 @@
             });
 
             $("input.earningTable").change(function() { 
-
-                // alert($("input[name=earningEndDate]").val());
 
                 jQuery.ajax({
 
@@ -331,7 +356,7 @@
 
                     success: function(result){
                         
-                        $('h4.earningAmount').html('BDT : <b>' + result.totalEarning + '</b>');
+                        $('h4.earningAmount').html('BDT : <b>' + result.totalEarning + '</b>').effect( "shake", {distance : 7}, 500 );
 
                     }
                 });
@@ -351,9 +376,9 @@
 
                     success: function(result){
                         
-                        // console.log(result);
-                        $('h4.treasureNumber').html('<b>' + result.totalNumber + '</b>');
-                        $('h4.treasureCost').html('BDT : <b>' + result.totalCost + '</b>');
+                        $('h4.treasureNumber').html('<b>' + result.totalNumber + '</b>').effect( "shake", {distance : 7}, 500 );
+                        
+                        $('h4.treasureCost').html('BDT : <b>' + result.totalCost + '</b>').effect( "shake", {distance : 7}, 500 );
 
                     }
                 });
@@ -373,9 +398,10 @@
 
                     success: function(result){
                         
-                        // console.log(result);
-                        $('h4.gemPacksNumber').html('<b>' + result.totalNumber + '</b>');
-                        $('h4.gemPacksCost').html('BDT : <b>' + result.totalCost + '</b>');
+                        
+                        $('h4.gemPacksNumber').html('<b>' + result.totalNumber + '</b>').effect( "shake", {distance : 7}, 500 );
+                        
+                        $('h4.gemPacksCost').html('BDT : <b>' + result.totalCost + '</b>').effect( "shake", {distance : 7}, 500 );
 
                     }
 
@@ -399,7 +425,7 @@
                 initComplete : function(settings, json){
                     console.log(json.data);
                 }
-            });              
+            });            
 
         });
 
