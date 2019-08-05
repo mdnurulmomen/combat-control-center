@@ -1,5 +1,16 @@
 
 @extends('admin.master_layout.app')
+
+@section('stylebar')
+
+  .widget-small:hover{
+    -ms-transform: scale(1.10); /* IE 9 */
+    -webkit-transform: scale(1.10); /* Safari 3-8 */
+    transform: scale(1.10); 
+  }
+
+@endsection
+
 @section('contents')
 
       {{-- <div class="row mb-4 text-center">
