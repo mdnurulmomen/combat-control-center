@@ -328,7 +328,7 @@
                                     @csrf
 
                                     <div class="modal-body">
-                                        <p>You are about to delete.</p> 
+                                        <p>You are about to delete an user.</p> 
                                         <p class="text-muted">This action cannot be undone.</p>
                                         
                                         <h5>Do you want to proceed ?</h5>

@@ -32,7 +32,11 @@
                                 @csrf
 
                                 <div class="modal-body">
-                                    <p>Are You Sure ??</p>
+                                    <p>You are about to enable the number for purchase.</p> 
+                                                    
+                                    <p class="text-muted">This action cannot be undone.</p>
+                                    
+                                    <h5>Do you want to proceed ?</h5>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-success">Yes</button>
