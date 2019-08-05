@@ -232,7 +232,7 @@ class AdminController extends Controller
 
                 $allExpectedEarnings = Earning::whereDate('updated_at', '>=', $request->earningStartDate)->get();
 
-                $previousEarning = Earning::find($allExpectedEarnings->first()->id - 1)->total_currency_earning ?? 0;
+                $previousEarning = (optional(Earning::find(optional($allExpectedEarnings->first())->id - 1))->total_currency_earning ?? 0);
             
             }
 
@@ -240,7 +240,7 @@ class AdminController extends Controller
 
                 $allExpectedEarnings = Earning::whereDate('updated_at', '<=', $request->earningEndDate)->get();
 
-                $previousEarning = Earning::find($allExpectedEarnings->first()->id - 1)->total_currency_earning ?? 0;
+                $previousEarning = (optional(Earning::find(optional($allExpectedEarnings->first())->id - 1))->total_currency_earning ?? 0);
             
             }
 
