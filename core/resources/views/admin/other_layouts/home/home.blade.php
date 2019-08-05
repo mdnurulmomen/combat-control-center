@@ -13,38 +13,6 @@
 
 @section('contents')
 
-      {{-- <div class="row mb-4 text-center">
-
-        <div class="col-sm-4">
-          <div class="card bg-success text-white h-100">
-              <div class="card-body">
-                  <h6 class="text-uppercase">Earned</h6>
-                  <h1 class="count">{{ $totalEarned }}</h1>
-              </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4">
-          <div class="card bg-info text-white h-100">
-              <div class="card-body">
-                  <h6 class="text-uppercase">Players</h6>
-                  <h1 class="count">{{ $totalPlayers }}</h1>
-              </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4">
-          <div class="card bg-warning text-white h-100">
-              <div class="card-body">
-                  <h6 class="text-uppercase">Bots</h6>
-                  <h1 class="count">{{ $totalBots }}</h1>
-              </div>
-          </div>
-        </div>
-
-
-      </div> --}}
-
       <div class="row">
         
         <div class="col-md-6 col-lg-3">
@@ -86,7 +54,7 @@
         <div class="col-md-6 col-lg-3">
           <a href="{{ route('admin.view_enabled_bundle_packs') }}">
             <div class="widget-small info coloured-icon">
-              <i class="icon fa fa-files-o fa-3x"></i>
+              <i class="icon fa fa-gift fa-3x"></i>
               <div class="info text-center">
                 <h5>Bundles</h5>
                 <p><b>{{ $bundlePacks->count() }}</b></p>
@@ -98,7 +66,7 @@
         <div class="col-md-6 col-lg-3">
           <a href="{{ route('admin.view_enabled_parachutes') }}">
             <div class="widget-small danger coloured-icon">
-              <i class="icon fa fa-spinner fa-3x"></i>
+              <i class="icon fa fa-bullseye fa-3x"></i>
               <div class="info text-center">
                 <h5>Parachute</h5>
                 <p><b>{{ $parachutes->count() }}</b></p>
@@ -151,20 +119,23 @@
             <table class="table table-hover table-striped table-bordered" cellspacing="0" width="100%">
 
               <tr>
+
                 <td>
                   <h3 class="tile-title">
                     Treasure Request
-                    <a href="{{route('admin.show_treasure_requested')}}" class="badge badge-primary"> <small>{{ $allRequestedTreasures->count() }}</small></a>
+                    <a href="{{route('admin.show_treasure_requested')}}" class="badge badge-info ml-2"> <small>{{ $allRequestedTreasures->count() }}</small></a>
                   </h3>
                 </td>
 
                 <td class="float-right">
-
                   <h3 class="tile-title">
-                    <a href="{{route('admin.show_treasure_requested')}}" class="btn btn-info float-right" role="button">See Details</a>
+                    <a href="{{route('admin.show_treasure_requested')}}" class="btn btn-info btn-sm float-right" role="button">
+                      <i class="fa fa-link"></i>
+                      See Details
+                    </a>
                   </h3>
-
                 </td>
+
               </tr>
 
             </table>

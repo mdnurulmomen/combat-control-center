@@ -356,7 +356,7 @@
 
         <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/treasure*')) active @endif" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-btc"></i>
+            <i class="app-menu__icon fa fa-money"></i>
             <span class="app-menu__label">Treasure</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
@@ -425,7 +425,7 @@
 
         <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/weapon*')) active @endif"  href="{{route('admin.view_enabled_weapons')}}">
-            <i class="app-menu__icon fa fa-cogs"></i>
+            <i class="app-menu__icon fa fa-star"></i>
             <span class="app-menu__label">Weapons</span>
           </a>
         </li>
