@@ -1,5 +1,20 @@
 
 @extends('admin.master_layout.app')
+
+@section('stylebar')
+
+.widget-small .icon {
+    
+    min-width: 55px;
+}
+
+.fa-stack {
+    
+    width: 1em;
+}
+
+@endsection
+
 @section('contents')     
 
     <div class="row">    
