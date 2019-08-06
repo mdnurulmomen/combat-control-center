@@ -3,15 +3,15 @@
 
 @section('stylebar')
 
-.widget-small .icon {
-    
-    min-width: 55px;
-}
+    .widget-small .icon {
+        
+        min-width: 55px;
+    }
 
-.fa-stack {
-    
-    width: 1em;
-}
+    .fa-stack {
+        
+        width: 1em;
+    }
 
 @endsection
 

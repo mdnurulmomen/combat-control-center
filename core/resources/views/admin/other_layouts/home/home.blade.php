@@ -148,15 +148,34 @@
           <div class="tile">
             <h3 class="tile-title">Purchases</h3>
             <div class="embed-responsive embed-responsive-16by9">
-              <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
+              <canvas class="embed-responsive-item" id="countPurchase"></canvas>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="tile">
-            <h3 class="tile-title">Megabyte</h3>
+            <h3 class="tile-title">Megabyte & Talktime</h3>
             <div class="embed-responsive embed-responsive-16by9">
-              <canvas class="embed-responsive-item" id="pieChartDemo"></canvas>
+              <canvas class="embed-responsive-item" id="countMegabyteAndTalktime"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="tile">
+            <h3 class="tile-title">Earning</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" id="countEarning"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="tile">
+            <h3 class="tile-title">Physical Treasure</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" id="countPhysicalTreasure"></canvas>
             </div>
           </div>
         </div>
@@ -203,31 +222,29 @@
 
       @php
 
-        $lastYearName = optional(optional(App\Models\Purchase::orderBy('id', 'DESC')->first())->created_at)->year;
+        $lastPurchase = optional(optional(App\Models\Purchase::latest()->first())->created_at);
+
+        $lastYearNumber = $lastPurchase->year;
+        $lastMonthNumber = $lastPurchase->month;
 
       @endphp
 
-      var data = {
+      var countPurchase = {
 
-        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        labels: [
+
+          @for($i=($lastMonthNumber-5); $i<=$lastMonthNumber; $i++)
+
+            '{{ date("F", mktime(0, 0, 0, $i, 1)) }}',
+
+          @endfor
+
+        ],
 
         datasets: [
-          /*
-          // For Megabyte Purchase
-          {
-            label: "My First dataset",
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "rgba(220,220,220,1)",
-            pointColor: "rgba(220,220,220,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 80, 81, 56]
-          },
-          */
 
           {
-            label: "My Second dataset",
+            label: "Total Purchase Counter",
             fillColor: "rgba(151,187,205,0.2)",
             strokeColor: "rgba(151,187,205,1)",
             pointColor: "rgba(151,187,205,1)",
@@ -237,10 +254,10 @@
             data: 
             [
 
-            @for($i=1; $i<13; $i++)
+            @for($i=($lastMonthNumber-5); $i<=$lastMonthNumber; $i++)
 
               {{
-                DB::table('purchases')->whereYear('created_at', $lastYearName)->whereMonth('created_at', $i)->count()
+                DB::table('purchases')->whereYear('created_at', $lastYearNumber)->whereMonth('created_at', $i)->count()
               }},
 
             @endfor
@@ -251,38 +268,119 @@
         ]
       };
 
-      var pdata = [
-        {
-          "value": 300,
-          "color": "{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
-          "highlight": "#5AD3D1",
-          "label": "Complete"
-        },
 
-        {
-          "value": 200,
-          "color": "{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
-          "highlight": "#5AD3D1",
-          "label": "Complete"
-        },
+      var countMegabyteAndTalktime = {
 
-        {
-          "value": 50,
-          "color":"{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
-          "highlight": "#FF5A5E",
-          "label": "In-Progress"
-        }
+        labels: [
+
+          @for($i=($lastMonthNumber-5); $i<=$lastMonthNumber; $i++)
+
+            '{{ date("F", mktime(0, 0, 0, $i, 1)) }}',
+
+          @endfor
+
+        ],
+
+        datasets: [
+
+          {
+            label: "Megabyte Counter",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            
+            data: 
+            [
+
+            @for($i=($lastMonthNumber-5); $i<=$lastMonthNumber; $i++)
+
+              {{
+                DB::table('treasure_redemptions')->where('exchanging_type', 'MB')->whereYear('created_at', $lastYearNumber)->whereMonth('created_at', $i)->count()
+              }},
+
+            @endfor
+
+            ]
+          },
+
+          {
+            label: "Talktime Counter",
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            
+            data: 
+            [
+
+            @for($i=($lastMonthNumber-5); $i<=$lastMonthNumber; $i++)
+
+              {{
+                DB::table('treasure_redemptions')->where('exchanging_type', 'like', '%alk%')->whereYear('created_at', $lastYearNumber)->whereMonth('created_at', $i)->count()
+              }},
+
+            @endfor
+
+            ]
+          },
+
+        ]
+      };
+
+      var countPhysicalTreasure = [
+
+        @for($i=($lastMonthNumber-5); $i<=$lastMonthNumber; $i++)
+
+          {
+            "value": 
+                  {{ DB::table('treasure_redemptions')->where('exchanging_type', 'Burger')->whereYear('created_at', $lastYearNumber)->whereMonth('created_at', $i)->count() }},
+
+            "color": "{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
+            "highlight": "#5AD3D1",
+            "label": '{{ date("F", mktime(0, 0, 0, $i, 1)) }}'
+          },
+
+        @endfor
+
       ];
 
-      var ctxl = $("#lineChartDemo").get(0).getContext("2d");
-      var lineChart = new Chart(ctxl).Line(data);
+      var countEarning = [
 
-      var ctxp = $("#pieChartDemo").get(0).getContext("2d");
-      var pieChart = new Chart(ctxp).Pie(pdata);
+        @for($i=($lastMonthNumber-5); $i<=$lastMonthNumber; $i++)
+
+          {
+            "value": 
+                  {{ (optional(App\Models\Earning::whereYear('created_at', $lastYearNumber)->whereMonth('created_at', $i)->latest()->first())->total_currency_earning ?? 0) - (optional(App\Models\Earning::whereYear('created_at', $lastYearNumber)->whereMonth('created_at', ($i-1))->latest()->first())->total_currency_earning ?? 0) }},
+
+            "color": "{{'#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6)}}",
+            "highlight": "#5AD3D1",
+            "label": '{{ date("F", mktime(0, 0, 0, $i, 1)) }}'
+          },
+
+        @endfor
+
+      ];
+
+      var ctxl = $("#countPurchase").get(0).getContext("2d");
+      var countPurchase = new Chart(ctxl).Line(countPurchase);
+
+      var ctxb = $("#countMegabyteAndTalktime").get(0).getContext("2d");
+      var countMegabyteAndTalktime = new Chart(ctxb).Bar(countMegabyteAndTalktime);
+
+      var ctxp = $("#countPhysicalTreasure").get(0).getContext("2d");
+      var countPhysicalTreasure = new Chart(ctxp).Pie(countPhysicalTreasure);
+
+      var ctxd = $("#countEarning").get(0).getContext("2d");
+      var countEarning = new Chart(ctxd).Doughnut(countEarning);
 
   </script>
 
-  <script type="text/javascript">
+  {{-- <script type="text/javascript">
     
     $(document).ready(function() {
 
@@ -310,6 +408,6 @@
 
     });
 
-  </script>
+  </script> --}}
 
 @endpush
