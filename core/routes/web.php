@@ -107,7 +107,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             
             Route::get('bots/all', 'Web\PlayerController@showAllBots')->name('admin.view_bots');
             Route::post('bot', 'Web\PlayerController@submitCreateBotForm')->name('admin.created_bot_submit');
-            // Route::get('bot/{botId}', 'Web\PlayerController@showBotEditForm')->name('admin.update_bot');
+            
             Route::put('bot/{botId}/', 'Web\PlayerController@submitBotEditForm')->name('admin.updated_bot_submit');
             
             Route::get('leaderboard', 'Web\PlayerController@showLeaderboard')->name('admin.view_leaderboard');

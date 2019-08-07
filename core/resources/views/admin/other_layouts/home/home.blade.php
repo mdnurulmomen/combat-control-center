@@ -118,7 +118,7 @@
           <div class="col-12">
             <table class="table table-hover table-striped table-bordered" cellspacing="0" width="100%">
 
-              <tr>
+              <tr style="background: snow;">
 
                 <td>
                   <h3 class="tile-title">
@@ -127,7 +127,7 @@
                   </h3>
                 </td>
 
-                <td class="float-right">
+                <td>
                   <h3 class="tile-title">
                     <a href="{{route('admin.show_treasure_requested')}}" class="btn btn-info btn-sm float-right" role="button">
                       <i class="fa fa-link"></i>

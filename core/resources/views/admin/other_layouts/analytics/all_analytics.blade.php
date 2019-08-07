@@ -120,7 +120,136 @@
     </div>
 
 
-    
+    <div class="row">   
+        <div class="col-md-6">
+            <div class="tile">    
+                <div class="row">   
+                    <div class="col-md-7 col-5">
+                        <h3 class="tile-title">Physical Treasure </h3> 
+                    </div>
+
+                    <div class="col-md-5 col-7 float-right">    
+                        <p class="bg-info m-0">
+                            # Treasure Gifted : <b>{{ $treasureCounter->total_treasure_gifted }}</b>
+                        </p>
+                    
+                        <p class="bg-warning m-0">
+                            # Treasure Picked : <b>{{ $treasureCounter->total_treasure_collected }}</b>
+                        </p>       
+                   </div>
+                </div>
+                
+                <div class="card mb-3 border-dark">
+                    <div class="card-body">                                     
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="validationServerUsername">Start Date</label>
+                                <div class="input-group">
+                                    <input class="form-control is-valid datePicker treasureTable" type="text" name="treasureStartDate" placeholder="Select Date" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label for="validationServerUsername">Close Date</label>
+                                <div class="input-group">
+                                    <input class="form-control is-valid datePicker treasureTable" type="text" name="treasureEndDate" placeholder="Select Date" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>                        
+
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <div class="widget-small info">
+                                    <i class="icon fa fa-stack  ">#</i>
+
+                                    <div class="info">
+                                        <h4 class="treasureNumber"><b>{{ $allPhysicalTreasureRedemptions->count() }}</b> </h4>
+                                    </div>
+                                </div>    
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="widget-small info">
+                                    <i class="icon fa fa-money "></i>
+                                    <div class="info">
+                                        <h4 class="treasureCost">
+                                            
+                                            BDT : 
+                                            <b>{{ $allPhysicalTreasureRedemptions->sum('equivalent_price') }}</b> 
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="tile">
+                <h3 class="tile-title">Gems</h3>
+                <div class="card mb-3 border-dark">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="validationServerUsername">Start Date</label>
+                                <div class="input-group">
+                                    <input class="form-control is-valid datePicker gemPacksTable" type="text" name="gemsPackStartDate" placeholder="Select Date" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label for="validationServerUsername">Close Date</label>
+                                <div class="input-group">
+                                    <input class="form-control is-valid datePicker gemPacksTable" type="text" name="gemsPackEndDate" placeholder="Select Date" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>                        
+
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <div class="widget-small info">
+                                    <i class="icon fa fa-stack  ">#</i>
+
+                                    <div class="info">
+                                        <h4 class="gemPacksNumber"><b>{{ $allSoldGemPacks->count() }}</b> </h4>
+                                    </div>
+                                </div>    
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="widget-small info">
+                                    <i class="icon fa fa-money "></i>
+                                    <div class="info">
+                                        <h4 class="gemPacksCost">
+                                            
+                                            @php
+
+                                                $totalCost = 0;
+
+                                                if (!$allSoldGemPacks->isEmpty()) {
+                                                    
+                                                    foreach($allSoldGemPacks as $soldPack){
+
+                                                        $totalCost += App\Models\Store::find($soldPack->item_id)->offered_price_taka ?? 0;
+                                                    }
+                                                }
+ 
+                                            @endphp
+
+                                            BDT : <b>{{ $totalCost }}</b> 
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div> 
+
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
 
     <div class="row">    
         <div class="col-md-12">
