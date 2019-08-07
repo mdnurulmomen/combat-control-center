@@ -57,17 +57,17 @@ class PlayerMissionResource extends JsonResource
 
             if ($this->mission->among_two_time) {
                 
-                $arrayToReturn['progress'] = $this->progress_among_two_time;
+                $arrayToReturn['progress'] = $this->progress_among_two_time ?? 0;
             }
 
             else if ($this->mission->among_three_time) {
                 
-                $arrayToReturn['progress'] = $this->progress_among_three_time;
+                $arrayToReturn['progress'] = $this->progress_among_three_time ?? 0;
             }
 
             else if ($this->mission->among_five_time) {
                 
-                $arrayToReturn['progress'] = $this->progress_among_five_time;
+                $arrayToReturn['progress'] = $this->progress_among_five_time ?? 0;
             }
             
         }   
