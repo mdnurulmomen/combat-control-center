@@ -40,6 +40,6 @@ class PlayerTreasureAndSubscription extends Command
     public function handle()
     {
         PlayerSubscription::where('end_time','<', now())->update(['status' => 0]);
-        PlayerTreasure::whereMonth('close_time','!=', '0')->whereDate('close_time','<', today())->update(['status' => -2]);
+        PlayerTreasure::whereMonth('close_time','!=', '0')->where('status','!=', -1)->whereDate('close_time','<', today())->update(['status' => -2]);
     }
 }
