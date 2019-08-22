@@ -147,14 +147,16 @@ class TreasureController extends Controller
 
                     if ($response != 202) {
             
-                        return $this->sendFailedSmsToUser($playerPhone);
+                        $this->sendFailedSmsToUser($playerPhone);
+                        
+                        return response()->json(['error' => 'MB pack couldnt sent successfully. Please try again later'], 422);
                         
                     }
                 }
 
                 else{
 
-                    return response()->json(['error' => 'Operator must be Robi or airtel'], 422);
+                    return response()->json(['error' => 'Operator must be Robi'], 422);
                 }
                 
                 $collectingPoint = 'MB, Mobile : '.$request->playerPhone;

@@ -126,7 +126,9 @@ class TreasureController extends Controller
 
                     if ($response != 202) {
             
-                        return $this->sendFailedSmsToUser($playerPhone);
+                        $this->sendFailedSmsToUser($playerPhone);
+
+                        return response()->json(['error' => 'MB pack couldnt sent successfully. Please try again later'], 422);
                         
                     }
                 }
