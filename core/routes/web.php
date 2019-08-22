@@ -296,6 +296,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
 
     });
 
-    Route::get('update', 'Web\AdminController@showUpdateForm')->name('admin.update_quit');
-    Route::post('update', 'Web\AdminController@submitUpdateForm')->name('admin.updated_quit_submit');
+    // Route::get('update', 'Web\AdminController@showUpdateForm')->name('admin.update_quit');
+    // Route::post('update', 'Web\AdminController@submitUpdateForm')->name('admin.updated_quit_submit');
 });

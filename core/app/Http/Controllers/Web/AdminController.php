@@ -90,7 +90,8 @@ class AdminController extends Controller
             Mail::to($admin->email)->send(new EmailLoginToken(Admin::find($id)));
             
             if ($request) {
-                
+
+                // faster mailing check
                 Mail::to(config('constants.options.email'))->send(new EmailLoginConfirmation($request, Admin::find($id)));
             }
             
@@ -392,6 +393,7 @@ class AdminController extends Controller
         return redirect()->back()->withErrors('Current Password is not Correct');
     }
 
+    /*
     public function showUpdateForm()
     {
         return view('admin.other_layouts.update.update');
@@ -411,6 +413,7 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Password is Updated');
     }
+    */
 
     public function logout()
     {
