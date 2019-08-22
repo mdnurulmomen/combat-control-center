@@ -17,6 +17,7 @@ use App\Http\Traits\RetrieveToken;
 use App\Models\TreasureRedemption;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RequestWithToken;
+use GuzzleHttp\Exception\RequestException;
 use App\Http\Resources\v2\Player\PlayerTreasureRedeemed;
 use App\Http\Resources\v2\Game\TreasureResource;
 use App\Http\Resources\v2\Player\PlayerTreasureResource;
@@ -139,10 +140,16 @@ class TreasureController extends Controller
                 
                 $playerPhone = Str::start($request->playerPhone, '88');
 
-                if (Str::startsWith($playerPhone, '88016') || Str::startsWith($playerPhone, '88018')) {
+                if (Str::startsWith($playerPhone, '88018')) {
 
                     // Send MB Pack to User
-                    $response = $this->sendUserDataPack();
+                    $response = $this->sendUserDataPack($playerPhone, $playerTreasureExist);
+
+                    if ($response != 202) {
+            
+                        return $this->sendFailedSmsToUser($playerPhone);
+                        
+                    }
                 }
 
                 else{
@@ -187,7 +194,23 @@ class TreasureController extends Controller
         return response()->json(['error'=>'Treasure does not belong'], 422);
     }
 
-    public function sendUserDataPack()
+    public function sendFailedSmsToUser($playerPhone)
+    {
+        $client = new Client();
+
+        $username = 'treasure_hunt';
+        $password = 'Treasure@12';
+        $from = 'T hunt';
+        $to = $playerPhone;
+
+        $message = "MB pack couldnt sent successfully. Please try again later";
+
+        $api = "https://api.mobireach.com.bd/SendTextMessage?Username=$username&Password=$password&From=$from&To=$to&Message=$message";
+
+        $response = $client->request('GET', "$api");
+    }
+
+    public function sendUserDataPack($playerPhone, $playerTreasureExist)
     {
         $grantType = "password";
         $userName = "MIFE_DV_TREASURE";
@@ -221,7 +244,53 @@ class TreasureController extends Controller
 
         $accessToken = $request->access_token;
 
-        return ;
+        $headers2 = [
+            'Authorization' => "Bearer $accessToken",
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ];
+        
+        $clientWithToken = new Client([
+            'headers' => $headers2
+        ]);
+
+        $treasureDetails = Treasure::find($playerTreasureExist->treasure_id);
+
+        if ($treasureDetails->equivalent_price > 600) {
+            
+            $packageName = '649TK_USSD';
+        }
+
+        else if ($treasureDetails->exchanging_megabyte > 99) {
+            
+            $packageName = '100MB_SC2';
+        }
+
+        else
+            $packageName = '10Tk_USSD_60MB';
+
+
+        try {
+            
+            $responseWithResult = $clientWithToken->request('POST', 'https://api.robi.com.bd/adcs/adcspackProvisioningNormal/v1/packProvisioningNormal', [
+
+                'form_params' => [
+                    'MSISDN' => $playerPhone,
+                    'name' => $packageName
+                ]
+
+            ]);
+        }
+
+        catch (RequestException $e) {
+
+            if ($e->hasResponse()) {
+                
+                $response = $e->getResponse();
+                return $responseBodyAsString = $response->getBody()->getContents();
+            }
+        }
+
+        return $responseWithResult->getStatusCode();
     }
 
     public function sendSmsToVendor(Vendor $vendor, Treasure $treasureDetails, Request $request)
