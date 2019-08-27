@@ -148,8 +148,6 @@ class TreasureController extends Controller
                         
                     }
 
-                    $sendConfirmationSmsToUser = $this->sendConfirmationSmsToUser($playerPhone, $treasureDetails, $request);
-
                 }
 
                 else {
@@ -163,10 +161,10 @@ class TreasureController extends Controller
                         return response()->json(['error' => 'MB pack couldnt sent successfully. Please try again later'], 422);
                         
                     }
-
-                    $sendConfirmationSmsToUser = $this->sendConfirmationSmsToUser($playerPhone, $treasureDetails, $request);
                     
                 }
+                
+                $sendConfirmationSmsToUser = $this->sendConfirmationSmsToUser($playerPhone, $treasureDetails, $request);
                 
                 $collectingPoint = 'MB, Mobile : '.$request->playerPhone;
                 $status = -1;
