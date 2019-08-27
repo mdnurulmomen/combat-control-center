@@ -59,11 +59,6 @@ class TreasureController extends Controller
 
         $player = Player::find($request->userId);
 
-        if (is_null($player)) {
-            
-            return response()->json(['error'=>'No Player Found'], 422);
-        }
-
         return new PlayerTreasureResource($player);
     }
 
@@ -119,7 +114,7 @@ class TreasureController extends Controller
                 
                 $playerPhone = Str::start($request->playerPhone, '88');
 
-                if (Str::startsWith($playerPhone, '88018')) {
+                if (Str::startsWith($playerPhone, '88018') || Str::startsWith($playerPhone, '88016')) {
 
                     // Send MB Pack to User
                     $response = $this->sendUserDataPack($playerPhone, $playerTreasureExist);
