@@ -138,7 +138,7 @@ class TreasureController extends Controller
                 if (Str::startsWith($playerPhone, '88018') || Str::startsWith($playerPhone, '88016')) {
 
                     // Send MB Pack to User
-                    $response = $this->sendUserDataPack($playerPhone, $playerTreasureExist);
+                    $response = $this->sendRobiOrAirtelDataPack($playerPhone, $playerTreasureExist);
 
                     if ($response != 202) {
             
@@ -147,11 +147,25 @@ class TreasureController extends Controller
                         return response()->json(['error' => 'MB pack couldnt sent successfully. Please try again later'], 422);
                         
                     }
+
+                    $sendConfirmationSmsToUser = $this->sendConfirmationSmsToUser($playerPhone, $treasureDetails, $request);
+
                 }
 
-                else{
+                else {
 
-                    return response()->json(['error' => 'Operator must be Robi'], 422);
+                    $response = $this->sendEasyDataPack($playerPhone, $playerTreasureExist);
+
+                    if ($response != 202 || $response != 200) {
+            
+                        $this->sendFailedSmsToUser($playerPhone);
+
+                        return response()->json(['error' => 'MB pack couldnt sent successfully. Please try again later'], 422);
+                        
+                    }
+
+                    $sendConfirmationSmsToUser = $this->sendConfirmationSmsToUser($playerPhone, $treasureDetails, $request);
+                    
                 }
                 
                 $collectingPoint = 'MB, Mobile : '.$request->playerPhone;
@@ -191,6 +205,95 @@ class TreasureController extends Controller
         return response()->json(['error'=>'Treasure does not belong'], 422);
     }
 
+    public function sendEasyDataPack($playerPhone, $playerTreasureExist)
+    {
+        $operator = 0;
+
+        if (Str::startsWith($playerPhone, '88017')  || Str::startsWith($playerPhone, '88013')) {
+            $operator = "1";
+        }
+
+        else if (Str::startsWith($playerPhone, '88019')  || Str::startsWith($playerPhone, '88014')) {
+            $operator = "2";
+        }
+
+        else if (Str::startsWith($playerPhone, '88015')) {
+            $operator = "5";
+        }
+
+        $treasureDetails = Treasure::find($playerTreasureExist->treasure_id);
+
+        $client_recharge = new Client();
+
+        $response_recharge = $client_recharge->request('POST', 'https://abcdgamepanel.com/test/abcd/ssl/recharge.php', [
+
+            'form_params' => [
+                'mobile' => $playerPhone,
+                'operator' => $operator,
+                'amount' => $treasureDetails->exchanging_megabyte
+            ]
+        ]);
+
+        $recharge_request = json_decode($response_recharge->getBody());
+
+        if (empty($recharge_request->vr_guid)) {
+
+            return response()->json(['error' => 'vr_guid is missing'], 422);
+        }
+
+        else if ($recharge_request->vr_guid && $recharge_request->guid) {
+
+            $client_init = new Client();
+
+            $response = $client_init->request('POST', 'https://abcdgamepanel.com/test/abcd/ssl/recharge_init.php', [
+
+                'form_params' => [
+                    'guid' => $recharge_request->guid,
+                    'vr_guid' => $recharge_request->vr_guid
+                ]
+
+            ]);
+
+            return $response->getStatusCode();
+
+        }
+    }
+
+    public function sendConfirmationSmsToUser($playerPhone, Treasure $treasureDetails, Request $request)
+    {
+        $client = new Client();
+
+        $username = 'treasure_hunt';
+        $password = 'Treasure@12';
+        $from = 'T hunt';
+        $to = $playerPhone;
+
+        if (Str::startsWith($playerPhone, '88017')  || Str::startsWith($playerPhone, '88013')) {
+            $check = "*121*1*4#";
+        }
+        if (Str::startsWith($playerPhone, '88019')  || Str::startsWith($playerPhone, '88014')) {
+            $check = "*121*1# or *5000*500#";
+        }
+        if (Str::startsWith($playerPhone, '88015')) {
+            $check = "*152#";
+        }
+
+        if (Str::startsWith($playerPhone, '88016') || Str::startsWith($playerPhone, '88018')) {
+            $check = "*222*2#";
+        }
+
+        $check = htmlentities($check);
+
+        $playerName = Player::find($request->userId)->user->username;
+
+        $message = "$playerName, Your request to convert $treasureDetails->name to Megabyte pack $treasureDetails->exchanging_megabyte MB at $request->playerPhone is successfully added. To check balance dial $check";
+
+        $api = "https://api.mobireach.com.bd/SendTextMessage?Username=$username&Password=$password&From=$from&To=$to&Message=$message";
+
+        $response = $client->request('GET', "$api");
+
+    }
+
     public function sendFailedSmsToUser($playerPhone)
     {
         $client = new Client();
@@ -207,7 +310,7 @@ class TreasureController extends Controller
         $response = $client->request('GET', "$api");
     }
 
-    public function sendUserDataPack($playerPhone, $playerTreasureExist)
+    public function sendRobiOrAirtelDataPack($playerPhone, $playerTreasureExist)
     {
         $grantType = "password";
         $userName = "MIFE_DV_TREASURE";
