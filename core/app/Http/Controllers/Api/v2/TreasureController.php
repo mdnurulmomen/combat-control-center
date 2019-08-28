@@ -154,7 +154,7 @@ class TreasureController extends Controller
 
                     $response = $this->sendEasyDataPack($playerPhone, $playerTreasureExist);
 
-                    if ($response != 202 || $response != 200) {
+                    if ($response != 200) {
             
                         $this->sendFailedSmsToUser($playerPhone);
 
