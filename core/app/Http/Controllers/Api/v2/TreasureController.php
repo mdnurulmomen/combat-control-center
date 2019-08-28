@@ -267,20 +267,20 @@ class TreasureController extends Controller
         $to = $playerPhone;
 
         if (Str::startsWith($playerPhone, '88017')  || Str::startsWith($playerPhone, '88013')) {
-            $check = "*121*1*4#";
+            $check = "*121*1*4%23";
         }
         if (Str::startsWith($playerPhone, '88019')  || Str::startsWith($playerPhone, '88014')) {
-            $check = "*121*1# or *5000*500#";
+            $check = "*121*1%23 or *5000*500%23";
         }
         if (Str::startsWith($playerPhone, '88015')) {
-            $check = "*152#";
+            $check = "*152%23";
         }
 
         if (Str::startsWith($playerPhone, '88016') || Str::startsWith($playerPhone, '88018')) {
-            $check = "*222*2#";
+            $check = "*222*2%23";
         }
 
-        $check = htmlentities($check);
+        // $check = htmlentities($check);
 
         $playerName = Player::find($request->userId)->user->username;
 
