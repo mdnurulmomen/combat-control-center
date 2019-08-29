@@ -135,6 +135,7 @@ class TreasureController extends Controller
                 
                 $playerPhone = Str::start($request->playerPhone, '88');
 
+                /*
                 if (Str::startsWith($playerPhone, '88018') || Str::startsWith($playerPhone, '88016')) {
 
                     // Send MB Pack to User
@@ -149,8 +150,9 @@ class TreasureController extends Controller
                     }
 
                 }
+                */
 
-                else {
+                // else {
 
                     $response = $this->sendEasyDataPack($playerPhone, $playerTreasureExist);
 
@@ -162,7 +164,7 @@ class TreasureController extends Controller
                         
                     }
                     
-                }
+                // }
                 
                 $sendConfirmationSmsToUser = $this->sendConfirmationSmsToUser($playerPhone, $treasureDetails, $request);
                 
@@ -215,8 +217,16 @@ class TreasureController extends Controller
             $operator = "2";
         }
 
+        else if (Str::startsWith($playerPhone, '88018')) {
+            $operator = "3";
+        }
+
         else if (Str::startsWith($playerPhone, '88015')) {
             $operator = "5";
+        }
+
+        else if (Str::startsWith($playerPhone, '88016')) {
+            $operator = "6";
         }
 
         $treasureDetails = Treasure::find($playerTreasureExist->treasure_id);
@@ -308,6 +318,7 @@ class TreasureController extends Controller
         $response = $client->request('GET', "$api");
     }
 
+    /*
     public function sendRobiOrAirtelDataPack($playerPhone, $playerTreasureExist)
     {
         $grantType = "password";
@@ -390,6 +401,7 @@ class TreasureController extends Controller
 
         return $responseWithResult->getStatusCode();
     }
+    */
 
     public function sendSmsToVendor(Vendor $vendor, Treasure $treasureDetails, Request $request)
     {
