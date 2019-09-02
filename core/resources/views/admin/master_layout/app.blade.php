@@ -220,47 +220,47 @@
           </a>
         </li>
 
-        <li class="treeview">
+        {{-- <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/animation*')) active @endif" href="{{route('admin.view_enabled_animations')}}">
             <i class="app-menu__icon fa fa-circle-o-notch"></i>
             <span class="app-menu__label">Animations</span>
           </a>
-        </li>
+        </li> --}}
 
-        <li class="treeview">
+        {{-- <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/boost-pack*')) active @endif" href="{{route('admin.view_enabled_boost_packs')}}">
             <i class="app-menu__icon fa fa-rocket"></i>
             <span class="app-menu__label">Boost Packs</span>
           </a>
-        </li>
+        </li> --}}
 
-        <li class="treeview">
+        {{-- <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/bundle-pack*')) active @endif" href="{{route('admin.view_enabled_bundle_packs')}}">
             <i class="app-menu__icon fa fa-gift"></i>
             <span class="app-menu__label">Bundle Packs</span>
           </a>
-        </li>
+        </li> --}}
 
-        <li class="treeview">
+        {{-- <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/character*')) active @endif"  href="{{route('admin.view_enabled_characters')}}">
             <i class="app-menu__icon fa fa-child"></i>
             <span class="app-menu__label">Characters</span>
           </a>
-        </li>
+        </li> --}}
 
-        <li class="treeview">
+        {{-- <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/coin-packs*')) active @endif" href="{{route('admin.view_enabled_coin_packs')}}">
             <i class="app-menu__icon fa fa-circle"></i>
             <span class="app-menu__label">Coin Packs</span>
           </a>
-        </li>
+        </li> --}}
 
-        <li class="treeview">
+        {{-- <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/gem-packs*')) active @endif" href="{{route('admin.view_enabled_gem_packs')}}">
             <i class="app-menu__icon fa fa-diamond"></i>
             <span class="app-menu__label">Gem Packs</span>
           </a>
-        </li>
+        </li> --}}
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/message*')) active @endif" href="{{route('admin.view_messages')}}">
@@ -301,12 +301,12 @@
           </a>
         </li>
 
-        <li class="treeview">
+        {{-- <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/parachute*')) active @endif" href="{{route('admin.view_enabled_parachutes')}}">
             <i class="app-menu__icon fa fa-bullseye"></i>
             <span class="app-menu__label">Parachutes</span>
           </a>
-        </li>
+        </li> --}}
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/purchase*')) active @endif" href="{{ route('admin.view_purchase') }}">
@@ -423,12 +423,12 @@
           </ul>
         </li>
 
-        <li class="treeview">
+        {{-- <li class="treeview">
           <a class="app-menu__item @if(Request::is('admin/weapon*')) active @endif"  href="{{route('admin.view_enabled_weapons')}}">
             <i class="app-menu__icon fa fa-star"></i>
             <span class="app-menu__label">Weapons</span>
           </a>
-        </li>
+        </li> --}}
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/api*')) active @endif" href="{{ route('admin.view_api') }}">
