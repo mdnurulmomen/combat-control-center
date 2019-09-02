@@ -534,6 +534,21 @@
         });
     </script>
 
+    <script>
+
+      $(document).ready(function() {
+
+          $('body aside.app-sidebar').stop().animate(
+            {
+              scrollTop : $('a.active').offset().top - 200
+            }, 
+            600
+          );
+
+      });
+  
+    </script>
+
     @stack('scripts')
     
   </body>
