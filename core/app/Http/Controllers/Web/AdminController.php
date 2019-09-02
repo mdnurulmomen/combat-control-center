@@ -450,11 +450,10 @@ class AdminController extends Controller
 
             $request->validate([
                 'username'=>'required|unique:users,username',
-                'email'=>'nullable|unique:users,email',
+                'email'=>'nullable|email|unique:users,email',
                 'picture'=>'nullable|image',
                 'role'=>'required',
                 'active'=>'required',
-                'picture'=>'nullable|image',
                 'phone'=>'nullable|numeric',
             ]);
 
