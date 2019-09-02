@@ -6,9 +6,21 @@
         <div class="card-body">
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-6">
                     <h3 class="float-left"> Black Listed Numbers </h3>
                 </div>
+
+                @if(auth()->user()->can('create'))
+
+                <div class="col-6">
+                    <button type="button" class="btn btn-info float-right btn-sm" data-toggle="modal" data-target="#addModal">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Add Blacklist Number
+                    </button>
+                </div>                
+
+                @endif
+
             </div>
 
             <hr>
@@ -16,6 +28,41 @@
             <div class="row">
                 
                 @if(auth()->user()->hasAnyRole(['moderator', 'admin']))
+                
+                <div class="modal fade" id="addModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h3> Add New Number </h3>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+                                <form method="POST" action = "{{ route('admin.create_black_list_number') }}" enctype="multipart/form-data">
+                                    
+                                    @csrf
+
+                                    <div class="form-row">
+                                        <div class="col-md-12 mb-4">
+                                            <label for="validationServer01">Mobile Number</label>
+                                            <input type="tel" name="mobile_number" class="form-control form-control-lg is-valid"  placeholder="Mobile Name">
+                                        </div>
+                                    </div>
+                                    
+                                    <br>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-lg btn-block btn-primary">Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Modal -->
                 <div class="modal fade" id="deleteModal" role="dialog">
                     <div class="modal-dialog">

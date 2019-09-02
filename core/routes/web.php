@@ -122,8 +122,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::delete('character/{characterId}', 'Web\CharacterController@characterDeleteMethod')->name('admin.delete_character');
 
 
-            Route::get('black-list/all', 'Web\BlackListController@showBlackList')->name('admin.view_black_list');
-            Route::delete('black-list/{blackListId}', 'Web\BlackListController@deleteBlackListedNumber')->name('admin.delete_black_listed_number');
+            Route::get('black-lists', 'Web\BlackListController@showBlackList')->name('admin.view_black_list');
+            Route::post('black-lists', 'Web\BlackListController@addNewBlackListNumber')->name('admin.create_black_list_number');
+            Route::delete('black-lists/{blackListId}', 'Web\BlackListController@deleteBlackListedNumber')->name('admin.delete_black_listed_number');
             
 
             Route::get('treasure-types/enabled', 'Web\TreasureController@showAllEnabledTreasureTypes')->name('admin.view_enabled_treasure_types');

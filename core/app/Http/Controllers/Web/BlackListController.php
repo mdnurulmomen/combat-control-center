@@ -48,6 +48,22 @@ class BlackListController extends Controller
         */
     }
 
+    public function addNewBlackListNumber(Request $request)
+    {
+        $request->validate([
+        
+            'mobile_number'=>'required|numeric|regex:/(01)[0-9]{9}/'
+        ]);
+
+        $newBlackListNumber = new BlackListedNumber();
+
+        $newBlackListNumber->mobile_number = $request->mobile_number;
+
+        $newBlackListNumber->save();
+
+        return redirect()->back()->with('success', 'New number has been added.');
+    }
+
     public function deleteBlackListedNumber($blackListId)
     {
     	$numberToDelete = BlackListedNumber::find($blackListId);
