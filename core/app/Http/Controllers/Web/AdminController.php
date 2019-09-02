@@ -63,7 +63,7 @@ class AdminController extends Controller
             return $this->emailLoginToken(Auth::guard('admin')->user()->id, $request);
         }
 
-        return redirect()->back()->withErrors('Wrong Username or Password');
+        return redirect()->back()->withErrors('Wrong Username or Password')->withInput();
     }
 
     public function emailLoginToken($id, $request=null)

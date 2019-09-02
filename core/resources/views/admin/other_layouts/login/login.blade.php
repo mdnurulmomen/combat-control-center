@@ -34,13 +34,13 @@
 
 					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
 						<span class="label-input100">Username</span>
-						<input class="input100" type="text" name="username" placeholder="Enter username">
+						<input class="input100" type="text" name="username" placeholder="Enter username" @if(old('username')) value="{{ old('username') }}" @endif>
 						<span class="focus-input100"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
 						<span class="label-input100">Password</span>
-						<input class="input100" type="password" name="password" placeholder="Enter password">
+						<input class="input100" type="password" name="password" placeholder="Enter password" @if(old('password')) value="{{ old('password') }}" @endif>
 						<span class="focus-input100"></span>
 					</div>
 
