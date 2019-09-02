@@ -104,9 +104,9 @@
 
                 createdRow: function( row, data, dataIndex ) {
                     
+                    /*
                     var searching = $("input[type='search']").val();
                     
-                    /*
                     if (!searching) {
 
                         $(row).hide();
