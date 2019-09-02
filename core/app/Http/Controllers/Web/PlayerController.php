@@ -29,17 +29,6 @@ class PlayerController extends Controller
 {
     public function showLeaderboard(Request $request)
     {
-        $topLeaders = PlayerStatistic::with('player')->orderBy(DB::raw("`opponent_killed` + `monster_killed` + `double_killed` + `triple_killed`"), 'DESC')->get();
-   
-        if ($topLeaders->isEmpty()) {
-            return redirect()->back()->withErrors('No Player Found');
-        }
-
-        Leader::truncate();
-
-        // create leader board
-        $this->buildLeaderBoard($topLeaders);
-
         if ($request->ajax()) {
             
             $model = Leader::query();
@@ -60,6 +49,22 @@ class PlayerController extends Controller
                     
                     ->make(true);
         }
+
+        else {
+
+            $topLeaders = PlayerStatistic::with('player')->orderBy(DB::raw("`opponent_killed` + `monster_killed` + `double_killed` + `triple_killed`"), 'DESC')->get();
+       
+            if ($topLeaders->isEmpty()) {
+                return redirect()->back()->withErrors('No Player Found');
+            }
+
+            Leader::truncate();
+
+            // create leader board
+            $this->buildLeaderBoard($topLeaders);
+
+        }
+
 
         return view('admin.other_layouts.players.view_leaderboard');
 
