@@ -85,7 +85,7 @@
           <p class="app-sidebar__user-name">
             {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->username}}
           </p>
-          <p class="app-sidebar__user-designation">Admin</p>
+          <p class="app-sidebar__user-designation">{{ \Illuminate\Support\Facades\Auth::guard('admin')->user()->getRoleNames()[0] }}</p>
         </div>
       </div>
       <ul class="app-menu">
