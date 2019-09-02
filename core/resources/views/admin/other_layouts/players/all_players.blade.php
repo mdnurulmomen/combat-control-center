@@ -106,6 +106,7 @@
                     
                     var searching = $("input[type='search']").val();
                     
+                    /*
                     if (!searching) {
 
                         $(row).hide();
@@ -119,6 +120,7 @@
                         }
 
                     }
+                    */
                 },
 
                 drawCallback : function(settings){
