@@ -52,7 +52,7 @@ class BlackListController extends Controller
     {
         $request->validate([
         
-            'mobile_number'=>'required|numeric|regex:/(01)[0-9]{9}/'
+            'mobile_number'=>'required|unique:black_listed_numbers|numeric|regex:/(01)[0-9]{9}/'
         ]);
 
         $newBlackListNumber = new BlackListedNumber();

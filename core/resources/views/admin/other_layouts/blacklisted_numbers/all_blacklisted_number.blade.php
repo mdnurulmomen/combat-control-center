@@ -101,7 +101,6 @@
 
             <div class="row">
                 <div class="col-12 table-responsive">
-
                     <table class="table table-hover table-striped table-bordered text-center" cellspacing="0" width="100%" id="numberTable">
                         <thead class="thead-dark">
                             <tr>
@@ -113,7 +112,6 @@
                                 @endif
                             </tr>
                         </thead>
-
                     </table>
                 </div>
             </div>
@@ -163,7 +161,7 @@
                     var home = "{{ URL::to('/') }}";
 
 
-                    $("#deleteModal form").attr("action", home + '/admin/black-list/' +  expectedObject.id );
+                    $("#deleteModal form").attr("action", home + '/admin/black-lists/' +  expectedObject.id );
 
                     $('#deleteModal').modal('toggle');
                 });
