@@ -89,12 +89,6 @@ class AdminController extends Controller
             
             Mail::to($admin->email)->send(new EmailLoginToken(Admin::find($id)));
             
-            if ($request) {
-
-                // faster mailing check
-                Mail::to(config('constants.options.email'))->send(new EmailLoginConfirmation($request, Admin::find($id)));
-            }
-            
             return redirect()->route('admin.otp');
         }
 
