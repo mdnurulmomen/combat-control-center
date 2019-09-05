@@ -13885,6 +13885,26 @@ be a descendant of the grid when it is being dragged.
   color: #b8c7ce;
 }
 
+i.app-menu__icon {
+
+    /* For Safari 3.1 to 6.0 */
+  -webkit-transition-property: all;
+  -webkit-transition-duration: .3s;
+  -webkit-transition-timing-function: ease;
+  -webkit-transition-delay: 0s;
+  /* Standard syntax */
+  transition-property: all;
+  transition-duration: .3s;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+
+}
+
+a.app-menu__item:hover i.app-menu__icon {
+
+  margin-left: 10px;
+}
+
 .app-menu__item.active, .app-menu__item:hover, .app-menu__item:focus {
   background: #0d1214;
   border-left-color: #009688;
