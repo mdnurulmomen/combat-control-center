@@ -17,9 +17,9 @@ class CreateLeadersTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('username')->nullable()->default('username');
-            $table->string('total_kill')->nullable()->default('total_kill');
-            $table->string('treasure_won')->nullable()->default('treasure_won');
-            $table->string('level')->nullable()->default('level');
+            $table->integer('total_kill')->nullable()->default(0);
+            $table->integer('treasure_won')->nullable()->default(0);
+            $table->integer('level')->nullable()->default(0);
             $table->string('location')->nullable()->default('location');
             $table->string('profile_pic')->nullable()->default('profile_pic');
 
