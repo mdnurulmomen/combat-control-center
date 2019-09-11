@@ -13902,7 +13902,7 @@ i.app-menu__icon {
 
 a.app-menu__item:hover i.app-menu__icon {
 
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .app-menu__item.active, .app-menu__item:hover, .app-menu__item:focus {
