@@ -98,7 +98,7 @@
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'user.username', name: 'user.username' },
-                    { data: 'player_batch', name: 'player_batch' },
+                    { data: 'player_statistics.player_level', name: 'playerStatistics.player_level' },
                     { data: 'action', name: 'action', orderable : false }
                 ],
 
