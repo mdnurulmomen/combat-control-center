@@ -20,7 +20,7 @@ class PlayerTreasureAndSubscription extends Command
      *
      * @var string
      */
-    protected $description = 'Player expired Treasure and Subscription Period are disabled successfully';
+    protected $description = 'Expired Player-Treasure and Subscription Period are disabled successfully';
 
     /**
      * Create a new command instance.
