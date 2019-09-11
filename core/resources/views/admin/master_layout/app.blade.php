@@ -43,8 +43,10 @@
 
   <body class="app sidebar-mini rtl">
     <!-- Navbar-->
-    <header class="app-header"><a class="app-header__logo" href="{{route('admin.home')}}"><i class="fa fa-home" aria-hidden="true"></i></a>
-      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+    <header class="app-header">
+      <a class="app-header__logo" href="{{route('admin.home')}}"><i class="fa fa-home" aria-hidden="true"></i></a>
+      {{-- <!-- Sidebar toggle button-->
+      <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a> --}}
       <!-- Navbar Right Menu-->
       <ul class="app-nav">
         
@@ -109,7 +111,7 @@
 
         @if(auth()->user()->can('setting'))
 
-        <li class="treeview">
+        <li class="treeview  @if(Request::is('admin/settings*') || Request::is('admin/gift*') || Request::is('admin/game/*') || Request::is('admin/rules/*')) is-expanded @endif">
           <a class="app-menu__item  @if(Request::is('admin/settings*') || Request::is('admin/gift*') || Request::is('admin/game/*') || Request::is('admin/rules/*')) active @endif" href="#" data-toggle="treeview">
             <i class="app-menu__icon fa fa-gear"></i>
             <span class="app-menu__label">Settings</span>
@@ -269,7 +271,7 @@
           </a>
         </li>
 
-        <li class="treeview">
+        <li class="treeview @if(Request::is('admin/mission*')) is-expanded @endif">
           <a class="app-menu__item @if(Request::is('admin/mission*')) active @endif" href="#" data-toggle="treeview">
             <i class="app-menu__icon fa fa-play"></i>
             <span class="app-menu__label">Missions</span>
@@ -315,7 +317,7 @@
           </a>
         </li>        
 
-        <li class="treeview">
+        <li class="treeview @if(Request::is('admin/daily-login-reward*') || Request::is('admin/reward-types*')) is-expanded @endif">
           <a class="app-menu__item @if(Request::is('admin/daily-login-reward*') || Request::is('admin/reward-types*')) active @endif" href="#" data-toggle="treeview">
             <i class="app-menu__icon fa fa-trophy"></i>
             <span class="app-menu__label">Rewards</span>
@@ -354,7 +356,7 @@
           </a>
         </li>
 
-        <li class="treeview">
+        <li class="treeview  @if(Request::is('admin/treasure*')) is-expanded @endif">
           <a class="app-menu__item @if(Request::is('admin/treasure*')) active @endif" href="#" data-toggle="treeview">
             <i class="app-menu__icon fa fa-money"></i>
             <span class="app-menu__label">Treasure</span>
@@ -395,7 +397,7 @@
           </ul>
         </li>
 
-        <li class="treeview">
+        <li class="treeview @if(Request::is('admin/vendor*') || Request::is('admin/area*') || Request::is('admin/citie*')) is-expanded @endif">
           <a class="app-menu__item @if(Request::is('admin/vendor*') || Request::is('admin/area*') || Request::is('admin/citie*')) active @endif" href="#" data-toggle="treeview">
             <i class="app-menu__icon fa fa-industry"></i>
             <span class="app-menu__label">Vendor</span>
