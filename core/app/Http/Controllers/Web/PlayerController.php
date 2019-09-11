@@ -91,11 +91,9 @@ class PlayerController extends Controller
 
     public function showAllPlayers(Request $request)
     {
-        // return Player::whereDate('updated_at', Carbon::today())->with('user')->get();
-        
         if($request->ajax()){
 
-            $model = Player::with('user');
+            $model = Player::with('user', 'playerStatistics')->select('players.*');
 
             return  DataTables::eloquent($model)
 
