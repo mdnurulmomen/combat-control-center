@@ -49,6 +49,8 @@
                 { data: 'total_kill', name: 'total_kill' },
                 { data: 'treasure_won', name: 'treasure_won' },
             ],
+            order: [[ 3, "desc" ]],
+
             drawCallback: function(){
                 // var api = this.api();
                 // var json = api.ajax.json();
