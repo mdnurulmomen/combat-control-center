@@ -8,7 +8,7 @@ $factory->define(Admin::class, function (Faker $faker) {
     return [
     	'firstname'=>Str::random(4),
         'lastname'=>Str::random(4),
-        'username'=> $faker->name,
+        'username'=> 'admin',
         'password'=> bcrypt('admin'),
         'is_verified'=> 1,
         'active'=> 1,

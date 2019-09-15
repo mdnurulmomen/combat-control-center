@@ -11,11 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
+        // $this->call([
 
-        	AdminTableSeeder::class,
+        // 	AdminTableSeeder::class,
 
-        ]);
+        // ]);
 
         // factory(App\Parachute::class, 3)->create();
         // factory(App\GemPack::class, 3)->create();
