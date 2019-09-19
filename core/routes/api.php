@@ -3,7 +3,7 @@
 //Route::resource('player', 'PlayerController');
 
 
-Route::middleware(['api', 'cors'])->group(function (){
+Route::middleware(['api'])->group(function (){
 
     
     Route::prefix('v1')->group(function () {

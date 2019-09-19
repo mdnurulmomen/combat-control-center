@@ -52,13 +52,13 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             });    
 
 
-            Route::post('user', 'Web\AdminController@submitCreateUserForm')->name('admin.created_user_submit');
-            Route::get('users/all', 'Web\AdminController@showAllUsers')->name('admin.view_users');
+            Route::post('users', 'Web\AdminController@submitCreateUserForm')->name('admin.created_user_submit');
+            Route::get('users', 'Web\AdminController@showAllUsers')->name('admin.view_users');
             Route::put('users/{userId}', 'Web\AdminController@submitUserEditForm')->name('admin.updated_user_submit');
             Route::delete('users/{userId}', 'Web\AdminController@userDeleteMethod')->name('admin.delete_user');
 
 
-            Route::get('api/all', 'Web\AdminController@showAllApi')->name('admin.view_api');
+            Route::get('api', 'Web\AdminController@showAllApi')->name('admin.view_api');
 
             Route::group(['middleware' => ['permission:setting']], function () {
 
@@ -100,13 +100,13 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
 
 
 
-            Route::get('players/all', 'Web\PlayerController@showAllPlayers')->name('admin.view_players');
-            Route::put('player/{playerId}/', 'Web\PlayerController@submitPlayerEditForm')->name('admin.updated_player_submit');
-            Route::delete('player/{playerId}', 'Web\PlayerController@deletePlayerMethod')->name('admin.delete_player');
+            Route::get('players', 'Web\PlayerController@showAllPlayers')->name('admin.view_players');
+            Route::put('players/{playerId}/', 'Web\PlayerController@submitPlayerEditForm')->name('admin.updated_player_submit');
+            Route::delete('players/{playerId}', 'Web\PlayerController@deletePlayerMethod')->name('admin.delete_player');
 
             
-            Route::get('bots/all', 'Web\PlayerController@showAllBots')->name('admin.view_bots');
-            Route::post('bot', 'Web\PlayerController@submitCreateBotForm')->name('admin.created_bot_submit');
+            Route::get('bots', 'Web\PlayerController@showAllBots')->name('admin.view_bots');
+            Route::post('bots', 'Web\PlayerController@submitCreateBotForm')->name('admin.created_bot_submit');
             
             Route::put('bot/{botId}/', 'Web\PlayerController@submitBotEditForm')->name('admin.updated_bot_submit');
             
@@ -249,26 +249,26 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::patch('bundle-pack/{bundlePackId}', 'Web\BundleController@bundlePackUndoMethod')->name('admin.undo_bundle_pack');
             
 
-            Route::get('store/all', 'Web\StoreController@showStoreMethod')->name('admin.create_store');
-            Route::get('purchase/all', 'Web\StoreController@viewAllPurchases')->name('admin.view_purchase');
+            Route::get('store', 'Web\StoreController@showStoreMethod')->name('admin.create_store');
+            Route::get('purchase', 'Web\StoreController@viewAllPurchases')->name('admin.view_purchase');
 
 
-            Route::post('image', 'Web\MediaController@submitCreatedImage')->name('admin.created_image_submit');
-            Route::get('images/all', 'Web\MediaController@showAllImages')->name('admin.view_images');
-            Route::put('image/{imageId}', 'Web\MediaController@submitEditedImage')->name('admin.updated_image_submit');
-            Route::delete('image/{imageId}', 'Web\MediaController@imageDeleteMethod')->name('admin.delete_image');
+            Route::post('campaigns', 'Web\MediaController@submitCreatedCampaign')->name('admin.created_campaign_submit');
+            Route::get('campaigns', 'Web\MediaController@showAllCampaigns')->name('admin.view_campaigns');
+            Route::put('campaigns/{campaignId}', 'Web\MediaController@submitEditedCampaign')->name('admin.updated_campaign_submit');
+            Route::delete('campaigns/{campaignId}', 'Web\MediaController@campaignDeleteMethod')->name('admin.delete_campaign');
 
 
             Route::post('news', 'Web\MediaController@submitCreatedNews')->name('admin.created_news_submit');
-            Route::get('news/all', 'Web\MediaController@showAllNews')->name('admin.view_news');
+            Route::get('news', 'Web\MediaController@showAllNews')->name('admin.view_news');
             Route::put('news/{newsId}', 'Web\MediaController@submitEditedNews')->name('admin.updated_news_submit');
             Route::delete('news/{newsId}', 'Web\MediaController@newsDeleteMethod')->name('admin.delete_news');
 
 
             Route::post('message', 'Web\MediaController@submitCreatedMessage')->name('admin.created_message_submit');
-            Route::get('messages/all', 'Web\MediaController@showAllMessages')->name('admin.view_messages');
+            Route::get('messages', 'Web\MediaController@showAllMessages')->name('admin.view_messages');
             Route::put('messages/{messageId}', 'Web\MediaController@submitEditedMessage')->name('admin.updated_message_submit');
-            Route::delete('message/{messageId}', 'Web\MediaController@messageDeleteMethod')->name('admin.delete_message');
+            Route::delete('messages/{messageId}', 'Web\MediaController@messageDeleteMethod')->name('admin.delete_message');
 
             
             Route::get('mission-types/enabled', 'Web\MissionController@showAllEnabledMissionTypes')->name('admin.view_enabled_mission_types');

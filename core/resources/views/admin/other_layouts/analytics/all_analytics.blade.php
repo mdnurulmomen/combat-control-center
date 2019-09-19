@@ -130,11 +130,11 @@
 
                     <div class="col-md-5 col-7 float-right">    
                         <p class="bg-info m-0">
-                            # Treasure Gifted : <b>{{ $treasureCounter->total_treasure_gifted }}</b>
+                            # Treasure Gifted : <b>{{ $treasureCounter->total_treasure_gifted ?? 0}}</b>
                         </p>
                     
                         <p class="bg-warning m-0">
-                            # Treasure Picked : <b>{{ $treasureCounter->total_treasure_collected }}</b>
+                            # Treasure Picked : <b>{{ $treasureCounter->total_treasure_collected ?? 0 }}</b>
                         </p>       
                    </div>
                 </div>

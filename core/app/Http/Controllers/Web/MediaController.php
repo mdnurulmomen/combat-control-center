@@ -3,54 +3,79 @@
 namespace App\Http\Controllers\Web;
 
 use App\Models\News;
-use App\Models\Image;
 use App\Models\Message;
+use App\Models\Campaign;
 use Illuminate\Http\Request;
+use App\Models\CampaignImage;
 use App\Http\Controllers\Controller;
+use App\Models\CampaignImageCategory;
+use App\Http\Requests\CampaignRequest;
 use Intervention\Image\Facades\Image as ImageIntervention;
 
 class MediaController extends Controller
 {
-    public function submitCreatedImage(Request $request)
-    {
-        $request->validate([
-            'preview'=>'required',
-            'order'=>'nullable|unique:images,order'
-        ]);
+    public function submitCreatedCampaign(CampaignRequest $request)
+    {   
+        $newCampaign = new Campaign();
 
-        $newImage = new Image();
+        $newCampaign->name = $request->name;
+        $newCampaign->start_date = $request->start_date;
+        $newCampaign->close_date = $request->close_date;
+        $newCampaign->status = $request->status;
 
-        $newImage->name = $request->name;
-        $newImage->order = $request->order;
+        $newCampaign->save();
 
-        if($request->has('preview')){
-            $originImageFile = $request->file('preview');
-            $imageObject = ImageIntervention::make($originImageFile);
-            $imageObject->resize(512, 512)->save('assets/front/images/ads/'.$originImageFile->hashname());
+        foreach (CampaignImageCategory::all() as $campaignImageCategory) {
 
-            $newImage->preview = 'assets/front/images/ads/'.$originImageFile->hashname();
+            $this->saveCampaignImages($request, $newCampaign, $campaignImageCategory);
+
         }
 
-        $newImage->save();
-
-        return redirect()->back()->with('success', 'New Image is Created');
+        return redirect()->back()->with('success', 'New Campaign is Created');
     }
 
-    public function showAllImages()
+    public function saveCampaignImages(Request $request, Campaign $newCampaign, CampaignImageCategory $campaignImageCategory)
     {
-        $images = Image::paginate(6);
-        return view('admin.other_layouts.media.all_images', compact('images'));
+        $parameterName = str_replace(' ', '_', $campaignImageCategory->name);
+
+        $directory = "assets/front/campaign/images/$campaignImageCategory->name/";
+
+        if (!file_exists($directory)) {
+
+            mkdir($directory, 666, true);
+        }
+
+        if($request->hasFile($parameterName)){
+
+            foreach ($request->file($parameterName) as $key => $originImageFile) {
+                        
+                $imageObject = ImageIntervention::make($originImageFile);
+                $imageObject->save($directory.$newCampaign->name."_".$parameterName."_".($key+1).'.jpg');
+                
+                $newCampaignImage = new CampaignImage();
+                $newCampaignImage->image_path = $directory.$newCampaign->name."_".$parameterName."_".($key+1).'.jpg';
+                $newCampaignImage->campaign_image_category_id = $campaignImageCategory->id;
+                $newCampaignImage->campaign_id = $newCampaign->id;
+                $newCampaignImage->save();
+            }
+        }
     }
 
-    public function showImageEditForm(Request$request, $imageId)
+    public function showAllCampaigns()
     {
-        $imageToUpdate = Image::findOrFail($imageId);
-        return view('admin.other_layouts.media.edit_image', compact('imageToUpdate'));
+        $campaigns = Campaign::paginate(6);
+        return view('admin.other_layouts.media.all_campaigns')->withCampaigns($campaigns);
     }
 
-    public function submitEditedImage(Request $request, $imageId)
+    public function showCampaignEditForm(Request$request, $campaignId)
     {
-        $imageToUpdate = Image::findOrFail($imageId);
+        $campaignToUpdate = Campaign::findOrFail($campaignId);
+        return view('admin.other_layouts.media.edit_image', compact('campaignToUpdate'));
+    }
+
+    public function submitEditedCampaign(Request $request, $campaignId)
+    {
+        $imageToUpdate = Campaign::findOrFail($imageId);
 
         $request->validate([
             'order'=>'nullable|unique:images,order,'.$imageToUpdate->id
@@ -69,15 +94,15 @@ class MediaController extends Controller
 
         $imageToUpdate->save();
 
-        return redirect()->back()->with('success', 'Image is Updated');
+        return redirect()->back()->with('success', 'Campaign is Updated');
     }
 
-    public function imageDeleteMethod($imageId)
+    public function campaignDeleteMethod($imageId)
     {
-        $imageToDelete = Image::findOrFail($imageId);
+        $imageToDelete = Campaign::findOrFail($imageId);
         $imageToDelete->delete();
 
-        return redirect()->back()->with('success', 'Image is Deleted');
+        return redirect()->back()->with('success', 'Campaign is Deleted');
     }
 
     public function submitCreatedNews(Request $request)

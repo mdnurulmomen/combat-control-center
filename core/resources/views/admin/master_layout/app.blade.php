@@ -98,17 +98,6 @@
           </a>
         </li>
 
-        @if(auth()->user()->can('analytic'))
-
-        <li>
-          <a class="app-menu__item @if(Request::is('admin/analytic*')) active @endif" href="{{route('admin.show_talktime_analytics')}}">
-            <i class="app-menu__icon fa fa-bar-chart"></i>
-            <span class="app-menu__label">Analytics</span>
-          </a>
-        </li>
-
-        @endif
-
         @if(auth()->user()->can('setting'))
 
         <li class="treeview  @if(Request::is('admin/settings*') || Request::is('admin/gift*') || Request::is('admin/game/*') || Request::is('admin/rules/*')) is-expanded @endif">
@@ -120,20 +109,14 @@
           <ul class="treeview-menu">
             
             <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.settings_rules') active @endif" href="{{route('admin.settings_rules')}}" rel="noopener">
-                <i class="icon fa fa-circle-o"></i> Rules Settings
+              <a class="treeview-item @if(Route::currentRouteName()=='admin.settings_admin_panel') active @endif" href="{{route('admin.settings_admin_panel')}}">
+                <i class="icon fa fa-circle-o"></i> Admin Panel Settings
               </a>
             </li>
 
             <li>
               <a class="treeview-item @if(Route::currentRouteName()=='admin.settings_game') active @endif" href="{{route('admin.settings_game')}}">
                 <i class="icon fa fa-circle-o"></i> Game Settings
-              </a>
-            </li>
-
-            <li>
-              <a class="treeview-item @if(Route::currentRouteName()=='admin.settings_admin_panel') active @endif" href="{{route('admin.settings_admin_panel')}}">
-                <i class="icon fa fa-circle-o"></i> Admin Panel Settings
               </a>
             </li>
 
@@ -182,10 +165,41 @@
               </a>
             </li>
 
+            <li>
+              <a class="treeview-item @if(Route::currentRouteName()=='admin.settings_rules') active @endif" href="{{route('admin.settings_rules')}}" rel="noopener">
+                <i class="icon fa fa-circle-o"></i> Rules Settings
+              </a>
+            </li>
+
           </ul>
         </li>
 
         @endif
+
+        <li class="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/campaign*')) active @endif" href="{{route('admin.view_campaigns')}}">
+            <i class="app-menu__icon fa fa-picture-o"></i>
+            <span class="app-menu__label">Ad Campaign</span>
+          </a>
+        </li>
+
+        @if(auth()->user()->can('analytic'))
+
+        <li>
+          <a class="app-menu__item @if(Request::is('admin/analytic*')) active @endif" href="{{route('admin.show_talktime_analytics')}}">
+            <i class="app-menu__icon fa fa-bar-chart"></i>
+            <span class="app-menu__label">Analytics</span>
+          </a>
+        </li>
+
+        @endif
+
+        <li class="treeview">
+          <a class="app-menu__item  @if(Request::is('admin/black*')) active @endif" href="{{route('admin.view_black_list')}}">
+            <i class="app-menu__icon fa fa-ban"></i>
+            <span class="app-menu__label">Black List</span>
+          </a>
+        </li>
 
         <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/user*')) active @endif" href="{{route('admin.view_users')}}">
@@ -208,19 +222,7 @@
           </a>
         </li>
 
-        <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/image*')) active @endif" href="{{route('admin.view_images')}}">
-            <i class="app-menu__icon fa fa-picture-o"></i>
-            <span class="app-menu__label">Ad Images</span>
-          </a>
-        </li>
-
-        <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/black*')) active @endif" href="{{route('admin.view_black_list')}}">
-            <i class="app-menu__icon fa fa-ban"></i>
-            <span class="app-menu__label">Black List</span>
-          </a>
-        </li>
+        
 
         {{-- <li class="treeview">
           <a class="app-menu__item  @if(Request::is('admin/animation*')) active @endif" href="{{route('admin.view_enabled_animations')}}">
