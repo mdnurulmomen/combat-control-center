@@ -254,9 +254,19 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
 
 
             Route::post('campaigns', 'Web\MediaController@submitCreatedCampaign')->name('admin.created_campaign_submit');
-            Route::get('campaigns', 'Web\MediaController@showAllCampaigns')->name('admin.view_campaigns');
+            Route::get('campaigns-enabled', 'Web\MediaController@showAllCampaigns')->name('admin.view_campaigns');
+            Route::get('campaigns-diabled', 'Web\MediaController@showAllDisabledCampaigns')->name('admin.view_disabled_campaigns');
+            Route::post('campaign-category-images', 'Web\MediaController@showCampaignCategoryImages')->name('admin.campaign_category_images');
             Route::put('campaigns/{campaignId}', 'Web\MediaController@submitEditedCampaign')->name('admin.updated_campaign_submit');
             Route::delete('campaigns/{campaignId}', 'Web\MediaController@campaignDeleteMethod')->name('admin.delete_campaign');
+            Route::patch('campaigns/{campaignId}', 'Web\MediaController@campaignRestoreMethod')->name('admin.restore_campaign');
+
+            Route::post('campaign-image-categories', 'Web\MediaController@submitCreatedCampaignImageCategory')->name('admin.created_campaign_image_category_submit');
+            Route::get('campaign-image-categories', 'Web\MediaController@showAllEnabledCampaignImageCategoies')->name('admin.view_enabled_campaign_image_categories');
+            Route::get('campaign-image-categories-disabled', 'Web\MediaController@showAllDisabledCampaignImageCategoies')->name('admin.view_disabled_campaign_image_categories');
+            Route::put('campaign-image-categories/{campaignCategoryId}', 'Web\MediaController@submitEditedCampaignImageCategory')->name('admin.updated_campaign_image_category_submit');
+            Route::delete('campaign-image-categories/{campaignCategoryId}', 'Web\MediaController@campaignImageCategoryDeleteMethod')->name('admin.delete_campaign_image_category');
+            Route::patch('campaign-image-categories/{campaignCategoryId}', 'Web\MediaController@campaignImageCategoryRestoreMethod')->name('admin.restore_campaign_image_category');
 
 
             Route::post('news', 'Web\MediaController@submitCreatedNews')->name('admin.created_news_submit');

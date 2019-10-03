@@ -13,9 +13,15 @@ use App\Http\Requests\CampaignRequest;
 use Intervention\Image\Facades\Image as ImageIntervention;
 
 class MediaController extends Controller
-{
+{   
     public function submitCreatedCampaign(CampaignRequest $request)
     {   
+        // return $request->name;
+
+        $request->validate([
+            'name' => 'required|unique:campaigns,name'
+        ]);
+
         $newCampaign = new Campaign();
 
         $newCampaign->name = $request->name;
@@ -33,12 +39,44 @@ class MediaController extends Controller
 
         return redirect()->back()->with('success', 'New Campaign is Created');
     }
+    
+
+    /*
+    public function submitCreatedCampaign(Request $request)
+    {   
+        
+        if ($request->ajax()) {
+            
+            return $request->name;
+        }
+
+        return $request->start_date;
+
+        $newCampaign = new Campaign();
+
+        $newCampaign->name = $request->name;
+        $newCampaign->start_date = $request->start_date;
+        $newCampaign->close_date = $request->close_date;
+        $newCampaign->status = $request->status;
+
+        $newCampaign->save();
+
+        foreach (CampaignImageCategory::all() as $campaignImageCategory) {
+
+            $this->saveCampaignImages($request, $newCampaign, $campaignImageCategory);
+
+        }
+
+        return redirect()->back()->with('success', 'New Campaign is Created');
+    }
+    */
 
     public function saveCampaignImages(Request $request, Campaign $newCampaign, CampaignImageCategory $campaignImageCategory)
     {
         $parameterName = str_replace(' ', '_', $campaignImageCategory->name);
+        $campaignName = str_replace(' ', '_', $newCampaign->name);
 
-        $directory = "assets/front/campaign/images/$campaignImageCategory->name/";
+        $directory = "assets/front/campaign/images/$parameterName/";
 
         if (!file_exists($directory)) {
 
@@ -49,11 +87,11 @@ class MediaController extends Controller
 
             foreach ($request->file($parameterName) as $key => $originImageFile) {
                         
-                $imageObject = ImageIntervention::make($originImageFile);
-                $imageObject->save($directory.$newCampaign->name."_".$parameterName."_".($key+1).'.jpg');
+                $imageObject = ImageIntervention::make($originImageFile)->resize($campaignImageCategory->width_size, $campaignImageCategory->height_size);
+                $imageObject->save($directory.$campaignName."_".$parameterName."_".($key+1).'.jpg');
                 
                 $newCampaignImage = new CampaignImage();
-                $newCampaignImage->image_path = $directory.$newCampaign->name."_".$parameterName."_".($key+1).'.jpg';
+                $newCampaignImage->image_path = $directory.$campaignName."_".$parameterName."_".($key+1).'.jpg';
                 $newCampaignImage->campaign_image_category_id = $campaignImageCategory->id;
                 $newCampaignImage->campaign_id = $newCampaign->id;
                 $newCampaignImage->save();
@@ -61,48 +99,157 @@ class MediaController extends Controller
         }
     }
 
-    public function showAllCampaigns()
+    public function showAllCampaigns(Request $request)
     {
-        $campaigns = Campaign::paginate(6);
-        return view('admin.other_layouts.media.all_campaigns')->withCampaigns($campaigns);
-    }
+        $campaigns = Campaign::all();
 
-    public function showCampaignEditForm(Request$request, $campaignId)
-    {
-        $campaignToUpdate = Campaign::findOrFail($campaignId);
-        return view('admin.other_layouts.media.edit_image', compact('campaignToUpdate'));
-    }
-
-    public function submitEditedCampaign(Request $request, $campaignId)
-    {
-        $imageToUpdate = Campaign::findOrFail($imageId);
-
-        $request->validate([
-            'order'=>'nullable|unique:images,order,'.$imageToUpdate->id
-        ]);
-
-        $imageToUpdate->name = $request->name;
-        $imageToUpdate->order = $request->order;
-
-        if($request->has('preview')){
-            $originImageFile = $request->file('preview');
-            $imageObject = ImageIntervention::make($originImageFile);
-            $imageObject->resize(512, 512)->save('assets/front/images/ads/'.$originImageFile->hashname());
-
-            $imageToUpdate->preview = 'assets/front/images/ads/'.$originImageFile->hashname();
+        if ($request->ajax()) {
+            return $campaigns;
         }
 
-        $imageToUpdate->save();
-
-        return redirect()->back()->with('success', 'Campaign is Updated');
+        return view('admin.other_layouts.media.all_campaigns_enabled')->withCampaigns($campaigns);
     }
 
-    public function campaignDeleteMethod($imageId)
+    public function showAllDisabledCampaigns()
     {
-        $imageToDelete = Campaign::findOrFail($imageId);
-        $imageToDelete->delete();
+        $campaigns = Campaign::onlyTrashed()->paginate(15);
+        return view('admin.other_layouts.media.all_campaigns_disabled')->withCampaigns($campaigns);
+    }
+
+    public function showCampaignCategoryImages(Request $request)
+    {
+        if ($request->ajax()) {
+            
+            $campaignId = $request->campaignId;
+            $categoryId = $request->categoryId;
+
+            // return "CampaignId : $campaignId, CategoryId : $categoryId";
+            return CampaignImage::where('campaign_id', $campaignId)->where('campaign_image_category_id', $categoryId)->get();
+        }
+
+        return 'Not Ajax Call';
+    }
+
+    public function submitEditedCampaign(CampaignRequest $request, $campaignId)
+    {
+        $campaignToUpdate = Campaign::findOrFail($campaignId);
+ 
+        $request->validate([
+            'name' => 'required|unique:campaigns,name,'.$campaignToUpdate->id,
+        ]);
+
+        $campaignToUpdate->name = $request->name;
+        $campaignToUpdate->start_date = $request->start_date;
+        $campaignToUpdate->close_date = $request->close_date;
+        $campaignToUpdate->status = $request->status;
+
+        $campaignToUpdate->save();
+
+        $campaignToUpdate->campaignImages()->delete();
+
+        foreach (CampaignImageCategory::all() as $campaignImageCategory) {
+
+            $this->saveCampaignImages($request, $campaignToUpdate, $campaignImageCategory);
+            $this->saveUploadedCampaignImages($request, $campaignToUpdate, $campaignImageCategory);
+
+        }
+
+        return redirect()->back()->with('success', 'New Campaign is Updated');
+    }
+
+    public function saveUploadedCampaignImages(Request $request, Campaign $campaignToUpdate, CampaignImageCategory $campaignImageCategory)
+    {
+        $parameterName = 'uploaded_'.str_replace(' ', '_', $campaignImageCategory->name);
+
+        foreach ($request->$parameterName as $key => $imagePath) {
+            
+            if ($imagePath) {
+                $newCampaignImage = new CampaignImage();
+                $newCampaignImage->image_path = $imagePath;
+                $newCampaignImage->campaign_image_category_id = $campaignImageCategory->id;
+                $newCampaignImage->campaign_id = $campaignToUpdate->id;
+                $newCampaignImage->save();
+            }
+        }
+    }
+
+    public function campaignDeleteMethod($campaignId)
+    {
+        // dd(Campaign::findOrFail($campaignId)->update(['status' => false]));
+        $campaignToDelete = Campaign::findOrFail($campaignId);
+        $campaignToDelete->update(['status' => false]);
+        $campaignToDelete->delete();
 
         return redirect()->back()->with('success', 'Campaign is Deleted');
+    }
+
+    public function campaignRestoreMethod($campaignId)
+    {
+        $campaignToRestore = Campaign::withTrashed()->findOrFail($campaignId);
+        $campaignToRestore->restore();
+
+        return redirect()->back()->with('success', 'Campaign is Restored');
+    }
+
+    public function submitCreatedCampaignImageCategory(Request $request)
+    {
+        $request->validate([
+            'name'=>'required',
+            'width'=>'required',
+            'height'=>'required',
+        ]);
+
+        $newImageCategory = CampaignImageCategory::create([
+                                'name' => $request->name,
+                                'width_size' => $request->width,
+                                'height_size' => $request->height,
+                            ]);;
+
+        return redirect()->back()->with('success', 'New Category has been Created');
+
+    }
+
+    public function showAllEnabledCampaignImageCategoies()
+    {
+        $campaignImageCategories = CampaignImageCategory::paginate(15);
+        return view('admin.other_layouts.media.all_campaign_image_categories_enabled')->withCampaignImageCategories($campaignImageCategories);
+    }
+
+    public function showAllDisabledCampaignImageCategoies()
+    {
+        $campaignImageCagtegories = CampaignImageCategory::onlyTrashed()->paginate(10);
+        return view('admin.other_layouts.media.all_campaign_image_categories_disabled')->withCampaignImageCategories($campaignImageCagtegories);
+    }
+
+    public function submitEditedCampaignImageCategory(Request $request, $categoryId)
+    {
+        $request->validate([
+            'name'=>'required',
+            'width'=>'required',
+            'height'=>'required',
+        ]);
+
+        $categoryToUpdate = CampaignImageCategory::find($categoryId);
+
+        $updateImageCategory = $categoryToUpdate->update([
+                                'name' => $request->name,
+                                'width_size' => $request->width,
+                                'height_size' => $request->height,
+                            ]);;
+
+        return redirect()->back()->with('success', 'New Category has been Updated');
+    }
+    
+    public function campaignImageCategoryDeleteMethod($categoryId)
+    {
+        CampaignImageCategory::findOrFail($categoryId)->delete();
+        return redirect()->back()->with('success', 'Category has been deleted');
+    }
+
+    public function campaignImageCategoryRestoreMethod($campaignId)
+    {
+        CampaignImageCategory::withTrashed()->find($campaignId)->restore();
+        return redirect()->back()->with('success', 'Category has been restored');
     }
 
     public function submitCreatedNews(Request $request)

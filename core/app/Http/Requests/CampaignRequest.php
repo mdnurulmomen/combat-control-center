@@ -26,8 +26,6 @@ class CampaignRequest extends FormRequest
     {
         $rules = [];
 
-        $rules['name'] = 'required|unique:campaigns,name';
-
         foreach (CampaignImageCategory::all() as $campaignImageCategory) {
             
             $parameterName = str_replace(' ', '_', $campaignImageCategory->name);
@@ -45,7 +43,7 @@ class CampaignRequest extends FormRequest
         foreach (CampaignImageCategory::all() as $campaignImageCategory) {
             
             $parameterName = str_replace(' ', '_', $campaignImageCategory->name);
-            $messages["$parameterName.*"] = "Uploaded file have to be image";
+            $messages["$parameterName.*"] = "Uploaded file has to be image";
         }
 
         return $messages;

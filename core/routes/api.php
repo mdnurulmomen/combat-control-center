@@ -32,6 +32,9 @@ Route::middleware(['api'])->group(function (){
 
         Route::post('missions', 'Api\v1\MissionController@showPlayerMissions')->name('api.v1.set_player_missions');
 
+        Route::get('ad-campaign', 'Api\v1\MediaController@showAllCampaignsAndImages')->name('api.v1.show_campaigns_detail');
+        Route::post('ad-campaign', 'Api\v1\MediaController@updateGameCampaignDetails')->name('api.v1.update_game_campaign');
+
     });
 
 
@@ -61,6 +64,8 @@ Route::middleware(['api'])->group(function (){
 
         Route::post('missions', 'Api\v2\MissionController@showPlayerMissions')->name('api.v2.set_player_missions');
 
+        Route::get('ad-campaign', 'Api\v1\MediaController@showAllCampaignsAndImages')->name('api.v2.show_campaigns_detail');
+        Route::post('ad-campaign', 'Api\v1\MediaController@updateGameCampaignDetails')->name('api.v2.update_game_campaign');
 
     });
 

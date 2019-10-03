@@ -18,6 +18,7 @@ class CreateCampaignImageCategoriesTable extends Migration
             $table->string('name');
             $table->smallInteger('width_size')->nullable();
             $table->smallInteger('height_size')->nullable();
+            $table->softDeletes();
         });
     }
 

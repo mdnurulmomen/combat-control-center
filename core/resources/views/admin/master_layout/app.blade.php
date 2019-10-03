@@ -176,13 +176,6 @@
 
         @endif
 
-        <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/campaign*')) active @endif" href="{{route('admin.view_campaigns')}}">
-            <i class="app-menu__icon fa fa-picture-o"></i>
-            <span class="app-menu__label">Ad Campaign</span>
-          </a>
-        </li>
-
         @if(auth()->user()->can('analytic'))
 
         <li>
@@ -199,6 +192,30 @@
             <i class="app-menu__icon fa fa-ban"></i>
             <span class="app-menu__label">Black List</span>
           </a>
+        </li>
+
+        <li class="treeview @if(Request::is('admin/campaign*')) is-expanded @endif">
+          <a class="app-menu__item @if(Request::is('admin/campaign*')) active @endif" href="#" data-toggle="treeview">
+            <i class="app-menu__icon fa fa-picture-o"></i>
+            <span class="app-menu__label">Campaign</span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
+          </a>
+
+          <ul class="treeview-menu">
+            
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_campaigns') active @endif"  href="{{route('admin.view_campaigns')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Campaigns
+                </a>
+              </li>
+
+              <li>
+                <a class="treeview-item @if(Route::currentRouteName()=='admin.view_enabled_campaign_image_categories') active @endif"  href="{{route('admin.view_enabled_campaign_image_categories')}}" rel="noopener">
+                  <i class="icon fa fa-circle-o"></i> Image Categories
+                </a>
+              </li>
+
+          </ul>
         </li>
 
         <li class="treeview">
