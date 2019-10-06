@@ -52,7 +52,7 @@ class AdController extends Controller
 				]);
 	    	}
 
-	    	return new CampaignResource(Campaign::with('campaignImages')->first());
+	    	return new CampaignResource(Campaign::with('campaignImages')->where('status', 1)->first() ?? Campaign::with('campaignImages')->first());
     	}
 
     	return response()->json(['error'=>'No Such Campaign'], 422);

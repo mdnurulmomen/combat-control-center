@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Api\v2;
 
 use App\Models\Campaign;
 use Illuminate\Http\Request;
+use App\Http\Traits\RetrieveToken;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RequestWithToken;
 use App\Models\CampaignPlayerImpression;
 use App\Http\Resources\v2\Campaign\CampaignResource;
 
 class AdController extends Controller
 {
-   	public function showAllCampaignsAndImages()
+   	use RetrieveToken;
+
+    public function showAllCampaignsAndImages()
     {
     	$campaignEnabled = Campaign::where('status', 1)->with('campaignImages')->first();
 
@@ -60,7 +64,7 @@ class AdController extends Controller
 				]);
 	    	}
 
-	    	return new CampaignResource(Campaign::with('campaignImages')->first());
+	    	return new CampaignResource(Campaign::with('campaignImages')->where('status', 1)->first() ?? Campaign::with('campaignImages')->first());
     	}
 
     	return response()->json(['error'=>'No Such Campaign'], 422);

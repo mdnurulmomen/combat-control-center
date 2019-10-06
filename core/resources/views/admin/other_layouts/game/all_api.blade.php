@@ -138,7 +138,7 @@
                                             </tr>
                                             
                                             <tr class="info">
-                                                <th scope="row">7</th>
+                                                <th scope="row">8</th>
                                                 <td>ad-campaign</td>
                                                 <td>Update Preview Impressions</td>
                                                 <td>Post</td>
@@ -149,7 +149,7 @@
 
 
                                             <tr class="info">
-                                                <th scope="row">8</th>
+                                                <th scope="row">9</th>
                                                 <td>game-over</td>
                                                 <td>Game Over</td>
                                                 <td>Post</td>
@@ -176,7 +176,7 @@
 
 
                                             <tr class="info">
-                                                <th scope="row">9</th>
+                                                <th scope="row">10</th>
                                                 <td>match-start</td>
                                                 <td>To Start Match</td>
                                                 <td>Post</td>
@@ -194,7 +194,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">10</th>
+                                                <th scope="row">11</th>
                                                 <td>leaders</td>
                                                 <td>Leadership Board</td>
                                                 <td>Post</td>
@@ -205,7 +205,7 @@
 
 
                                             <tr class="info">
-                                                <th scope="row">11</th>
+                                                <th scope="row">12</th>
                                                 <td>number</td>
                                                 <td>Check Blacklist</td>
                                                 <td>Post</td>
@@ -216,7 +216,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">12</th>
+                                                <th scope="row">13</th>
                                                 <td>assets/update</td>
                                                 <td>Update Multiple Assets</td>
                                                 <td>Post</td>
@@ -229,7 +229,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">13</th>
+                                                <th scope="row">14</th>
                                                 <td>treasure</td>
                                                 <td>Treasure Identifier</td>
                                                 <td>Get</td>
@@ -239,7 +239,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">14</th>
+                                                <th scope="row">15</th>
                                                 <td>treasure</td>
                                                 <td>Player Treasure List</td>
                                                 <td>Post</td>
@@ -249,7 +249,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">15</th>
+                                                <th scope="row">16</th>
                                                 <td>treasure/redemption</td>
                                                 <td>Treasure Redemption</td>
                                                 <td>Post</td>
@@ -264,7 +264,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">16</th>
+                                                <th scope="row">17</th>
                                                 <td>subscription</td>
                                                 <td>Check Player Subscription</td>
                                                 <td>Post</td>
@@ -274,7 +274,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">17</th>
+                                                <th scope="row">18</th>
                                                 <td>subscription/add</td>
                                                 <td>Create Subscribed Player</td>
                                                 <td>Post</td>
@@ -285,7 +285,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">18</th>
+                                                <th scope="row">19</th>
                                                 <td>vendors</td>
                                                 <td>Get List of Specific Vendors</td>
                                                 <td>Post</td>
@@ -295,7 +295,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">19</th>
+                                                <th scope="row">20</th>
                                                 <td>missions</td>
                                                 <td>Enable & Status of Player Missions </td>
                                                 <td>Post</td>
@@ -427,7 +427,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">7</th>
+                                                <th scope="row">8</th>
                                                 <td>ad-campaign</td>
                                                 <td>Update Preview Impressions</td>
                                                 <td>Post</td>
@@ -437,7 +437,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">8</th>
+                                                <th scope="row">9</th>
                                                 <td>game-over</td>
                                                 <td>Game Over</td>
                                                 <td>Post</td>
@@ -464,7 +464,7 @@
 
 
                                             <tr class="info">
-                                                <th scope="row">9</th>
+                                                <th scope="row">10</th>
                                                 <td>match-start</td>
                                                 <td>To Start Match</td>
                                                 <td>Post</td>
@@ -482,7 +482,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">10</th>
+                                                <th scope="row">11</th>
                                                 <td>leaders</td>
                                                 <td>Leadership Board</td>
                                                 <td>Post</td>
@@ -493,7 +493,7 @@
 
 
                                             <tr class="info">
-                                                <th scope="row">11</th>
+                                                <th scope="row">12</th>
                                                 <td>number</td>
                                                 <td>Check Blacklist</td>
                                                 <td>Post</td>
@@ -504,7 +504,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">12</th>
+                                                <th scope="row">13</th>
                                                 <td>assets/update</td>
                                                 <td>Update Multiple Assets</td>
                                                 <td>Post</td>
@@ -517,7 +517,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">13</th>
+                                                <th scope="row">14</th>
                                                 <td>treasure</td>
                                                 <td>Treasure Identifier</td>
                                                 <td>Get</td>
@@ -527,7 +527,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">14</th>
+                                                <th scope="row">15</th>
                                                 <td>treasure</td>
                                                 <td>Player Treasure List</td>
                                                 <td>Post</td>
@@ -537,7 +537,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">15</th>
+                                                <th scope="row">16</th>
                                                 <td>treasure/redemption</td>
                                                 <td>Treasure Redemption</td>
                                                 <td>Post</td>
@@ -552,7 +552,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">16</th>
+                                                <th scope="row">17</th>
                                                 <td>subscription</td>
                                                 <td>Check Player Subscription</td>
                                                 <td>Post</td>
@@ -562,7 +562,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">17</th>
+                                                <th scope="row">18</th>
                                                 <td>subscription/add</td>
                                                 <td>Create Subscribed Player</td>
                                                 <td>Post</td>
@@ -573,7 +573,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">18</th>
+                                                <th scope="row">19</th>
                                                 <td>vendors</td>
                                                 <td>Get List of Specific Vendors</td>
                                                 <td>Post</td>
@@ -583,7 +583,7 @@
                                             </tr>
 
                                             <tr class="info">
-                                                <th scope="row">19</th>
+                                                <th scope="row">20</th>
                                                 <td>missions</td>
                                                 <td>Enable & Status of Player Missions </td>
                                                 <td>Post</td>
