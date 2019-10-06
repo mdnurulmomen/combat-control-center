@@ -16,8 +16,6 @@ class MediaController extends Controller
 {   
     public function submitCreatedCampaign(CampaignRequest $request)
     {   
-        // return $request->name;
-
         $request->validate([
             'name' => 'required|unique:campaigns,name'
         ]);
@@ -28,8 +26,9 @@ class MediaController extends Controller
         $newCampaign->start_date = $request->start_date;
         $newCampaign->close_date = $request->close_date;
         $newCampaign->status = $request->status;
-
         $newCampaign->save();
+
+        $newCampaign->updateDefaultCampaign();
 
         foreach (CampaignImageCategory::all() as $campaignImageCategory) {
 
@@ -39,37 +38,6 @@ class MediaController extends Controller
 
         return redirect()->back()->with('success', 'New Campaign is Created');
     }
-    
-
-    /*
-    public function submitCreatedCampaign(Request $request)
-    {   
-        
-        if ($request->ajax()) {
-            
-            return $request->name;
-        }
-
-        return $request->start_date;
-
-        $newCampaign = new Campaign();
-
-        $newCampaign->name = $request->name;
-        $newCampaign->start_date = $request->start_date;
-        $newCampaign->close_date = $request->close_date;
-        $newCampaign->status = $request->status;
-
-        $newCampaign->save();
-
-        foreach (CampaignImageCategory::all() as $campaignImageCategory) {
-
-            $this->saveCampaignImages($request, $newCampaign, $campaignImageCategory);
-
-        }
-
-        return redirect()->back()->with('success', 'New Campaign is Created');
-    }
-    */
 
     public function saveCampaignImages(Request $request, Campaign $newCampaign, CampaignImageCategory $campaignImageCategory)
     {
@@ -142,9 +110,9 @@ class MediaController extends Controller
         $campaignToUpdate->start_date = $request->start_date;
         $campaignToUpdate->close_date = $request->close_date;
         $campaignToUpdate->status = $request->status;
-
         $campaignToUpdate->save();
 
+        $campaignToUpdate->updateDefaultCampaign();
         $campaignToUpdate->campaignImages()->delete();
 
         foreach (CampaignImageCategory::all() as $campaignImageCategory) {

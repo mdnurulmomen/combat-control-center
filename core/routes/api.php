@@ -15,7 +15,6 @@ Route::middleware(['api'])->group(function (){
         Route::post('player', 'Api\v1\PlayerController@editUserInfo')->name('api.v1.player_update');
         Route::get('store', 'Api\v1\StoreController@showAllStore')->name('api.v1.store_show');
         Route::post('store', 'Api\v1\PurchaseController@purchaseStoreItem')->name('api.v1.store_purchase');
-        Route::get('ads', 'Api\v1\AdController@showAllAd')->name('api.v1.ad_show');
         Route::post('game-over', 'Api\v1\GameController@updateGameOverHistory')->name('api.v1.game_over_update');
         Route::post('match-start', 'Api\v1\GameController@matchStart')->name('api.v1.match_start');
         Route::post('leaders', 'Api\v1\PlayerController@showLeaderboard')->name('api.v1.leaders_show');
@@ -32,8 +31,8 @@ Route::middleware(['api'])->group(function (){
 
         Route::post('missions', 'Api\v1\MissionController@showPlayerMissions')->name('api.v1.set_player_missions');
 
-        Route::get('ad-campaign', 'Api\v1\MediaController@showAllCampaignsAndImages')->name('api.v1.show_campaigns_detail');
-        Route::post('ad-campaign', 'Api\v1\MediaController@updateGameCampaignDetails')->name('api.v1.update_game_campaign');
+        Route::get('ad-campaign', 'Api\v1\AdController@showAllCampaignsAndImages')->name('api.v1.show_campaigns_detail');
+        Route::post('ad-campaign', 'Api\v1\AdController@updateGameCampaignDetails')->name('api.v1.update_game_campaign');
 
     });
 
@@ -47,7 +46,6 @@ Route::middleware(['api'])->group(function (){
         Route::post('player', 'Api\v2\PlayerController@editUserInfo')->name('api.v2.player_update');
         Route::get('store', 'Api\v2\StoreController@showAllStore')->name('api.v2.store_show');
         Route::post('store', 'Api\v2\PurchaseController@purchaseStoreItem')->name('api.v2.store_purchase');
-        Route::get('ads', 'Api\v2\AdController@showAllAd')->name('api.v2.ad_show');
         Route::post('game-over', 'Api\v2\GameController@updateGameOverHistory')->name('api.v2.game_over_update');
         Route::post('match-start', 'Api\v2\GameController@matchStart')->name('api.v2.match_start');
         Route::post('leaders', 'Api\v2\PlayerController@showLeaderboard')->name('api.v2.leaders_show');
@@ -64,8 +62,8 @@ Route::middleware(['api'])->group(function (){
 
         Route::post('missions', 'Api\v2\MissionController@showPlayerMissions')->name('api.v2.set_player_missions');
 
-        Route::get('ad-campaign', 'Api\v1\MediaController@showAllCampaignsAndImages')->name('api.v2.show_campaigns_detail');
-        Route::post('ad-campaign', 'Api\v1\MediaController@updateGameCampaignDetails')->name('api.v2.update_game_campaign');
+        Route::get('ad-campaign', 'Api\v1\AdController@showAllCampaignsAndImages')->name('api.v2.show_campaigns_detail');
+        Route::post('ad-campaign', 'Api\v1\AdController@updateGameCampaignDetails')->name('api.v2.update_game_campaign');
 
     });
 

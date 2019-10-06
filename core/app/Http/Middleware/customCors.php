@@ -17,6 +17,6 @@ class customCors
     {
         return $next($request)
             ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT');
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH');
     }
 }

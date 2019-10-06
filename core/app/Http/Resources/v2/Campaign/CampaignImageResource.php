@@ -14,7 +14,7 @@ class CampaignImageResource extends JsonResource
      */
     public function toArray($request)
     {
-        return $this->image_path;
+        return asset($this->image_path);
 
         /*return $arrayRequest = parent::toArray($request);
         dd(is_object($arrayRequest->first()));

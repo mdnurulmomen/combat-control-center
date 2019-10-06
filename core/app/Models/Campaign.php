@@ -11,10 +11,6 @@ class Campaign extends Model
     use SoftDeletes;
     public $timestamps = false;
     protected $guarded = ['id'];
-    
-    // protected $fillable = [
-    //     'name', 'total_impression', 'unique_impression', 'status', 'start_date', 'close_date'
-    // ];
 
     protected $dates = [
         'start_date', 'close_date'
@@ -27,14 +23,21 @@ class Campaign extends Model
 
     public function setStatusAttribute($value)
     {
-    	if ($value == 'on')
-        {
+    	if ($value == 'on'){
     		$this->status()->update(array('status' => 0));
             $this->attributes['status'] = 1;
-        }
-    	
-        else
+        }else 
             $this->attributes['status'] = 0;
+    }
+
+    public function updateDefaultCampaign()
+    {
+        $defaultExists = $this->status()->first();
+        
+        if (!$defaultExists) {
+            
+            self::first()->update(['status'=>true]);
+        }
     }
 
     public function campaignImages()

@@ -129,13 +129,24 @@
 
                                             <tr class="info">
                                                 <th scope="row">7</th>
-                                                <td>ads</td>
-                                                <td>AdUrls</td>
+                                                <td>ad-campaign</td>
+                                                <td>AdPreviewPaths</td>
                                                 <td>Get</td>
                                                 <td>
                                                     None
                                                 </td>
                                             </tr>
+                                            
+                                            <tr class="info">
+                                                <th scope="row">7</th>
+                                                <td>ad-campaign</td>
+                                                <td>Update Preview Impressions</td>
+                                                <td>Post</td>
+                                                <td>
+                                                    playerId, campaignId, impression
+                                                </td>
+                                            </tr>
+
 
                                             <tr class="info">
                                                 <th scope="row">8</th>
@@ -407,11 +418,21 @@
 
                                             <tr class="info">
                                                 <th scope="row">7</th>
-                                                <td>ads</td>
-                                                <td>AdUrls</td>
+                                                <td>ad-campaign</td>
+                                                <td>AdPreviewPaths</td>
                                                 <td>Get</td>
                                                 <td>
                                                     None
+                                                </td>
+                                            </tr>
+
+                                            <tr class="info">
+                                                <th scope="row">7</th>
+                                                <td>ad-campaign</td>
+                                                <td>Update Preview Impressions</td>
+                                                <td>Post</td>
+                                                <td>
+                                                    playerId, campaignId, impression
                                                 </td>
                                             </tr>
 
