@@ -7,6 +7,7 @@ use App\Models\UserSetting;
 use App\Models\PlayHistory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class GameController extends Controller
 {
@@ -33,6 +34,8 @@ class GameController extends Controller
         $settingsGame->maintainance_end_time = $request->maintainance_end_time;
         
         $settingsGame->save();
+
+        Cache::forever('game_basic_settings', GameSetting::first());
 
         return redirect()->back()->with('success', 'Settings are Updated');
     }

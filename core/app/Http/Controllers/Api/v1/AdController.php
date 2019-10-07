@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Models\Campaign;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use App\Models\CampaignPlayerImpression;
 use App\Http\Resources\v1\Campaign\CampaignResource;
 
@@ -12,18 +13,17 @@ class AdController extends Controller
 {
     public function showAllCampaignsAndImages()
     {
-    	$campaignEnabled = Campaign::where('status', 1)->with('campaignImages')->first();
-
-    	if ($campaignEnabled) {
+    	/*
+        $campaignEnabled = Campaign::where('status', 1)->with('campaignImages')->first();
     		
-    		return new CampaignResource($campaignEnabled);
-    	}
+		return new CampaignResource($campaignEnabled);
+        */
 
-    	else
-    	{
-    		// default campaign
-    		return new CampaignResource(Campaign::with('campaignImages')->first());
-    	}
+        return new CampaignResource(Cache::get('campaignEnabled', 
+            function () {
+                return Campaign::where('status', 1)->with('campaignImages')->first();
+            })
+        );   
     }
 
     public function updateGameCampaignDetails(Request $request)

@@ -11,6 +11,7 @@ use App\Models\Character;
 use App\Models\Animation;
 use App\Models\Parachute;
 use App\Models\BundlePack;
+use Illuminate\Support\Facades\Cache;
 
 trait UpdateStore
 {
@@ -98,6 +99,8 @@ trait UpdateStore
                 $newStoreItem->save();
             }
         }
-	}
+
+        Cache::forever('store_all_items', Store::all());
+    }
 }
 

@@ -18,6 +18,7 @@ use App\Models\PlayerBoostPack;
 use App\Models\PlayerStatistic;
 use App\Http\Traits\RetrieveToken;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Traits\DefinePlayerLevel;
 use App\Http\Resources\v1\Game\GameResource;
 use App\Http\Resources\v1\Player\MatchResource;
@@ -30,8 +31,14 @@ class GameController extends Controller
 
     public function showGameVersion()
     {
-        $gameBasics = GameSetting::first();
-        return new GameResource($gameBasics);
+        // $gameBasics = GameSetting::first();
+        // return new GameResource($gameBasics);
+
+        $gameSettings = Cache::rememberForever('game_basic_settings', function () {
+            return GameSetting::first();
+        });
+
+        return new GameResource($gameSettings);
     }
 
     public function matchStart(Request $request)

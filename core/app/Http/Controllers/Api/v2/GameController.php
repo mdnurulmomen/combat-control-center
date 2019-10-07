@@ -20,6 +20,7 @@ use App\Http\Traits\RetrieveToken;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Traits\DefinePlayerLevel;
 use App\Http\Requests\RequestWithToken;
 use App\Http\Resources\v2\Game\GameResource;
@@ -33,8 +34,14 @@ class GameController extends Controller
 
     public function showGameVersion()
     {
-        $gameBasics = GameSetting::first();
-        return new GameResource($gameBasics);
+        // $gameBasics = GameSetting::first();
+        // return new GameResource($gameBasics);
+
+        $gameSettings = Cache::rememberForever('game_basic_settings', function () {
+            return GameSetting::first();
+        });
+
+        return new GameResource($gameSettings);
     }
 
     public function matchStart(RequestWithToken $postman)

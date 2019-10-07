@@ -25,7 +25,7 @@ class Campaign extends Model
     {
     	if ($value == 'on'){
     		$this->status()->update(array('status' => 0));
-            $this->attributes['status'] = 1;
+            $this->attributes['status'] = true;
         }else 
             $this->attributes['status'] = 0;
     }

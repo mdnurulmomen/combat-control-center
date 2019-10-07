@@ -8,6 +8,7 @@ use App\Models\Campaign;
 use Illuminate\Http\Request;
 use App\Models\CampaignImage;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use App\Models\CampaignImageCategory;
 use App\Http\Requests\CampaignRequest;
 use Intervention\Image\Facades\Image as ImageIntervention;
@@ -35,6 +36,8 @@ class MediaController extends Controller
             $this->saveCampaignImages($request, $newCampaign, $campaignImageCategory);
 
         }
+            
+        Cache::forever('campaignEnabled', Campaign::where('status', 1)->with('campaignImages')->first());
 
         return redirect()->back()->with('success', 'New Campaign is Created');
     }
@@ -121,6 +124,8 @@ class MediaController extends Controller
             $this->saveUploadedCampaignImages($request, $campaignToUpdate, $campaignImageCategory);
 
         }
+
+        Cache::forever('campaignEnabled', Campaign::where('status', 1)->with('campaignImages')->first());
 
         return redirect()->back()->with('success', 'New Campaign is Updated');
     }

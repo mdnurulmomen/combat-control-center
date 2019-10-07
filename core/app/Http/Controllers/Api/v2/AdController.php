@@ -6,6 +6,7 @@ use App\Models\Campaign;
 use Illuminate\Http\Request;
 use App\Http\Traits\RetrieveToken;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\RequestWithToken;
 use App\Models\CampaignPlayerImpression;
 use App\Http\Resources\v2\Campaign\CampaignResource;
@@ -16,18 +17,17 @@ class AdController extends Controller
 
     public function showAllCampaignsAndImages()
     {
-    	$campaignEnabled = Campaign::where('status', 1)->with('campaignImages')->first();
+    	/*
+        $campaignEnabled = Campaign::where('status', 1)->with('campaignImages')->first();
+            
+        return new CampaignResource($campaignEnabled);
+        */
 
-    	if ($campaignEnabled) {
-    		
-    		return new CampaignResource($campaignEnabled);
-    	}
-
-    	else
-    	{
-    		// default campaign
-    		return new CampaignResource(Campaign::with('campaignImages')->first());
-    	}
+        return new CampaignResource(Cache::get('campaignEnabled', 
+            function () {
+                return Campaign::where('status', 1)->with('campaignImages')->first();
+            })
+        );
     }
 
     public function updateGameCampaignDetails(RequestWithToken $postman)
