@@ -67,5 +67,9 @@ Route::middleware(['api'])->group(function (){
 
     });
 
-
+    Route::fallback(function(){
+        return response()->json([
+                'error'=>'Incorrect route'
+            ], 404);
+    });
 });

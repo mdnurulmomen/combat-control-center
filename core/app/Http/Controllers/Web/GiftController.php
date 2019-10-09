@@ -16,12 +16,10 @@ use App\Models\GiftParachute;
 use App\Models\GiftBoostPack;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-
+use Illuminate\Support\Facades\Cache;
 
 class GiftController extends Controller
-{
-        
+{       
     public function showTreasureSettingsForm()
     {
         $allTreasures = Treasure::all();
@@ -47,6 +45,8 @@ class GiftController extends Controller
         $giftTreasure->required_earn = $giftTreasure->treasure_cost * $request->required_percentage / 100;
         $giftTreasure->save();
 
+        Cache::forever('giftTreasureSetting', $giftTreasure);
+        Cache::forever('giftTreasureDetails', Treasure::find($giftTreasure->treasure_id));
 
         return redirect()->back()->with('success', 'Gift Treasure is Updated');
     }

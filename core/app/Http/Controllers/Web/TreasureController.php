@@ -12,11 +12,10 @@ use App\Models\TreasureType;
 use App\Models\PlayerTreasure;
 use App\Models\TreasureRedemption;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Cache;
 
 class TreasureController extends Controller
 {
-
     public function showAllEnabledTreasureTypes()
     {
         $treasureTypes = TreasureType::paginate(6);
@@ -168,6 +167,9 @@ class TreasureController extends Controller
             $giftTreasure->treasure_cost = $treasureToUpdate->equivalent_price;
             $giftTreasure->required_earn = $giftTreasure->treasure_cost * $giftTreasure->required_percentage / 100;
             $giftTreasure->save();
+
+            Cache::forever('giftTreasureSetting', $giftTreasure);
+            Cache::forever('giftTreasureDetails', Treasure::find($giftTreasure->treasure_id));
         }
     }
 

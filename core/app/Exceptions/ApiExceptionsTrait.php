@@ -5,8 +5,9 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 trait ApiExceptionsTrait
 {
@@ -25,14 +26,23 @@ trait ApiExceptionsTrait
             ], 405);
         }
 
+        /*
+        // Route not found exception is already handled in api route file
         else if($exception instanceof NotFoundHttpException){
             
             return response()->json([
                 'error'=>'Incorrect route'
-            ], 400);
+            ], 404);
+        }
+        */
+
+        else if($exception instanceof ThrottleRequestsException){
+            
+            return response()->json([
+                'error'=>'Max number of requests has been crossed. Please try again'
+            ], 429);
         }
 
-        
         // return response()->json(['error'=>'Unauthenticated'], 401); 
 
         return parent::render($request, $exception);

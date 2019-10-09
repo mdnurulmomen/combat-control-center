@@ -16,6 +16,7 @@ use App\Models\PlayerStatistic;
 use App\Http\Traits\RetrieveToken;
 use App\Models\TreasureRedemption;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\RequestWithToken;
 use GuzzleHttp\Exception\RequestException;
 use App\Http\Resources\v2\Player\PlayerTreasureRedeemed;
@@ -31,12 +32,14 @@ class TreasureController extends Controller
         $updatedEarn = Earning::latest()->first();
         $currentEarn = $updatedEarn->current_gems_earning ?? 0;
 
-        $giftTreasure = GiftTreasure::first();
+        // $giftTreasure = GiftTreasure::first();
+        $giftTreasure = Cache::get('giftTreasureSetting', GiftTreasure::first());
         $required_earn = $giftTreasure->required_earn ?? 0;
 
         if ($required_earn <= $currentEarn) {
             
-            $treasureDetails = Treasure::find($giftTreasure->treasure_id);
+            // $treasureDetails = Treasure::find($giftTreasure->treasure_id);
+            $treasureDetails = Cache::get('giftTreasureDetails', Treasure::find($giftTreasure->treasure_id));
 
             if ($treasureDetails) {
                 
