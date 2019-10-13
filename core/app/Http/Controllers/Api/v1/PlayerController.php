@@ -492,13 +492,13 @@ class PlayerController extends Controller
         }
     }
 
-    public function editUserInfo(Request $request)
+    public function editUserInfo(UserRequest $request)
     {
-        $request->validate([
-            'userId'=>'required|exists:users,id'
-        ]);
+        // $request->validate([
+        //     'userId'=>'required|exists:users,id'
+        // ]);
 
-        $request = $this->sanitize($request);
+        // $request = $this->sanitize($request);
 
         $request_1 = $request->only(['username', 'email', 'location', 'profile_pic', 'connection_type', 'country']);
 

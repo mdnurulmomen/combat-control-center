@@ -24,7 +24,6 @@ use App\Models\PlayerStatistic;
 use App\Models\DailyLoginReward;
 use App\Http\Traits\RetrieveToken;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RequestWithToken;

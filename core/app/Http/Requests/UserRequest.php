@@ -28,64 +28,63 @@ class UserRequest extends FormRequest
         $this->sanitize();
 
         return [
-            'userId'=>'required'
+            'userId'=>'required|exists:users,id'
         ];
     }
 
     public function sanitize()
     {
-        if (!empty($this->facebookName)) {
-            $this['username'] = $this->facebookName;
+        if (!empty($request->facebookName)) {
+            $request['username'] = $request->facebookName;
         }
         else{
-            $this['username'] = $this->userName;
+            $request['username'] = $request->userName;
         }
         
-        unset($this['userName']);
+        unset($request['userName']);
 
-        $this['phone'] = $this->mobileNo;
-        unset($this['mobileNo']);
+        $request['email'] = $request->userEmail;
+        unset($request['userEmail']);
 
-        $this['email'] = $this->userEmail;
-        unset($this['userEmail']);
+        $request['location'] = $request->userLocation;
+        unset($request['userLocation']);
 
-        $this['location'] = $this->userLocation;
-        unset($this['userLocation']);
+        $request['facebook_id'] = $request->facebookId;
+        unset($request['facebookId']);
 
-        $this['facebook_id'] = $this->facebookId;
-        unset($this['facebookId']);
+        $request['facebook_name'] = $request->facebookName;
+        unset($request['facebookName']);
 
-        $this['facebook_name'] = $this->facebookName;
-        unset($this['facebookName']);
+        $request['profile_pic'] = $request->profilePic;
+        unset($request['profilePic']);
 
-        $this['profile_pic'] = $this->profilePic;
-        unset($this['profilePic']);
+        $request['connection_type'] = $request->connectionType;
+        unset($request['connectionType']);
 
-        $this['connection_type'] = $this->connectionType;
-        unset($this['connectionType']);
-
-        if (empty($this->facebook_id)) {
-            $this['device_info'] = $this->userDeviceId;
-            $this['login_type'] = 'false';
+        /*
+        if (empty($request->facebook_id)) {
+            $request['device_info'] = $request->userDeviceId;
+            $request['login_type'] = 'false';
         }
         else{
-            $this['device_info'] = '';
-            $this['login_type'] = 'true';
+            $request['device_info'] = '';
+            $request['login_type'] = 'true';
         }
+        */
 
-        $this['player_batch'] = $this->playerBatch;
-        unset($this['playerBatch']);
+        $request['player_batch'] = $request->playerBatch;
+        unset($request['playerBatch']);
 
-        $this['selected_parachute'] = $this->selectedParachute;
-        unset($this['selectedParachute']);
+        $request['selected_parachute'] = $request->selectedParachute;
+        unset($request['selectedParachute']);
 
-        $this['selected_character'] = $this->selectedCharacter;
-        unset($this['selectedCharacter']);
+        $request['selected_character'] = $request->selectedCharacter;
+        unset($request['selectedCharacter']);
 
-        $this['selected_animation'] = $this->selectedAnimation;
-        unset($this['selectedAnimation']);
+        $request['selected_animation'] = $request->selectedAnimation;
+        unset($request['selectedAnimation']);
 
-        $this['selected_weapon'] = $this->selectedWeapon;
-        unset($this['selectedWeapon']);
+        $request['selected_weapon'] = $request->selectedWeapon;
+        unset($request['selectedWeapon']);
     }
 }
