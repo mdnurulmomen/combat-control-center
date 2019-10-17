@@ -467,7 +467,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Password</label>
-                                                                <input type="password" name="password" class="form-control is-invalid" placeholder="Chosse a Suitable Password" required>
+                                                                <input type="password" name="password" class="form-control is-invalid" placeholder="Chosse a Suitable Password" minlength=8  required>
                                                             </div>
                                                         </div>
                                                     </div>

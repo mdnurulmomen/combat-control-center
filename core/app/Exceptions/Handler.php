@@ -55,7 +55,11 @@ class Handler extends ExceptionHandler
             return $this->apiExceptions($request, $exception);
         }
 
+        else {
 
-        return parent::render($request, $exception);
+            return view('errors.default')->withExceptionMessage($exception->getMessage());
+        }
+
+        // return parent::render($request, $exception);
     }
 }

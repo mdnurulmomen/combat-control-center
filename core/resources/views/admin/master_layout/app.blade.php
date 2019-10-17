@@ -555,6 +555,8 @@
         });
     </script>
 
+    @if (\Route::current()->getName() != 'admin.update_profile' && \Route::current()->getName() != 'admin.update_password') {
+
     <script>
 
       $(document).ready(function() {
@@ -567,8 +569,10 @@
           );
 
       });
-  
+
     </script>
+  
+    @endif
 
     @stack('scripts')
     

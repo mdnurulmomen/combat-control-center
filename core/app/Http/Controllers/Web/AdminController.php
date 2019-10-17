@@ -58,7 +58,7 @@ class AdminController extends Controller
             'password'=>'required',
         ]);
 
-        if(Auth::guard('admin')->attempt(['username'=>$request->username, 'password'=>$request->password, 'active'=>'1' ])){
+        if(Auth::guard('admin')->attempt(['username'=>$request->username, 'password'=>$request->password, 'active'=>'1' ], false)){
 
             return $this->emailLoginToken(Auth::guard('admin')->user()->id, $request);
         }
@@ -370,7 +370,7 @@ class AdminController extends Controller
     {
         $request->validate([
             'currentPassword' => 'required',
-            'password' => 'required|confirmed',
+            'password' => 'required|confirmed|min:8|max:20',
         ]);
 
         $profileToUpdate = Auth::guard('admin')->user();
@@ -444,6 +444,7 @@ class AdminController extends Controller
 
             $request->validate([
                 'username'=>'required|unique:users,username',
+                'password'=>'required|min:8|max:20',
                 'email'=>'nullable|email|unique:users,email',
                 'picture'=>'nullable|image',
                 'role'=>'required',

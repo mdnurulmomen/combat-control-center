@@ -64,7 +64,7 @@
                                         <h4 class="talkTimeCost">
                                             
                                             BDT : 
-                                            <b>{{ $allTreasureRedemptions->sum('equivalent_price') }}</b> 
+                                            <b>{{ round($allTreasureRedemptions->sum('equivalent_price'), 2) }}</b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@
                                     <i class="icon fa fa-money"></i>
                                     <div class="info">
                                         <h4 class="earningAmount">
-                                            BDT : <b>{{ $updatedEarning->total_currency_earning }}</b> 
+                                            BDT : <b>{{ round($updatedEarning->total_currency_earning, 2) }}</b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@
                                         <h4 class="treasureCost">
                                             
                                             BDT : 
-                                            <b>{{ $allPhysicalTreasureRedemptions->sum('equivalent_price') }}</b> 
+                                            <b>{{ round($allPhysicalTreasureRedemptions->sum('equivalent_price'), 2) }}</b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -238,7 +238,7 @@
  
                                             @endphp
 
-                                            BDT : <b>{{ $totalCost }}</b> 
+                                            BDT : <b>{{ round($totalCost, 2) }}</b> 
                                         </h4>
                                     </div>
                                 </div>

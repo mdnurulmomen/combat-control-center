@@ -18,10 +18,12 @@ class GameController extends Controller
     }
 
     public function submitGameSettingsForm(Request $request)
-    {
+    {   
         $request->validate([
             'game_version_required'=>'required',
             'rate'=>'required',
+            'maintainance_start_time' => 'nullable|date',
+            'maintainance_end_time' => 'nullable|date|after:maintainance_start_time',
         ]);
 
         $settingsGame = GameSetting::firstOrFail();
