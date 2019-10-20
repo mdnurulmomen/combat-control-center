@@ -176,7 +176,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Phone</label>
-                                                                <input type="tel" name="phone" class="form-control is-valid" value="">
+                                                                <input type="tel" name="phone" class="form-control is-valid" value="" placeholder="Phone Number" data-validation="number"  data-validation-optional="true" data-validation-length="max11" data-validation-error-msg="Phone number should not contain characters">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -192,7 +192,8 @@
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Role</label>
 
-                                                                <select class="form-control" name="role">
+                                                                <select class="form-control" name="role" data-validation="required">
+                                                                    <option value="">--Please select user role--</option>
                                                                     <option value="admin">Admin</option>
                                                                     <option value="moderator">Moderator</option>
                                                                     <option value="viewer">Viewer</option>
@@ -211,7 +212,8 @@
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Status</label>
 
-                                                                <select class="form-control" name="active">
+                                                                <select class="form-control" name="active" data-validation="required">
+                                                                    <option value="">--Please define user status--</option>
                                                                     <option value="1">Activated</option>
                                                                     <option value="0">Deactivated</option>
                                                                 </select>
@@ -234,7 +236,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Email</label>
-                                                                <input type="text" name="email" class="form-control is-valid" value="" required="true">
+                                                                <input type="text" name="email" class="form-control is-valid" value="" data-validation="email" data-validation-error-msg="Please input a valid email" required="true">
                                                             </div>
                                                         </div>    
 
@@ -245,7 +247,7 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">@</span>
                                                                     </div>
-                                                                    <input type="text" name="username" class="form-control is-invalid"  value=""  aria-describedby="inputGroupPrepend3" required>
+                                                                    <input type="text" name="username" class="form-control is-valid"  value="" placeholder="Username"  aria-describedby="inputGroupPrepend3" data-validation="alphanumeric length" data-validation-length="5-20" data-validation-allowing="-_" data-validation-error-msg="No space or special character in minimum 5 characters username" required>
 
                                                                 </div>
                                                             </div>
@@ -254,7 +256,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Password</label>
-                                                                <input type="text" name="password" class="form-control is-valid"  readonly="true">
+                                                                <input type="password" name="password" class="form-control is-valid"  readonly="true">
                                                             </div>
                                                         </div> 
 
@@ -388,7 +390,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Phone</label>
-                                                                <input type="tel" name="phone" class="form-control is-valid"  placeholder="Phone Number">
+                                                                <input type="tel" name="phone" class="form-control is-valid"  placeholder="Phone Number" data-validation="number"  data-validation-optional="true" data-validation-length="max11" data-validation-error-msg="Phone number should not contain characters">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -404,7 +406,8 @@
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Role</label>
 
-                                                                <select class="form-control" name="role">
+                                                                <select class="form-control" name="role" data-validation="required">
+                                                                    <option value="">--Please select user role--</option>
                                                                     <option value="admin">Admin</option>
                                                                     <option value="moderator">Moderator</option>
                                                                     <option value="viewer">Viewer</option>
@@ -423,7 +426,8 @@
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Status</label>
 
-                                                                <select class="form-control" name="active">
+                                                                <select class="form-control" name="active" data-validation="required">
+                                                                    <option value="">--Please define user status--</option>
                                                                     <option value="1">Activated</option>
                                                                     <option value="0">Deactivated</option>
                                                                 </select>
@@ -447,7 +451,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Email</label>
-                                                                <input type="text" name="email" class="form-control is-valid" placeholder="Email" required="true">
+                                                                <input type="text" name="email" class="form-control is-valid" placeholder="Email" data-validation="email" data-validation-error-msg="Please input a valid email" required="true">
                                                             </div>
                                                         </div>    
 
@@ -458,7 +462,7 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">@</span>
                                                                     </div>
-                                                                    <input type="text" name="username" class="form-control is-invalid" placeholder="Username"  aria-describedby="inputGroupPrepend3" required>
+                                                                    <input type="text" name="username" class="form-control is-valid" placeholder="Username"  aria-describedby="inputGroupPrepend3" data-validation="alphanumeric length" data-validation-length="5-20" data-validation-allowing="-_" data-validation-error-msg="No space or special character in minimum 5 characters username" required>
 
                                                                 </div>
                                                             </div>
@@ -467,7 +471,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Password</label>
-                                                                <input type="password" name="password" class="form-control is-invalid" placeholder="Chosse a Suitable Password" minlength=8  required>
+                                                                <input type="password" name="password" class="form-control is-valid" placeholder="Chosse a Suitable Password" minlength=8 data-validation="strength" data-validation-strength="2"data-validation-length="8-20" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -651,6 +655,13 @@
 
                     $("#deleteModal form").attr("action", home + '/admin/users/' +  expectedObject.id );
 
+                    if (expectedObject.id == {{auth()->user()->id}}) {
+
+                        $( "#deleteModal .modal-body p" ).first().html( 'You are about to delete <b>Your Account</b>.' );
+                    }else {
+                        $( "#deleteModal .modal-body p" ).first().html( 'You are about to delete an user.' );
+                    }
+
                     $('#deleteModal').modal('toggle');
                 });
 
@@ -661,4 +672,14 @@
 
         });
     </script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+    <script>
+        $.validate({
+            modules : 'security',
+            errorMessageClass  : 'text-danger',
+            errorMessagePosition : 'inline' // Instead of 'top' which is default
+        });
+    </script>
+
 @endpush

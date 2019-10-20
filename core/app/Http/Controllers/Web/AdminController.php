@@ -443,9 +443,9 @@ class AdminController extends Controller
         if (auth()->user()->can('setting')) {
 
             $request->validate([
-                'username'=>'required|unique:users,username',
+                'username'=>'required|unique:admins,username',
                 'password'=>'required|min:8|max:20',
-                'email'=>'nullable|email|unique:users,email',
+                'email'=>'nullable|email|unique:admins,email',
                 'picture'=>'nullable|image',
                 'role'=>'required',
                 'active'=>'required',
@@ -550,8 +550,8 @@ class AdminController extends Controller
             $userToUpdate = Admin::findOrFail($userId);
 
             $request->validate([
-                'username'=>'required|unique:users,username,'.$userToUpdate->id,
-                'email'=>'nullable|email|unique:users,email,'.$userToUpdate->id,
+                'username'=>'required|unique:admins,username,'.$userToUpdate->id,
+                'email'=>'nullable|email|unique:admins,email,'.$userToUpdate->id,
                 'role'=>'required',
                 'active'=>'required',
                 'picture'=>'nullable|image',

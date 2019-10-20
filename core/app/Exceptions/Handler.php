@@ -3,7 +3,10 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 
 class Handler extends ExceptionHandler
@@ -57,9 +60,13 @@ class Handler extends ExceptionHandler
 
         else {
 
-            return view('errors.default')->withExceptionMessage($exception->getMessage());
+            if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException || $exception instanceof MethodNotAllowedHttpException) {
+                
+                return response()->view('errors.default', ['exceptionMessage' => $exception->getMessage()]);
+            }
+
+            return parent::render($request, $exception);
         }
 
-        // return parent::render($request, $exception);
     }
 }

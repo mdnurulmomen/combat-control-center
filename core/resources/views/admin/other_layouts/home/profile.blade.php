@@ -35,7 +35,7 @@
                     <div class="form-row">
                         <div class="col-md-6 mb-4">
                             <label for="validationServer01">Email</label>
-                            <input type="email" name="email" class="form-control form-control-lg is-invalid"  placeholder="Email" value="{{ $profile->email }}" required="true">
+                            <input type="email" name="email" class="form-control form-control-lg is-valid"  placeholder="Email" value="{{ $profile->email }}"  data-validation="email" data-validation-error-msg="Please input a valid email" required="true">
 
                         </div>
                         <div class="col-md-6 mb-4">
@@ -44,7 +44,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">@</span>
                                 </div>
-                                <input type="text" name="username" class="form-control form-control-lg is-invalid" placeholder="Username" value="{{ $profile->username }}" aria-describedby="inputGroupPrepend3">
+                                <input type="text" name="username" class="form-control form-control-lg is-valid" placeholder="Username" value="{{ $profile->username }}" aria-describedby="inputGroupPrepend3"  data-validation="alphanumeric length" data-validation-length="5-20" data-validation-allowing="-_" data-validation-error-msg="No space or special character in minimum 5 characters username" >
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         </div>
                         <div class="col-md-6 mb-4">
                             <label for="validationServer01">Phone</label>
-                            <input type="tel" name="phone" class="form-control form-control-lg is-valid"  placeholder="Phone Number" value="{{ $profile->phone }}">
+                            <input type="tel" name="phone" class="form-control form-control-lg is-valid"  placeholder="Phone Number" value="{{ $profile->phone }}" data-validation="number"  data-validation-optional="true" data-validation-length="max11" data-validation-error-msg="Phone number should not contain characters">
 
                         </div>
                     </div>
@@ -93,3 +93,14 @@
       </div>
 
 @stop
+
+@push('scripts')
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+    <script>
+        $.validate({
+            modules : 'security',
+            errorMessageClass  : 'text-danger',
+            errorMessagePosition : 'inline' // Instead of 'top' which is default
+        });
+    </script>
+@endpush

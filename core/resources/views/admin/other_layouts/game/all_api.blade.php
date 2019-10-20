@@ -90,11 +90,8 @@
                                                 <td>
                                                     <span>userId (required),</span>
                                                     <span>userName,</span>
-                                                    <span>mobileNo,</span>
                                                     <span>userEmail,</span>
                                                     <span>userLocation,</span>
-                                                    <span>facebookId,</span>
-                                                    <span>facebookName,</span>
                                                     <span>profilePic,</span>
                                                     <span>connectionType,</span>
                                                     <span>playerBatch,</span>
@@ -379,11 +376,8 @@
                                                 <td>
                                                     <span>userId (required),</span>
                                                     <span>userName,</span>
-                                                    <span>mobileNo,</span>
                                                     <span>userEmail,</span>
                                                     <span>userLocation,</span>
-                                                    <span>facebookId,</span>
-                                                    <span>facebookName,</span>
                                                     <span>profilePic,</span>
                                                     <span>connectionType,</span>
                                                     <span>playerBatch,</span>

@@ -10,4 +10,4 @@
     </div>
 @endsection
 
-@section('message', 'Sorry, looks like something went wrong')
+@section('message', $exceptionMessage)
