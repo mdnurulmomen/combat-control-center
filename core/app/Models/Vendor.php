@@ -43,6 +43,12 @@ class Vendor extends Model
 	    	
 	    	$intervationObject = Image::make($originalImage);
 	    	$imgResizing = $intervationObject->resize(50, 50);
+
+            if (!file_exists('assets/admin/images/vendor/')) {
+
+                mkdir('assets/admin/images/vendor/', 0777, true);
+            }
+            
 	    	$imgSaving = $imgResizing->save('assets/admin/images/vendor/'.$this->name.'.png');
 
 	    	$this->attributes['logo'] = $this->name.'.png';

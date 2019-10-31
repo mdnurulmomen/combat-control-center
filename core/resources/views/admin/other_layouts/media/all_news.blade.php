@@ -91,7 +91,7 @@
                                                     <div class="form-row mb-4">
                                                         <div class="col-md-12">
                                                             <label for="validationServer01">News</label>
-                                                            <textarea name="body" class="form-control form-control-lg is-invalid" rows="5" id="news"> {{ $news->body }} </textarea>
+                                                            <textarea name="body" class="form-control form-control-lg is-valid" rows="5" id="news"  data-validation="required" required="true"> {{ $news->body }} </textarea>
                                                         </div>
                                                     </div>
                                                     
@@ -173,7 +173,7 @@
                                 <div class="form-row mb-4">
                                     <div class="col-md-12">
                                         <label for="validationServer01">News</label>
-                                        <textarea name="body" class="form-control form-control-lg is-invalid" rows="5" id="news"></textarea>
+                                        <textarea name="body" class="form-control form-control-lg is-valid" rows="5" id="news" data-validation="required"></textarea>
                                     </div>
                                 </div>
                                 

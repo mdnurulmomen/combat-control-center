@@ -30,7 +30,7 @@
                         <div class="col-md-6 mb-4">
                             <label for="validationServerUsername">Required Percentage</label>
                             <div class="input-group">
-                                <input type="number" name="required_percentage" class="form-control form-control-lg is-valid" value="{{ $giftTreasure->required_percentage }}" aria-describedby="inputGroupPrepend3" min="100" step="any">
+                                <input type="text" name="required_percentage" class="form-control form-control-lg is-valid" value="{{ $giftTreasure->required_percentage }}" aria-describedby="inputGroupPrepend3" data-validation="number required" data-validation-allowing="range[100;1000000]"  data-validation-error-msg="Percentage should be only numeric and greater than 100">
 
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>

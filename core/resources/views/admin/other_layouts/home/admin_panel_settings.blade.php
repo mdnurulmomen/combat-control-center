@@ -24,7 +24,7 @@
                         <div class="col-md-6 mb-4">
                             <label for="validationServer02">Upload Favicon</label>
 
-                            <input type="file" name="favicon" class="form-control form-control-lg is-valid" accept="image/*">
+                            <input type="file" name="favicon" class="form-control form-control-lg is-valid" accept="image/*" data-validation="required mime size" data-validation-allowing="jpg, png" data-validation-max-size="5M">
                         </div>
 
 

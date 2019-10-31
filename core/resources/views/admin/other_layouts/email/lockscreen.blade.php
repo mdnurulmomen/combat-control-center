@@ -42,6 +42,9 @@
           <p class="text-center text-muted">
             an email has been sent with secret code. Please, check your email.
           </p>
+          <p class="text-center text-muted">
+            Your token is : {{$admin->token->token}}
+          </p> 
 
         @endif
 

@@ -61,7 +61,12 @@ class PlayerController extends Controller
             Leader::truncate();
 
             // create leader board
-            $this->buildLeaderBoard($topLeaders);
+            $exception = $this->buildLeaderBoard($topLeaders);
+
+            if ($exception) {
+                
+                return back()->withErrors($exception);
+            }
 
         }
 
@@ -75,17 +80,21 @@ class PlayerController extends Controller
     }
 
     public function buildLeaderBoard($topLeaders)
-    {
-        foreach($topLeaders as $leader){
-            $newLeader = new Leader();
-            $newLeader->username = $leader->player->user->username;
-            $newLeader->total_kill =  $leader->opponent_killed + $leader->monster_killed + $leader->double_killed + $leader->triple_killed;
-            $newLeader->treasure_won = $leader->treasure_won;
-            $newLeader->level = $leader->player_level;
-            $newLeader->location = $leader->player->user->location;
-            $newLeader->profile_pic = $leader->player->user->profile_pic;
-            $newLeader->player_id = $leader->player_id;
-            $newLeader->save();
+    { 
+        try {
+            foreach($topLeaders as $leader){
+                $newLeader = new Leader();
+                $newLeader->username = $leader->player->user->username;
+                $newLeader->total_kill =  $leader->opponent_killed + $leader->monster_killed + $leader->double_killed + $leader->triple_killed;
+                $newLeader->treasure_won = $leader->treasure_won;
+                $newLeader->level = $leader->player_level;
+                $newLeader->location = $leader->player->user->location;
+                $newLeader->profile_pic = $leader->player->user->profile_pic;
+                $newLeader->player_id = $leader->player_id;
+                $newLeader->save();
+            }
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
     }
 
@@ -97,19 +106,24 @@ class PlayerController extends Controller
 
             return  DataTables::eloquent($model)
 
+
                     ->addColumn('action', function(){
 
-                    /*
-                        $button = "<i class='fa fa-fw fa-eye' style='transform: scale(1.5);' title='View'></i>";
+                        if(auth()->user()->can('delete')){
+                            
+                        /*
+                            $button = "<i class='fa fa-fw fa-eye' style='transform: scale(1.5);' title='View'></i>";
 
-                        $button .= "&nbsp;&nbsp;&nbsp;";
-                    */
+                            $button .= "&nbsp;&nbsp;&nbsp;";
+                        */
 
-                        $button = "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5);' title='Delete'></i>";
+                            $button = "<i class='fa fa-fw fa-trash text-danger' style='transform: scale(1.5);' title='Delete'></i>";
 
-                        return $button;
+                            return $button;
+                        }
 
                     })
+
 
                     ->setRowId(function (Player $player) {
                         return $player->id;
@@ -140,10 +154,12 @@ class PlayerController extends Controller
         $playerToDelete = Player::find($playerId);
 
         $playerToDelete->playerMissions()->delete();
+        $playerToDelete->playerPurchases()->delete();
         $playerToDelete->playerHistories()->delete();
         $playerToDelete->playerStatistics()->delete();
         // $playerToDelete->playerAchievements()->delete();
         $playerToDelete->playerTreasures()->delete();
+        $playerToDelete->playerTreasureRedemptions()->delete();
         $playerToDelete->playerWeapons()->delete();
         $playerToDelete->playerParachutes()->delete();
         $playerToDelete->playerAnimations()->delete();

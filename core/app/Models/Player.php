@@ -98,6 +98,16 @@ class Player extends Model
         return $this->hasMany('App\Models\PlayerMission', 'player_id', 'id');
     }
 
+    public function playerPurchases()
+    {
+        return $this->hasMany('App\Models\Purchase', 'buyer_id', 'id');
+    }
+
+    public function playerTreasureRedemptions()
+    {
+        return $this->hasMany('App\Models\TreasureRedemption', 'player_id', 'id');
+    }
+
     public function allNews()
     {
         return News::all();

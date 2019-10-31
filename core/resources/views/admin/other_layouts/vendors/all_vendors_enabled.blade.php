@@ -77,8 +77,10 @@
                                         <div class="col-md-6 mb-4">
                                             <label for="validationServer01">City</label>
 
-                                            <select class="form-control is-invalid" name="city" required="true">
+                                            <select class="form-control form-control-lg is-valid" name="city" data-validation='required' data-validation-error-msg='City name is required'>
                                                 
+                                                <option disabled="true" selected="true">--Please Select City--</option>
+
                                                 @foreach(App\Models\City::all() as $city)
 
                                                 <option value="{{ $city->id }}">{{ $city->name }}</option>
@@ -92,7 +94,7 @@
                                         <div class="col-md-6 mb-4">
                                             <label for="validationServer01">Area Name</label>
                                             <div class="input-group">
-                                                <input step="any" type="text" name="name" class="form-control  is-invalid"  placeholder="Area Name" required="true">
+                                                <input type="text" name="name" class="form-control form-control-lg  is-valid"  placeholder="Area Name" data-validation='required' data-validation-error-msg='Area name is required' data-validation-help='Area name vendor belongs'>
                                             </div>
                                         </div>
 
@@ -132,8 +134,12 @@
                                         <div class="col-md-6 mb-4">
                                             <label for="validationServer01">Division</label>
 
-                                            <select class="form-control is-invalid" name="division" required="true">
+                                            <select class="form-control form-control-lg is-valid" name="division"  data-validation='required' data-validation-error-msg='Division name is required'>
                                                 
+                                                <option disabled="true" selected="true">
+                                                    --Please Select Division--
+                                                </option>
+
                                                 @foreach(App\Models\Division::all() as $division)
 
                                                 <option value="{{ $division->id }}">
@@ -148,7 +154,7 @@
                                         <div class="col-md-6 mb-4">
                                             <label for="validationServer01">City Name</label>
                                             <div class="input-group">
-                                                <input step="any" type="text" name="name" class="form-control  is-invalid"  placeholder="City Name" required="true">
+                                                <input step="any" type="text" name="name" class="form-control form-control-lg  is-valid"  placeholder="City Name"  data-validation='required' data-validation-error-msg='City name is required' data-validation-help='City name vendor belongs'>
                                             </div>
                                         </div>
                                     </div>
@@ -186,7 +192,7 @@
                                         <div class="col-md-12 mb-4">
                                             <label for="validationServer01">Type Name</label>
                                             <div class="input-group">
-                                                <input step="any" type="text" name="treasure_type_name" class="form-control  is-invalid"  placeholder="Type Name" required="true">
+                                                <input step="any" type="text" name="treasure_type_name" class="form-control form-control-lg  is-valid"  placeholder="Type Name"  data-validation='required' data-validation-error-msg='Type name is required' data-validation-help='Name has to be unique'>
                                             </div>
                                         </div>
                                     </div>
@@ -230,13 +236,17 @@
                                                     <div class="form-row mb-4">
                                                         <label for="validationServerUsername">Name</label>
                                                         <div class="input-group">
-                                                            <input type="text" name="name" class="form-control  is-invalid" placeholder="Name" aria-describedby="inputGroupPrepend3" required="true">
+                                                            <input type="text" name="name" class="form-control form-control-lg  is-valid" placeholder="Name" aria-describedby="inputGroupPrepend3"  data-validation='required' data-validation-error-msg='Vendor name is required'>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-row mb-4">
                                                         <label for="validationServer01">Type</label>
-                                                        <select class="form-control  is-valid" name="treasure_type_id">
+                                                        <select class="form-control form-control-lg  is-valid" name="treasure_type_id" data-validation='required' data-validation-error-msg='Please select Treasure Type'>
+
+                                                            <option disabled="true" selected="true">
+                                                                --Please Select Treasure Type--
+                                                            </option>
 
                                                             @foreach(App\Models\TreasureType::all() as $treasureType)
 
@@ -256,7 +266,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">88</span>
                                                             </div>
-                                                            <input type="tel" name="mobile" class="form-control  is-invalid" placeholder="Phone" aria-describedby="inputGroupPrepend3" required="true">
+                                                            <input type="tel" name="mobile" class="form-control form-control-lg  is-valid" placeholder="Phone" aria-describedby="inputGroupPrepend3" data-validation="number required length" data-validation-length="max11" data-validation-error-msg="Please input a correct mobile number" data-validation-help="Phone number has to be unique (max 11 digits).">
                                                         </div>
 
                                                     </div>
@@ -264,7 +274,7 @@
                                                     <div class="form-row mb-4">
                                                         <label for="validationServerUsername">Logo</label>
                                                         <div class="input-group">
-                                                            <input type="file" name="logo" class="form-control  is-invalid" aria-describedby="inputGroupPrepend3" required="true">
+                                                            <input type="file" name="logo" class="form-control form-control-lg  is-valid" aria-describedby="inputGroupPrepend3"  data-validation='required mime size' data-validation-allowing='jpg, png' data-validation-max-size="5M" data-validation-help='Should be image file'>
                                                         </div>
                                                     </div>
 
@@ -280,9 +290,9 @@
                                                     <div class="form-row mb-4">
                                                         <label for="validationServerUsername">Division</label>
 
-                                                        <select class="form-control is-invalid" name="division_id" id="division" required="true">
+                                                        <select class="form-control form-control-lg is-valid" name="division_id" id="division" data-validation='required' data-validation-error-msg='Division name is required'>
 
-                                                            <option value="null">
+                                                            <option value="null" selected="true" disabled="true">
                                                                 --- Please Select Division ---
                                                             </option>
 
@@ -301,7 +311,7 @@
                                                     <div class="form-row mb-4">
                                                         <label for="validationServerUsername">City</label>
 
-                                                        <select class="form-control is-invalid" name="city_id" id="city" required="true">
+                                                        <select class="form-control form-control-lg is-valid" name="city_id" id="city" data-validation='required' data-validation-error-msg='City name is required'>
                                                             
                                                             <option value=""></option>
 
@@ -312,7 +322,7 @@
                                                     <div class="form-row mb-4">    
                                                         <label for="validationServerUsername">Area</label>
 
-                                                        <select class="form-control is-invalid" name="area_id" id="area" required="true">
+                                                        <select class="form-control form-control-lg is-valid" name="area_id" id="area" data-validation='required' data-validation-error-msg='Area name is required'>
                                                             
                                                             <option value=""></option>
 
@@ -322,7 +332,7 @@
                                                     <div class="form-row mb-4">
                                                         <label for="validationServerUsername">Address</label>
 
-                                                        <input type="text" name="address" class="form-control  is-invalid" placeholder="Address Details" aria-describedby="inputGroupPrepend3" required="true">
+                                                        <input type="text" name="address" class="form-control form-control-lg  is-valid" placeholder="Address Details" aria-describedby="inputGroupPrepend3" data-validation='required' data-validation-error-msg='Vendor address is required'>
                                                             
                                                     </div>
                                                 </div>
@@ -442,13 +452,13 @@
                                                                 <div class="form-row mb-4">
                                                                     <label for="validationServerUsername">Name</label>
                                                                     <div class="input-group">
-                                                                        <input type="text" name="name" class="form-control  is-invalid" value="{{ $vendor->name }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                        <input type="text" name="name" class="form-control form-control-lg  is-valid" value="{{ $vendor->name }}" aria-describedby="inputGroupPrepend3" required="true">
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="form-row mb-4">
                                                                     <label for="validationServer01">Type</label>
-                                                                    <select class="form-control  is-valid" name="treasure_type_id">
+                                                                    <select class="form-control form-control-lg  is-valid" name="treasure_type_id">
 
                                                                         @foreach(App\Models\TreasureType::all() as $treasureType)
                                                                         
@@ -465,7 +475,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text">88</span>
                                                                         </div>
-                                                                        <input type="tel" name="mobile" class="form-control  is-invalid" value="{{ ltrim($vendor->mobile, '88') }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                        <input type="tel" name="mobile" class="form-control form-control-lg  is-valid" value="{{ ltrim($vendor->mobile, '88') }}" aria-describedby="inputGroupPrepend3" required="true">
                                                                     </div>
                                                                 </div>
 
@@ -474,7 +484,7 @@
 
                                                                     <div class="col-6">
                                                                         <div class="input-group">
-                                                                            <input type="file" name="logo" class="form-control  is-valid" aria-describedby="inputGroupPrepend3">
+                                                                            <input type="file" name="logo" class="form-control form-control-lg  is-valid" aria-describedby="inputGroupPrepend3">
                                                                         </div>
                                                                     </div>
 
@@ -496,9 +506,9 @@
                                                                 <div class="form-row mb-4">
                                                                     <label for="validationServerUsername">Division</label>
 
-                                                                    <select class="form-control is-invalid" name="division_id" id="division" required="true">
+                                                                    <select class="form-control form-control-lg is-valid" name="division_id" id="division" required="true">
 
-                                                                        <option value="null">
+                                                                        <option value="null" disabled="true">
                                                                             --- Please Select Division ---
                                                                         </option>
 
@@ -517,7 +527,7 @@
                                                                 <div class="form-row mb-4">
                                                                     <label for="validationServerUsername">City</label>
 
-                                                                    <select class="form-control is-invalid" name="city_id" id="city" required="true">
+                                                                    <select class="form-control form-control-lg is-valid" name="city_id" id="city" required="true">
                                                                         
                                                                         <option value="{{ $vendor->city_id }}">{{ $vendor->city->name }}</option>
 
@@ -528,7 +538,7 @@
                                                                 <div class="form-row mb-4">    
                                                                     <label for="validationServerUsername">Area</label>
 
-                                                                    <select class="form-control is-invalid" name="area_id" id="area" required="true">
+                                                                    <select class="form-control form-control-lg is-valid" name="area_id" id="area" required="true">
                                                                         
                                                                         <option value="{{ $vendor->area_id }}">{{ $vendor->area->name }}</option>
 
@@ -538,7 +548,7 @@
                                                                 <div class="form-row mb-4">
                                                                     <label for="validationServerUsername">Address</label>
 
-                                                                    <input type="text" name="address" class="form-control  is-invalid" value="{{ $vendor->address }}" aria-describedby="inputGroupPrepend3" required="true">
+                                                                    <input type="text" name="address" class="form-control form-control-lg  is-valid" value="{{ $vendor->address }}" aria-describedby="inputGroupPrepend3" required="true">
                                                                         
                                                                 </div>
                                                             </div>
@@ -645,6 +655,8 @@
                     $("select[name*='area_id']").html("");
                     $("input[name*='address']").val('');
 
+                    $("select[name*='city_id']").append("<option selected='true' disabled='true'>--Please Select City--</option>");
+
                     $.each( result, function(objectArraykey, value) {
 
                         $("select[name*='city_id']").append("<option value='" + this.id + "'>" + this.name + "</option>");
@@ -656,7 +668,7 @@
                 error: function()
                 {
                     //handle errors
-                    alert('error...');
+                    alert("You've selected wrong option");
                 }
             });
         });
@@ -684,6 +696,8 @@
                     $("select[name*='area_id']").html("");
                     $("input[name*='address']").val('');
 
+                    $("select[name*='area_id']").append("<option selected='true' disabled='true'>--Please Select Area--</option>");
+
                     $.each( result, function(objectArraykey, value) {
 
                         $("select[name*='area_id']").append("<option value='" + this.id + "'>" + this.name + "</option>");
@@ -696,7 +710,7 @@
                 error: function()
                 {
                     //handle errors
-                    alert('error...');
+                    alert("You've selected wrong option");
                 }
             });
         });

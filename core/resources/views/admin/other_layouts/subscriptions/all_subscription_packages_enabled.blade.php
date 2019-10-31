@@ -120,8 +120,12 @@
                                         <div class="col-md-6 mb-4">
                                             <label for="validationServer01">Package Type</label>
 
-                                            <select class="form-control form-control-lg is-invalid" name="subcription_package_type_id" required="true">
+                                            <select class="form-control form-control-lg is-valid" name="subcription_package_type_id" data-validation='required' data-validation-error-msg='Please select pacakge type'>
                                                 
+                                                <option value="" selected="true" disabled="true">
+                                                    --Please select package type--
+                                                </option>
+
                                                 @foreach(App\Models\SubscriptionPackageType::all() as $packageType)
                                                 <option value="{{ $packageType->id }}">
                                                     {{ $packageType->name }}
@@ -143,21 +147,21 @@
                                         <div class="col-md-6 mb-4 offered_time">
                                             <label for="validationServer01">Offered Hour </label>
                                             <div class="input-group">
-                                                <input step="1" type="number" name="offered_time" class="form-control form-control-lg is-valid" placeholder="Free Hours" min="0">
+                                                <input type="text" name="offered_time" class="form-control form-control-lg is-valid" placeholder="Free Hours" data-validation='number required' data-validation-allowing='float range[0;1000]' data-validation-help='Subscription Period, (min 0, max 1000)' data-validation-error-msg='Hour supports numbers only'>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6 mb-4 d-none offered_game">
                                             <label for="validationServer01">Offered Game </label>
                                             <div class="input-group">
-                                                <input step="1" type="number" name="offered_game" class="form-control form-control-lg is-valid"  placeholder="Free Match" min="0">
+                                                <input type="text" name="offered_game" class="form-control form-control-lg is-valid"  placeholder="Free Match" data-validation='number' data-validation-optional="true" data-validation-allowing='range[0;1000]' data-validation-help='Number games offered with package' data-validation-error-msg='Number Games has to be numeric only'>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6 mb-4">
                                             <label for="validationServer01">Price (gems)</label>
                                             <div class="input-group">
-                                                <input step="1" type="number" name="price_gem" class="form-control form-control-lg is-invalid"  placeholder="Equivalent Gem Price" min="0">
+                                                <input type="text" name="price_gem" class="form-control form-control-lg is-valid"  placeholder="Equivalent Gem Price" data-validation='number' data-validation-allowing='range[0;10000000]' data-validation-help='Price gems of Subscription' data-validation-error-msg='Gems unit should be numeric only'>
                                             </div>
                                         </div>                                
                                     </div>
@@ -238,7 +242,7 @@
                                         <div class="col-md-6 mb-4">
                                             <label for="validationServer01">Package Type</label>
 
-                                            <select class="form-control form-control-lg is-invalid" name="subcription_package_type_id" required="true">
+                                            <select class="form-control form-control-lg is-valid" name="subcription_package_type_id" data-validation='required'>
                                                 
                                                 @foreach(App\Models\SubscriptionPackageType::all() as $packageType)
 
@@ -263,21 +267,21 @@
                                         <div class="col-md-6 mb-4 offered_time">
                                             <label for="validationServer01">Offered Hour </label>
                                             <div class="input-group">
-                                                <input step="1" type="number" name="offered_time" class="form-control form-control-lg is-valid"  value="" min="0">
+                                                <input type="text" name="offered_time" class="form-control form-control-lg is-valid"  value="" data-validation='number required' data-validation-allowing='float range[0;1000]' data-validation-help='Subscription Period, (min 0, max 1000)' data-validation-error-msg='Hour supports numbers only'>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6 mb-4 offered_game  d-none">
                                             <label for="validationServer01">Offered Game </label>
                                             <div class="input-group">
-                                                <input step="1" type="number" name="offered_game" class="form-control form-control-lg is-valid"  value="" min="0">
+                                                <input type="text" name="offered_game" class="form-control form-control-lg is-valid"  value=""  data-validation='number' data-validation-optional="true" data-validation-allowing='range[0;1000]' data-validation-help='Number games offered with package' data-validation-error-msg='Number Games has to be numeric only'>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6 mb-4">
                                             <label for="validationServer01">Price (gems) </label>
                                             <div class="input-group">
-                                                <input step="1" type="number" name="price_gem" class="form-control form-control-lg is-invalid" value="" min="0">
+                                                <input type="text" name="price_gem" class="form-control form-control-lg is-valid" value=""  data-validation='number' data-validation-allowing='range[0;10000000]' data-validation-help='Price gems of Subscription' data-validation-error-msg='Gems unit should be numeric only'>
                                             </div>
                                         </div>
                                     </div>

@@ -22,6 +22,13 @@ class Admin extends Authenticatable
     public function setProfilePictureAttribute($originImageFile)
     {
     	if ($originImageFile) {
+
+            $directory = "assets/admin/images/profile/";
+
+            if (!file_exists($directory)) {
+
+                mkdir($directory, 0777, true);
+            }
     		
             $imageObject = ImageIntervention::make($originImageFile);
             $imageObject->resize(200, 200)->save('assets/admin/images/profile/'.$originImageFile->hashname());

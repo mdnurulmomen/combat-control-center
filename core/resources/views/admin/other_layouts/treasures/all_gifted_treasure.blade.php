@@ -7,7 +7,7 @@
             
             <div class="row">
                 <div class="col-6">
-                    <h3 class="float-left">Treasure '{{$allGiftedTreasures->first()->treasure->name ?? 'None'}}' on {{ date('d-M-y', strtotime($allGiftedTreasures->first()->open_time ?? '00-00-0000')) }}</h3>
+                    <h3 class="float-left">Treasure '{{ $treasureName }}' on '{{ date_format(date_create($dateName),"d-M-y") }}' </h3>
                 </div>
 
                 <div class="col-6">

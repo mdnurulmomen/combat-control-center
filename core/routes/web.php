@@ -143,7 +143,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'web'], function (){
             Route::patch('treasures/{treasureId}', 'Web\TreasureController@treasureUndoMethod')->name('admin.undo_treasure');
 
 
-            Route::post('treasures-gifted', 'Web\TreasureController@showAllTreasureGifted')->name('admin.view_treasure_gifted');
+            Route::get('treasures-gifted', 'Web\TreasureController@showAllTreasureGifted')->name('admin.view_treasure_gifted');
             Route::get('treasures-redeemed', 'Web\TreasureController@showAllTreasureRedeemed')->name('admin.view_treasure_redeems');
 
 

@@ -50,6 +50,8 @@ class VendorController extends Controller
     
     public function submitCreateVendorForm(Request $request)
     {
+        $request['mobile'] = Str::start($request->mobile, '88');
+
         $request->validate([
             'address'=>'required',
             'area_id'=>'required',
@@ -86,7 +88,8 @@ class VendorController extends Controller
     public function submitVendorEditForm(Request $request, $vendorId)
     {
         $vendorToUpdate = Vendor::findOrFail($vendorId);
-
+        $request['mobile'] = Str::start($request->mobile, '88');
+        
         $request->validate([
             'address'=>'required',
             'area_id'=>'required',

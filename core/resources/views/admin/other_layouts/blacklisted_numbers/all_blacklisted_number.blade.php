@@ -1,4 +1,3 @@
-
 @extends('admin.master_layout.app')
 @section('contents')
 
@@ -46,7 +45,7 @@
                                     <div class="form-row">
                                         <div class="col-md-12 mb-4">
                                             <label for="validationServer01">Mobile Number</label>
-                                            <input type="tel" name="mobile_number" class="form-control form-control-lg is-valid"  placeholder="Mobile Name">
+                                            <input type="tel" name="mobile_number" class="form-control form-control-lg is-valid"  placeholder="Mobile Name" data-validation="number required length" data-validation-length="max11" data-validation-error-msg="Please input a correct mobile number" data-validation-help="Maximum 11 digits.">
                                         </div>
                                     </div>
                                     
@@ -171,5 +170,4 @@
         });
 
     </script>
-
 @endpush

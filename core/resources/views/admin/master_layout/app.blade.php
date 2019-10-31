@@ -33,6 +33,12 @@
 
     <style type="text/css">
 
+      span.help-block{
+          display : block;
+          color : green;
+          width: 100%;
+      }
+
       @section('stylebar')
       @show
 
@@ -197,7 +203,7 @@
         <li class="treeview @if(Request::is('admin/campaign*')) is-expanded @endif">
           <a class="app-menu__item @if(Request::is('admin/campaign*')) active @endif" href="#" data-toggle="treeview">
             <i class="app-menu__icon fa fa-picture-o"></i>
-            <span class="app-menu__label">Campaign</span>
+            <span class="app-menu__label">Ad Campaign</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
           </a>
 
@@ -362,7 +368,7 @@
         </li>
 
         <li class="treeview">
-          <a class="app-menu__item  @if(Request::is('admin/store*')) active @endif" href="{{ route('admin.create_store') }}">
+          <a class="app-menu__item  @if(Request::is('admin/store*') || Request::is('admin/character*') || Request::is('admin/animation*') || Request::is('admin/coin-pack*') || Request::is('admin/parachute*') || Request::is('admin/gem-pack*') || Request::is('admin/boost-pack*') || Request::is('admin/weapon*') || Request::is('admin/bundle-pack*')) active @endif" href="{{ route('admin.create_store') }}">
             <i class="app-menu__icon fa fa-indent"></i>
             <span class="app-menu__label">Store</span>
           </a>
@@ -475,10 +481,9 @@
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                   </div>
 
-                  <form method="POST" action="{{route('admin.view_treasure_gifted')}}">
+                  <form id="formTreasureGifted" method="GET" action="{{route('admin.view_treasure_gifted')}}">
 
                       @csrf
-                      @method('POST')
                       
                       <div class="modal-body">
 
@@ -488,14 +493,14 @@
                           <div class="col-md-6 mb-4">
                             <label for="validationServer01">Select Treasure</label>
 
-                            <select class="form-control form-control-lg is-invalid" name="treasure_id" required="true">
+                            <select class="form-control form-control-lg is-valid" name="treasure_id"  data-validation='required' data-validation-error-msg='Please choose a treasure'>
                               
                               <option selected="true" disabled="true">
                                   -- please select an option --
                               </option>
 
                               @foreach(App\Models\Treasure::all() as $treasure)
-                                <option selected="true" value="{{$treasure->id}}">
+                                <option value="{{$treasure->id}}">
                                     {{$treasure->name}}
                                 </option> 
                               @endforeach
@@ -505,7 +510,7 @@
 
                           <div class="col-md-6 mb-4">
                             <label for="validationServer01">Choose Date</label>
-                            <input type="date" name="date" class="form-control form-control-lg is-invalid" required="true">
+                            <input type="date" name="date" class="form-control form-control-lg is-valid" required="true">
                           </div>
 
                         </div>
@@ -533,13 +538,27 @@
     <script src="{{ asset('assets/admin/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/main.js') }}"></script>
     <script src="{{ asset('assets/admin/js/toastr.min.js') }}"></script>
-
     <script src="{{ asset('assets/admin/js/bootstrap-toggle.min.js') }}"></script>
-
     <script src="{{ asset('assets/admin/datatable/jquery.dataTables.min.js') }}"></script>
-
     <script src="{{ asset('assets/admin/datatable/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{asset('assets/admin/js/jQuery-Form-Validator-master/form-validator/jquery.form-validator.js')}}"></script>
 
+    <script type="text/javascript">
+        
+        $(document).ready(function() {
+          $(window).on('load', function(){
+            // $('form').each(function (index) {
+              // console.log($(this).attr('id'));
+              $.validate({
+                modules : 'file, security, html5',
+                errorMessagePosition  : 'top',
+                errorMessageClass : 'text-danger'
+              });
+            // });
+          });
+        });
+
+    </script>
 
     <script>
         $(document).ready(function() {

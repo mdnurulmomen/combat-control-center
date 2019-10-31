@@ -124,7 +124,7 @@
                                                         <div class="col-md-3 mb-4">
                                                             <label for="validationServerUsername">Amount</label>
                                                             <div class="input-group">
-                                                                <input type="number" name="amount" class="form-control form-control-lg is-invalid" value="{{ $gem->amount }}" aria-describedby="inputGroupPrepend3" required="true" min='1' step="1.0">
+                                                                <input type="number" name="amount" class="form-control form-control-lg is-valid" value="{{ $gem->amount }}" aria-describedby="inputGroupPrepend3" required="true" min='1' step="1.0">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 mb-4">
@@ -142,7 +142,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ taka</span>
                                                                 </div>
-                                                                <input type="number" name="price_taka" class="form-control form-control-lg is-invalid"  value="{{ $gem->price_taka }}" required="true" step="any">
+                                                                <input type="number" name="price_taka" class="form-control form-control-lg is-valid"  value="{{ $gem->price_taka }}" required="true" step="any">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 mb-4">
@@ -151,7 +151,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ taka</span>
                                                                 </div>
-                                                                <input type="number" name="discount_taka" class="form-control form-control-lg is-invalid" value="{{$gem->discount_taka }}" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100" step="any">
+                                                                <input type="number" name="discount_taka" class="form-control form-control-lg is-valid" value="{{$gem->discount_taka }}" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100" step="any">
                                                                 <div class="input-group-append">
                                                                     <span class="input-group-text">%</span>
                                                                 </div>
@@ -253,7 +253,7 @@
                                     <div class="col-md-3 mb-4">
                                         <label for="validationServerUsername">Amount</label>
                                         <div class="input-group">
-                                            <input type="number" name="amount" class="form-control form-control-lg is-invalid" placeholder="Unique Amount(required)" aria-describedby="inputGroupPrepend3" required="true" min='1'>
+                                            <input type="text" name="amount" class="form-control form-control-lg is-valid" placeholder="Unique Amount(required)" aria-describedby="inputGroupPrepend3" data-validation='required number'  data-validation-allowing="range[1;10000000]" data-validation-help='Amount has to be unique & numeric only' data-validation-error-msg='Gems Amount is required and unique'>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-4">
@@ -271,7 +271,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ taka</span>
                                             </div>
-                                            <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true" step="any">
+                                            <input type="text" name="price_taka" class="form-control form-control-lg is-valid" placeholder="(required)" aria-describedby="inputGroupPrepend3" data-validation='required number' data-validation-allowing='float' data-validation-help='Minimun price 0 taka' data-validation-error-msg='Price taka is required'>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
@@ -280,7 +280,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ taka</span>
                                             </div>
-                                            <input type="number" name="discount_taka" class="form-control form-control-lg is-invalid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100" step="any">
+                                            <input type="text" name="discount_taka" class="form-control form-control-lg is-valid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3"  data-validation='required number' data-validation-allowing='float range[0;100]' data-validation-error-msg='Discount field is required'>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">%</span>
                                             </div>

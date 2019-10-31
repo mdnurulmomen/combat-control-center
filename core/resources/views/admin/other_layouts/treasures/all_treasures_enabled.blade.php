@@ -155,8 +155,7 @@
                                                 <div class="col-md-4 mb-4">
                                                     <label for="validationServer01">Treasure Type</label>
 
-                                                    <select class="form-control form-control-lg is-invalid" name="treasure_type_id" required="true">
-                                                        
+                                                    <select class="form-control form-control-lg is-valid" name="treasure_type_id" required="true">
                                                         @foreach(App\Models\TreasureType::all() as $treasureType)
                                                         <option value="{{ $treasureType->id }}" @if($treasure->treasure_type_id == $treasureType->id) selected="true" @endif>
                                                             {{ $treasureType->treasure_type_name }}
@@ -170,7 +169,7 @@
                                                 <div class="col-md-4 mb-4">
                                                     <label for="validationServer01">Treasure Name </label>
                                                     <div class="input-group">
-                                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-valid"  value="{{ $treasure->name }}">
+                                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-valid"  value="{{ $treasure->name }}" required="true">
                                                     </div>
                                                 </div>
 
@@ -190,14 +189,14 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">@ taka</span>
                                                         </div>
-                                                        <input type="number" name="equivalent_price" class="form-control form-control-lg is-invalid" value="{{ $treasure->equivalent_price }}" required="true">
+                                                        <input type="number" name="equivalent_price" class="form-control form-control-lg is-valid" value="{{ $treasure->equivalent_price }}" required="true" step="any">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-6 mb-4">
                                                     <label for="validationServerUsername">Durability</label>
                                                     <div class="input-group">
-                                                        <input type="text" name="durability" class="form-control form-control-lg is-valid" value="{{ $treasure->durability ?? -1 }}"  aria-describedby="inputGroupPrepend3" step="any">
+                                                        <input type="number" name="durability" class="form-control form-control-lg is-valid" value="{{ $treasure->durability ?? -1 }}"  aria-describedby="inputGroupPrepend3" step="any" placeholder="-1">
                                                         <div class="input-group-append">
                                                             <span class="input-group-text">@ days</span>
                                                         </div>
@@ -233,7 +232,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">@ megabyte</span>
                                                         </div>
-                                                        <input type="number" name="exchanging_megabyte" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_megabyte }}"  aria-describedby="inputGroupPrepend3" step=".5">
+                                                        <input type="number" name="exchanging_megabyte" class="form-control form-control-lg is-valid" value="{{ $treasure->exchanging_megabyte }}"  aria-describedby="inputGroupPrepend3" step="1">
                                                     </div>
                                                 </div>
 
@@ -253,7 +252,7 @@
                                                 <div class="col-md-12 mb-4">
                                                     <label for="validationServerUsername">Description</label>
                                                     <div class="input-group">
-                                                        <textarea  class="form-control form-control-lg is-valid" name="description" rows="3" placeholder="A Short Description">{{ $treasure->description }}</textarea>
+                                                        <textarea  class="form-control form-control-lg is-valid" name="description" rows="3" placeholder="A Short Description" required="true">{{ $treasure->description }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -308,8 +307,12 @@
                                 <div class="col-md-4 mb-4">
                                     <label for="validationServer01">Treasure Type</label>
 
-                                    <select class="form-control form-control-lg is-invalid" name="treasure_type_id" required="true">
+                                    <select class="form-control form-control-lg is-valid" name="treasure_type_id" data-validation='required' data-validation-error-msg='Please select treasure type'>
                                         
+                                        <option selected="true" disabled="true">
+                                            --Please select treasure type--
+                                        </option>
+
                                         @foreach(App\Models\TreasureType::all() as $treasureType)
                                         <option value="{{ $treasureType->id }}">
                                             {{ $treasureType->treasure_type_name }}
@@ -323,14 +326,14 @@
                                 <div class="col-md-4 mb-4">
                                     <label for="validationServer01">Treasure Name</label>
                                     <div class="input-group">
-                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-valid"  placeholder="Treasure Name">
+                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-valid"  placeholder="Treasure Name" data-validation= 'required' data-validation-error-msg='Treasure name is required'>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4 mb-4">
                                     <label for="validationServer01">Treasure Amount</label>
                                     <div class="input-group">
-                                        <input type="number" name="amount" class="form-control form-control-lg is-valid" placeholder="Amount of product" min="1">
+                                        <input type="text" name="amount" class="form-control form-control-lg is-valid" placeholder="Amount of product" data-validation='number' data-validation-optional="true" data-validation-allowing='range[1;10]' data-validation-help='Numbers of treasure (min 1,max 10)' data-validation-error-msg='Numeric only'>
                                     </div>
                                 </div>
 
@@ -343,14 +346,14 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">@ taka</span>
                                         </div>
-                                        <input type="number" name="equivalent_price" class="form-control form-control-lg is-invalid"  placeholder="Taka" required="true">
+                                        <input type="text" name="equivalent_price" class="form-control form-control-lg is-valid"  placeholder="Taka" data-validation='number required' data-validation-allowing='float' data-validation-help='Cost of treasure' data-validation-error-msg='Amount taka should only be numeric'>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServerUsername">Durability</label>
                                     <div class="input-group">
-                                        <input type="text" name="durability" class="form-control form-control-lg is-valid" placeholder="Please Leave if Unlimited" aria-describedby="inputGroupPrepend3" step="any">
+                                        <input type="text" name="durability" class="form-control form-control-lg is-valid" placeholder="Please Leave if Unlimited" aria-describedby="inputGroupPrepend3" data-validation='number' data-validation-optional="true" data-validation-allowing='float range[1;100]' data-validation-error-msg='Number of days should only be numeric'>
                                         <div class="input-group-append">
                                             <span class="input-group-text">@ days</span>
                                         </div>
@@ -366,7 +369,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">@ coins</span>
                                         </div>
-                                        <input type="number" name="exchanging_coins" class="form-control form-control-lg is-valid" placeholder="Coins"aria-describedby="inputGroupPrepend3" min="1">
+                                        <input type="text" name="exchanging_coins" class="form-control form-control-lg is-valid" placeholder="Coins"aria-describedby="inputGroupPrepend3" data-validation='number' data-validation-optional="true" data-validation-allowing='range[1;1000000]' data-validation-help='Coins Cost of treasure' data-validation-error-msg='Coin amount should only be numeric'>
                                     </div>
                                 </div>
                                 
@@ -376,7 +379,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">@ gems</span>
                                         </div>
-                                        <input type="number" name="exchanging_gems" class="form-control form-control-lg is-valid" placeholder="Gems" aria-describedby="inputGroupPrepend3" min="0">
+                                        <input type="text" name="exchanging_gems" class="form-control form-control-lg is-valid" placeholder="Gems" aria-describedby="inputGroupPrepend3" data-validation='number' data-validation-optional="true" data-validation-allowing='range[1;1000000]' data-validation-help='Gems Cost of treasure' data-validation-error-msg='Gems should only be numeric'>
                                     </div>
                                 </div>
 
@@ -386,7 +389,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">@ megabyte</span>
                                         </div>
-                                        <input type="number" name="exchanging_megabyte" class="form-control form-control-lg is-valid" placeholder="MB"  aria-describedby="inputGroupPrepend3" step=".5">
+                                        <input type="text" name="exchanging_megabyte" class="form-control form-control-lg is-valid" placeholder="MB"  aria-describedby="inputGroupPrepend3" data-validation='number' data-validation-optional="true" data-validation-allowing='float' data-validation-help='Amount Megabyte for treasure' data-validation-error-msg='Megabyte should only be numeric'>
                                     </div>
                                 </div>
 
@@ -406,7 +409,7 @@
                                 <div class="col-md-12 mb-4">
                                     <label for="validationServerUsername">Description</label>
                                     <div class="input-group">
-                                        <textarea  class="form-control form-control-lg is-valid" name="description" rows="3" placeholder="A Short Description"></textarea>
+                                        <textarea  class="form-control form-control-lg is-valid" name="description" rows="3" placeholder="A Short Description" data-validation="required" data-validation-error-msg='A short description is required'></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -449,7 +452,7 @@
                                 <div class="col-md-12 mb-4">
                                     <label for="validationServer01">Type Name</label>
                                     <div class="input-group">
-                                        <input step="any" type="text" name="treasure_type_name" class="form-control form-control-lg is-invalid"  placeholder="Type Name" required="true">
+                                        <input type="text" name="treasure_type_name" class="form-control form-control-lg is-valid"  placeholder="Type Name" data-validation='required alphanumeric' data-validation-help='Name has to be unique' data-validation-error-msg='Treasure Type Name is required'>
                                     </div>
                                 </div>
                             </div>

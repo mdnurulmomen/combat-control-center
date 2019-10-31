@@ -21,20 +21,20 @@
                             <h4 class="tile-title">Game Details</h4>
                             <div class="tile">
                                 <div class="tile-body">
-                                    <div class="form-group form-row mb-4">
-                                        <div class="col-md-4 mb-4">
+                                    <div class="form-row mb-4">
+                                        <div class="col-md-4">
                                             <label for="validationServer01">Game Version (minimum)</label>
-                                            <input type="number" name="game_version_required" class="form-control form-control-lg  is-valid" value="{{ $settingsGame->game_version_required ?? 'No version is Set' }}" step=".001" required>
+                                            <input type="text" name="game_version_required" class="form-control form-control-lg  is-valid" value="{{ $settingsGame->game_version_required ?? 'No version is Set' }}" step=".001" data-validation="required number"  data-validation-allowing="float" data-validation-error-msg="Version number is required" >
                                         </div>
 
-                                        <div class="col-md-4 mb-4">
+                                        <div class="col-md-4">
                                             <label for="validationServer01">Game Version (current)</label>
-                                            <input type="number" name="game_version_optional" class="form-control form-control-lg is-valid" value="{{ $settingsGame->game_version_optional ?? 'No version is Set'  }}" step=".001">
+                                            <input type="text" name="game_version_optional" class="form-control form-control-lg is-valid" value="{{ $settingsGame->game_version_optional ?? 'No version is Set'  }}" step=".001" data-validation="number"  data-validation-allowing="float" data-validation-optional="true" data-validation-error-msg="Only numberic value is allowed">
                                         </div>
                                         
-                                        <div class="col-md-4 mb-4">
+                                        <div class="col-md-4">
                                             <label for="validationServer01">Game Rate <span class="text-danger">(Gems Per Game)</span></label>
-                                            <input type="number" name="rate" class="form-control form-control-lg is-valid" value="{{ $settingsGame->game_rate ?? 'No Rate is Defined' }}" step="any" required>
+                                            <input type="text" name="rate" class="form-control form-control-lg is-valid" value="{{ $settingsGame->game_rate ?? 'No Rate is Defined' }}" step="any" data-validation="required number"  data-validation-allowing="float" data-validation-error-msg="Price of every game play is required" >
                                         </div>
 
                                     </div>

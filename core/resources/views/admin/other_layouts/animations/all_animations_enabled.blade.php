@@ -167,7 +167,7 @@
                                         <div class="col-md-4 mb-4">
                                             <label for="validationServerUsername">Name</label>
                                             <div class="input-group">
-                                                <input type="text" name="name" class="form-control form-control-lg is-invalid" value="" aria-describedby="inputGroupPrepend3" required="true">
+                                                <input type="text" name="name" class="form-control form-control-lg is-valid" value="" aria-describedby="inputGroupPrepend3" data-validation='required' data-validation-help='Name has to be unique' data-validation-error-msg='Animation name is required and unique'>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-4">
@@ -191,7 +191,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">@ taka</span>
                                                 </div>
-                                                <input type="number" name="price_taka" class="form-control form-control-lg is-invalid"  value="" required="true" step="any">
+                                                <input type="text" name="price_taka" class="form-control form-control-lg is-valid"  value="" data-validation='required number' data-validation-allowing='float' data-validation-help='Minimun price 0 taka' data-validation-error-msg='Price taka is required'>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-4">
@@ -200,7 +200,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">@ gems</span>
                                                 </div>
-                                                <input type="number" name="price_gems" class="form-control form-control-lg is-invalid"  value="" required="true">
+                                                <input type="text" name="price_gems" class="form-control form-control-lg is-valid"  value="" data-validation='required number' data-validation-help='Minimun price 0 gem' data-validation-error-msg='Price gem is required and numeric only'>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-4">
@@ -209,7 +209,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">@ coins</span>
                                                 </div>
-                                                <input type="number" name="price_coins" class="form-control form-control-lg is-invalid" value="" required="true">
+                                                <input type="text" name="price_coins" class="form-control form-control-lg is-valid" value=""  data-validation='required number' data-validation-help='Minimun price 0 coin' data-validation-error-msg='Price coin is required and numeric only'>
                                             </div>
                                         </div>
                                     </div>
@@ -218,7 +218,7 @@
                                         <div class="col-md-5">
                                             <label for="validationServerUsername">Discount</label>
                                             <div class="input-group">
-                                                <input type="number" name="discount" class="form-control form-control-lg is-invalid" value="" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100" step="any" >
+                                                <input type="text" name="discount" class="form-control form-control-lg is-valid" value="" aria-describedby="inputGroupPrepend3" required="true" data-validation='required number' data-validation-allowing='float range[0;100]' data-validation-error-msg='Discount field is required'>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">%</span>
                                                 </div>
@@ -321,7 +321,7 @@
                                         <div class="col-md-4 mb-4">
                                             <label for="validationServerUsername">Name</label>
                                             <div class="input-group">
-                                                <input type="text" name="name" class="form-control form-control-lg is-invalid" placeholder="Unique Name (required)" aria-describedby="inputGroupPrepend3" required="true">
+                                                <input type="text" name="name" class="form-control form-control-lg is-valid" placeholder="Unique Name (required)" aria-describedby="inputGroupPrepend3" data-validation='required' data-validation-help='Name has to be unique' data-validation-error-msg='Animation name is required and unique'>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-4">
@@ -345,7 +345,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">@ taka</span>
                                                 </div>
-                                                <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true" step="any">
+                                                <input type="text" name="price_taka" class="form-control form-control-lg is-valid" placeholder="(required)" aria-describedby="inputGroupPrepend3" data-validation='required number' data-validation-allowing='float' data-validation-help='Minimun price 0 taka' data-validation-error-msg='Price taka is required'>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-4">
@@ -354,7 +354,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">@ gems</span>
                                                 </div>
-                                                <input type="number" name="price_gems" class="form-control form-control-lg is-invalid"  placeholder="(required)" required="true">
+                                                <input type="text" name="price_gems" class="form-control form-control-lg is-valid"  placeholder="(required)"  data-validation='required number' data-validation-help='Minimun price 0 gem' data-validation-error-msg='Price gem is required and numeric only'>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-4">
@@ -363,7 +363,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">@ coins</span>
                                                 </div>
-                                                <input type="number" name="price_coins" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true">
+                                                <input type="text" name="price_coins" class="form-control form-control-lg is-valid" placeholder="(required)" aria-describedby="inputGroupPrepend3" data-validation='required number' data-validation-help='Minimun price 0 coin' data-validation-error-msg='Price coin is required and numeric only'>
                                             </div>
                                         </div>
                                     </div>
@@ -372,7 +372,7 @@
                                         <div class="col-md-5">
                                             <label for="validationServerUsername">Discount</label>
                                             <div class="input-group">
-                                                <input type="number" name="discount" class="form-control form-control-lg is-invalid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100" step="any">
+                                                <input type="text" name="discount" class="form-control form-control-lg is-valid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3"  data-validation='required number' data-validation-allowing='float range[0;100]' data-validation-error-msg='Discount field is required'>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">%</span>
                                                 </div>

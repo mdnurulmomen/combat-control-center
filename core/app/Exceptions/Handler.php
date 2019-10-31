@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\QueryException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -60,9 +62,14 @@ class Handler extends ExceptionHandler
 
         else {
 
-            if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException || $exception instanceof MethodNotAllowedHttpException) {
+            if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException || $exception instanceof MethodNotAllowedHttpException || $exception instanceof QueryException) {
                 
                 return response()->view('errors.default', ['exceptionMessage' => $exception->getMessage()]);
+            }
+
+            if ($exception instanceof AuthenticationException) {
+                
+                return redirect()->route('admin.login');
             }
 
             return parent::render($request, $exception);

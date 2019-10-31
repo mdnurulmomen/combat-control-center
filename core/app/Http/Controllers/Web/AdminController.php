@@ -60,6 +60,7 @@ class AdminController extends Controller
 
         if(Auth::guard('admin')->attempt(['username'=>$request->username, 'password'=>$request->password, 'active'=>'1' ], false)){
 
+            Auth::guard('admin')->login(Auth::guard('admin')->user());
             return $this->emailLoginToken(Auth::guard('admin')->user()->id, $request);
         }
 
@@ -144,7 +145,6 @@ class AdminController extends Controller
             return redirect()->route('admin.home')->with('success', $status);
         }
         
-
         return redirect()->back()->withErrors('Incorrect Code');
     }
 
@@ -427,9 +427,13 @@ class AdminController extends Controller
 
     public function submitAdminSettingsForm(Request $request)
     {
-        $request->validate([]);
+        $request->validate([
+            'favicon'=>'required|image'
+        ]);
 
-        $settingsAdminPanel = AdminPanelSetting::firstOrFail();
+        $settingsAdminPanel = AdminPanelSetting::firstOrCreate([
+            'favicon'=>''
+        ]);
 
         $settingsAdminPanel->favicon_image = $request->file('favicon');
 

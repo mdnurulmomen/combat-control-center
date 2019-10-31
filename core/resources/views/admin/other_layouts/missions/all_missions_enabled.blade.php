@@ -264,9 +264,9 @@
                                                         <div class="col-md-4 mb-4">
                                                             <label for="validationServer01">Mission Type</label>
 
-                                                            <select class="form-control form-control-lg is-invalid" name="mission_type_id" required="true">
+                                                            <select class="form-control form-control-lg is-valid" name="mission_type_id" data-validation="required" data-validation-error-msg="Please select a mission type">
                                                                 
-                                                                <option disabled="true" selected="true">
+                                                                <option disabled="true" selected="true" >
                                                                     --Please Select Mission Type--
                                                                 </option>
 
@@ -285,7 +285,7 @@
                                                         <div class="col-md-4 mb-4">
                                                             <label for="validationServer01">Mission Name</label>
                                                             <div class="input-group">
-                                                                <input type="text" name="name" class="form-control form-control-lg is-invalid"  placeholder="Mission Name" required="true">
+                                                                <input type="text" name="name" class="form-control form-control-lg is-valid"  placeholder="Mission Name" data-validation="required" data-validation-error-msg="Mission name is required">
                                                             </div>
                                                         </div>
 
@@ -313,7 +313,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
                                                                 </div>
-                                                                <input type="number" name="play_number" class="form-control form-control-lg is-valid"  placeholder="Number Games to Play">
+                                                                <input type="text" name="play_number" class="form-control form-control-lg is-valid"  placeholder="Number Games to Play" data-validation="number" data-validation-error-msg="Should be numeric only">
 
                                                             </div>
                                                         </div>
@@ -324,7 +324,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ hour</span>
                                                                 </div>
-                                                                <input type="number" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration"aria-describedby="inputGroupPrepend3" min="0" step="any">
+                                                                <input type="text" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration"aria-describedby="inputGroupPrepend3" data-validation="number" data-validation-allowing="float" data-validation-error-msg="Playing hour should only be float or numeric">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -347,7 +347,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ player</span>
                                                                 </div>
-                                                                <input type="number" name="kill_opponent" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Player" aria-describedby="inputGroupPrepend3">
+                                                                <input type="text" name="kill_opponent" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Player" aria-describedby="inputGroupPrepend3" data-validation="number" data-validation-error-msg="Kill player should only be numeric">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -370,7 +370,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ monster</span>
                                                                 </div>
-                                                                <input type="number" name="kill_monster" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Monster" aria-describedby="inputGroupPrepend3" step="any">
+                                                                <input type="text" name="kill_monster" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Monster" aria-describedby="inputGroupPrepend3" step="any" data-validation="number" data-validation-error-msg="Should be numeric only">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -393,7 +393,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
                                                                 </div>
-                                                                <input type="number" name="win_top_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3">
+                                                                <input type="text" name="win_top_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" data-validation="number" data-validation-error-msg="Winning times should only be numeric">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -415,7 +415,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
                                                                 </div>
-                                                                <input type="number" name="among_two_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any">
+                                                                <input type="text" name="among_two_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" data-validation="number" data-validation-error-msg="Winning times should only be numeric" step="any">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4 mb-4">
@@ -424,7 +424,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
                                                                 </div>
-                                                                <input type="number" name="among_three_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any">
+                                                                <input type="text" name="among_three_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" data-validation="number" data-validation-error-msg="Winning times should only be numeric">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4 mb-4">
@@ -433,7 +433,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
                                                                 </div>
-                                                                <input type="number" name="among_five_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any">
+                                                                <input type="text" name="among_five_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" data-validation="number" data-validation-error-msg="Winning times should only be numeric">
                                                             </div>
                                                         </div>
                                                     </div>   
@@ -455,7 +455,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ xp</span>
                                                                 </div>
-                                                                <input type="number" name="reward_amount" class="form-control form-control-lg is-valid rewardInput" placeholder="Amount of Reward" aria-describedby="inputGroupPrepend3">
+                                                                <input type="text" name="reward_amount" class="form-control form-control-lg is-valid rewardInput" placeholder="Amount of Reward" aria-describedby="inputGroupPrepend3" data-validation="number"  data-validation-error-msg="Xp number should only be numeric">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -504,7 +504,7 @@
                                         <div class="col-md-12 mb-4">
                                             <label for="validationServer01">Type Name</label>
                                             <div class="input-group">
-                                                <input step="any" type="text" name="mission_type_name" class="form-control form-control-lg is-invalid"  placeholder="Type Name" required="true">
+                                                <input step="any" type="text" name="mission_type_name" class="form-control form-control-lg is-valid"  placeholder="Type Name" required="true">
                                             </div>
                                         </div>
                                     </div>
@@ -555,7 +555,7 @@
                                                         <div class="col-md-4 mb-4">
                                                             <label for="validationServer01">Mission Type</label>
 
-                                                            <select class="form-control form-control-lg is-invalid" name="mission_type_id" required="true">
+                                                            <select class="form-control form-control-lg is-valid" name="mission_type_id" data-validation="required" data-validation-error-msg="Please select a mission type">
                                                                 
                                                                 @foreach(App\Models\MissionType::all() as $missionType)
 
@@ -571,7 +571,7 @@
                                                         <div class="col-md-4 mb-4">
                                                             <label for="validationServer01">Mission Name</label>
                                                             <div class="input-group">
-                                                                <input type="text" name="name" class="form-control form-control-lg is-invalid"  placeholder="Mission Name" value="" required="true">
+                                                                <input type="text" name="name" class="form-control form-control-lg is-valid"  placeholder="Mission Name" value="" data-validation="required"  data-validation-error-msg="Mission name is required">
                                                             </div>
                                                         </div>
 
@@ -601,7 +601,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
                                                                 </div>
-                                                                <input type="number" name="play_number" class="form-control form-control-lg is-valid"  placeholder="Number Games to Play" value="">
+                                                                <input type="text" name="play_number" class="form-control form-control-lg is-valid"  placeholder="Number Games to Play" value="" data-validation="number"  data-validation-error-msg="Number game play should only be numeric">
 
                                                             </div>
                                                         </div>
@@ -612,7 +612,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ hour</span>
                                                                 </div>
-                                                                <input type="number" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration" aria-describedby="inputGroupPrepend3" min="0" step="any" value="">
+                                                                <input type="text" name="play_time" class="form-control form-control-lg is-valid" placeholder="Play Duration" aria-describedby="inputGroupPrepend3" value="" data-validation="number" data-validation-allowing="float" data-validation-error-msg="Playing hour should only be numeric or fraction">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -635,7 +635,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ player</span>
                                                                 </div>
-                                                                <input type="number" name="kill_opponent" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Player" aria-describedby="inputGroupPrepend3" value="">
+                                                                <input type="text" name="kill_opponent" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Player" aria-describedby="inputGroupPrepend3" value=""  data-validation="number" data-validation-error-msg="Killing number should only be numeric">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -658,7 +658,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ monster</span>
                                                                 </div>
-                                                                <input type="number" name="kill_monster" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Monster" aria-describedby="inputGroupPrepend3" step="any" value="">
+                                                                <input type="text" name="kill_monster" class="form-control form-control-lg is-valid" placeholder="Kill Opponent Monster" aria-describedby="inputGroupPrepend3" step="any" value="" data-validation="number" data-validation-error-msg="Killing number should only be numeric">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -681,7 +681,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
                                                                 </div>
-                                                                <input type="number" name="win_top_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" value="">
+                                                                <input type="text" name="win_top_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" value="" data-validation="number" data-validation-error-msg="Winning times should only be numeric">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -703,7 +703,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
                                                                 </div>
-                                                                <input type="number" name="among_two_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any" value="">
+                                                                <input type="text" name="among_two_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" data-validation="number" data-validation-error-msg="Winning times should only be numeric" value="">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4 mb-4">
@@ -712,7 +712,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
                                                                 </div>
-                                                                <input type="number" name="among_three_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any" value="">
+                                                                <input type="text" name="among_three_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" data-validation="number" data-validation-error-msg="Winning times should only be numeric" value="">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4 mb-4">
@@ -721,7 +721,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ times</span>
                                                                 </div>
-                                                                <input type="number" name="among_five_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" step="any" value="">
+                                                                <input type="text" name="among_five_time" class="form-control form-control-lg is-valid" placeholder="" aria-describedby="inputGroupPrepend3" data-validation="number"data-validation-error-msg="Winning times should only be numeric" value="">
                                                             </div>
                                                         </div>
                                                     </div>   
@@ -743,7 +743,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ xp</span>
                                                                 </div>
-                                                                <input type="number" name="reward_amount" class="form-control form-control-lg is-valid rewardInput" placeholder="Amount of Reward" aria-describedby="inputGroupPrepend3" value="">
+                                                                <input type="text" name="reward_amount" class="form-control form-control-lg is-valid rewardInput" placeholder="Amount of Reward" aria-describedby="inputGroupPrepend3" data-validation="number"  data-validation-error-msg="Reward amount should only be numeric" value="">
                                                             </div>
                                                         </div>
                                                     </div>

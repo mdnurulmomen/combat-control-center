@@ -145,7 +145,7 @@
                                                 <div class="col-md-12 mb-4">
                                                     <label for="validationServer01">Treasure Type Name </label>
                                                     <div class="input-group">
-                                                        <input step="any" type="text" name="treasure_type_name" class="form-control form-control-lg is-invalid"  value="{{ $treasureType->treasure_type_name }}" required="true">
+                                                        <input step="any" type="text" name="treasure_type_name" class="form-control form-control-lg is-valid"  value="{{ $treasureType->treasure_type_name }}" required="true" data-validation='required alphanumeric' data-validation-help='Name has to be unique' data-validation-error-msg='Treasure Type Name is required'>
                                                     </div>
                                                 </div>
                                             </div>
@@ -199,7 +199,7 @@
                                 <div class="col-md-12 mb-4">
                                     <label for="validationServer01">Treasure Type Name</label>
                                     <div class="input-group">
-                                        <input step="any" type="text" name="treasure_type_name" class="form-control form-control-lg is-invalid"  placeholder="Type Name" required="true">
+                                        <input type="text" name="treasure_type_name" class="form-control form-control-lg is-valid"  placeholder="Type Name"  data-validation='required alphanumeric' data-validation-help='Name has to be unique' data-validation-error-msg='Treasure Type Name is required'>
                                     </div>
                                 </div>
                             </div>

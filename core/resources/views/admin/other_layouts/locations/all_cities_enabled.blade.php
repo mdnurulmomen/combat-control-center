@@ -148,7 +148,7 @@
                                                 <div class="col-md-6 mb-4">
                                                     <label for="validationServer01">Division</label>
 
-                                                    <select class="form-control is-invalid" name="division" required="true">
+                                                    <select class="form-control is-valid" name="division" required="true">
                                                         
                                                         @foreach(App\Models\Division::all() as $division)
 
@@ -165,7 +165,7 @@
                                                 <div class="col-md-6 mb-4">
                                                     <label for="validationServer01">City Name</label>
                                                     <div class="input-group">
-                                                        <input step="any" type="text" name="name" class="form-control  is-invalid" value="{{ $city->name }}" required="true">
+                                                        <input step="any" type="text" name="name" class="form-control  is-valid" value="{{ $city->name }}" required="true">
                                                     </div>
                                                 </div>
                                             </div>
@@ -220,8 +220,12 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServer01">Division</label>
 
-                                    <select class="form-control is-invalid" name="division" id="division" required="true">
+                                    <select class="form-control is-valid" name="division" id="division"  data-validation='required' data-validation-error-msg='Please select division'>
                                         
+                                        <option disabled="true" selected="true">
+                                            --Please select division--
+                                        </option>
+
                                         @foreach(App\Models\Division::all() as $division)
 
                                         <option value="{{ $division->id }}">
@@ -236,7 +240,7 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServer01">City Name</label>
                                     <div class="input-group">
-                                        <input step="any" type="text" name="name" class="form-control  is-invalid"  placeholder="City Name" required="true">
+                                        <input step="any" type="text" name="name" class="form-control  is-valid"  placeholder="City Name"  data-validation='required' data-validation-error-msg='City name is required' data-validation-help='City name vendor belongs'>
                                     </div>
                                 </div>
                             </div>

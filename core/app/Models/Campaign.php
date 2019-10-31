@@ -40,6 +40,17 @@ class Campaign extends Model
         }
     }
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved (
+            function ($obj) {
+                $obj->updateDefaultCampaign();
+            }
+        );
+    }
+
     public function campaignImages()
     {
     	return $this->hasMany(CampaignImage::class, 'campaign_id');

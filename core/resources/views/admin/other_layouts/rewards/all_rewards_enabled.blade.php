@@ -152,7 +152,7 @@
 
                                                     <div class="input-group">
                                                         
-                                                        <select class="form-control form-control-lg is-invalid" name="reward_type" required="true">
+                                                        <select class="form-control form-control-lg is-valid" name="reward_type" required="true" data-validation="required">
 
                                                             <option disabled="true" selected="true">
                                                                 -- Please Choose Reward Type --
@@ -174,7 +174,7 @@
                                                 <div class="col-md-6 mb-4">
                                                     <label for="validationServer01">Reward Name</label>
                                                     <div class="input-group">
-                                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-invalid"  value="{{ $loginReward->name }}" required="true">
+                                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-valid"  value="{{ $loginReward->name }}" required="true" data-validation="required">
                                                     </div>
                                                 </div>
                                             </div>
@@ -184,7 +184,7 @@
                                                     <label for="validationServer01">Amount (coins, gems, boost)</label>
                                                     
                                                     <div class="input-group">
-                                                        <input step="1" type="number" name="amount" class="form-control form-control-lg is-invalid"  value="{{ $loginReward->amount }}" required="true">
+                                                        <input step="1" type="number" name="amount" class="form-control form-control-lg is-valid"  value="{{ $loginReward->amount }}" required="true" data-validation="required">
                                                     </div>
                                                 </div>
 
@@ -248,7 +248,7 @@
 
                                     <div class="input-group">
                                         
-                                        <select class="form-control form-control-lg is-invalid" name="reward_type" required="true">
+                                        <select class="form-control form-control-lg is-valid" name="reward_type" data-validation="required" data-validation-error-msg="Please select a type">
 
                                             <option disabled="true" selected="true">
                                                 -- Please Choose Reward Type --
@@ -271,7 +271,7 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServer01">Reward Name</label>
                                     <div class="input-group">
-                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-invalid"  placeholder="Reward Name" required="true">
+                                        <input step="any" type="text" name="name" class="form-control form-control-lg is-valid"  placeholder="Reward Name" data-validation="required" data-validation-error-msg="Please input reward name">
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +281,7 @@
                                     <label for="validationServer01">Amount (coins, gems, boost)</label>
                                     
                                     <div class="input-group">
-                                        <input step="1" type="number" name="amount" class="form-control form-control-lg is-invalid"  placeholder="Reward Name" required="true" min="1">
+                                        <input type="text" name="amount" class="form-control form-control-lg is-valid"  placeholder="Reward Name" data-validation="required number" data-validation-error-msg="Amount should only be numeric">
                                     </div>
                                 </div>
 

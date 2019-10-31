@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
 @endpush
 
+@section('stylebar')
+    .img-fluid {
+        max-height: 200px;
+    }
+@endsection
+
 @section('contents')
     
     <div class="card mb-4">
@@ -64,7 +70,7 @@
                             </tr>
                             
                         @else
-                            @foreach($campaigns as $campaign)
+                            @foreach($campaigns as $key=>$campaign)
 
                             <tr>
                                 <td>{{ $campaign->name }}</td>
@@ -85,9 +91,14 @@
                                         <i class="fa fa-fw fa-edit" style="transform: scale(1.5);"></i>
                                     </button>
 
+                                    @if($key!=0)
+
                                     <button class="btn btn-outline-danger" name="deleteCampaignButton" data-toggle="modal" data-target="#deleteModal" title="Delete" data-campaignId="{{$campaign->id}}">
                                         <i class="fa fa-fw fa-trash" style="transform: scale(1.5);"></i>
                                     </button>
+
+                                    @endif
+                                    
                                 </td>
 
                                 @endif
@@ -133,21 +144,21 @@
                                                 <div class="form-group row">
                                                     <label class="control-label col-md-3">Campaign Name</label>
                                                     <div class="col-md-9">
-                                                        <input class="form-control is-valid" type="text" name="name" placeholder="Enter Campaign name" required="true">
+                                                        <input class="form-control is-valid" type="text" name="name" placeholder="Enter Campaign name" data-validation="required" data-validation-help="Name has to be unique" data-validation-error-msg="Campaign name is required">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
                                                     <label class="control-label col-md-3">Starting Date</label>
                                                     <div class="col-md-9">
-                                                        <input class="form-control is-valid datePicker" type="text" name="start_date" placeholder="Select Date">
+                                                        <input class="form-control is-valid datePicker" type="text" name="start_date" placeholder="Select Date" data-validation="required" data-validation-help="Please select valid date" data-validation-error-msg="Starting date is required">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
                                                     <label class="control-label col-md-3">Closing Date</label>
                                                     <div class="col-md-9">
-                                                        <input class="form-control is-valid datePicker" type="text" name="close_date" placeholder="Select Date">
+                                                        <input class="form-control is-valid datePicker" type="text" name="close_date" placeholder="Select Date" data-validation="required" data-validation-help="Please select valid date" data-validation-error-msg="Closing date is required">
                                                     </div>
                                                 </div>
 
@@ -173,24 +184,24 @@
                                     
                                     @foreach(App\Models\CampaignImageCategory::all() as $campaignImageCategory)
                                     <div class="col-6">
-                                        <h4 class="title-title">{{ $campaignImageCategory->name }}</h4>
+                                        <h4 class="title-title">{{ $campaignImageCategory->name }} ({{ $campaignImageCategory->width_size ."*". $campaignImageCategory->height_size }})</h4>
                                         <div class="tile">
                                             <div class="tile-body">
                                                 <div class="form-row">
                                                     <div class="col-md-6 mb-4">
                                                         <label for="validationServer01">Image 1</label>
                                                         <input type="hidden" name="{{'uploaded_'.str_replace(' ','_', $campaignImageCategory->name )}}[1]">
-                                                        <input class="form-control" type="file" accept="image/*" name="{{str_replace(' ','_', $campaignImageCategory->name )}}[]" onChange="previewImage(event, '{{str_replace(' ','_', $campaignImageCategory->name )}}', 1)">
+                                                        <input class="form-control" type="file" accept="image/*" name="{{str_replace(' ','_', $campaignImageCategory->name )}}[]" onChange="previewImage(event, '{{str_replace(' ','_', $campaignImageCategory->name )}}', 1)" data-validation="mime size" data-validation-allowing="jpg,jpeg,png" data-validation-max-size="5M">
                                                     </div>
                                                     <div class="col-md-6 mb-4">
-                                                        <img class="img-fluid" id="preview_{{str_replace(' ','_', $campaignImageCategory->name )}}1" />
+                                                        <img class="img-fluid" id="preview_{{str_replace(' ','_', $campaignImageCategory->name )}}1" width="200"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="col-md-6 mb-4">
                                                         <label for="validationServer01">Image 2</label>
                                                         <input type="hidden" name="{{'uploaded_'.str_replace(' ','_', $campaignImageCategory->name )}}[2]">
-                                                        <input class="form-control" type="file" accept="image/*" name="{{str_replace(' ','_', $campaignImageCategory->name )}}[]" onChange="previewImage(event, '{{str_replace(' ','_', $campaignImageCategory->name )}}', 2)">
+                                                        <input class="form-control" type="file" accept="image/*" name="{{str_replace(' ','_', $campaignImageCategory->name )}}[]" onChange="previewImage(event, '{{str_replace(' ','_', $campaignImageCategory->name )}}', 2)"  data-validation="mime size" data-validation-allowing="jpg,jpeg,png" data-validation-max-size="5M">
                                                     </div>
                                                     <div class="col-md-6 mb-4">
                                                         <img class="img-fluid" id="preview_{{str_replace(' ','_', $campaignImageCategory->name )}}2"  width="200"/>
@@ -200,7 +211,7 @@
                                                     <div class="col-md-6 mb-4">
                                                         <label for="validationServer01">Image 3</label>
                                                         <input type="hidden" name="{{'uploaded_'.str_replace(' ','_', $campaignImageCategory->name )}}[3]">
-                                                        <input class="form-control" type="file" accept="image/*" name="{{str_replace(' ','_', $campaignImageCategory->name )}}[]" onChange="previewImage(event, '{{str_replace(' ','_', $campaignImageCategory->name )}}', 3)">
+                                                        <input class="form-control" type="file" accept="image/*" name="{{str_replace(' ','_', $campaignImageCategory->name )}}[]" onChange="previewImage(event, '{{str_replace(' ','_', $campaignImageCategory->name )}}', 3)"  data-validation="mime size" data-validation-allowing="jpg,jpeg,png" data-validation-max-size="5M">
                                                     </div>
                                                     <div class="col-md-6 mb-4">
                                                         <img class="img-fluid" id="preview_{{str_replace(' ','_', $campaignImageCategory->name )}}3" width="200"/>
@@ -210,7 +221,7 @@
                                                     <div class="col-md-6 mb-4">
                                                         <label for="validationServer01">Image 4</label>
                                                         <input type="hidden" name="{{'uploaded_'.str_replace(' ','_', $campaignImageCategory->name )}}[4]">
-                                                        <input class="form-control" type="file" accept="image/*" name="{{str_replace(' ','_', $campaignImageCategory->name )}}[]" onChange="previewImage(event, '{{str_replace(' ','_', $campaignImageCategory->name )}}', 4)">
+                                                        <input class="form-control" type="file" accept="image/*" name="{{str_replace(' ','_', $campaignImageCategory->name )}}[]" onChange="previewImage(event, '{{str_replace(' ','_', $campaignImageCategory->name )}}', 4)"  data-validation="mime size" data-validation-allowing="jpg,jpeg,png" data-validation-max-size="5M">
                                                     </div>
                                                     <div class="col-md-6 mb-4">
                                                         <img class="img-fluid" id="preview_{{str_replace(' ','_', $campaignImageCategory->name )}}4" width="200"/>
@@ -220,7 +231,7 @@
                                                     <div class="col-md-6 mb-4">
                                                         <label for="validationServer01">Image 5</label>
                                                         <input type="hidden" name="{{'uploaded_'.str_replace(' ','_', $campaignImageCategory->name )}}[5]">
-                                                        <input class="form-control" type="file" accept="image/*" name="{{str_replace(' ','_', $campaignImageCategory->name )}}[]" onChange="previewImage(event, '{{str_replace(' ','_', $campaignImageCategory->name )}}', 5)">
+                                                        <input class="form-control" type="file" accept="image/*" name="{{str_replace(' ','_', $campaignImageCategory->name )}}[]" onChange="previewImage(event, '{{str_replace(' ','_', $campaignImageCategory->name )}}', 5)"  data-validation="mime size" data-validation-allowing="jpg,jpeg,png" data-validation-max-size="5M">
                                                     </div>
                                                     <div class="col-md-6 mb-4">
                                                         <img class="img-fluid" id="preview_{{str_replace(' ','_', $campaignImageCategory->name )}}5" width="200"/>

@@ -21,11 +21,11 @@ class RedirectIfAuthenticated
 
             if (Auth::guard($guard)->user()->is_verified) {
                 
-                return redirect('admin/home');    
+                return redirect()->route('admin.home')->withErrors('You are already logged in');
             }
             else
             {
-                return redirect('admin/email-otp');   
+                return redirect()->route('admin.otp'); 
             }
 
         }

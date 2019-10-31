@@ -93,7 +93,8 @@ class TreasureController extends Controller
         $request->validate([
             'treasure_type_id'=>'required',
             'equivalent_price'=>'required|numeric|min:0',
-            'durability'=>'nullable|min:1'
+            'durability'=>'nullable|min:1',
+            'description'=>'required',
         ]);
 
         $newTreasure = new Treasure();
@@ -124,7 +125,8 @@ class TreasureController extends Controller
         $request->validate([
             'treasure_type_id'=>'required',
             'equivalent_price'=>'required|numeric|min:0',
-            'durability'=>'nullable|min:1'
+            'durability'=>'nullable|min:1',
+            'description'=>'required',
         ]);
 
         $treasureToUpdate = Treasure::findOrFail($treasureId);
@@ -192,20 +194,19 @@ class TreasureController extends Controller
     
 
     public function showAllTreasureGifted(Request $request)
-    {    
+    {   
         $request->validate([
             'treasure_id'=>'required',
-            'date'=>'required|date|after:2000-01-01'
+            'date'=>'required|date|after:2019-01-01 00:00:00|before_or_equal:'.date('Y-m-d'),
         ]);
-        
 
+        $giftTreasureDetails = Treasure::find($request->treasure_id);
         $allGiftedTreasures = PlayerTreasure::where('treasure_id', $request->treasure_id)
                                                     ->whereDate('created_at', $request->date)
                                                     ->with('player', 'treasure')
                                                     ->paginate(8);
 
-
-        return view('admin.other_layouts.treasures.all_gifted_treasure', compact('allGiftedTreasures'));
+        return view('admin.other_layouts.treasures.all_gifted_treasure', compact('allGiftedTreasures'))->withTreasureName($giftTreasureDetails->name)->withDateName($request->date);
     }
 
     public function showAllTreasureRedeemed(Request $request)

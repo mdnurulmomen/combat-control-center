@@ -51,7 +51,7 @@
 
                                     <div class="info">
                                         <h4 class="talkTimeNumber">
-                                            <b>{{ $allTreasureRedemptions->count() }}</b> 
+                                            <b>{{ $allTreasureRedemptions->count() ?? 0 }}</b> 
                                         </h4>
                                     </div>
                                 </div>    
@@ -64,7 +64,7 @@
                                         <h4 class="talkTimeCost">
                                             
                                             BDT : 
-                                            <b>{{ round($allTreasureRedemptions->sum('equivalent_price'), 2) }}</b> 
+                                            <b>{{ round($allTreasureRedemptions->sum('equivalent_price'), 2) ?? 0 }}</b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@
                                     <i class="icon fa fa-money"></i>
                                     <div class="info">
                                         <h4 class="earningAmount">
-                                            BDT : <b>{{ round($updatedEarning->total_currency_earning, 2) }}</b> 
+                                            BDT : <b>{{ round($updatedEarning->total_currency_earning, 2) ?? 0 }}</b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -130,7 +130,7 @@
 
                     <div class="col-md-5 col-7 float-right">    
                         <p class="bg-info m-0">
-                            # Treasure Gifted : <b>{{ $treasureCounter->total_treasure_gifted ?? 0}}</b>
+                            # Treasure Gifted : <b>{{ $treasureCounter->total_treasure_gifted ?? 0 }}</b>
                         </p>
                     
                         <p class="bg-warning m-0">
@@ -163,7 +163,7 @@
                                     <i class="icon fa fa-stack  ">#</i>
 
                                     <div class="info">
-                                        <h4 class="treasureNumber"><b>{{ $allPhysicalTreasureRedemptions->count() }}</b> </h4>
+                                        <h4 class="treasureNumber"><b>{{ $allPhysicalTreasureRedemptions->count() ?? 0 }}</b> </h4>
                                     </div>
                                 </div>    
                             </div>
@@ -175,7 +175,7 @@
                                         <h4 class="treasureCost">
                                             
                                             BDT : 
-                                            <b>{{ round($allPhysicalTreasureRedemptions->sum('equivalent_price'), 2) }}</b> 
+                                            <b>{{ round($allPhysicalTreasureRedemptions->sum('equivalent_price'), 2) ?? 0 }}</b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -213,7 +213,7 @@
                                     <i class="icon fa fa-stack  ">#</i>
 
                                     <div class="info">
-                                        <h4 class="gemPacksNumber"><b>{{ $allSoldGemPacks->count() }}</b> </h4>
+                                        <h4 class="gemPacksNumber"><b>{{ $allSoldGemPacks->count() ?? 0 }}</b> </h4>
                                     </div>
                                 </div>    
                             </div>
@@ -238,7 +238,7 @@
  
                                             @endphp
 
-                                            BDT : <b>{{ round($totalCost, 2) }}</b> 
+                                            BDT : <b>{{ round($totalCost, 2) ?? 0 }}</b> 
                                         </h4>
                                     </div>
                                 </div>
@@ -326,7 +326,7 @@
                         
                         $('h4.talkTimeNumber').html('<b>' + result.totalNumber + '</b>').effect( "shake", {distance : 7}, 500 );
                         
-                        $('h4.talkTimeCost').html('BDT : <b>' + result.totalCost + '</b>').effect( "shake", {distance : 7}, 500 );
+                        $('h4.talkTimeCost').html('BDT : <b>' + result.totalCost.toFixed(2) + '</b>').effect( "shake", {distance : 7}, 500 );
 
                     }
                 });
@@ -346,7 +346,7 @@
 
                     success: function(result){
                         
-                        $('h4.earningAmount').html('BDT : <b>' + result.totalEarning + '</b>').effect( "shake", {distance : 7}, 500 );
+                        $('h4.earningAmount').html('BDT : <b>' + result.totalEarning.toFixed(2) + '</b>').effect( "shake", {distance : 7}, 500 );
 
                     }
                 });
@@ -368,7 +368,7 @@
                         
                         $('h4.treasureNumber').html('<b>' + result.totalNumber + '</b>').effect( "shake", {distance : 7}, 500 );
                         
-                        $('h4.treasureCost').html('BDT : <b>' + result.totalCost + '</b>').effect( "shake", {distance : 7}, 500 );
+                        $('h4.treasureCost').html('BDT : <b>' + result.totalCost.toFixed(2) + '</b>').effect( "shake", {distance : 7}, 500 );
 
                     }
                 });
@@ -391,7 +391,7 @@
                         
                         $('h4.gemPacksNumber').html('<b>' + result.totalNumber + '</b>').effect( "shake", {distance : 7}, 500 );
                         
-                        $('h4.gemPacksCost').html('BDT : <b>' + result.totalCost + '</b>').effect( "shake", {distance : 7}, 500 );
+                        $('h4.gemPacksCost').html('BDT : <b>' + result.totalCost.toFixed(2) + '</b>').effect( "shake", {distance : 7}, 500 );
 
                     }
 

@@ -15,12 +15,12 @@
                     <div class="form-row">
                         <div class="col-md-6 mb-4">
                             <label for="validationServer01">Gift Coins</label>
-                            <input type="number" name="gift_coins" class="form-control form-control-lg is-valid" value="{{ $allGiftPoints->gift_coins }}" required>
+                            <input type="text" name="gift_coins" class="form-control form-control-lg is-valid" value="{{ $allGiftPoints->gift_coins }}" data-validation="required number" data-validation-error-msg="Number gift coins allows only numeric value">
                         </div>
 
                         <div class="col-md-6 mb-4">
                             <label for="validationServer01">Gift Gems</label>
-                            <input type="number" name="gift_gems" class="form-control form-control-lg is-valid" value="{{ $allGiftPoints->gift_gems }}" required>
+                            <input type="text" name="gift_gems" class="form-control form-control-lg is-valid" value="{{ $allGiftPoints->gift_gems }}" data-validation="required number" data-validation-error-msg="Number gift gems allows only numeric value">
                         </div>
                     </div>
 

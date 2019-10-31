@@ -58,7 +58,7 @@
                         @foreach($areas as $area)
                             <tr>
                                 <td>{{ $area->name }}</td>
-                                <td>{{ $area->city->name }}</td>
+                                <td>{{ optional($area->city)->name ?? 'NA' }}</td>
 
                                 @if(auth()->user()->can('update'))
 

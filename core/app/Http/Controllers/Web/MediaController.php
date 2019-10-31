@@ -18,7 +18,9 @@ class MediaController extends Controller
     public function submitCreatedCampaign(CampaignRequest $request)
     {   
         $request->validate([
-            'name' => 'required|unique:campaigns,name'
+            'name' => 'required|unique:campaigns,name',
+            'start_date' => 'required|date|after_or_equal:today',
+            'close_date' => 'required|date|after_or_equal:start_date',
         ]);
 
         $newCampaign = new Campaign();
@@ -28,8 +30,6 @@ class MediaController extends Controller
         $newCampaign->close_date = $request->close_date;
         $newCampaign->status = $request->status;
         $newCampaign->save();
-
-        $newCampaign->updateDefaultCampaign();
 
         foreach (CampaignImageCategory::all() as $campaignImageCategory) {
 
@@ -51,7 +51,7 @@ class MediaController extends Controller
 
         if (!file_exists($directory)) {
 
-            mkdir($directory, 666, true);
+            mkdir($directory, 0777, true);
         }
 
         if($request->hasFile($parameterName)){
@@ -107,6 +107,8 @@ class MediaController extends Controller
  
         $request->validate([
             'name' => 'required|unique:campaigns,name,'.$campaignToUpdate->id,
+            'start_date' => 'required|date|after_or_equal:today',
+            'close_date' => 'required|date|after_or_equal:start_date',
         ]);
 
         $campaignToUpdate->name = $request->name;
@@ -115,7 +117,6 @@ class MediaController extends Controller
         $campaignToUpdate->status = $request->status;
         $campaignToUpdate->save();
 
-        $campaignToUpdate->updateDefaultCampaign();
         $campaignToUpdate->campaignImages()->delete();
 
         foreach (CampaignImageCategory::all() as $campaignImageCategory) {
@@ -148,9 +149,9 @@ class MediaController extends Controller
 
     public function campaignDeleteMethod($campaignId)
     {
-        // dd(Campaign::findOrFail($campaignId)->update(['status' => false]));
         $campaignToDelete = Campaign::findOrFail($campaignId);
         $campaignToDelete->update(['status' => false]);
+        $campaignToDelete->updateDefaultCampaign();
         $campaignToDelete->delete();
 
         return redirect()->back()->with('success', 'Campaign is Deleted');
@@ -167,7 +168,7 @@ class MediaController extends Controller
     public function submitCreatedCampaignImageCategory(Request $request)
     {
         $request->validate([
-            'name'=>'required',
+            'name' => 'required|unique:campaign_image_categories,name',
             'width'=>'required',
             'height'=>'required',
         ]);
@@ -196,13 +197,13 @@ class MediaController extends Controller
 
     public function submitEditedCampaignImageCategory(Request $request, $categoryId)
     {
+        $categoryToUpdate = CampaignImageCategory::find($categoryId);
+
         $request->validate([
-            'name'=>'required',
+            'name' => 'required|unique:campaign_image_categories,name,'.$categoryToUpdate->id,
             'width'=>'required',
             'height'=>'required',
         ]);
-
-        $categoryToUpdate = CampaignImageCategory::find($categoryId);
 
         $updateImageCategory = $categoryToUpdate->update([
                                 'name' => $request->name,

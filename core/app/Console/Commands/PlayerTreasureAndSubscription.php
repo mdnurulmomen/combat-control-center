@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Campaign;
 use App\Models\PlayerTreasure;
 use Illuminate\Console\Command;
 use App\Models\PlayerSubscription;
@@ -20,7 +21,7 @@ class PlayerTreasureAndSubscription extends Command
      *
      * @var string
      */
-    protected $description = 'Expired Player-Treasure and Subscription Period are disabled successfully';
+    protected $description = 'Expired Player-Treasure, Ad-Campaign and Subscription Period are disabled successfully';
 
     /**
      * Create a new command instance.
@@ -39,6 +40,11 @@ class PlayerTreasureAndSubscription extends Command
      */
     public function handle()
     {
+        $outDatedCampaigns = Campaign::where('close_date','<', now())->where('id', '!=', Campaign::first()->id)->update(['status' => 0]);   
+        if ($outDatedCampaigns) {
+            $campaign = new Campaign();
+            $campaign->updateDefaultCampaign();
+        }
         PlayerSubscription::where('end_time','<', now())->update(['status' => 0]);
         PlayerTreasure::whereMonth('close_time','!=', '0')->where('status','!=', -1)->whereDate('close_time','<', today())->update(['status' => -2]);
     }

@@ -66,7 +66,10 @@
                                 <th>Serial</th>
                                 <th>User Name</th>
                                 <th>Level</th>
+                                
+                                @if(auth()->user()->can('delete'))
                                 <th>Action</th>
+                                @endif
                             </tr>
                         </thead>
                     </table>
@@ -99,7 +102,10 @@
                     { data: 'id', name: 'id' },
                     { data: 'user.username', name: 'user.username' },
                     { data: 'player_statistics.player_level', name: 'playerStatistics.player_level' },
+
+                    @if(auth()->user()->can('delete'))
                     { data: 'action', name: 'action', orderable : false }
+                    @endif
                 ],
 
                 createdRow: function( row, data, dataIndex ) {
@@ -187,7 +193,7 @@
 
                     var home = "{{ URL::to('/') }}";
 
-                    $("#deleteModal form").attr("action", home + '/admin/player/' +  expectedObject.id );
+                    $("#deleteModal form").attr("action", home + '/admin/players/' +  expectedObject.id );
 
                     $('#deleteModal').modal('toggle');
                 });

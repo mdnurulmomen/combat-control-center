@@ -222,7 +222,7 @@
                                                         <div class="col-md-12 mb-4">
                                                             <label for="validationServerUsername">Bundle Name</label>
                                                             <div class="input-group">
-                                                                <input type="text" name="name" class="form-control form-control-lg is-invalid" placeholder="Unique Name(required)" aria-describedby="inputGroupPrepend3" required="true">
+                                                                <input type="text" name="name" class="form-control form-control-lg is-valid" placeholder="Unique Name(required)" aria-describedby="inputGroupPrepend3" data-validation='required' data-validation-help='Name has to be unique' data-validation-error-msg='Bundle name is required and unique'>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mb-4">
@@ -254,7 +254,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ taka</span>
                                                                 </div>
-                                                                <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true" step="any">
+                                                                <input type="text" name="price_taka" class="form-control form-control-lg is-valid" placeholder="(required)" aria-describedby="inputGroupPrepend3" data-validation='required number' data-validation-allowing='float' data-validation-help='Minimun price 0 taka' data-validation-error-msg='Price taka is required'>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mb-4">
@@ -263,7 +263,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ gems</span>
                                                                 </div>
-                                                                <input type="number" name="price_gems" class="form-control form-control-lg is-invalid" placeholder="(required)" aria-describedby="inputGroupPrepend3" required="true">
+                                                                <input type="text" name="price_gems" class="form-control form-control-lg is-valid" placeholder="(required)" aria-describedby="inputGroupPrepend3" data-validation='required number' data-validation-help='Minimum price 0 gem' data-validation-error-msg='Price gem is required and numeric only'>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mb-4">
@@ -272,7 +272,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">@ coins</span>
                                                                 </div>
-                                                                <input type="number" name="price_coins" class="form-control form-control-lg is-invalid"  placeholder="(required)" required="true">
+                                                                <input type="text" name="price_coins" class="form-control form-control-lg is-valid"  placeholder="(required)" data-validation='required number' data-validation-help='Minimun price 0 coin' data-validation-error-msg='Price coin is required and numeric only'>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -291,7 +291,7 @@
                                                     <div class="form-row">
                                                         <div class="col-md-6 mb-4">
                                                             <label for="validationServer01">Bundle Component Type</label>
-                                                            <select class="form-control form-control-lg is-invalid" name="elements[]" required="true">
+                                                            <select class="form-control form-control-lg is-valid" name="elements[]" data-validation='required' data-validation-error-msg='Please select bundle type'>
                                                                 <option selected="true" disabled="true" value="0">
                                                                     -- please select an option --
                                                                 </option>
@@ -316,7 +316,7 @@
                                                         <div class="col-md-6 mb-4">
                                                             <label for="validationServerUsername">Amount</label>
                                                             <div class="input-group">
-                                                                <input type="number" name="amount[]" class="form-control form-control-lg is-invalid" placeholder="Amount of Component" aria-describedby="inputGroupPrepend3" required="true" min='1'>
+                                                                <input type="text" name="amount[]" class="form-control form-control-lg is-valid" placeholder="Amount of Component" aria-describedby="inputGroupPrepend3" data-validation='required number'  data-validation-allowing="range[1;10000000]" data-validation-help='Minimum 1' data-validation-error-msg='Amount is required and numeric only'>
                                                             </div>
                                                         </div>
                                                     </div> 
@@ -345,7 +345,7 @@
                                                         <div class="col-md-5">
                                                             <label for="validationServerUsername">Discount</label>
                                                             <div class="input-group">
-                                                                <input type="number" name="discount" class="form-control form-control-lg is-invalid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3" required="true" min="0" max="100" step="any">
+                                                                <input type="text" name="discount" class="form-control form-control-lg is-valid" placeholder="Discount Percentage" aria-describedby="inputGroupPrepend3"   data-validation='required number' data-validation-allowing='float range[0;100]' data-validation-error-msg='Discount field is required'>
                                                                 <div class="input-group-append">
                                                                     <span class="input-group-text">%</span>
                                                                 </div>
@@ -415,7 +415,7 @@
                                     <div class="col-md-4">
                                         <label for="validationServerUsername">Bundle Name</label>
                                         <div class="input-group">
-                                            <input type="text" name="name" class="form-control form-control-lg is-invalid" value="{{ $bundlePack->name }}" aria-describedby="inputGroupPrepend3">
+                                            <input type="text" name="name" class="form-control form-control-lg is-valid" value="{{ $bundlePack->name }}" aria-describedby="inputGroupPrepend3">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -437,7 +437,7 @@
                                 <div class="form-row mb-4 newAdded">
                                     <div class="col-md-6">
                                         <label for="validationServer01">Bundle Component Type</label>
-                                        <select class="form-control form-control-lg is-invalid" name="elements[]" required="true">
+                                        <select class="form-control form-control-lg is-valid" name="elements[]" required="true">
                                             <option selected="true" disabled="true" value="0">
                                                 -- please select an option --
                                             </option>
@@ -463,7 +463,7 @@
                                     <div class="col-md-6">
                                         <label for="validationServerUsername">Amount</label>
                                         <div class="input-group">
-                                            <input type="number" name="amount[]" class="form-control form-control-lg is-invalid" value="{{ $component->amount }}" aria-describedby="inputGroupPrepend3" required="true" min='1'>
+                                            <input type="number" name="amount[]" class="form-control form-control-lg is-valid" value="{{ $component->amount }}" aria-describedby="inputGroupPrepend3" required="true" min='1'>
                                         </div>
                                     </div>
                                 </div>
@@ -488,7 +488,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ taka</span>
                                             </div>
-                                            <input type="number" name="discount_taka" class="form-control form-control-lg is-invalid" value="{{ $bundlePack->discount_taka }}" step="any" required="true" min="0" max="100">
+                                            <input type="number" name="discount_taka" class="form-control form-control-lg is-valid" value="{{ $bundlePack->discount_taka }}" step="any" required="true" min="0" max="100">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">%</span>
                                             </div>
@@ -502,7 +502,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ gems</span>
                                             </div>
-                                            <input type="number" name="discount_gems" class="form-control form-control-lg is-invalid"  value="{{ $bundlePack->discount_gems }}" step="any" required="true" min="0" max="100">
+                                            <input type="number" name="discount_gems" class="form-control form-control-lg is-valid"  value="{{ $bundlePack->discount_gems }}" step="any" required="true" min="0" max="100">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">%</span>
                                             </div>
@@ -514,7 +514,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ coins</span>
                                             </div>
-                                            <input type="number" name="discount_coins" class="form-control form-control-lg is-invalid"  value="{{ $bundlePack->discount_coins }}" step="any" required="true" min="0" max="100">
+                                            <input type="number" name="discount_coins" class="form-control form-control-lg is-valid"  value="{{ $bundlePack->discount_coins }}" step="any" required="true" min="0" max="100">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">%</span>
                                             </div>
@@ -529,7 +529,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ taka</span>
                                             </div>
-                                            <input type="number" name="price_taka" class="form-control form-control-lg is-invalid" value="{{ $bundlePack->price_taka }}" aria-describedby="inputGroupPrepend3" required="true">
+                                            <input type="number" name="price_taka" class="form-control form-control-lg is-valid" value="{{ $bundlePack->price_taka }}" aria-describedby="inputGroupPrepend3" required="true">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -538,7 +538,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ gems</span>
                                             </div>
-                                            <input type="number" name="price_gems" class="form-control form-control-lg is-invalid" value="{{ $bundlePack->price_gems }}" aria-describedby="inputGroupPrepend3" required="true">
+                                            <input type="number" name="price_gems" class="form-control form-control-lg is-valid" value="{{ $bundlePack->price_gems }}" aria-describedby="inputGroupPrepend3" required="true">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -547,7 +547,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@ coins</span>
                                             </div>
-                                            <input type="number" name="price_coins" class="form-control form-control-lg is-invalid"  value="{{ $bundlePack->price_coins }}" required="true">
+                                            <input type="number" name="price_coins" class="form-control form-control-lg is-valid"  value="{{ $bundlePack->price_coins }}" required="true">
                                         </div>
                                     </div>
                                 </div>
@@ -582,7 +582,7 @@
                 var html = "<div class='form-row newAdded'>"+
                                 "<div class='col-md-6 mb-4'>"+
                                     "<label for='validationServer01'>Bundle Component Type</label>"+
-                                    "<select class='form-control form-control-lg is-invalid' name='elements[]' required>"+
+                                    "<select class='form-control form-control-lg is-valid' name='elements[]' data-validation='required' data-validation-error-msg='Please select bundle type'>"+
                                         "<option value='0' selected disabled>"+
                                             "--please select an option--"+
                                         "</option>"+
@@ -608,7 +608,7 @@
                                 "<div class='col-md-6 mb-4'>"+
                                     "<label for='validationServerUsername'>Amount</label>"+
                                     "<div class='input-group'>"+
-                                        "<input type='number' name='amount[]' class='form-control form-control-lg is-invalid' placeholder='Amount of Component' aria-describedby='inputGroupPrepend3' required min='1'>"+
+                                        "<input type='text' name='amount[]' class='form-control form-control-lg is-valid' placeholder='Amount of Component' aria-describedby='inputGroupPrepend3'  data-validation='required number'  data-validation-allowing='range[1;10000000]' data-validation-help='Minimum 1' data-validation-error-msg='Amount is required and numeric only'>"+
                                     "</div>"+
                                 "</div>"+
                             "</div>";

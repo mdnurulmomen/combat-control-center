@@ -18,9 +18,10 @@ class OTPVerified
     {
         if (Auth::guard('admin')->check()) {
     
-            if (optional(Auth::guard('admin')->user())->is_verified) {
+            if (Auth::guard('admin')->user()->is_verified) {
     
-                return redirect()->route('admin.home');
+                // return redirect()->route('admin.home');
+                return redirect()->back()->withErrors('You are already verified');
                 
             }
             

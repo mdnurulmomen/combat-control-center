@@ -42,95 +42,95 @@
                 <div class="row">
 
 
-                @if(auth()->user()->can('read'))
-                <!--- View Modal --->
-                <div class="modal fade" id="viewModal" role="dialog">
-                    <div class="modal-dialog  modal-sm">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4> User Details </h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
+                    @if(auth()->user()->can('read'))
+                    <!--- View Modal --->
+                    <div class="modal fade" id="viewModal" role="dialog">
+                        <div class="modal-dialog  modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4> User Details </h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
 
-                            <div class="modal-body"> 
+                                <div class="modal-body"> 
 
 
-                                <fieldset>
-                                    <div class="form-row mb-2">
-                                        <div class="col-md-12 text-center">
-                                            <img src='' class='rounded-circle rounded img-fluid img-responsive' alt='No image' style='max-width: 90px;'>
+                                    <fieldset>
+                                        <div class="form-row mb-2">
+                                            <div class="col-md-12 text-center">
+                                                <img src='' class='rounded-circle rounded img-fluid img-responsive' alt='No image' style='max-width: 90px;'>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+
+                                    <div class="form-row">
+                                        <div class="col-md-5">
+                                            <label for="validationServerUsername">Name</label>
+                                        </div>
+                                            
+                                        <div class="col-md-7">
+                                            <p></p>
                                         </div>
                                     </div>
-                                </fieldset>
 
+                                    
+                                    <div class="form-row">
+                                        <div class="col-md-5">
+                                            <label for="validationServerUsername">Username</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p></p>
+                                        </div>
+                                    </div>
 
-                                <div class="form-row">
-                                    <div class="col-md-5">
-                                        <label for="validationServerUsername">Name</label>
+                                    <div class="form-row">
+                                        <div class="col-md-5">
+                                            <label for="validationServer01">Status </label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p></p>
+                                        </div>
                                     </div>
-                                        
-                                    <div class="col-md-7">
-                                        <p></p>
-                                    </div>
-                                </div>
 
-                                
-                                <div class="form-row">
-                                    <div class="col-md-5">
-                                        <label for="validationServerUsername">Username</label>
+                                    <div class="form-row">
+                                        <div class="col-md-5">
+                                            <label for="validationServer01">Email </label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p></p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-7">
-                                        <p></p>
-                                    </div>
-                                </div>
 
-                                <div class="form-row">
-                                    <div class="col-md-5">
-                                        <label for="validationServer01">Status </label>
+                                    <div class="form-row">
+                                        <div class="col-md-5">
+                                            <label for="validationServer01">Phone </label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p></p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-7">
-                                        <p></p>
-                                    </div>
-                                </div>
 
-                                <div class="form-row">
-                                    <div class="col-md-5">
-                                        <label for="validationServer01">Email </label>
+                                    <div class="form-row">
+                                        <div class="col-md-5">
+                                            <label for="validationServer01">Address </label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p></p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-7">
-                                        <p></p>
-                                    </div>
-                                </div>
 
-                                <div class="form-row">
-                                    <div class="col-md-5">
-                                        <label for="validationServer01">Phone </label>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="col-md-5">
-                                        <label for="validationServer01">Address </label>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="col-sm-12">
-                                        <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Close</button>
+                                    <div class="form-row">
+                                        <div class="col-sm-12">
+                                            <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                @endif
+                    @endif
 
 
                     @if(auth()->user()->can('setting'))
@@ -162,21 +162,21 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">First name</label>
-                                                                <input type="text" name="firstname" class="form-control is-valid" value="">
+                                                                <input type="text" name="firstname" class="form-control form-control-lg is-valid" value="">
                                                             </div>
                                                         </div>
 
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer02">Last name</label>
-                                                                <input type="text" name="lastname" class="form-control is-valid" value="">
+                                                                <input type="text" name="lastname" class="form-control form-control-lg is-valid" value="">
                                                             </div>
                                                         </div>
 
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Phone</label>
-                                                                <input type="tel" name="phone" class="form-control is-valid" value="" placeholder="Phone Number" data-validation="number"  data-validation-optional="true" data-validation-length="max11" data-validation-error-msg="Phone number should not contain characters">
+                                                                <input type="tel" name="phone" class="form-control form-control-lg is-valid" value="" placeholder="Phone Number" data-validation="number length"  data-validation-optional="true" data-validation-length="max11" data-validation-error-msg="Please input correct phone number">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -192,7 +192,7 @@
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Role</label>
 
-                                                                <select class="form-control" name="role" data-validation="required">
+                                                                <select class="form-control form-control-lg" name="role" data-validation="required" data-validation-error-msg="Please select role for user">
                                                                     <option value="">--Please select user role--</option>
                                                                     <option value="admin">Admin</option>
                                                                     <option value="moderator">Moderator</option>
@@ -204,7 +204,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Picture</label>
-                                                                <input type="file" name="picture" class="form-control " accept="image/*">
+                                                                <input type="file" name="picture" class="form-control form-control-lg " accept="image/*" data-validation="mime size" data-validation-allowing="jpg,jpeg,png" data-validation-max-size="5M">
                                                             </div>
                                                         </div>
 
@@ -212,7 +212,7 @@
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Status</label>
 
-                                                                <select class="form-control" name="active" data-validation="required">
+                                                                <select class="form-control form-control-lg" name="active" data-validation="required" data-validation-error-msg="Please define user status">
                                                                     <option value="">--Please define user status--</option>
                                                                     <option value="1">Activated</option>
                                                                     <option value="0">Deactivated</option>
@@ -236,7 +236,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Email</label>
-                                                                <input type="text" name="email" class="form-control is-valid" value="" data-validation="email" data-validation-error-msg="Please input a valid email" required="true">
+                                                                <input type="text" name="email" class="form-control form-control-lg is-valid" value="" data-validation="email required" data-validation-error-msg="Please input valid email">
                                                             </div>
                                                         </div>    
 
@@ -247,7 +247,7 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">@</span>
                                                                     </div>
-                                                                    <input type="text" name="username" class="form-control is-valid"  value="" placeholder="Username"  aria-describedby="inputGroupPrepend3" data-validation="alphanumeric length" data-validation-length="5-20" data-validation-allowing="-_" data-validation-error-msg="No space or special character in minimum 5 characters username" required>
+                                                                    <input type="text" name="username" class="form-control form-control-lg is-valid"  value="" placeholder="Username"  aria-describedby="inputGroupPrepend3" data-validation="alphanumeric length" data-validation-length="5-20" data-validation-allowing="-_" data-validation-error-msg="No space or special character in minimum 5 characters username">
 
                                                                 </div>
                                                             </div>
@@ -256,7 +256,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Password</label>
-                                                                <input type="password" name="password" class="form-control is-valid"  readonly="true">
+                                                                <input type="password" name="password" class="form-control form-control-lg is-valid" readonly="true">
                                                             </div>
                                                         </div> 
 
@@ -271,7 +271,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer02">Address</label>
-                                                                <input type="text" name="address" class="form-control is-valid"    value="">
+                                                                <input type="text" name="address" class="form-control form-control-lg is-valid"    value="">
                                                             </div>
                                                         </div>    
 
@@ -279,7 +279,7 @@
                                                             <div class="col-md-12 mb-4">
                                                                 
                                                                 <label for="validationServer03">City</label>
-                                                                <input type="text" name="city" class="form-control is-valid"   value="">
+                                                                <input type="text" name="city" class="form-control form-control-lg is-valid"   value="">
                                                                 
                                                             </div>
                                                         </div>
@@ -287,7 +287,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer05">Country</label>
-                                                                <input type="text" name="country" class="form-control is-valid" value="">
+                                                                <input type="text" name="country" class="form-control form-control-lg is-valid" value="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -376,21 +376,21 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">First name</label>
-                                                                <input type="text" name="firstname" class="form-control is-valid"  placeholder="First Name">
+                                                                <input type="text" name="firstname" class="form-control form-control-lg is-valid"  placeholder="First Name">
                                                             </div>
                                                         </div>
 
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer02">Last name</label>
-                                                                <input type="text" name="lastname" class="form-control is-valid"  placeholder="Last Name">
+                                                                <input type="text" name="lastname" class="form-control form-control-lg is-valid"  placeholder="Last Name">
                                                             </div>
                                                         </div>
 
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Phone</label>
-                                                                <input type="tel" name="phone" class="form-control is-valid"  placeholder="Phone Number" data-validation="number"  data-validation-optional="true" data-validation-length="max11" data-validation-error-msg="Phone number should not contain characters">
+                                                                <input type="tel" name="phone" class="form-control form-control-lg is-valid"  placeholder="Phone Number" data-validation="number length"  data-validation-optional="true" data-validation-length="max11" data-validation-error-msg="Please input correct phone number">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -406,7 +406,7 @@
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Role</label>
 
-                                                                <select class="form-control" name="role" data-validation="required">
+                                                                <select class="form-control form-control-lg" name="role" data-validation="required" data-validation-error-msg="Please select role for user">
                                                                     <option value="">--Please select user role--</option>
                                                                     <option value="admin">Admin</option>
                                                                     <option value="moderator">Moderator</option>
@@ -418,7 +418,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Picture</label>
-                                                                <input type="file" name="picture" class="form-control " accept="image/*">
+                                                                <input type="file" name="picture" class="form-control form-control-lg " accept="image/*" data-validation="mime size" data-validation-allowing="jpg,jpeg,png" data-validation-max-size="5M">
                                                             </div>
                                                         </div>
 
@@ -426,7 +426,7 @@
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Status</label>
 
-                                                                <select class="form-control" name="active" data-validation="required">
+                                                                <select class="form-control form-control-lg" name="active" data-validation="required" data-validation-error-msg="Please define user status">
                                                                     <option value="">--Please define user status--</option>
                                                                     <option value="1">Activated</option>
                                                                     <option value="0">Deactivated</option>
@@ -451,7 +451,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Email</label>
-                                                                <input type="text" name="email" class="form-control is-valid" placeholder="Email" data-validation="email" data-validation-error-msg="Please input a valid email" required="true">
+                                                                <input type="text" name="email" class="form-control form-control-lg is-valid" placeholder="Email" data-validation="email required" data-validation-error-msg="Please input valid email">
                                                             </div>
                                                         </div>    
 
@@ -462,7 +462,7 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">@</span>
                                                                     </div>
-                                                                    <input type="text" name="username" class="form-control is-valid" placeholder="Username"  aria-describedby="inputGroupPrepend3" data-validation="alphanumeric length" data-validation-length="5-20" data-validation-allowing="-_" data-validation-error-msg="No space or special character in minimum 5 characters username" required>
+                                                                    <input type="text" name="username" class="form-control form-control-lg is-valid" placeholder="Username"  aria-describedby="inputGroupPrepend3" data-validation="alphanumeric length" data-validation-length="5-20" data-validation-allowing="-_" data-validation-error-msg="No space or special character in minimum 5 characters username">
 
                                                                 </div>
                                                             </div>
@@ -471,7 +471,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer01">Password</label>
-                                                                <input type="password" name="password" class="form-control is-valid" placeholder="Chosse a Suitable Password" minlength=8 data-validation="strength" data-validation-strength="2"data-validation-length="8-20" required>
+                                                                <input type="password" name="password" class="form-control form-control-lg is-valid" placeholder="Chosse a Suitable Password" data-validation="strength length" data-validation-strength="2"data-validation-length="8-20" data-validation-error-msg='Please use at one special character in 8 digit(min)'>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -486,7 +486,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer02">Address</label>
-                                                                <input type="text" name="address" class="form-control is-valid"  placeholder="Address">
+                                                                <input type="text" name="address" class="form-control form-control-lg is-valid"  placeholder="Address">
                                                             </div>
                                                         </div>    
 
@@ -494,7 +494,7 @@
                                                             <div class="col-md-12 mb-4">
                                                                 
                                                                 <label for="validationServer03">City</label>
-                                                                <input type="text" name="city" class="form-control is-valid" placeholder="City">
+                                                                <input type="text" name="city" class="form-control form-control-lg is-valid" placeholder="City">
                                                                 
                                                             </div>
                                                         </div>
@@ -502,7 +502,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-12 mb-4">
                                                                 <label for="validationServer05">Country</label>
-                                                                <input type="text" name="country" class="form-control is-valid" placeholder="Country Name">
+                                                                <input type="text" name="country" class="form-control form-control-lg is-valid" placeholder="Country Name">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -672,14 +672,4 @@
 
         });
     </script>
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
-    <script>
-        $.validate({
-            modules : 'security',
-            errorMessageClass  : 'text-danger',
-            errorMessagePosition : 'inline' // Instead of 'top' which is default
-        });
-    </script>
-
 @endpush

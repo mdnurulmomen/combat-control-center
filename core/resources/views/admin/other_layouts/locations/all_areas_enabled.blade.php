@@ -68,7 +68,7 @@
 
                             <tr>
                                 <td>{{ $area->name }}</td>
-                                <td>{{ $area->city->name }}</td>
+                                <td>{{ optional($area->city)->name ?? 'NA'}}</td>
 
                                 @if(auth()->user()->can('update'))
 
@@ -148,7 +148,7 @@
                                                 <div class="col-md-6 mb-4">
                                                     <label for="validationServer01">City</label>
 
-                                                    <select class="form-control is-invalid" name="city" required="true">
+                                                    <select class="form-control is-valid" name="city" required="true">
                                                         
                                                         @foreach(App\Models\City::all() as $city)
 
@@ -165,7 +165,7 @@
                                                 <div class="col-md-6 mb-4">
                                                     <label for="validationServer01">Area Name</label>
                                                     <div class="input-group">
-                                                        <input step="any" type="text" name="name" class="form-control  is-invalid" value="{{ $area->name }}" required="true">
+                                                        <input step="any" type="text" name="name" class="form-control  is-valid" value="{{ $area->name }}" required="true">
                                                     </div>
                                                 </div>
                                             </div>
@@ -220,8 +220,12 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServer01">City</label>
 
-                                    <select class="form-control is-invalid" name="city" required="true">
+                                    <select class="form-control is-valid" name="city" data-validation='required' data-validation-error-msg='Please select a city'>
                                         
+                                        <option selected="true" disabled="true">
+                                            --Please select city--
+                                        </option>
+
                                         @foreach(App\Models\City::all() as $city)
 
                                         <option value="{{ $city->id }}">
@@ -236,7 +240,7 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="validationServer01">Area Name</label>
                                     <div class="input-group">
-                                        <input step="any" type="text" name="name" class="form-control  is-invalid"  placeholder="Area Name" required="true">
+                                        <input type="text" name="name" class="form-control  is-valid"  placeholder="Area Name" data-validation='required' data-validation-error-msg='Area name is required' data-validation-help='Area name vendor belongs'>
                                     </div>
                                 </div>
                             </div>

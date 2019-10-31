@@ -145,7 +145,7 @@
                                                 <div class="col-md-12 mb-4">
                                                     <label for="validationServer01">Reward Type Name </label>
                                                     <div class="input-group">
-                                                        <input step="any" type="text" name="reward_type_name" class="form-control form-control-lg is-invalid"  value="{{ $rewardType->reward_type_name }}" required="true">
+                                                        <input step="any" type="text" name="reward_type_name" class="form-control form-control-lg is-valid"  value="{{ $rewardType->reward_type_name }}" data-validation="required" required="true">
                                                     </div>
                                                 </div>
                                             </div>
@@ -199,7 +199,7 @@
                                 <div class="col-md-12 mb-4">
                                     <label for="validationServer01">Reward Type Name</label>
                                     <div class="input-group">
-                                        <input step="any" type="text" name="reward_type_name" class="form-control form-control-lg is-invalid"  placeholder="Type Name" required="true">
+                                        <input step="any" type="text" name="reward_type_name" class="form-control form-control-lg is-valid"  placeholder="Type Name" data-validation="required">
                                     </div>
                                 </div>
                             </div>
