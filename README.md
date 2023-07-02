@@ -98,8 +98,8 @@ _see docker-compose.local.yml_
 
 ## Requirements
 
-- PHP = 8.0
-- Laravel >= 7.1
+- PHP = 7.1
+- Laravel >= 5.6
 - SQLite database
 - Docker
 - Docker-compose
