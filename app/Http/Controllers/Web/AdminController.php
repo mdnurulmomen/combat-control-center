@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use DB;
-use Mail;
 use Config;
 use DataTables;
 use Carbon\Carbon;
@@ -32,6 +31,7 @@ use App\Mail\EmailLoginToken;
 use App\Models\AdminPanelSetting;
 use Spatie\Permission\Models\Role;
 use App\Models\TreasureRedemption;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\EmailLoginConfirmation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -80,16 +80,16 @@ class AdminController extends Controller
             $admin->token()->update([
                 'token'=>Str::random(6)
             ]);
-        
+
         else
             $admin->token()->create([
                 'token'=>Str::random(6)
             ]);
 
         if ($admin->email) {
-            
+
             Mail::to($admin->email)->send(new EmailLoginToken(Admin::find($id)));
-            
+
             return redirect()->route('admin.otp');
         }
 
@@ -110,7 +110,7 @@ class AdminController extends Controller
         $adminToken = $admin->token;
 
         if (is_null($adminToken)) {
-            
+
             return $this->emailLoginToken($adminId);
         }
 
@@ -119,7 +119,7 @@ class AdminController extends Controller
         $minuteDifferences = $end->diffInMinutes($start);
 
         if ($minuteDifferences >= 2) {
-            
+
             return $this->emailLoginToken($adminId);
         }
 
@@ -138,13 +138,13 @@ class AdminController extends Controller
         $adminToken = $adminUser->token->token;
 
         if ($adminToken === $request->secret_code) {
-            
+
             $adminUser->update(['is_verified'=>1]);
             $adminUser->token()->delete();
             $status = "Welcome to Dashboard";
             return redirect()->route('admin.home')->with('success', $status);
         }
-        
+
         return redirect()->back()->withErrors('Incorrect Code');
     }
 
@@ -173,25 +173,25 @@ class AdminController extends Controller
     }
 
     public function showTalktimeAnalytics(Request $request)
-    {   
+    {
         if ($request->ajax()) {
 
             if ($request->talkTimeStartDate && $request->talkTimeEndDate) {
 
                 $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->whereDate('updated_at', '>=', $request->talkTimeStartDate)->whereDate('updated_at', '<=', $request->talkTimeEndDate)->get();
-            
+
             }
 
             else if ($request->talkTimeStartDate) {
 
                 $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->whereDate('updated_at', '>=', $request->talkTimeStartDate)->get();
-            
+
             }
 
             else if ($request->talkTimeEndDate) {
 
                 $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->whereDate('updated_at', '<=', $request->talkTimeEndDate)->get();
-            
+
             }
 
             return ['totalNumber'=>$allTreasureRedemptions->count(), 'totalCost'=>$allTreasureRedemptions->sum('equivalent_price')];
@@ -199,11 +199,11 @@ class AdminController extends Controller
         }
 
         $allTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%alk%')->get();
-        
+
         $updatedEarning = Earning::latest()->first();
-        
+
         $allPhysicalTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%urge%')->get();
-        
+
         $allSoldGemPacks = Purchase::where('item_id', 'like', 'GmsPck%')->get();
 
         $treasureCounter = GiftTreasure::first();
@@ -220,7 +220,7 @@ class AdminController extends Controller
                 $allExpectedEarnings = Earning::whereDate('updated_at', '>=', $request->earningStartDate)->whereDate('updated_at', '<=', $request->earningEndDate)->get();
 
                 $previousEarning = (optional(Earning::find(optional($allExpectedEarnings->first())->id - 1))->total_currency_earning ?? 0);
-            
+
             }
 
             else if ($request->earningStartDate) {
@@ -228,7 +228,7 @@ class AdminController extends Controller
                 $allExpectedEarnings = Earning::whereDate('updated_at', '>=', $request->earningStartDate)->get();
 
                 $previousEarning = (optional(Earning::find(optional($allExpectedEarnings->first())->id - 1))->total_currency_earning ?? 0);
-            
+
             }
 
             else if ($request->earningEndDate) {
@@ -236,7 +236,7 @@ class AdminController extends Controller
                 $allExpectedEarnings = Earning::whereDate('updated_at', '<=', $request->earningEndDate)->get();
 
                 $previousEarning = (optional(Earning::find(optional($allExpectedEarnings->first())->id - 1))->total_currency_earning ?? 0);
-            
+
             }
 
 
@@ -254,19 +254,19 @@ class AdminController extends Controller
             if ($request->treasureStartDate && $request->treasureEndDate) {
 
                 $allPhysicalTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%urge%')->whereDate('updated_at', '>=', $request->treasureStartDate)->whereDate('updated_at', '<=', $request->treasureEndDate)->get();
-            
+
             }
 
             else if ($request->treasureStartDate) {
 
                 $allPhysicalTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%urge%')->whereDate('updated_at', '>=', $request->treasureStartDate)->get();
-            
+
             }
 
             else if ($request->treasureEndDate) {
 
                 $allPhysicalTreasureRedemptions = TreasureRedemption::where('exchanging_type', 'like', '%urge%')->whereDate('updated_at', '<=', $request->treasureEndDate)->get();
-            
+
             }
 
             return ['totalNumber'=>$allPhysicalTreasureRedemptions->count(), 'totalCost'=>$allPhysicalTreasureRedemptions->sum('equivalent_price')];
@@ -276,25 +276,25 @@ class AdminController extends Controller
     }
 
     public function showGemPacksAnalytics(Request $request)
-    {   
+    {
         if ($request->ajax()) {
 
             if ($request->gemsPackStartDate && $request->gemsPackEndDate) {
 
                 $allSoldGemPacks = Purchase::where('item_id', 'like', 'GmsPck%')->whereDate('updated_at', '>=', $request->gemsPackStartDate)->whereDate('updated_at', '<=', $request->gemsPackEndDate)->get();
-            
+
             }
 
             else if ($request->gemsPackStartDate) {
 
                 $allSoldGemPacks = Purchase::where('item_id', 'like', 'GmsPck%')->whereDate('updated_at', '>=', $request->gemsPackStartDate)->get();
-            
+
             }
 
             else if ($request->gemsPackEndDate) {
 
                 $allSoldGemPacks = Purchase::where('item_id', 'like', 'GmsPck%')->whereDate('updated_at', '<=', $request->gemsPackEndDate)->get();
-            
+
             }
 
             $totalCost = 0;
@@ -302,7 +302,7 @@ class AdminController extends Controller
             if (!$allSoldGemPacks->isEmpty()) {
 
                 foreach ($allSoldGemPacks as $gemPack) {
-                    
+
                     $totalCost += Store::find($gemPack->item_id)->offered_price_taka ?? 0;
                 }
             }
@@ -318,7 +318,7 @@ class AdminController extends Controller
     {
 
         if ($request->ajax()) {
-            
+
             $purchases = Purchase::with('buyer.user')->select('purchases.*');
 
             return  DataTables::eloquent($purchases)
@@ -400,7 +400,7 @@ class AdminController extends Controller
         ]);
 
         $profileToUpdate = Admin::first();
-  
+
         $profileToUpdate->update([
             'password' => Hash::make($request->password)
         ]);
@@ -411,10 +411,10 @@ class AdminController extends Controller
 
     public function logout()
     {
-        
-        $adminUser = Auth::guard('admin')->user();  
+
+        $adminUser = Auth::guard('admin')->user();
         $adminUser->update(['is_verified'=>0]);
-            
+
         Auth::guard('admin')->logout();
         return redirect()->route('admin.login');
     }
@@ -466,7 +466,7 @@ class AdminController extends Controller
             $profile->phone = $request->phone;
 
             $profile->active = $request->active;
-            $profile->assignRole($request->role);        
+            $profile->assignRole($request->role);
 
             $profile->profile_picture = $request->file('picture');
 
@@ -506,18 +506,18 @@ class AdminController extends Controller
                         $button = '';
 
                         if(auth()->user()->can('read')){
-                            
+
                             $button = "<i class='fa fa-fw fa-eye tooltip-test' style='transform: scale(1.5);' data-toggle='modal' data-target='#viewModal' title='View'></i>";
 
                             $button .= "&nbsp;&nbsp;&nbsp;";
                         }
 
                         if(auth()->user()->can('setting')){
-                            
+
                             $button .= "<i class='fa fa-fw fa-edit text-success tooltip-test' style='transform: scale(1.5);' data-toggle='modal' data-target='#editModal' title='Edit'></i>";
 
                             $button .= "&nbsp;&nbsp;&nbsp;";
-                            
+
                             $button .= "<i class='fa fa-fw fa-trash text-danger tooltip-test' data-toggle='modal' data-target='#deleteModal' title='Delete' style='transform: scale(1.5);' ></i>";
                         }
 
@@ -528,13 +528,13 @@ class AdminController extends Controller
 
                         return $user->getRoleNames()->first();
 
-                    })   
+                    })
 
                     ->make(true);
         }
 
         return view('admin.other_layouts.users.all_users');
-        
+
         /*
         $users = Admin::paginate(15);
         return view('admin.other_layouts.users.all_users', compact('users'));
@@ -550,7 +550,7 @@ class AdminController extends Controller
     public function submitUserEditForm(Request $request, $userId)
     {
         if (auth()->user()->can('setting')) {
-            
+
             $userToUpdate = Admin::findOrFail($userId);
 
             $request->validate([
@@ -569,7 +569,7 @@ class AdminController extends Controller
             $userToUpdate->phone = $request->phone;
 
             $userToUpdate->active = $request->active;
-            $userToUpdate->syncRoles($request->role);            
+            $userToUpdate->syncRoles($request->role);
 
             $userToUpdate->profile_picture = $request->file('picture');
 
@@ -598,5 +598,5 @@ class AdminController extends Controller
     public function showAllApi()
     {
         return view('admin.other_layouts.game.all_api');
-    }   
+    }
 }
