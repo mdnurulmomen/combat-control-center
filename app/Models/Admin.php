@@ -29,7 +29,7 @@ class Admin extends Authenticatable
 
                 mkdir($directory, 0777, true);
             }
-    		
+
             $imageObject = ImageIntervention::make($originImageFile);
             $imageObject->resize(200, 200)->save('assets/admin/images/profile/'.$originImageFile->hashname());
 

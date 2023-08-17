@@ -1,6 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use Database\Seeders\AdminTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,15 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call([
+        $this->call([
 
-        // 	AdminTableSeeder::class,
+            AdminTableSeeder::class
 
-        // ]);
+        ]);
 
         // factory(App\Parachute::class, 3)->create();
         // factory(App\GemPack::class, 3)->create();
         // factory(App\BoostPack::class, 3)->create();
-        
+
     }
 }

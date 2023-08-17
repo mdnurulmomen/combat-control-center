@@ -1,10 +1,11 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Admin;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
 
 class AdminTableSeeder extends Seeder
 {
@@ -16,7 +17,6 @@ class AdminTableSeeder extends Seeder
 
     public function run()
     {
-        /*
         DB::table('admins')->truncate();
 
         DB::table('admins')->insert([
@@ -32,14 +32,12 @@ class AdminTableSeeder extends Seeder
 	        'country'=>'Bangladesh'
         ]);
 
-        */
-
         /*
         factory(App\Models\Admin::class, 50)->create()->each(function ($admin) {
             $admin->posts()->save(factory(App\Post::class)->make());
         });
         */
 
-        factory(App\Models\Admin::class, 50)->create();
+        // factory(App\Models\Admin::class, 50)->create();
     }
 }
