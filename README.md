@@ -8,11 +8,11 @@ Alternative installation is possible without local dependencies relying on [Dock
 
 Clone the repository
 
-    git clone https://github.com/mdnurulmomen/PetShop.git
+    git clone https://github.com/mdnurulmomen/combat-control-center.git
 
 Switch to the repo folder
 
-    cd PetShop
+    cd combat-control-center
 
 Install all the dependencies using composer
 
